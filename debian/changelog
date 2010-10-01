@@ -1,0 +1,13 @@
+minutor (0.2) unstable; urgency=low
+
+  * Window resizing
+  * Keyboard controls
+  * Fixed up signals
+
+ -- Sean Kasun <sean@seancode.com>  Mon, 27 Sep 2010 15:32:10 -0700
+
+minutor (0.1) unstable; urgency=low
+
+  * Initial release
+
+ -- Sean Kasun <sean@seancode.com>  Fri, 24 Sep 2010 23:55:20 -0600

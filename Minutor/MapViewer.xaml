@@ -1,0 +1,11 @@
+﻿<Window x:Class="Minutor.MapViewer"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="MapViewer" Height="478" Width="512" MinHeight="478" MinWidth="512" KeyDown="map_keyDown">
+    <Grid>
+        <Slider Height="22" Name="LayerSlider" VerticalAlignment="Top" Maximum="127" SmallChange="1" IsSnapToTickEnabled="True" ValueChanged="LayerSlider_ValueChanged" Margin="12,12,12,0" AutoToolTipPlacement="TopLeft" IsDirectionReversed="True" Value="127" />
+        <Border Name="ResizeProxy" Margin="0,40,0,0" SizeChanged="Map_SizeChanged">
+            <Image Name="Map" Width="496" Height="400" MouseWheel="Map_MouseWheel" MouseRightButtonUp="Map_MouseRightButtonUp" MouseRightButtonDown="Map_MouseRightButtonDown" MouseMove="Map_MouseMove" MouseLeftButtonUp="Map_MouseLeftButtonUp" MouseLeftButtonDown="Map_MouseLeftButtonDown" Focusable="False" />
+        </Border>
+    </Grid>
+</Window>

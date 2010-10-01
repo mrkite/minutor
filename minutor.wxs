@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<!-- Increase product version each release.. and that's the only change -->
+<?define ProductVersion="0.2.1"?>
+<?define ProductUpgradeCode="5da343bf-7e4f-4849-acb0-da8c6682a71e"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="*"
+      Name="Minutor" Language="1033" Version="$(var.ProductVersion)"
+      Manufacturer="Sean Kasun"
+      UpgradeCode="$(var.ProductUpgradeCode)">
+    <Package Comments="Windows Installer Package"
+        InstallerVersion="200" Compressed="yes" />
+    <Media Id="1" Cabinet="minutor.cab" EmbedCab="yes" />
+    <Icon Id="ProductIcon" SourceFile="icon.ico" />
+    <Property Id="ARPPRODUCTICON" Value="ProductIcon" />
+    <Property Id="ARPHELPLINK" Value="http://seancode.com/minutor" />
+    <Property Id="ARPURLINFOABOUT" Value="http://seancode.com" />
+    <Property Id="ARPNOREPAIR" Value="1" />
+    <!--Property Id="ARPNOMODIFY" Value="1" -->
+
+    <Upgrade Id="$(var.ProductUpgradeCode)">
+      <UpgradeVersion Minimum="$(var.ProductVersion)" OnlyDetect="yes"
+          Property="NEWESTVERSIONDETECTED" />
+      <UpgradeVersion Minimum="0.0.0" Maximum="$(var.ProductVersion)"
+          IncludeMinimum="yes" IncludeMaximum="no"
+          Property="OLDERVERSIONBEINGUPGRADED" />
+    </Upgrade>
+    <Condition Message="A newer version of this software is already installed.">
+	NOT NEWERVERSIONDETECTED
+    </Condition>
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLDIR" Name="Minutor">
+          <Component Id="ApplicationFiles"
+               Guid="670f74ff-eb96-4003-828a-2f24e5a42539">
+			   <File Id="AppFile1"
+                  Source="Minutor\bin\x86\Release\Minutor.exe" />
+            <File Id="DllFile1" Source="Release\MinutorMap.dll" />
+          </Component>
+        </Directory>
+      </Directory>
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ProgramMenuSubfolder" Name="Minutor">
+          <Component Id="ApplicationShortcuts"
+              Guid="6e6901f0-d92a-43da-95bd-f21e48b5b37a">
+            <Shortcut Id="ApplicationShortcut1" Name="Minutor"
+               Description="Minecraft Map Viewer"
+               Target="[INSTALLDIR]Minutor.exe"
+               WorkingDirectory="INSTALLDIR" />
+            <RegistryValue Root="HKCU" Key="Software\Sean Kasun\Minutor"
+                Name="installed" Type="integer" Value="1" KeyPath="yes" />
+            <RemoveFolder Id="ProgramMenuSubfolder" On="uninstall" />
+          </Component>
+        </Directory>
+      </Directory>
+    </Directory>
+    <InstallExecuteSequence>
+      <RemoveExistingProducts After="InstallValidate" />
+    </InstallExecuteSequence>
+
+    <Feature Id="DefaultFeature" Level="1">
+      <ComponentRef Id="ApplicationFiles" />
+      <ComponentRef Id="ApplicationShortcuts" />
+    </Feature>
+    <Property Id="WIXUI_INSTALLDIR">INSTALLDIR</Property>
+    <UI Id="WixUI_Minimal">
+      <TextStyle Id="WixUI_Font_Normal" FaceName="Tahoma" Size="8" />
+      <TextStyle Id="WixUI_Font_Bigger" FaceName="Tahoma" Size="12" />
+      <TextStyle Id="WixUI_Font_Title" FaceName="Tahoma" Size="9" Bold="yes" />
+      <Property Id="DefaultUIFont" Value="WixUI_Font_Normal" />
+      <Property Id="WixUI_Mode" Value="Minimal" />
+      <DialogRef Id="ErrorDlg" />
+      <DialogRef Id="FatalError" />
+      <DialogRef Id="FilesInUse" />
+      <DialogRef Id="MsiRMFilesInUse" />
+      <DialogRef Id="PrepareDlg" />
+      <DialogRef Id="ProgressDlg" />
+      <DialogRef Id="ResumeDlg" />
+      <DialogRef Id="UserExit" />
+      <DialogRef Id="WelcomeDlg" />
+
+      <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog"
+          Value="PrepareDlg">1</Publish>
+      <Publish Dialog="ExitDialog" Control="Finish" Event="EndDialog"
+          Value="Return" Order="999">1</Publish>
+      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog"
+          Value="MaintenanceTypeDlg">1</Publish>
+      <Publish Dialog="MaintenanceWelcomeDlg" Control="Next" Event="NewDialog"
+          Value="MaintenanceTypeDlg">1</Publish>
+      <Publish Dialog="MaintenanceTypeDlg" Control="RepairButton"
+          Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+      <Publish Dialog="MaintenanceTypeDlg" Control="RemoveButton"
+          Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+      <Publish Dialog="MaintenanceTypeDlg" Control="Back" Event="NewDialog"
+          Value="MaintenanceWelcomeDlg">1</Publish>
+      <Property Id="ARPNOMODIFY" Value="1" />
+    </UI>
+    <UIRef Id="WixUI_Common" />
+  </Product>
+</Wix>
+

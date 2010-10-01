@@ -1,0 +1,20 @@
+﻿<Window x:Class="Minutor.Window1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Choose World" Height="150" Width="295">
+    <Grid>
+        <RadioButton Height="25" Margin="12,12,12,0" Name="standardWorld" VerticalAlignment="Top" GroupName="worldChoice" IsChecked="True">
+            <ComboBox Height="23" Name="worlds" VerticalAlignment="Top" Width="110" SelectionChanged="worlds_SelectionChanged">
+                <ComboBoxItem IsSelected="True">World 1</ComboBoxItem>
+                <ComboBoxItem>World 2</ComboBoxItem>
+                <ComboBoxItem>World 3</ComboBoxItem>
+                <ComboBoxItem>World 4</ComboBoxItem>
+                <ComboBoxItem>World 5</ComboBoxItem>
+            </ComboBox>
+        </RadioButton>
+        <RadioButton Height="25" Margin="12,43,12,0" Name="customWorld" VerticalAlignment="Top" GroupName="worldChoice">
+            <Button Height="23" Name="customButton" VerticalAlignment="Top" HorizontalAlignment="Right" Click="customButton_Click">Custom World...</Button>
+        </RadioButton>
+        <Button HorizontalAlignment="Right" Margin="0,0,12,10" Name="viewButton" VerticalAlignment="Bottom" Height="23" Width="73" IsDefault="True" Click="viewButton_Click">View</Button>
+    </Grid>
+</Window>
