@@ -36,7 +36,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
 static void draw(const char *world,int bx,int bz,int y,unsigned char *bits);
 static void blit(unsigned char *block,unsigned char *bits,int px,int pz,
 	double zoom,int w,int h);
-static unsigned char *LoadBlock(char *filename);
+static Block *LoadBlock(char *filename);
 static void b36(char *dest,int num);
 
 //world = path to world saves
@@ -142,53 +142,75 @@ void CloseAll()
 static void draw(const char *world,int bx,int bz,int y,unsigned char *bits)
 {
 	int first,second;
-	unsigned char *grid;
+	Block *block, *prevblock;
 	char filename[256];
 	int ofs=0,xOfs=0,prevy,zOfs,bofs;
 	int x,z,i;
-	unsigned int color;
-	unsigned char pixel;
+	unsigned int color, watercolor = blocks[BLOCK_WATER].color, water;
+	unsigned char pixel, r, g, b;
 
+	block=(Block *)Cache_Find(bx,bz);
 
-
-	strncpy_s(filename,256,world,256);
-	strncat_s(filename,256,"/",256);
-	first=bx%64;
-	if (first<0) first+=64;
-	b36(filename,first);
-	strncat_s(filename,256,"/",256);
-	second=bz%64;
-	if (second<0) second+=64;
-	b36(filename,second);
-	strncat_s(filename,256,"/c.",256);
-	b36(filename,bx);
-	strncat_s(filename,256,".",256);
-	b36(filename,bz);
-	strncat_s(filename,256,".dat",256);
-
-	grid=(unsigned char *)Cache_Find(bx,bz);
-	if (grid==NULL)
+	if (block==NULL)
 	{
-		grid=LoadBlock(filename);
-		if (grid==NULL) //blank tile
+        strncpy_s(filename,256,world,256);
+        strncat_s(filename,256,"/",256);
+        first=bx%64;
+        if (first<0) first+=64;
+        b36(filename,first);
+        strncat_s(filename,256,"/",256);
+        second=bz%64;
+        if (second<0) second+=64;
+        b36(filename,second);
+        strncat_s(filename,256,"/c.",256);
+        b36(filename,bx);
+        strncat_s(filename,256,".",256);
+        b36(filename,bz);
+        strncat_s(filename,256,".dat",256);
+
+		block=LoadBlock(filename);
+		if (block==NULL) //blank tile
 		{
 			memset(bits,0xff,16*16*4);
 			return;
 		}
-		Cache_Add(bx,bz,grid);
+
+		Cache_Add(bx,bz,block);
 	}
+
+    if (block->rendery == y) //block already rendered
+    {
+        memcpy(bits, block->rendercache, sizeof(unsigned char)*16*16*4);
+        return;
+    }
+
+    // find the block to the left, so we can use its prevy
+    prevblock=(Block *)Cache_Find(bx - 1, bz);
+    if (prevblock!=NULL && prevblock->rendery != y)
+        prevblock = NULL; //block was rendered at a different y level, ignore
+
 	for (x=0;x<16;x++,xOfs+=128)
 	{
-		prevy=-1;
+        if (prevblock!=NULL)
+            prevy = prevblock->prevy[x];
+        else
+    		prevy=-1;
+
 		zOfs=xOfs;
 		for (z=0;z<16;z++,zOfs+=128*16)
 		{
 			bofs=zOfs+y;
 			color=0;
+            water=0;
 			for (i=y;i>=0;i--,bofs--)
 			{
-				pixel=grid[bofs];
-				if (pixel<numBlocks && blocks[pixel].canDraw)
+				pixel=block->grid[bofs];
+                if (pixel==BLOCK_STATIONARY_WATER || pixel==BLOCK_WATER) 
+                {
+                    if (++water < 8)
+                        continue;
+                }
+                if (pixel<numBlocks && blocks[pixel].canDraw)
 				{
 					if (prevy==-1) prevy=i;
 					if (prevy<i)
@@ -197,6 +219,14 @@ static void draw(const char *world,int bx,int bz,int y,unsigned char *bits)
 						color=blocks[pixel].dark;
 					else
 						color=blocks[pixel].color;
+
+                    if (water != 0) {
+                        r=(color>>16)/(water + 1) + (watercolor>>16)*water/(water + 1);
+                        g=(color>>8&0xff)/(water + 1) + (watercolor>>8&0xff)*water/(water + 1);
+                        b=(color&0xff)/(water + 1) + (watercolor&0xff)*water/(water + 1);
+                        color = r<<16 | g<<8 | b;
+                    }
+
 					prevy=i;
 					break;
 				}
@@ -206,14 +236,24 @@ static void draw(const char *world,int bx,int bz,int y,unsigned char *bits)
 			bits[ofs++]=color;
 			bits[ofs++]=0xff;
 		}
+
+        block->prevy[x] = prevy;
 	}
+
+    block->rendery = y;
+    memcpy(block->rendercache, bits, sizeof(unsigned char)*16*16*4);
 }
-static unsigned char *LoadBlock(char *filename)
+Block *LoadBlock(char *filename)
 {
 	gzFile gz=newNBT(filename);
-	unsigned char *data=nbtGetBlocks(gz);
+    Block *block=malloc(sizeof(Block));
+    block->rendery = -1;
+	if (nbtGetBlocks(gz, block->grid) == NULL) {
+        free(block);
+        block = NULL;
+    }
 	nbtClose(gz);
-	return data;
+	return block;
 }
 
 void GetSpawn(const char *world,int *x,int *y,int *z)

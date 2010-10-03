@@ -36,6 +36,13 @@ typedef struct BlockCache {
 	long age;
 } BlockCache;
 
+typedef struct Block {
+    unsigned char grid[16*16*128];
+    unsigned char rendercache[16*16*4];
+    unsigned char prevy[16];
+    int rendery;
+} Block;
+
 void *Cache_Find(int bx,int bz);
 void Cache_Add(int bx,int bz,void *data);
 void Cache_Clean();

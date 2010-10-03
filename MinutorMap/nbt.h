@@ -34,7 +34,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
 #include <stdio.h>
 
 gzFile newNBT(const char *filename);
-unsigned char *nbtGetBlocks(gzFile gz);
+unsigned char *nbtGetBlocks(gzFile gz, unsigned char *buff);
 void nbtGetSpawn(gzFile gz,int *x,int *y,int *z);
 void nbtClose(gzFile gz);
 

@@ -182,10 +182,9 @@ static int findElement(gzFile gz,char *name)
 	}
 }
 
-unsigned char *nbtGetBlocks(gzFile gz)
+unsigned char *nbtGetBlocks(gzFile gz, unsigned char *buff)
 {
 	int len;
-	unsigned char *r;
 	//Level/Blocks
 	gzseek(gz,1,SEEK_CUR); //skip type
 	len=readWord(gz); //name length
@@ -195,9 +194,8 @@ unsigned char *nbtGetBlocks(gzFile gz)
 	if (findElement(gz,"Blocks")!=7)
 		return NULL;
 	len=readDword(gz); //array length
-	r=(unsigned char *)malloc(len);
-	gzread(gz,r,len);
-	return r;
+	gzread(gz,buff,len);
+	return buff;
 }
 void nbtGetSpawn(gzFile gz,int *x,int *y,int *z)
 {
