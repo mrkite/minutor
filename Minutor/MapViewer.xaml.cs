@@ -137,7 +137,7 @@ namespace Minutor
             // make sure mouse is inbounds of the map.
             if (pos.X < 0 || pos.Y < 0 || pos.X >= curWidth || pos.Y >= curHeight)
                 return;
-            popupText.Text = MapDll.IDBlock(pos.X, pos.Y, curX, curZ, curWidth, curHeight, curScale);
+            popupText.Text = MapDll.IDBlock((int)pos.X, (int)pos.Y, curX, curZ, curWidth, curHeight, curScale);
             popup.IsOpen = true;
             e.Handled = true;
         }
@@ -256,7 +256,7 @@ namespace Minutor
         [DllImport("MinutorMap.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void DrawMap(string world, double cx, double cz, int y, int w, int h, double zoom, byte[] bits);
         [DllImport("MinutorMap.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern string IDBlock(int int by, double cx, double cz, int w, int h, double zoom));
+        public static extern string IDBlock(int bx, int by, double cx, double cz, int w, int h, double zoom);
         [DllImport("MinutorMap.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void CloseAll();
         [DllImport("MinutorMap.dll", CallingConvention = CallingConvention.Cdecl)]

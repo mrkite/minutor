@@ -118,6 +118,7 @@ void DrawMap(const char *world,double cx,double cz,int y,int w,int h,double zoom
 const char *IDBlock(int bx, int by, double cx, double cz, int w, int h, double zoom)
 {
 	//WARNING: keep this code in sync with draw()
+	Block *block;
     int x,y,z,px,py,xoff,zoff;
 	int blockScale=(int)(16*zoom);
 
@@ -148,7 +149,7 @@ const char *IDBlock(int bx, int by, double cx, double cz, int w, int h, double z
     zoff=((int)((px - bx)/zoom) + 15) % 16;
     xoff=(int)((by - py)/zoom);
 
-    Block *block=Cache_Find(startxblock+x, startzblock-z);
+    block=Cache_Find(startxblock+x, startzblock-z);
 
     if (block==NULL)
         return "Unknown";
