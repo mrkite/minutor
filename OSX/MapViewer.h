@@ -36,6 +36,6 @@
 	int curDepth;
 }
 -(void)openWorld:(NSString *)world;
--(IBAction) sliderChanged: sender;
+-(IBAction) sliderChanged:(NSSlider*)sender;
 
 @end
