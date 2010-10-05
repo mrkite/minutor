@@ -1,3 +1,11 @@
+minutor (0.2.5) unstable; urgency=low
+
+  * Patches from Ryan including:
+  *  water is transparent
+  *  caching for rendered blocks
+  *  north orientation
+  *  IDBlock fixes
+
 minutor (0.2) unstable; urgency=low
 
   * Window resizing
