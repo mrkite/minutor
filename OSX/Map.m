@@ -89,9 +89,8 @@
 	NSPoint at=[self convertPoint:[theEvent locationInWindow] fromView:nil];
 	if (at.y>curHeight || at.x>curWidth)
 		return;
-	int ofs=(curHeight-at.y)*curWidth*4+at.x*4;
-	unsigned int color=(bits[ofs]<<16)|(bits[ofs+1]<<8)|bits[ofs+2];
-	NSString *label=[NSString stringWithCString:IDBlock(color) encoding:[NSString defaultCStringEncoding]];
+	NSString *label=[NSString stringWithCString:IDBlock(at.x, curHeight-at.y, curX, curZ,
+        curWidth, curHeight, curScale) encoding:[NSString defaultCStringEncoding]];
 	[ToolTip setString:label forEvent:theEvent];
 }
 - (void)rightMouseUp:(NSEvent *)theEvent
@@ -100,8 +99,8 @@
 }
 - (void)mouseDragged:(NSEvent *)theEvent
 {
-	curX-=[theEvent deltaX]/curScale;
-	curZ-=[theEvent deltaY]/curScale;
+	curX-=[theEvent deltaY]/curScale;
+	curZ+=[theEvent deltaX]/curScale;
 	[self setNeedsDisplay:YES];
 }
 - (void)scrollWheel:(NSEvent *)theEvent
@@ -130,19 +129,19 @@
 	switch (character)
 	{
 		case NSUpArrowFunctionKey:
-			curZ-=10.0/curScale;
-			changed=YES;
-			break;
-		case NSDownArrowFunctionKey:
-			curZ+=10.0/curScale;
-			changed=YES;
-			break;
-		case NSLeftArrowFunctionKey:
 			curX-=10.0/curScale;
 			changed=YES;
 			break;
-		case NSRightArrowFunctionKey:
+		case NSDownArrowFunctionKey:
 			curX+=10.0/curScale;
+			changed=YES;
+			break;
+		case NSLeftArrowFunctionKey:
+			curZ+=10.0/curScale;
+			changed=YES;
+			break;
+		case NSRightArrowFunctionKey:
+			curZ-=10.0/curScale;
 			changed=YES;
 			break;
 		case NSPageUpFunctionKey:

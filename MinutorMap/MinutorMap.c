@@ -34,8 +34,9 @@ THE POSSIBILITY OF SUCH DAMAGE.
 #include <string.h>
 
 static void draw(const char *world,int bx,int bz,int y,unsigned char *bits);
-static void blit(unsigned char *block,unsigned char *bits,int px,int pz,
+static void blit(unsigned char *block,unsigned char *bits,int px,int py,
 	double zoom,int w,int h);
+const char *IDBlock(int bx, int by, double cx, double cz, int w, int h, double zoom);
 static Block *LoadBlock(char *filename);
 static void b36(char *dest,int num);
 
@@ -49,63 +50,114 @@ static void b36(char *dest,int num);
 //bits = byte array for output
 void DrawMap(const char *world,double cx,double cz,int y,int w,int h,double zoom,unsigned char *bits)
 {
-	int z,x,pz,px;
+    /* We're converting between coordinate systems, so this gets kinda ugly 
+     *
+     * X     -world x N  -screen y
+     * screen origin  |
+     *                |
+     *                |
+     *                |
+     *  +world z      |(cz,cx)   -world z
+     * W--------------+----------------E
+     *  -screen x     |          +screen x
+     *                |
+     *                | 
+     *                |
+     *      +world x  | +screen y
+     *                S
+     */
+
+	unsigned char blockbits[16*16*4];
+	int z,x,px,py;
 	int blockScale=(int)(16*zoom);
 
 	// number of blocks to fill the screen
 	int hBlocks=(w+(blockScale-1))/blockScale;
 	int vBlocks=(h+(blockScale-1))/blockScale;
 
-	unsigned char *blockbits=(unsigned char *)malloc(16*16*4);
 
 	// cx/cz is the center, so find the upper left corner from that
-	double startx=cx-(double)w/(2*zoom);
-	double startz=cz-(double)h/(2*zoom);
+	double startx=cx-(double)h/(2*zoom);
+	double startz=cz+(double)w/(2*zoom);
 	int startxblock=(int)(startx/16);
 	int startzblock=(int)(startz/16);
-	int shiftx=(int)((startx-startxblock*16)*zoom);
-	int shiftz=(int)((startz-startzblock*16)*zoom);
+	int shiftx=(int)(-(startz-startzblock*16)*zoom);
+	int shifty=(int)((startx-startxblock*16)*zoom);
 
 	if (shiftx<0)
 	{
-		startxblock--;
-		shiftx=blockScale+shiftx;
+		startzblock++;
+		shiftx+=blockScale;
 	}
-	if (shiftz<0)
+	if (shifty<0)
 	{
-		startzblock--;
-		shiftz=blockScale+shiftz;
+		startxblock--;
+		shifty+=blockScale;
 	}
 
-	for (z=0,pz=-shiftz;z<=vBlocks;z++,pz+=blockScale)
-	{
-		for (x=0,px=-shiftx;x<=hBlocks;x++,px+=blockScale)
-		{
-			draw(world,startxblock+x,startzblock+z,y,blockbits);
-			blit(blockbits,bits,px,pz,zoom,w,h);
+    // x increases south, decreases north
+    for (x=0,py=-shifty;x<=vBlocks;x++,py+=blockScale)
+    {
+        // z increases west, decreases east
+        for (z=0,px=-shiftx;z<=hBlocks;z++,px+=blockScale)
+        {
+			draw(world,startxblock+x,startzblock-z,y,blockbits);
+			blit(blockbits,bits,px,py,zoom,w,h);
 		}
 	}
-	free(blockbits);
 }
 
-const char *IDBlock(unsigned int color)
+//bx = x coord of pixel
+//by = y coord of pixel
+//cx = center x world
+//cz = center z world
+//w = output width
+//h = output height
+//zoom = zoom amount (1.0 = 100%)
+const char *IDBlock(int bx, int by, double cx, double cz, int w, int h, double zoom)
 {
-	int i;
-	for (i=0;i<numBlocks;i++)
+	//WARNING: keep this code in sync with draw()
+    int x,y,z,px,py,xoff,zoff;
+	int blockScale=(int)(16*zoom);
+
+	// cx/cz is the center, so find the upper left corner from that
+	double startx=cx-(double)h/(2*zoom);
+	double startz=cz+(double)w/(2*zoom);
+	int startxblock=(int)(startx/16);
+	int startzblock=(int)(startz/16);
+	int shiftx=(int)(-(startz-startzblock*16)*zoom);
+	int shifty=(int)((startx-startxblock*16)*zoom);
+
+	if (shiftx<0)
 	{
-		if (!blocks[i].canDraw) continue;
-		if (blocks[i].color==color)
-			return blocks[i].name;
-		if (blocks[i].dark==color)
-			return blocks[i].name;
-		if (blocks[i].light==color)
-			return blocks[i].name;
+		startzblock++;
+		shiftx+=blockScale;
 	}
-	return "Unknown";
+	if (shifty<0)
+	{
+		startxblock--;
+		shifty+=blockScale;
+	}
+
+    x=(by+shifty)/blockScale;
+    py=x*blockScale-shifty;
+    z=(bx+shiftx)/blockScale;
+    px=z*blockScale-shiftx;
+
+    zoff=((int)((px - bx)/zoom) + 15) % 16;
+    xoff=(int)((by - py)/zoom);
+
+    Block *block=Cache_Find(startxblock+x, startzblock-z);
+
+    if (block==NULL)
+        return "Unknown";
+
+    y=block->heightmap[xoff+zoff*16];
+    return blocks[block->grid[y+(zoff+xoff*16)*128]].name;
 }
 
-//copy block to bits at px,pz at zoom.  bits is wxh
-static void blit(unsigned char *block,unsigned char *bits,int px,int pz,
+//copy block to bits at px,py at zoom.  bits is wxh
+static void blit(unsigned char *block,unsigned char *bits,int px,int py,
 	double zoom,int w,int h)
 {
 	int x,y,yofs,bitofs;
@@ -115,10 +167,10 @@ static void blit(unsigned char *block,unsigned char *bits,int px,int pz,
 	if (px<0) skipx=-px;
 	if (px+bw>=w) bw=w-px;
 	if (bw<=0) return;
-	if (pz<0) skipy=-pz;
-	if (pz+bh>=h) bh=h-pz;
+	if (py<0) skipy=-py;
+	if (py+bh>=h) bh=h-py;
 	if (bh<=0) return;
-	bits+=pz*w*4;
+	bits+=py*w*4;
 	bits+=px*4;
 	for (y=0;y<bh;y++,bits+=w<<2)
 	{
@@ -184,20 +236,23 @@ static void draw(const char *world,int bx,int bz,int y,unsigned char *bits)
         return;
     }
 
-    // find the block to the left, so we can use its prevy
-    prevblock=(Block *)Cache_Find(bx - 1, bz);
+    // find the block to the west, so we can use its prevy
+    prevblock=(Block *)Cache_Find(bx, bz + 1);
     if (prevblock!=NULL && prevblock->rendery != y)
         prevblock = NULL; //block was rendered at a different y level, ignore
 
-	for (x=0;x<16;x++,xOfs+=128)
+    // x increases south, decreases north
+	for (x=0;x<16;x++,xOfs+=128*16)
 	{
         if (prevblock!=NULL)
-            prevy = prevblock->prevy[x];
+            prevy = prevblock->heightmap[x];
         else
     		prevy=-1;
 
-		zOfs=xOfs;
-		for (z=0;z<16;z++,zOfs+=128*16)
+		zOfs=xOfs+128*15;
+
+        // z increases west, decreases east
+		for (z=15;z>=0;z--,zOfs-=128)
 		{
 			bofs=zOfs+y;
 			color=0;
@@ -235,9 +290,9 @@ static void draw(const char *world,int bx,int bz,int y,unsigned char *bits)
 			bits[ofs++]=color>>8;
 			bits[ofs++]=color;
 			bits[ofs++]=0xff;
-		}
 
-        block->prevy[x] = prevy;
+            block->heightmap[x+z*16] = prevy;
+		}
 	}
 
     block->rendery = y;

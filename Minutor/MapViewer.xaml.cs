@@ -137,9 +137,7 @@ namespace Minutor
             // make sure mouse is inbounds of the map.
             if (pos.X < 0 || pos.Y < 0 || pos.X >= curWidth || pos.Y >= curHeight)
                 return;
-            int ofs = (int)(pos.Y * curWidth * 4 + pos.X * 4);
-            var color = (UInt32)(bits[ofs] | (bits[ofs+1] << 8) | (bits[ofs+2] << 16));
-            popupText.Text = MapDll.IDBlock(color);
+            popupText.Text = MapDll.IDBlock(pos.X, pos.Y, curX, curZ, curWidth, curHeight, curScale);
             popup.IsOpen = true;
             e.Handled = true;
         }
@@ -155,8 +153,8 @@ namespace Minutor
             {
                 Point curPos = e.GetPosition(Map);
                 Vector v = start - curPos;
-                curX += v.X / curScale;
-                curZ += v.Y / curScale;
+                curX += v.Y / curScale;
+                curZ -= v.X / curScale;
                 start = curPos;
                 if (loaded)
                     RenderMap();
@@ -217,19 +215,19 @@ namespace Minutor
             switch (e.Key)
             {
                 case Key.Up:
-                    curZ -= 10.0 / curScale;
-                    changed = true;
-                    break;
-                case Key.Down:
-                    curZ += 10.0 / curScale;
-                    changed = true;
-                    break;
-                case Key.Left:
                     curX -= 10.0 / curScale;
                     changed = true;
                     break;
-                case Key.Right:
+                case Key.Down:
                     curX += 10.0 / curScale;
+                    changed = true;
+                    break;
+                case Key.Left:
+                    curZ += 10.0 / curScale;
+                    changed = true;
+                    break;
+                case Key.Right:
+                    curZ -= 10.0 / curScale;
                     changed = true;
                     break;
                 case Key.PageUp:
@@ -258,7 +256,7 @@ namespace Minutor
         [DllImport("MinutorMap.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void DrawMap(string world, double cx, double cz, int y, int w, int h, double zoom, byte[] bits);
         [DllImport("MinutorMap.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern string IDBlock(UInt32 color);
+        public static extern string IDBlock(int int by, double cx, double cz, int w, int h, double zoom));
         [DllImport("MinutorMap.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void CloseAll();
         [DllImport("MinutorMap.dll", CallingConvention = CallingConvention.Cdecl)]

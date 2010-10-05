@@ -39,7 +39,7 @@ typedef struct BlockCache {
 typedef struct Block {
     unsigned char grid[16*16*128];
     unsigned char rendercache[16*16*4];
-    unsigned char prevy[16];
+    unsigned char heightmap[16*16];
     int rendery;
 } Block;
 

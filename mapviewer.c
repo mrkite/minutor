@@ -79,14 +79,11 @@ static void adjustMap(GtkRange *range,gpointer user_data)
 static GtkWidget *menu=NULL;
 static gboolean mousePopup(gdouble x,gdouble y)
 {
-	int ofs=y*curWidth*4+x*4;
-	unsigned int color;
 	const char *name;
 	if (y>curHeight || x>curWidth)
 		return FALSE;
-
-	color=(bits[ofs]<<16)|(bits[ofs+1]<<8)|bits[ofs+2];
-	name=IDBlock(color);
+	
+    name=IDBlock(x,y,curX,curZ,curWidth,curHeight,curScale);
 
 	menu=gtk_menu_new();
 	GtkWidget *item=gtk_menu_item_new_with_label(name);
@@ -129,8 +126,8 @@ static gboolean mouseUp(GtkWidget *widget,GdkEventButton *event)
 static gboolean mouseMove(GtkWidget *widget,GdkEventMotion *event)
 {
 	if (tracking==FALSE) return FALSE;
-	curX+=(oldX-event->x)/curScale;
-	curZ+=(oldY-event->y)/curScale;
+	curX+=(oldY-event->y)/curScale;
+	curZ-=(oldX-event->x)/curScale;
 	oldX=event->x;
 	oldY=event->y;
 	gdk_window_invalidate_rect(widget->window,NULL,FALSE);
@@ -158,19 +155,19 @@ static gboolean keyDown(GtkWidget *widget,GdkEventKey *event)
 	switch (event->keyval)
 	{
 		case GDK_Up:
-			curZ-=10.0/curScale;
-			changed=TRUE;
-			break;
-		case GDK_Down:
-			curZ+=10.0/curScale;
-			changed=TRUE;
-			break;
-		case GDK_Left:
 			curX-=10.0/curScale;
 			changed=TRUE;
 			break;
-		case GDK_Right:
+		case GDK_Down:
 			curX+=10.0/curScale;
+			changed=TRUE;
+			break;
+		case GDK_Left:
+			curZ+=10.0/curScale;
+			changed=TRUE;
+			break;
+		case GDK_Right:
+			curZ-=10.0/curScale;
 			changed=TRUE;
 			break;
 		case GDK_Page_Up:
