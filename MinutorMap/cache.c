@@ -1,5 +1,6 @@
 /*
 Copyright (c) 2010, Sean Kasun
+	Parts Copyright (c) 2010, Ryan Hitchman
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
