@@ -6,6 +6,8 @@ minutor (0.2.5) unstable; urgency=low
   *  north orientation
   *  IDBlock fixes
 
+ -- Sean Kasun <sean@seancode.com> Mon, 4 Oct 2010 20:02:03 -0700
+
 minutor (0.2) unstable; urgency=low
 
   * Window resizing
