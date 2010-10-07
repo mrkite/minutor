@@ -30,10 +30,12 @@ THE POSSIBILITY OF SUCH DAMAGE.
 #include "MinutorMap/MinutorMap.h"
 #include "minutor.xpm"
 
+static GtkWidget *win;
+static GtkWidget *slider,*da;
 static double curX,curZ;
 static int curDepth=127;
 static double curScale=1.0;
-static const char *world;
+static char *world=NULL;
 static unsigned char *bits;
 static int curWidth,curHeight;
 
@@ -47,6 +49,8 @@ static void destroy()
 
 static gboolean drawMap(GtkWidget *widget)
 {
+	// don't draw anything for a disabled widget
+	if (!gtk_widget_get_sensitive(widget)) return FALSE;
 	int w=widget->allocation.width;
 	int h=widget->allocation.height;
 	if (w!=curWidth || h!=curHeight)
@@ -83,7 +87,7 @@ static gboolean mousePopup(gdouble x,gdouble y)
 	if (y>curHeight || x>curWidth)
 		return FALSE;
 	
-    name=IDBlock(x,y,curX,curZ,curWidth,curHeight,curScale);
+	name=IDBlock(x,y,curX,curZ,curWidth,curHeight,curScale);
 
 	menu=gtk_menu_new();
 	GtkWidget *item=gtk_menu_item_new_with_label(name);
@@ -191,41 +195,140 @@ static gboolean keyDown(GtkWidget *widget,GdkEventKey *event)
 	return FALSE;
 }
 
-
-void createMapViewer(const gchar *path)
+static void loadMap(const gchar *path)
 {
-	world=path;
-	//map window
-	GtkWidget *win=gtk_window_new(GTK_WINDOW_TOPLEVEL);
+	//clear cache
+	if (world!=NULL)
+		g_free(world);
+	CloseAll();
+	world=g_strdup(path);
 	GFile *file=g_file_new_for_path(path);
 	char *title=g_file_get_basename(file);
 	gtk_window_set_title(GTK_WINDOW(win),title);
+	g_free(title);
+	g_object_unref(file);
+
+	int spawnX,spawnY,spawnZ;
+	GetSpawn(path,&spawnX,&spawnY,&spawnZ);
+	curX=spawnX;
+	curZ=spawnZ;
+
+	gtk_widget_set_sensitive(slider,TRUE);
+	gtk_widget_set_sensitive(da,TRUE);
+	gdk_window_invalidate_rect(da->window,NULL,FALSE);
+}
+
+static gchar *getWorldPath(int num)
+{
+	return g_strdup_printf("%s/.minecraft/saves/World%d",g_get_home_dir(),num);
+}
+
+static void openWorld(GtkMenuItem *menuItem,gpointer user_data)
+{
+	gchar *path=getWorldPath((int)user_data);
+	loadMap(path);
+	g_free(path);
+}
+
+static void openCustom(GtkMenuItem *menuItem,gpointer user_data)
+{
+	GtkWidget *chooser=gtk_file_chooser_dialog_new("Open World",
+		GTK_WINDOW(win),GTK_FILE_CHOOSER_ACTION_OPEN,
+		GTK_STOCK_CANCEL,GTK_RESPONSE_CANCEL,
+		GTK_STOCK_OPEN,GTK_RESPONSE_ACCEPT,
+		NULL);
+	GtkFileFilter *filter=gtk_file_filter_new();
+	gtk_file_filter_add_pattern(filter,"level.dat");
+	gtk_file_chooser_set_filter(GTK_FILE_CHOOSER(chooser),filter);
+	if (gtk_dialog_run(GTK_DIALOG(chooser))==GTK_RESPONSE_ACCEPT)
+	{
+		GFile *file=gtk_file_chooser_get_file(GTK_FILE_CHOOSER(chooser));
+		GFile *parent=g_file_get_parent(file);
+		if (parent!=NULL)
+		{
+			loadMap(g_file_get_path(parent));
+			g_object_unref(parent);
+		}
+		else
+			loadMap("/");
+		g_object_unref(file);
+	}
+	gtk_widget_destroy(chooser);
+}
+
+void createMapViewer()
+{
+	//map window
+	win=gtk_window_new(GTK_WINDOW_TOPLEVEL);
+	gtk_window_set_title(GTK_WINDOW(win),"Minutor");
 	gtk_window_set_icon(GTK_WINDOW(win),gdk_pixbuf_new_from_xpm_data(icon));
 	g_signal_connect(G_OBJECT(win),"destroy",
 		G_CALLBACK(destroy),NULL);
-	g_free(title);
-	g_object_unref(file);
 
 	//main vbox
 	GtkWidget *vbox=gtk_vbox_new(FALSE,0);
 	gtk_container_add(GTK_CONTAINER(win),vbox);
+
+	//menu bar
+	GtkWidget *menubar=gtk_menu_bar_new();
+	gtk_box_pack_start(GTK_BOX(vbox),menubar,FALSE,FALSE,0);
+	GtkAccelGroup *menuGroup=gtk_accel_group_new();
+	//file menu
+	GtkWidget *filemenu=gtk_menu_item_new_with_mnemonic("_File");
+	gtk_menu_shell_append(GTK_MENU_SHELL(menubar),filemenu);
+	GtkWidget *fileitems=gtk_menu_new();
+	gtk_menu_item_set_submenu(GTK_MENU_ITEM(filemenu),fileitems);
+
+	GtkWidget *openworld=gtk_menu_item_new_with_label("Open World");
+	gtk_menu_shell_append(GTK_MENU_SHELL(fileitems),openworld);
+	GtkWidget *openitems=gtk_menu_new();
+	gtk_menu_item_set_submenu(GTK_MENU_ITEM(openworld),openitems);
+
+	for (int i=0;i<5;i++)
+	{
+		gchar *label=g_strdup_printf("World %d",i+1);
+		GtkWidget *w=gtk_menu_item_new_with_label(label);
+		gtk_widget_add_accelerator(w,"activate",menuGroup,
+			GDK_1+i,GDK_CONTROL_MASK,GTK_ACCEL_VISIBLE);
+		gtk_menu_shell_append(GTK_MENU_SHELL(openitems),w);
+		g_free(label);
+
+		gchar *path=getWorldPath(i+1);
+		GFile *file=g_file_new_for_path(path);
+		if (!g_file_query_exists(file,NULL))
+			gtk_widget_set_sensitive(w,FALSE);
+		g_free(path);
+		g_signal_connect(G_OBJECT(w),"activate",
+			G_CALLBACK(openWorld),(gpointer)i+1);
+	}
+	GtkWidget *open=gtk_image_menu_item_new_from_stock(GTK_STOCK_OPEN,menuGroup);
+	gtk_menu_shell_append(GTK_MENU_SHELL(fileitems),open);
+	g_signal_connect(G_OBJECT(open),"activate",
+		G_CALLBACK(openCustom),NULL);
+
+	GtkWidget *sep=gtk_separator_menu_item_new();
+	gtk_menu_shell_append(GTK_MENU_SHELL(fileitems),sep);
+
+	GtkWidget *close=gtk_image_menu_item_new_from_stock(GTK_STOCK_CLOSE,menuGroup);
+	gtk_menu_shell_append(GTK_MENU_SHELL(fileitems),close);
+	g_signal_connect(G_OBJECT(close),"activate",
+		G_CALLBACK(destroy),NULL);
+	gtk_window_add_accel_group(GTK_WINDOW(win),menuGroup);
 
 	//control hbox
 	GtkWidget *hbox=gtk_hbox_new(FALSE,5);
 	gtk_box_pack_start(GTK_BOX(vbox),hbox,FALSE,TRUE,0);
 
 	//slider
-	GtkWidget *slider=gtk_hscale_new_with_range(0.0,127.0,1.0);
+	slider=gtk_hscale_new_with_range(0.0,127.0,1.0);
+	gtk_widget_set_sensitive(slider,FALSE);
 	gtk_box_pack_start(GTK_BOX(hbox),slider,TRUE,TRUE,0);
 	g_signal_connect(G_OBJECT(slider),"format-value",
 		G_CALLBACK(getSliderText),NULL);
 
-	//icon toggle
-//	GtkWidget *icons=gtk_toggle_button_new_with_label("Icons");
-//	gtk_box_pack_end(GTK_BOX(hbox),icons,FALSE,TRUE,0);
-
 	//map
-	GtkWidget *da=gtk_drawing_area_new();
+	da=gtk_drawing_area_new();
+	gtk_widget_set_sensitive(da,FALSE);
 	curWidth=496;
 	curHeight=400;
 	gtk_drawing_area_size(GTK_DRAWING_AREA(da),curWidth,curHeight);
@@ -249,14 +352,9 @@ void createMapViewer(const gchar *path)
 	g_signal_connect(G_OBJECT(slider),"value-changed",
 		G_CALLBACK(adjustMap),G_OBJECT(da));
 
-	int spawnX,spawnY,spawnZ;
-	GetSpawn(path,&spawnX,&spawnY,&spawnZ);
-	curX=spawnX;
-	curZ=spawnZ;
 
 	bits=g_malloc(curWidth*curHeight*4);
 
 	//and show it
 	gtk_widget_show_all(win);
 }
-
