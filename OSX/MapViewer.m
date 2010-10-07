@@ -39,11 +39,12 @@
 
 -(void)openWorld:(NSString *)world
 {
+	CloseAll();
 	[map setWorld:world];
-	
 	int spawnX,spawnY,spawnZ;
 	GetSpawn([world UTF8String], &spawnX, &spawnY, &spawnZ);
 	[map setX:spawnX andZ:spawnZ];
+	[map setDepth:127-curDepth];
 	
 	[window makeKeyAndOrderFront:self];
 	[window setTitle:[world lastPathComponent]];

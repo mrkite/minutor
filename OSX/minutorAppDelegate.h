@@ -34,15 +34,8 @@
     NSWindow *window;
 	NSMutableArray *worldPaths;
 	NSString *customWorld;
-	IBOutlet id worlds;
-	IBOutlet id customLabel;
-	IBOutlet id worldChoice;
 	IBOutlet id mapViewer;
 }
-- (IBAction) viewClicked: sender;
-- (IBAction) standardSelection: sender;
-- (IBAction) customClicked: sender;
-
-@property (assign) IBOutlet NSWindow *window;
+- (IBAction) openWorld: sender;
 
 @end

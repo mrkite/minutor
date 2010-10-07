@@ -28,95 +28,58 @@
 #import "minutorAppDelegate.h"
 #import "MapViewer.h"
 
+@interface minutorAppDelegate (private)
+- (NSString *) worldToPath:(int)world;
+@end
+
 @implementation minutorAppDelegate
 
-@synthesize window;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-	//minecraft saves are inside application support
-	customWorld=nil;
+}
+
+- (BOOL)validateMenuItem:(NSMenuItem *)menuItem
+{
+	int tag=[menuItem tag];
+	if (tag!=0)
+	{
+		NSString *root=[self worldToPath:tag];
+		id files=[NSFileManager defaultManager];
+		BOOL isDirectory;
+		BOOL exists=[files fileExistsAtPath:root isDirectory:&isDirectory];
+		if (exists && isDirectory)
+			return YES;
+		return NO;
+	}
+	return [super validateMenuItem:menuItem];
+}
+
+- (IBAction) openWorld:sender
+{
+	NSString *world=nil;
+	int tag=[sender tag];
+	if (tag==0)
+	{
+		id fileTypes=[NSArray arrayWithObject:@"dat"];
+		id openDlg=[NSOpenPanel openPanel];
+		[openDlg setCanChooseFiles:YES];
+		[openDlg setAllowedFileTypes:fileTypes];
+		if ([openDlg runModal]==NSOKButton)
+			world=[[openDlg filename] stringByDeletingLastPathComponent];
+	}
+	else
+		world=[self worldToPath:tag];
+	if (world!=nil)
+		[mapViewer openWorld:world];
+}
+
+- (NSString *) worldToPath:(int)world
+{
 	NSArray *paths=NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
 	NSString *root=[paths objectAtIndex:0];
 	root=[root stringByAppendingPathComponent:@"minecraft/saves"];
-	
-	id files=[NSFileManager defaultManager];
-	[worlds removeAllItems];
-	for (int i=0;i<5;i++)
-	{
-		[worlds addItemWithTitle:[NSString stringWithFormat:@"World %d", i+1,nil]];
-		[[worlds itemAtIndex:i] setTag:-1];
-	}
-	BOOL isDirectory;
-	BOOL exists=[files fileExistsAtPath:root isDirectory:&isDirectory];
-	worldPaths=[[NSMutableArray alloc] initWithCapacity:5];
-	if (exists && isDirectory)
-	{
-		NSError *err;
-		NSArray *fs=[files contentsOfDirectoryAtPath:root error:&err];
-		int count=[fs count];
-		for (int i=0;i<count;i++)
-		{
-			int num=-1;
-			NSString *f=[fs objectAtIndex:i];
-			if ([f isEqual:@"World1"]) num=0;
-			if ([f isEqual:@"World2"]) num=1;
-			if ([f isEqual:@"World3"]) num=2;
-			if ([f isEqual:@"World4"]) num=3;
-			if ([f isEqual:@"World5"]) num=4;
-			if (num!=-1)
-			{
-				[[worlds itemAtIndex:num] setTag:[worldPaths count]];
-				[worldPaths addObject:[root stringByAppendingPathComponent:f]];
-			}
-		}
-	}
-	[worlds selectItemAtIndex:0];
-	
-}
-
-- (BOOL)validateUserInterfaceItem:(id <NSValidatedUserInterfaceItem>) anItem
-{
-	int tag=[anItem tag];
-	if (tag==-1) return NO;
-	return YES;
-}
-
-- (IBAction) customClicked: sender
-{
-	NSArray *fileTypes=[NSArray arrayWithObject:@"dat"];
-	NSOpenPanel *openDlg=[NSOpenPanel openPanel];
-	[openDlg setCanChooseFiles:YES];
-	[openDlg setAllowedFileTypes:fileTypes];
-	if ([openDlg runModal]==NSOKButton)
-	{
-		if (customWorld!=nil)
-			[customWorld release];
-		customWorld=[[[openDlg filename] stringByDeletingLastPathComponent] retain];
-		[worldChoice selectCellAtRow:1 column:0];
-		[customLabel setStringValue:customWorld];
-	}
-}
-
-- (IBAction) viewClicked: sender
-{
-	if ([worldChoice selectedRow]==0)
-	{
-		int tag=[[worlds selectedItem] tag];
-		if (tag!=-1)
-		{
-			[mapViewer openWorld:[worldPaths objectAtIndex:tag]];
-			[window orderOut:self];
-		}
-	}
-	else if (customWorld!=nil)
-	{
-		[mapViewer openWorld:customWorld];
-		[window orderOut:self];
-	}
-}
-- (IBAction) standardSelection: sender
-{
-	[worldChoice selectCellAtRow:0 column:0];
+	root=[root stringByAppendingFormat:@"/World%d",world];
+	return root;
 }
 
 @end
