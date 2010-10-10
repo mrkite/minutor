@@ -60,9 +60,21 @@ namespace Minutor
         TextBox popupText;
         int curWidth, curHeight, newWidth, newHeight;
         DispatcherTimer resizeTimer;
+
+        public static RoutedUICommand Open1 = new RoutedUICommand("World 1", "World1", typeof(MapViewer));
+        public static RoutedUICommand Open2 = new RoutedUICommand("World 2", "World2", typeof(MapViewer));
+        public static RoutedUICommand Open3 = new RoutedUICommand("World 3", "World3", typeof(MapViewer));
+        public static RoutedUICommand Open4 = new RoutedUICommand("World 4", "World4", typeof(MapViewer));
+        public static RoutedUICommand Open5 = new RoutedUICommand("World 5", "World5", typeof(MapViewer));
         
         public MapViewer()
         {
+            Open1.InputGestures.Add(new KeyGesture(Key.D1, ModifierKeys.Control));
+            Open2.InputGestures.Add(new KeyGesture(Key.D2, ModifierKeys.Control));
+            Open3.InputGestures.Add(new KeyGesture(Key.D3, ModifierKeys.Control));
+            Open4.InputGestures.Add(new KeyGesture(Key.D4, ModifierKeys.Control));
+            Open5.InputGestures.Add(new KeyGesture(Key.D5, ModifierKeys.Control));
+            
             InitializeComponent();
 
             // this resize timer is used because windows sends a bajillion resize events while
@@ -84,6 +96,13 @@ namespace Minutor
                     Map.Height = curHeight;
                     if (loaded)
                         RenderMap();
+                    else
+                    {
+                        var rect = new Int32Rect(0, 0, curWidth, curHeight);
+                        for (int i = 0; i < curWidth * curHeight * 4; i++)
+                            bits[i] = 0xff;
+                        mapbits.WritePixels(rect, bits, curWidth * 4, 0);
+                    }
                 },
                 Dispatcher
                 ) { IsEnabled = false };
@@ -106,6 +125,7 @@ namespace Minutor
             popupText.MouseRightButtonUp += new MouseButtonEventHandler(Map_MouseRightButtonUp);
             popup.Child = popupText;
             popup.Placement = PlacementMode.Mouse;
+            LayerSlider.IsEnabled = false;
         }
 
         void Map_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -164,6 +184,7 @@ namespace Minutor
         Point start;
         void Map_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            Map.Focus();
             Map.CaptureMouse();
             start = e.GetPosition(Map);
         }
@@ -188,6 +209,7 @@ namespace Minutor
             curX = x;
             curZ = z;
             loaded = true;
+            LayerSlider.IsEnabled = true;
             RenderMap();
         }
         void RenderMap()
@@ -205,43 +227,60 @@ namespace Minutor
         private void LayerSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             curDepth = (int)e.NewValue;
+            if (layerLabel!=null)
+                layerLabel.Text = curDepth.ToString();
             if (loaded)
                 RenderMap();
         }
 
+        int Moving = 0; //key bitmask
         private void map_keyDown(object sender, KeyEventArgs e)
         {
             bool changed=false;
             switch (e.Key)
             {
                 case Key.Up:
-                    curX -= 10.0 / curScale;
-                    changed = true;
+                case Key.W:
+                    Moving |= 1;
                     break;
                 case Key.Down:
-                    curX += 10.0 / curScale;
-                    changed = true;
+                case Key.S:
+                    Moving |= 2;
                     break;
                 case Key.Left:
-                    curZ += 10.0 / curScale;
-                    changed = true;
+                case Key.A:
+                    Moving |= 4;
                     break;
                 case Key.Right:
-                    curZ -= 10.0 / curScale;
-                    changed = true;
+                case Key.D:
+                    Moving |= 8;
                     break;
                 case Key.PageUp:
-                    curScale += 1.0;
+                case Key.E:
+                    curScale += 0.5;
                     if (curScale > 5.0)
                         curScale = 5.0;
                     changed = true;
                     break;
                 case Key.PageDown:
-                    curScale -= 1.0;
+                case Key.Q:
+                    curScale -= 0.5;
                     if (curScale < 1.0)
                         curScale = 1.0;
                     changed = true;
                     break;
+            }
+            if (Moving != 0)
+            {
+                if ((Moving & 1) != 0) //up
+                    curX -= 10.0 / curScale;
+                if ((Moving & 2) != 0) //down
+                    curX += 10.0 / curScale;
+                if ((Moving & 4) != 0) //left
+                    curZ += 10.0 / curScale;
+                if ((Moving & 8) != 0) //right
+                    curZ -= 10.0 / curScale;
+                changed = true;
             }
             if (changed)
             {
@@ -250,6 +289,100 @@ namespace Minutor
                     RenderMap();
             }
         }
+
+        private void map_keyUp(object sender, KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.Up:
+                case Key.W:
+                    Moving &= ~1;
+                    break;
+                case Key.Down:
+                case Key.S:
+                    Moving &= ~2;
+                    break;
+                case Key.Left:
+                case Key.A:
+                    Moving &= ~4;
+                    break;
+                case Key.Right:
+                case Key.D:
+                    Moving &= ~8;
+                    break;
+            }
+        }
+
+        private void Open_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            int num = 0;
+            if (e.Command == Open1) num = 1;
+            if (e.Command == Open2) num = 2;
+            if (e.Command == Open3) num = 3;
+            if (e.Command == Open4) num = 4;
+            if (e.Command == Open5) num = 5;
+            if (num==0)
+            {
+                var dlg = new Microsoft.Win32.OpenFileDialog();
+                dlg.FileName = "level.dat";
+                dlg.Filter = "Minecraft saves|level.dat";
+                var result = dlg.ShowDialog();
+                if (result == true)
+                {
+                    MapDll.CloseAll();
+                    var path = Path.GetDirectoryName(dlg.FileName);
+                    Loading load = new Loading();
+                    load.Show();
+                    Load(path);
+                    load.Close();
+                }
+            }
+            else
+            {
+                MapDll.CloseAll();
+                Loading load = new Loading();
+                load.Show();
+                Load(WorldPath(num));
+                load.Close();
+            }
+        }
+
+        private void Open_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            int num = 0;
+            if (e.Command == Open1) num = 1;
+            if (e.Command == Open2) num = 2;
+            if (e.Command == Open3) num = 3;
+            if (e.Command == Open4) num = 4;
+            if (e.Command == Open5) num = 5;
+
+            if (num==0) //always able to open arbitrary world
+            {
+                e.CanExecute = true;
+                return;
+            }
+            DirectoryInfo di = new DirectoryInfo(WorldPath(num));
+            e.CanExecute = di.Exists;
+        }
+        private string WorldPath(int num)
+        {
+            var path = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                ".minecraft");
+            path = Path.Combine(path, "saves");
+            path = Path.Combine(path, String.Format("World{0}", num));
+            return path;
+        }
+
+        private void Close_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            this.Close();
+        }
+        private void Close_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
     }
     class MapDll
     {

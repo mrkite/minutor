@@ -1,11 +1,50 @@
 ﻿<Window x:Class="Minutor.MapViewer"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Title="MapViewer" Height="478" Width="512" MinHeight="478" MinWidth="512" KeyDown="map_keyDown">
+    xmlns:mv="clr-namespace:Minutor"
+    Title="MapViewer" Height="478" Width="512" MinHeight="478" MinWidth="512" KeyDown="map_keyDown" KeyUp="map_keyUp">
     <Grid>
-        <Slider Height="22" Name="LayerSlider" VerticalAlignment="Top" Maximum="127" SmallChange="1" IsSnapToTickEnabled="True" ValueChanged="LayerSlider_ValueChanged" Margin="12,12,12,0" AutoToolTipPlacement="TopLeft" IsDirectionReversed="True" Value="127" />
-        <Border Name="ResizeProxy" Margin="0,40,0,0" SizeChanged="Map_SizeChanged">
-            <Image Name="Map" Width="496" Height="400" MouseWheel="Map_MouseWheel" MouseRightButtonUp="Map_MouseRightButtonUp" MouseRightButtonDown="Map_MouseRightButtonDown" MouseMove="Map_MouseMove" MouseLeftButtonUp="Map_MouseLeftButtonUp" MouseLeftButtonDown="Map_MouseLeftButtonDown" Focusable="False" />
+        <Slider Height="22" Name="LayerSlider" VerticalAlignment="Top" Maximum="127" SmallChange="1" IsSnapToTickEnabled="True" ValueChanged="LayerSlider_ValueChanged" Margin="12,29,37,0" IsDirectionReversed="True" Value="127" />
+        <Border Name="ResizeProxy" Margin="0,57,0,-17" SizeChanged="Map_SizeChanged">
+            <Image Name="Map" Width="496" Height="400" MouseWheel="Map_MouseWheel" MouseRightButtonUp="Map_MouseRightButtonUp" MouseRightButtonDown="Map_MouseRightButtonDown" MouseMove="Map_MouseMove" MouseLeftButtonUp="Map_MouseLeftButtonUp" MouseLeftButtonDown="Map_MouseLeftButtonDown" Focusable="True" />
         </Border>
+        <Menu Height="23" Name="menu1" VerticalAlignment="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="Open _World">
+                    <MenuItem Command="{x:Static mv:MapViewer.Open1}" />
+                    <MenuItem Command="{x:Static mv:MapViewer.Open2}" />
+                    <MenuItem Command="{x:Static mv:MapViewer.Open3}" />
+                    <MenuItem Command="{x:Static mv:MapViewer.Open4}" />
+                    <MenuItem Command="{x:Static mv:MapViewer.Open5}" />
+                </MenuItem>
+                <MenuItem Command="ApplicationCommands.Open" Header="_Open" Tag="0" />
+                <MenuItem Command="ApplicationCommands.Close" Header="_Close" />
+            </MenuItem>
+        </Menu>
+        <TextBlock Height="23" Margin="0,29,12,0" Name="layerLabel" Text="127" VerticalAlignment="Top" HorizontalAlignment="Right" Width="19" TextAlignment="Right" FontWeight="Normal" />
     </Grid>
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static mv:MapViewer.Open1}"
+                        Executed="Open_Executed"
+                        CanExecute="Open_CanExecute" />
+        <CommandBinding Command="{x:Static mv:MapViewer.Open2}"
+                        Executed="Open_Executed"
+                        CanExecute="Open_CanExecute" />
+        <CommandBinding Command="{x:Static mv:MapViewer.Open3}"
+                        Executed="Open_Executed"
+                        CanExecute="Open_CanExecute" />
+        <CommandBinding Command="{x:Static mv:MapViewer.Open4}"
+                        Executed="Open_Executed"
+                        CanExecute="Open_CanExecute" />
+        <CommandBinding Command="{x:Static mv:MapViewer.Open5}"
+                        Executed="Open_Executed"
+                        CanExecute="Open_CanExecute" />
+
+        <CommandBinding Command="Open"
+                        Executed="Open_Executed"
+                        CanExecute="Open_CanExecute" />
+        <CommandBinding Command="Close"
+                        Executed="Close_Executed"
+                        CanExecute="Close_CanExecute" />
+    </Window.CommandBindings>
 </Window>
