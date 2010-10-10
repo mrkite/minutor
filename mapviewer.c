@@ -225,7 +225,7 @@ static gchar *getWorldPath(int num)
 
 static void openWorld(GtkMenuItem *menuItem,gpointer user_data)
 {
-	gchar *path=getWorldPath((int)user_data);
+	gchar *path=getWorldPath(GPOINTER_TO_INT(user_data));
 	loadMap(path);
 	g_free(path);
 }
@@ -299,7 +299,7 @@ void createMapViewer()
 			gtk_widget_set_sensitive(w,FALSE);
 		g_free(path);
 		g_signal_connect(G_OBJECT(w),"activate",
-			G_CALLBACK(openWorld),(gpointer)i+1);
+			G_CALLBACK(openWorld),GINT_TO_POINTER(i+1));
 	}
 	GtkWidget *open=gtk_image_menu_item_new_from_stock(GTK_STOCK_OPEN,menuGroup);
 	gtk_menu_shell_append(GTK_MENU_SHELL(fileitems),open);
