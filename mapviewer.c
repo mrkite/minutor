@@ -153,44 +153,82 @@ static gboolean mouseWheel(GtkWidget *widget,GdkEventScroll *event)
 	}
 	return TRUE;
 }
+static int moving=0;
 static gboolean keyDown(GtkWidget *widget,GdkEventKey *event)
 {
 	gboolean changed=FALSE;
 	switch (event->keyval)
 	{
 		case GDK_Up:
-			curX-=10.0/curScale;
-			changed=TRUE;
+		case GDK_w:
+			moving|=1;
 			break;
 		case GDK_Down:
-			curX+=10.0/curScale;
-			changed=TRUE;
+		case GDK_s:
+			moving|=2;
 			break;
 		case GDK_Left:
-			curZ+=10.0/curScale;
-			changed=TRUE;
+		case GDK_a:
+			moving|=4;
 			break;
 		case GDK_Right:
-			curZ-=10.0/curScale;
-			changed=TRUE;
+		case GDK_d:
+			moving|=8;
 			break;
 		case GDK_Page_Up:
-			curScale+=1.0;
+		case GDK_e:
+			curScale+=0.5;
 			if (curScale>5.0)
 				curScale=5.0;
 			changed=TRUE;
 			break;
 		case GDK_Page_Down:
-			curScale-=1.0;
+		case GDK_q:
+			curScale-=0.5;
 			if (curScale<1.0)
 				curScale=1.0;
 			changed=TRUE;
 			break;
 	}
+	if (moving!=0)
+	{
+		if (moving&1) //up
+			curX-=10.0/curScale;
+		if (moving&2) //down
+			curX+=10.0/curScale;
+		if (moving&4) //left
+			curZ+=10.0/curScale;
+		if (moving&8) //right
+			curZ-=10.0/curScale;
+		changed=TRUE;
+	}
 	if (changed)
 	{
 		gdk_window_invalidate_rect(widget->window,NULL,FALSE);
 		return TRUE;
+	}
+	return FALSE;
+}
+static gboolean keyUp(GtkWidget *widget,GdkEventKey *event)
+{
+	switch (event->keyval)
+	{
+		case GDK_Up:
+		case GDK_w:
+			moving&=~1;
+			break;
+		case GDK_Down:
+		case GDK_s:
+			moving&=~2;
+			break;
+		case GDK_Left:
+		case GDK_a:
+			moving&=~4;
+			break;
+		case GDK_Right:
+		case GDK_d:
+			moving&=~8;
+			break;
 	}
 	return FALSE;
 }
@@ -225,7 +263,7 @@ static gchar *getWorldPath(int num)
 
 static void openWorld(GtkMenuItem *menuItem,gpointer user_data)
 {
-	gchar *path=getWorldPath((int)user_data);
+	gchar *path=getWorldPath(GPOINTER_TO_INT(user_data));
 	loadMap(path);
 	g_free(path);
 }
@@ -299,7 +337,7 @@ void createMapViewer()
 			gtk_widget_set_sensitive(w,FALSE);
 		g_free(path);
 		g_signal_connect(G_OBJECT(w),"activate",
-			G_CALLBACK(openWorld),(gpointer)i+1);
+			G_CALLBACK(openWorld),GINT_TO_POINTER(i+1));
 	}
 	GtkWidget *open=gtk_image_menu_item_new_from_stock(GTK_STOCK_OPEN,menuGroup);
 	gtk_menu_shell_append(GTK_MENU_SHELL(fileitems),open);
@@ -346,6 +384,8 @@ void createMapViewer()
 		G_CALLBACK(mouseWheel),NULL);
 	g_signal_connect(G_OBJECT(da),"key-press-event",
 		G_CALLBACK(keyDown),NULL);
+	g_signal_connect(G_OBJECT(da),"key-release-event",
+		G_CALLBACK(keyUp),NULL);
 	gtk_widget_set_can_focus(da,TRUE);
 	gtk_widget_grab_focus(da);
 
