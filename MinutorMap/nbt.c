@@ -49,6 +49,23 @@ static unsigned int readDword(gzFile gz)
 	gzread(gz,buf,4);
 	return (buf[0]<<24)|(buf[1]<<16)|(buf[2]<<8)|buf[3];
 }
+static double readDouble(gzFile gz)
+{
+	int i;
+	union {
+		double f;
+		unsigned long long l;
+	} fl;
+	unsigned char buf[8];
+	gzread(gz,buf,8);
+	fl.l=0;
+	for (i=0;i<8;i++)
+	{
+		fl.l<<=8;
+		fl.l|=buf[i];
+	}
+	return fl.f;
+}
 static void skipType(gzFile gz,int type)
 {
 	int len;
@@ -212,6 +229,22 @@ void nbtGetSpawn(gzFile gz,int *x,int *y,int *z)
 	*y=readDword(gz);
 	if (findElement(gz,"SpawnZ")!=3) return;
 	*z=readDword(gz);
+}
+void nbtGetPlayer(gzFile gz,int *px,int *py,int *pz)
+{
+	int len;
+	*px=*py=*pz=0;
+	//Data/Player/Pos
+	gzseek(gz,1,SEEK_CUR); //skip type
+	len=readWord(gz); //name length
+	gzseek(gz,len,SEEK_CUR); //skip name ()
+	if (findElement(gz,"Data")!=10) return;
+	if (findElement(gz,"Player")!=10) return;
+	if (findElement(gz,"Pos")!=9) return;
+	gzseek(gz,5,SEEK_CUR); //skip subtype and num items
+	*px=readDouble(gz);
+	*py=readDouble(gz);
+	*pz=readDouble(gz);
 }
 void nbtClose(gzFile gz)
 {

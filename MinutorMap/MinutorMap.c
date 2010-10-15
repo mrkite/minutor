@@ -328,6 +328,16 @@ void GetSpawn(const char *world,int *x,int *y,int *z)
 	nbtGetSpawn(gz,x,y,z);
 	nbtClose(gz);
 }
+void GetPlayer(const char *world,int *px,int *py,int *pz)
+{
+	gzFile gz;
+	char filename[256];
+	strncpy_s(filename,256,world,256);
+	strncat_s(filename,256,"/level.dat",256);
+	gz=newNBT(filename);
+	nbtGetPlayer(gz,px,py,pz);
+	nbtClose(gz);
+}
 
 static void b36(char *dest,int num)
 {

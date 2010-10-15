@@ -42,6 +42,7 @@ extern "C" {
 	__declspec(dllexport) const char * __cdecl IDBlock(int bx, int by, double cx, double cz, int w, int h, double zoom,int *ox,int *oz);
 	__declspec(dllexport) void __cdecl CloseAll();
 	__declspec(dllexport) void __cdecl GetSpawn(const char *world,int *x,int *y,int *z);
+	__declspec(dllexport) void __cdecl GetPlayer(const char *world,int *px,int *py,int *pz);
 #ifdef __cplusplus
 }
 #endif

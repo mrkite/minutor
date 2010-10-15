@@ -35,12 +35,15 @@ THE POSSIBILITY OF SUCH DAMAGE.
 
 static GtkWidget *win;
 static GtkWidget *slider,*da,*status;
+static GtkWidget *jumpplayer,*jumpspawn;
 static double curX,curZ;
 static int curDepth=127;
 static double curScale=1.0;
 static char *world=NULL;
 static unsigned char *bits;
 static int curWidth,curHeight;
+static int spawnX,spawnY,spawnZ;
+static int playerX,playerY,playerZ;
 
 static gboolean mouseUp(GtkWidget *widget,GdkEventButton *event);
 
@@ -228,11 +231,13 @@ static void loadMap(const gchar *path)
 	g_free(title);
 	g_object_unref(file);
 
-	int spawnX,spawnY,spawnZ;
 	GetSpawn(path,&spawnX,&spawnY,&spawnZ);
+	GetPlayer(path,&playerX,&playerY,&playerZ);
 	curX=spawnX;
 	curZ=spawnZ;
 
+	gtk_widget_set_sensitive(jumpspawn,TRUE);
+	gtk_widget_set_sensitive(jumpplayer,TRUE);
 	gtk_widget_set_sensitive(slider,TRUE);
 	gtk_widget_set_sensitive(da,TRUE);
 	gdk_window_invalidate_rect(da->window,NULL,FALSE);
@@ -274,6 +279,20 @@ static void openCustom(GtkMenuItem *menuItem,gpointer user_data)
 		g_object_unref(file);
 	}
 	gtk_widget_destroy(chooser);
+}
+
+static void jumpToSpawn(GtkMenuItem *menuItem,gpointer user_data)
+{
+	curX=spawnX;
+	curZ=spawnZ;
+	gdk_window_invalidate_rect(da->window,NULL,FALSE);
+}
+
+static void jumpToPlayer(GtkMenuItem *menuItem,gpointer user_data)
+{
+	curX=playerX;
+	curZ=playerZ;
+	gdk_window_invalidate_rect(da->window,NULL,FALSE);
 }
 
 void createMapViewer()
@@ -333,6 +352,28 @@ void createMapViewer()
 	gtk_menu_shell_append(GTK_MENU_SHELL(fileitems),close);
 	g_signal_connect(G_OBJECT(close),"activate",
 		G_CALLBACK(destroy),NULL);
+
+	GtkWidget *viewmenu=gtk_menu_item_new_with_mnemonic("_View");
+	gtk_menu_shell_append(GTK_MENU_SHELL(menubar),viewmenu);
+	GtkWidget *viewitems=gtk_menu_new();
+	gtk_menu_item_set_submenu(GTK_MENU_ITEM(viewmenu),viewitems);
+
+	jumpspawn=gtk_menu_item_new_with_label("Jump to Spawn");
+	gtk_widget_add_accelerator(jumpspawn,"activate",menuGroup,
+		GDK_F2,0,GTK_ACCEL_VISIBLE);
+	gtk_menu_shell_append(GTK_MENU_SHELL(viewitems),jumpspawn);
+	g_signal_connect(G_OBJECT(jumpspawn),"activate",
+		G_CALLBACK(jumpToSpawn),NULL);
+	gtk_widget_set_sensitive(jumpspawn,FALSE);
+
+	jumpplayer=gtk_menu_item_new_with_label("Jump to Player");
+	gtk_widget_add_accelerator(jumpplayer,"activate",menuGroup,
+		GDK_F3,0,GTK_ACCEL_VISIBLE);
+	gtk_menu_shell_append(GTK_MENU_SHELL(viewitems),jumpplayer);
+	g_signal_connect(G_OBJECT(jumpplayer),"activate",
+		G_CALLBACK(jumpToPlayer),NULL);
+	gtk_widget_set_sensitive(jumpplayer,FALSE);
+
 	gtk_window_add_accel_group(GTK_WINDOW(win),menuGroup);
 
 	//control hbox
