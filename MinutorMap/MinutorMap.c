@@ -82,7 +82,7 @@ void DrawMap(const char *world,double cx,double cz,int y,int w,int h,double zoom
 	double startz=cz+(double)w/(2*zoom);
 	int startxblock=(int)(startx/16);
 	int startzblock=(int)(startz/16);
-	int shiftx=(int)(-(startz-startzblock*16)*zoom);
+	int shiftx=(int)(blockScale-(startz-startzblock*16)*zoom);
 	int shifty=(int)((startx-startxblock*16)*zoom);
 
 	if (shiftx<0)
@@ -115,7 +115,9 @@ void DrawMap(const char *world,double cx,double cz,int y,int w,int h,double zoom
 //w = output width
 //h = output height
 //zoom = zoom amount (1.0 = 100%)
-const char *IDBlock(int bx, int by, double cx, double cz, int w, int h, double zoom)
+//ox = world x at mouse
+//oz = world z at mouse
+const char *IDBlock(int bx, int by, double cx, double cz, int w, int h, double zoom,int *ox,int *oz)
 {
 	//WARNING: keep this code in sync with draw()
 	Block *block;
@@ -127,7 +129,7 @@ const char *IDBlock(int bx, int by, double cx, double cz, int w, int h, double z
 	double startz=cz+(double)w/(2*zoom);
 	int startxblock=(int)(startx/16);
 	int startzblock=(int)(startz/16);
-	int shiftx=(int)(-(startz-startzblock*16)*zoom);
+	int shiftx=(int)(blockScale-(startz-startzblock*16)*zoom);
 	int shifty=(int)((startx-startxblock*16)*zoom);
 
 	if (shiftx<0)
@@ -149,7 +151,10 @@ const char *IDBlock(int bx, int by, double cx, double cz, int w, int h, double z
     zoff=((int)((px - bx)/zoom) + 15) % 16;
     xoff=(int)((by - py)/zoom);
 
-    block=Cache_Find(startxblock+x, startzblock-z);
+	*ox=(startxblock+x)*16+xoff;
+	*oz=(startzblock-z)*16+zoff;
+
+    block=(Block *)Cache_Find(startxblock+x, startzblock-z);
 
     if (block==NULL)
         return "Unknown";
@@ -157,6 +162,7 @@ const char *IDBlock(int bx, int by, double cx, double cz, int w, int h, double z
     y=block->heightmap[xoff+zoff*16];
     return blocks[block->grid[y+(zoff+xoff*16)*128]].name;
 }
+
 
 //copy block to bits at px,py at zoom.  bits is wxh
 static void blit(unsigned char *block,unsigned char *bits,int px,int py,

@@ -5,6 +5,10 @@
 #include "Minutor.h"
 #include <ShlObj.h>
 #include <Shlwapi.h>
+#include <CommDlg.h>
+
+#define MAXZOOM 6.0
+#define MINZOOM 1.0
 
 #define MAX_LOADSTRING 100
 
@@ -152,15 +156,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	int wmId, wmEvent;
 	PAINTSTRUCT ps;
 	HDC hdc;
-	static HWND hwndSlider,hwndLabel;
+	static HWND hwndSlider,hwndLabel,hwndStatus;
 	static BITMAPINFO bmi;
 	static HBITMAP bitmap=NULL;
 	static HDC hdcMem=NULL;
+	static int oldX=0,oldY=0;
+	static const char *blockLabel="";
+	static BOOL dragging=FALSE;
+	static int moving=0;
 	INITCOMMONCONTROLSEX ice;
 	DWORD pos;
 	wchar_t text[4];
+	wchar_t buf[100];
 	RECT rect;
 	TCHAR path[MAX_PATH];
+	OPENFILENAME ofn;
 
 	switch (message)
 	{
@@ -187,17 +197,152 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			hWnd,(HMENU)ID_LAYERLABEL,NULL,NULL);
 		SetWindowText(hwndLabel,L"127");
 
+		hwndStatus=CreateWindowEx(
+			0,STATUSCLASSNAME,NULL,
+			WS_CHILD | WS_VISIBLE | WS_BORDER,
+			-100,-100,10,10,
+			hWnd,(HMENU)ID_STATUSBAR,NULL,NULL);
+
 		rect.top+=30;
 		bitWidth=rect.right-rect.left;
 		bitHeight=rect.bottom-rect.top;
 		ZeroMemory(&bmi.bmiHeader,sizeof(BITMAPINFOHEADER));
 		bmi.bmiHeader.biSize=sizeof(BITMAPINFOHEADER);
 		bmi.bmiHeader.biWidth=bitWidth;
-		bmi.bmiHeader.biHeight=bitHeight;
+		bmi.bmiHeader.biHeight=-bitHeight; //flip
 		bmi.bmiHeader.biPlanes=1;
 		bmi.bmiHeader.biBitCount=32;
 		bmi.bmiHeader.biCompression=BI_RGB;
 		bitmap=CreateDIBSection(NULL,&bmi,DIB_RGB_COLORS,(void **)&map,NULL,0);
+		break;
+	case WM_LBUTTONDOWN:
+		dragging=TRUE;
+		SetFocus(hWnd);
+		oldX=LOWORD(lParam);
+		oldY=HIWORD(lParam);
+		break;
+	case WM_MOUSEWHEEL:
+		if (loaded)
+		{
+			int zDelta=GET_WHEEL_DELTA_WPARAM(wParam);
+			curScale+=(double)zDelta/WHEEL_DELTA;
+			if (curScale<MINZOOM)
+				curScale=MINZOOM;
+			if (curScale>MAXZOOM)
+				curScale=MAXZOOM;
+			draw();
+			InvalidateRect(hWnd,NULL,FALSE);
+			UpdateWindow(hWnd);
+		}
+		break;
+	case WM_LBUTTONUP:
+		dragging=FALSE;
+		break;
+	case WM_MOUSEMOVE:
+		if (loaded)
+		{
+			if (dragging)
+			{
+				curZ+=(LOWORD(lParam)-oldX)/curScale;
+				curX-=(HIWORD(lParam)-oldY)/curScale;
+				oldX=LOWORD(lParam);
+				oldY=HIWORD(lParam);
+				draw();
+				InvalidateRect(hWnd,NULL,FALSE);
+				UpdateWindow(hWnd);
+			}
+			int mx,mz;
+			blockLabel=IDBlock(LOWORD(lParam),HIWORD(lParam)-30,curX,curZ,
+					bitWidth,bitHeight,curScale,&mx,&mz);
+			wsprintf(buf,L"%d,%d %S",mz,mx,blockLabel);
+			SendMessage(hwndStatus,SB_SETTEXT,0,(LPARAM)buf);
+		}
+		break;
+	case WM_KEYDOWN:
+		if (loaded)
+		{
+			BOOL changed=FALSE;
+			switch (wParam)
+			{
+			case VK_UP:
+			case 'W':
+				moving|=1;
+				break;
+			case VK_DOWN:
+			case 'S':
+				moving|=2;
+				break;
+			case VK_LEFT:
+			case 'A':
+				moving|=4;
+				break;
+			case VK_RIGHT:
+			case 'D':
+				moving|=8;
+				break;
+			case VK_PRIOR:
+			case 'E':
+				curScale+=0.5;
+				if (curScale>MAXZOOM)
+					curScale=MAXZOOM;
+				changed=TRUE;
+				break;
+			case VK_NEXT:
+			case 'Q':
+				curScale-=0.5;
+				if (curScale<MINZOOM)
+					curScale=MINZOOM;
+				changed=TRUE;
+				break;
+			case VK_HOME:
+				curScale=MAXZOOM;
+				changed=TRUE;
+				break;
+			case VK_END:
+				curScale=MINZOOM;
+				changed=TRUE;
+				break;
+			}
+			if (moving!=0)
+			{
+				if (moving&1) //up
+					curX-=10.0/curScale;
+				if (moving&2) //down
+					curX+=10.0/curScale;
+				if (moving&4) //left
+					curZ+=10.0/curScale;
+				if (moving&8) //right
+					curZ-=10.0/curScale;
+				changed=TRUE;
+			}
+			if (changed)
+			{
+				draw();
+				InvalidateRect(hWnd,NULL,FALSE);
+				UpdateWindow(hWnd);
+			}
+		}
+		break;
+	case WM_KEYUP:
+		switch (wParam)
+		{
+			case VK_UP:
+			case 'W':
+				moving&=~1;
+				break;
+			case VK_DOWN:
+			case 'S':
+				moving&=~2;
+				break;
+			case VK_LEFT:
+			case 'A':
+				moving&=~4;
+				break;
+			case VK_RIGHT:
+			case 'D':
+				moving&=~8;
+				break;
+		}
 		break;
 	case WM_HSCROLL:
 		pos=SendMessage(hwndSlider,TBM_GETPOS,0,0);
@@ -205,7 +350,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		SetWindowText(hwndLabel,text);
 		curDepth=127-pos;
 		draw();
-		InvalidateRect(hWnd,NULL,TRUE);
+		InvalidateRect(hWnd,NULL,FALSE);
 		UpdateWindow(hWnd);
 		break;
 	case WM_CTLCOLORSTATIC: //color the label and the slider background
@@ -239,6 +384,29 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			loadWorld();
 			InvalidateRect(hWnd,NULL,TRUE);
 			UpdateWindow(hWnd);
+			break;
+		case IDM_OPEN:
+			ZeroMemory(&ofn,sizeof(OPENFILENAME));
+			ofn.lStructSize=sizeof(OPENFILENAME);
+			ofn.hwndOwner=hWnd;
+			ofn.lpstrFile=path;
+			path[0]=0;
+			ofn.nMaxFile=MAX_PATH;
+			ofn.lpstrFilter=L"Minecraft World\0level.dat\0";
+			ofn.nFilterIndex=1;
+			ofn.lpstrFileTitle=NULL;
+			ofn.nMaxFileTitle=0;
+			ofn.lpstrInitialDir=NULL;
+			ofn.Flags=OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+			if (GetOpenFileName(&ofn)==TRUE)
+			{
+				PathRemoveFileSpec(path);
+				//convert path to utf8
+				WideCharToMultiByte(CP_UTF8,0,path,-1,world,MAX_PATH,NULL,NULL);
+				loadWorld();
+				InvalidateRect(hWnd,NULL,TRUE);
+				UpdateWindow(hWnd);
+			}
 			break;
 		default:
 			return DefWindowProc(hWnd, message, wParam, lParam);
@@ -274,12 +442,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			30,20,SWP_NOACTIVATE);
 		break;
 	case WM_SIZE: //resize window
+		SendMessage(hwndStatus,WM_SIZE,0,0);
 		GetClientRect(hWnd,&rect);
+		SetWindowPos(hwndSlider,NULL,0,0,
+			rect.right-rect.left-50,30,SWP_NOMOVE|SWP_NOZORDER | SWP_NOACTIVATE);
+		SetWindowPos(hwndLabel,NULL,rect.right-40,5,
+			30,20,SWP_NOACTIVATE);
 		rect.top+=30;
+		rect.bottom-=23;
 		bitWidth=rect.right-rect.left;
 		bitHeight=rect.bottom-rect.top;
 		bmi.bmiHeader.biWidth=bitWidth;
-		bmi.bmiHeader.biHeight=bitHeight;
+		bmi.bmiHeader.biHeight=-bitHeight;
 		if (bitmap!=NULL)
 			DeleteObject(bitmap);
 		bitmap=CreateDIBSection(NULL,&bmi,DIB_RGB_COLORS,(void **)&map,NULL,0);

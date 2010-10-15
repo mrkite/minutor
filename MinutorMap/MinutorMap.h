@@ -39,7 +39,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
 extern "C" {
 #endif
 	__declspec(dllexport) void __cdecl DrawMap(const char *world,double cx,double cz,int y,int w,int h,double zoom,unsigned char *bits);
-	__declspec(dllexport) const char * __cdecl IDBlock(int bx, int by, double cx, double cz, int w, int h, double zoom);
+	__declspec(dllexport) const char * __cdecl IDBlock(int bx, int by, double cx, double cz, int w, int h, double zoom,int *ox,int *oz);
 	__declspec(dllexport) void __cdecl CloseAll();
 	__declspec(dllexport) void __cdecl GetSpawn(const char *world,int *x,int *y,int *z);
 #ifdef __cplusplus

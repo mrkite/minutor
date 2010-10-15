@@ -22,6 +22,7 @@
 #define IDC_MYICON				2
 #define ID_LAYERSLIDER			1001
 #define ID_LAYERLABEL			1002
+#define ID_STATUSBAR			1003
 
 #ifndef IDC_STATIC
 #define IDC_STATIC				-1
