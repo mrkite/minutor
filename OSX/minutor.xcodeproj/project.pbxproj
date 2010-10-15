@@ -12,8 +12,6 @@
 		14A14F9A124BDC27002E2FA9 /* MinutorMap.c in Sources */ = {isa = PBXBuildFile; fileRef = 14A14F94124BDC27002E2FA9 /* MinutorMap.c */; };
 		14A14F9B124BDC27002E2FA9 /* nbt.c in Sources */ = {isa = PBXBuildFile; fileRef = 14A14F96124BDC27002E2FA9 /* nbt.c */; };
 		14A14FA2124BDCAA002E2FA9 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 14A14FA1124BDCAA002E2FA9 /* libz.dylib */; };
-		14A150F0124C088E002E2FA9 /* ToolTipTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 14A150EF124C088E002E2FA9 /* ToolTipTextField.m */; };
-		14A150F3124C08DA002E2FA9 /* ToolTip.m in Sources */ = {isa = PBXBuildFile; fileRef = 14A150F2124C08DA002E2FA9 /* ToolTip.m */; };
 		14A15134124C11F2002E2FA9 /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 14A15133124C11F2002E2FA9 /* icon.icns */; };
 		14D1F3E2124ACEF8008A7C07 /* MapViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = 14D1F3E1124ACEF8008A7C07 /* MapViewer.m */; };
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
@@ -38,10 +36,6 @@
 		14A14F97124BDC27002E2FA9 /* nbt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = nbt.h; path = ../MinutorMap/nbt.h; sourceTree = "<group>"; };
 		14A14F98124BDC27002E2FA9 /* stdafx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = stdafx.h; path = ../MinutorMap/stdafx.h; sourceTree = "<group>"; };
 		14A14FA1124BDCAA002E2FA9 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
-		14A150EE124C088E002E2FA9 /* ToolTipTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolTipTextField.h; sourceTree = "<group>"; };
-		14A150EF124C088E002E2FA9 /* ToolTipTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToolTipTextField.m; sourceTree = "<group>"; };
-		14A150F1124C08DA002E2FA9 /* ToolTip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolTip.h; sourceTree = "<group>"; };
-		14A150F2124C08DA002E2FA9 /* ToolTip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToolTip.m; sourceTree = "<group>"; };
 		14A15133124C11F2002E2FA9 /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
 		14D1F3E0124ACEF8008A7C07 /* MapViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewer.h; sourceTree = "<group>"; };
 		14D1F3E1124ACEF8008A7C07 /* MapViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewer.m; sourceTree = "<group>"; };
@@ -80,10 +74,6 @@
 				14A14F82124BD800002E2FA9 /* Map.h */,
 				14A14F83124BD800002E2FA9 /* Map.m */,
 				14A14FA1124BDCAA002E2FA9 /* libz.dylib */,
-				14A150EE124C088E002E2FA9 /* ToolTipTextField.h */,
-				14A150EF124C088E002E2FA9 /* ToolTipTextField.m */,
-				14A150F1124C08DA002E2FA9 /* ToolTip.h */,
-				14A150F2124C08DA002E2FA9 /* ToolTip.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -236,8 +226,6 @@
 				14A14F99124BDC27002E2FA9 /* cache.c in Sources */,
 				14A14F9A124BDC27002E2FA9 /* MinutorMap.c in Sources */,
 				14A14F9B124BDC27002E2FA9 /* nbt.c in Sources */,
-				14A150F0124C088E002E2FA9 /* ToolTipTextField.m in Sources */,
-				14A150F3124C08DA002E2FA9 /* ToolTip.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

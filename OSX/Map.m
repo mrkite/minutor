@@ -26,8 +26,10 @@
  */
 
 #import "Map.h"
-#import "ToolTip.h"
 #include "MinutorMap.h"
+
+#define MINZOOM 1.0
+#define MAXZOOM 6.0
 
 
 @implementation Map
@@ -42,6 +44,7 @@
 		world=nil;
 		curWidth=496;
 		curHeight=400;
+		moving=0;
 		bits=malloc(curWidth*curHeight*4);
     }
     return self;
@@ -83,25 +86,23 @@
 {
 	return YES;
 }
-- (void)rightMouseDown:(NSEvent *)theEvent
-{
-	// y=400-at.y
-	NSPoint at=[self convertPoint:[theEvent locationInWindow] fromView:nil];
-	if (at.y>curHeight || at.x>curWidth)
-		return;
-	NSString *label=[NSString stringWithCString:IDBlock(at.x, curHeight-at.y, curX, curZ,
-        curWidth, curHeight, curScale) encoding:[NSString defaultCStringEncoding]];
-	[ToolTip setString:label forEvent:theEvent];
-}
-- (void)rightMouseUp:(NSEvent *)theEvent
-{
-	[ToolTip release];
-}
 - (void)mouseDragged:(NSEvent *)theEvent
 {
 	curX-=[theEvent deltaY]/curScale;
 	curZ+=[theEvent deltaX]/curScale;
 	[self setNeedsDisplay:YES];
+}
+- (void)mouseMoved:(NSEvent *)theEvent
+{
+	NSPoint loc=[self convertPoint:[theEvent locationInWindow] fromView:nil];
+	loc.y=curHeight-loc.y;
+	if (loc.y>=0 && loc.x>=0 && loc.y<curHeight && loc.x<curWidth)
+	{
+		int mx,mz;
+		const char *label=IDBlock(loc.x, loc.y, curX, curZ,
+							curWidth, curHeight, curScale, &mx, &mz);
+		[status setStringValue:[NSString stringWithFormat:@"%d,%d %s",mz,mx,label]];
+	}
 }
 - (void)scrollWheel:(NSEvent *)theEvent
 {
@@ -109,13 +110,13 @@
 	if (dy<0.0)
 	{
 		curScale+=dy/10.0;
-		if (curScale<1.0) curScale=1.0;
+		if (curScale<MINZOOM) curScale=MINZOOM;
 		[self setNeedsDisplay:YES];
 	}
 	if (dy>0.0)
 	{
 		curScale+=dy/10.0;
-		if (curScale>5.0) curScale=5.0;
+		if (curScale>MAXZOOM) curScale=MAXZOOM;
 		[self setNeedsDisplay:YES];
 	}
 }
@@ -129,36 +130,75 @@
 	switch (character)
 	{
 		case NSUpArrowFunctionKey:
-			curX-=10.0/curScale;
-			changed=YES;
+		case 'w':
+			moving|=1;
 			break;
 		case NSDownArrowFunctionKey:
-			curX+=10.0/curScale;
-			changed=YES;
+		case 's':
+			moving|=2;
 			break;
 		case NSLeftArrowFunctionKey:
-			curZ+=10.0/curScale;
-			changed=YES;
+		case 'a':
+			moving|=4;
 			break;
 		case NSRightArrowFunctionKey:
-			curZ-=10.0/curScale;
-			changed=YES;
+		case 'd':
+			moving|=8;
 			break;
 		case NSPageUpFunctionKey:
-			curScale+=1.0;
-			if (curScale>5.0)
-				curScale=5.0;
+		case 'e':
+			curScale+=0.5;
+			if (curScale>MAXZOOM)
+				curScale=MAXZOOM;
 			changed=YES;
 			break;
 		case NSPageDownFunctionKey:
-			curScale-=1.0;
-			if (curScale<1.0)
-				curScale=1.0;
+		case 'q':
+			curScale-=0.5;
+			if (curScale<MINZOOM)
+				curScale=MINZOOM;
 			changed=YES;
 			break;
 	}
+	if (moving)
+	{
+		if (moving&1)
+			curX-=10.0/curScale;
+		if (moving&2)
+			curX+=10.0/curScale;
+		if (moving&4)
+			curZ+=10.0/curScale;
+		if (moving&8)
+			curZ-=10.0/curScale;
+		changed=YES;
+	}
 	if (changed)
 		[self setNeedsDisplay:YES];
+}
+- (void)keyUp:(NSEvent *)theEvent
+{
+	NSString *characters=[theEvent characters];
+	unichar character=[characters characterAtIndex:0];
+	
+	switch (character)
+	{
+		case NSUpArrowFunctionKey:
+		case 'w':
+			moving&=~1;
+			break;
+		case NSDownArrowFunctionKey:
+		case 's':
+			moving&=~2;
+			break;
+		case NSLeftArrowFunctionKey:
+		case 'a':
+			moving&=~4;
+			break;
+		case NSRightArrowFunctionKey:
+		case 'd':
+			moving&=~8;
+			break;
+	}
 }
 
 - (void)setX:(double)x andZ:(double)z
@@ -173,7 +213,13 @@
 }
 - (void)setWorld:(NSString *)newWorld
 {
+	[world autorelease];
 	world=[newWorld retain];
+}
+- (void)setStatus:(id)statusbar
+{
+	[status autorelease];
+	status=[statusbar retain];
 }
 
 @end

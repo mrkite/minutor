@@ -33,6 +33,7 @@
 	IBOutlet Map *map;
 	IBOutlet id slider;
 	IBOutlet id depthText;
+	IBOutlet id status;
 	int curDepth;
 }
 -(void)openWorld:(NSString *)world;
