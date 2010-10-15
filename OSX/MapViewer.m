@@ -40,6 +40,7 @@
 -(void)openWorld:(NSString *)world
 {
 	CloseAll();
+	[map setStatus:status];
 	[map setWorld:world];
 	int spawnX,spawnY,spawnZ;
 	GetSpawn([world UTF8String], &spawnX, &spawnY, &spawnZ);
@@ -48,6 +49,8 @@
 	
 	[window makeKeyAndOrderFront:self];
 	[window setTitle:[world lastPathComponent]];
+	[status setStringValue:@""];
+	[window setAcceptsMouseMovedEvents: YES];
 }
 -(IBAction)sliderChanged:(NSSlider *)sender
 {

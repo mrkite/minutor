@@ -34,9 +34,12 @@
 	NSString *world;
 	unsigned char *bits;
 	int curWidth,curHeight;
+	int moving;
+	id status;
 }
 -(void)setX:(double)x andZ:(double)z;
 -(void)setDepth:(int)depth;
 -(void)setWorld:(NSString *)newWorld;
+-(void)setStatus:(id)status;
 
 @end
