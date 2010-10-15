@@ -37,7 +37,6 @@ THE POSSIBILITY OF SUCH DAMAGE.
 static void draw(const char *world,int bx,int bz,int y,unsigned char *bits);
 static void blit(unsigned char *block,unsigned char *bits,int px,int py,
 	double zoom,int w,int h);
-const char *IDBlock(int bx, int by, double cx, double cz, int w, int h, double zoom);
 static Block *LoadBlock(char *filename);
 static void b36(char *dest,int num);
 
