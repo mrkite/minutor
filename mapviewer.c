@@ -30,8 +30,11 @@ THE POSSIBILITY OF SUCH DAMAGE.
 #include "MinutorMap/MinutorMap.h"
 #include "minutor.xpm"
 
+#define MINZOOM 1.0
+#define MAXZOOM 6.0
+
 static GtkWidget *win;
-static GtkWidget *slider,*da;
+static GtkWidget *slider,*da,*status;
 static double curX,curZ;
 static int curDepth=127;
 static double curScale=1.0;
@@ -80,32 +83,10 @@ static void adjustMap(GtkRange *range,gpointer user_data)
 	curDepth=127-(int)gtk_range_get_value(range);
 	gdk_window_invalidate_rect(GTK_WIDGET(user_data)->window,NULL,FALSE);
 }
-static GtkWidget *menu=NULL;
-static gboolean mousePopup(gdouble x,gdouble y)
-{
-	const char *name;
-	if (y>curHeight || x>curWidth)
-		return FALSE;
-	
-	name=IDBlock(x,y,curX,curZ,curWidth,curHeight,curScale);
-
-	menu=gtk_menu_new();
-	GtkWidget *item=gtk_menu_item_new_with_label(name);
-	gtk_menu_attach(GTK_MENU(menu),item,0,1,0,1);
-	gtk_widget_set_sensitive(item,FALSE);
-	gtk_widget_show(item);
-	gtk_menu_popup(GTK_MENU(menu),NULL,NULL,NULL,NULL,3,
-		gtk_get_current_event_time());
-	g_signal_connect(G_OBJECT(menu),"button-release-event",
-		G_CALLBACK(mouseUp),NULL);
-	return TRUE;
-}
 static gboolean tracking=FALSE;
 static double oldX,oldY;
 static gboolean mouseDown(GtkWidget *widget,GdkEventButton *event)
 {
-	if (event->button==3)
-		return mousePopup(event->x,event->y);
 	gtk_widget_grab_focus(widget);
 	oldX=event->x;
 	oldY=event->y;
@@ -114,27 +95,26 @@ static gboolean mouseDown(GtkWidget *widget,GdkEventButton *event)
 }
 static gboolean mouseUp(GtkWidget *widget,GdkEventButton *event)
 {
-	if (event->button==3)
-	{
-		if (menu!=NULL)
-		{
-			gtk_menu_popdown(GTK_MENU(menu));
-			gtk_widget_destroy(menu);
-		}
-		menu=NULL;
-		return TRUE;
-	}
 	tracking=FALSE;
 	return TRUE;
 }
 static gboolean mouseMove(GtkWidget *widget,GdkEventMotion *event)
 {
-	if (tracking==FALSE) return FALSE;
-	curX+=(oldY-event->y)/curScale;
-	curZ-=(oldX-event->x)/curScale;
-	oldX=event->x;
-	oldY=event->y;
-	gdk_window_invalidate_rect(widget->window,NULL,FALSE);
+	if (tracking)
+	{
+		curX+=(oldY-event->y)/curScale;
+		curZ-=(oldX-event->x)/curScale;
+		oldX=event->x;
+		oldY=event->y;
+		gdk_window_invalidate_rect(widget->window,NULL,FALSE);
+	}
+	int mx,mz;
+	const char *blockLabel=IDBlock(event->x,event->y,curX,curZ,
+		curWidth,curHeight,curScale,&mx,&mz);
+	char *buf=g_strdup_printf("%d,%d %s",mz,mx,blockLabel);
+	gtk_statusbar_pop(GTK_STATUSBAR(status),1);
+	gtk_statusbar_push(GTK_STATUSBAR(status),1,buf);
+	g_free(buf);
 	return TRUE;
 }
 static gboolean mouseWheel(GtkWidget *widget,GdkEventScroll *event)
@@ -142,13 +122,13 @@ static gboolean mouseWheel(GtkWidget *widget,GdkEventScroll *event)
 	if (event->direction==GDK_SCROLL_DOWN)
 	{
 		curScale-=0.2;
-		if (curScale<1.0) curScale=1.0;
+		if (curScale<MINZOOM) curScale=MINZOOM;
 		gdk_window_invalidate_rect(widget->window,NULL,FALSE);
 	}
 	if (event->direction==GDK_SCROLL_UP)
 	{
 		curScale+=0.2;
-		if (curScale>5.0) curScale=5.0;
+		if (curScale>MAXZOOM) curScale=MAXZOOM;
 		gdk_window_invalidate_rect(widget->window,NULL,FALSE);
 	}
 	return TRUE;
@@ -178,15 +158,15 @@ static gboolean keyDown(GtkWidget *widget,GdkEventKey *event)
 		case GDK_Page_Up:
 		case GDK_e:
 			curScale+=0.5;
-			if (curScale>5.0)
-				curScale=5.0;
+			if (curScale>MAXZOOM)
+				curScale=MAXZOOM;
 			changed=TRUE;
 			break;
 		case GDK_Page_Down:
 		case GDK_q:
 			curScale-=0.5;
-			if (curScale<1.0)
-				curScale=1.0;
+			if (curScale<MINZOOM)
+				curScale=MINZOOM;
 			changed=TRUE;
 			break;
 	}
@@ -242,7 +222,9 @@ static void loadMap(const gchar *path)
 	world=g_strdup(path);
 	GFile *file=g_file_new_for_path(path);
 	char *title=g_file_get_basename(file);
-	gtk_window_set_title(GTK_WINDOW(win),title);
+	char *titlestr=g_strdup_printf("Minutor - %s",title);
+	gtk_window_set_title(GTK_WINDOW(win),titlestr);
+	g_free(titlestr);
 	g_free(title);
 	g_object_unref(file);
 
@@ -391,6 +373,10 @@ void createMapViewer()
 
 	g_signal_connect(G_OBJECT(slider),"value-changed",
 		G_CALLBACK(adjustMap),G_OBJECT(da));
+
+	//statusbar
+	status=gtk_statusbar_new();
+	gtk_box_pack_end(GTK_BOX(vbox),status,FALSE,TRUE,0);
 
 
 	bits=g_malloc(curWidth*curHeight*4);
