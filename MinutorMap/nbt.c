@@ -242,9 +242,9 @@ void nbtGetPlayer(gzFile gz,int *px,int *py,int *pz)
 	if (findElement(gz,"Player")!=10) return;
 	if (findElement(gz,"Pos")!=9) return;
 	gzseek(gz,5,SEEK_CUR); //skip subtype and num items
-	*px=readDouble(gz);
-	*py=readDouble(gz);
-	*pz=readDouble(gz);
+	*px=(int)readDouble(gz);
+	*py=(int)readDouble(gz);
+	*pz=(int)readDouble(gz);
 }
 void nbtClose(gzFile gz)
 {

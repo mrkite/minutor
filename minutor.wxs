@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!-- Increase product version each release.. and that's the only change -->
-<?define ProductVersion="0.2.5"?>
+<?define ProductVersion="0.3.0"?>
 <?define ProductUpgradeCode="5da343bf-7e4f-4849-acb0-da8c6682a71e"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <Product Id="*"
@@ -33,9 +33,7 @@
         <Directory Id="INSTALLDIR" Name="Minutor">
           <Component Id="ApplicationFiles"
                Guid="670f74ff-eb96-4003-828a-2f24e5a42539">
-			   <File Id="AppFile1"
-                  Source="Minutor\bin\x86\Release\Minutor.exe" />
-            <File Id="DllFile1" Source="Release\MinutorMap.dll" />
+			   <File Id="AppFile1" Source="Release\Minutor.exe" />
           </Component>
         </Directory>
       </Directory>

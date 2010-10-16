@@ -1,5 +1,29 @@
-// Minutor.cpp : Defines the entry point for the application.
-//
+/*
+Copyright (c) 2010, Sean Kasun
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+* Redistributions of source code must retain the above copyright notice, this
+  list of conditions and the following disclaimer.
+
+* Redistributions in binary form must reproduce the above copyright notice,
+  this list of conditions and the following disclaimer in the documentation
+  and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
+THE POSSIBILITY OF SUCH DAMAGE.
+*/
 
 #include "stdafx.h"
 #include "Minutor.h"
@@ -18,11 +42,14 @@ HINSTANCE hInst;								// current instance
 TCHAR szTitle[MAX_LOADSTRING];					// The title bar text
 TCHAR szWindowClass[MAX_LOADSTRING];			// the main window class name
 
-char world[MAX_PATH];							//path to currently loaded world
-BOOL loaded=FALSE;								//world loaded?
-double curX,curZ;								//current X and Z
-double curScale=1.0;							//current scale
-int curDepth=127;								//current depth
+static char world[MAX_PATH];							//path to currently loaded world
+static BOOL loaded=FALSE;								//world loaded?
+static double curX,curZ;								//current X and Z
+static double curScale=1.0;							//current scale
+static int curDepth=127;								//current depth
+
+static int spawnX,spawnY,spawnZ;
+static int playerX,playerY,playerZ;
 
 // Forward declarations of functions included in this code module:
 ATOM				MyRegisterClass(HINSTANCE hInstance);
@@ -189,6 +216,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			hWnd,(HMENU)ID_LAYERSLIDER,NULL,NULL);
 		SendMessage(hwndSlider,TBM_SETRANGE,TRUE,MAKELONG(0,127));
 		SendMessage(hwndSlider,TBM_SETPAGESIZE,0,10);
+		EnableWindow(hwndSlider,FALSE);
 		
 		hwndLabel=CreateWindowEx(
 			0,L"STATIC",NULL,
@@ -196,6 +224,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			rect.right-40,5,30,20,
 			hWnd,(HMENU)ID_LAYERLABEL,NULL,NULL);
 		SetWindowText(hwndLabel,L"127");
+		EnableWindow(hwndLabel,FALSE);
 
 		hwndStatus=CreateWindowEx(
 			0,STATUSCLASSNAME,NULL,
@@ -382,6 +411,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			//convert path to utf8
 			WideCharToMultiByte(CP_UTF8,0,path,-1,world,MAX_PATH,NULL,NULL);
 			loadWorld();
+			EnableWindow(hwndSlider,TRUE);
+			EnableWindow(hwndLabel,TRUE);
 			InvalidateRect(hWnd,NULL,TRUE);
 			UpdateWindow(hWnd);
 			break;
@@ -404,13 +435,30 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				//convert path to utf8
 				WideCharToMultiByte(CP_UTF8,0,path,-1,world,MAX_PATH,NULL,NULL);
 				loadWorld();
+				EnableWindow(hwndSlider,TRUE);
+				EnableWindow(hwndLabel,TRUE);
 				InvalidateRect(hWnd,NULL,TRUE);
 				UpdateWindow(hWnd);
 			}
 			break;
+		case IDM_JUMPSPAWN:
+			curX=spawnX;
+			curZ=spawnZ;
+			draw();
+			InvalidateRect(hWnd,NULL,TRUE);
+			UpdateWindow(hWnd);
+			break;
+		case IDM_JUMPPLAYER:
+			curX=playerX;
+			curZ=playerZ;
+			draw();
+			InvalidateRect(hWnd,NULL,TRUE);
+			UpdateWindow(hWnd);
+			break;
 		default:
 			return DefWindowProc(hWnd, message, wParam, lParam);
 		}
+		validateItems(GetMenu(hWnd));
 		break;
 	case WM_ERASEBKGND:
 		{
@@ -486,11 +534,11 @@ static void draw()
 
 static void loadWorld()
 {
-	int x,y,z;
 	CloseAll();
-	GetSpawn(world,&x,&y,&z);
-	curX=x;
-	curZ=z;
+	GetSpawn(world,&spawnX,&spawnY,&spawnZ);
+	GetPlayer(world,&playerX,&playerY,&playerZ);
+	curX=spawnX;
+	curZ=spawnZ;
 	loaded=TRUE;
 	draw();
 
@@ -517,6 +565,16 @@ static void validateItems(HMENU menu)
 			EnableMenuItem(menu,IDM_WORLD1+i,MF_DISABLED);
 		else
 			EnableMenuItem(menu,IDM_WORLD1+i,MF_ENABLED);
+	}
+	if (loaded)
+	{
+		EnableMenuItem(menu,IDM_JUMPSPAWN,MF_ENABLED);
+		EnableMenuItem(menu,IDM_JUMPPLAYER,MF_ENABLED);
+	}
+	else
+	{
+		EnableMenuItem(menu,IDM_JUMPSPAWN,MF_DISABLED);
+		EnableMenuItem(menu,IDM_JUMPPLAYER,MF_DISABLED);
 	}
 }
 

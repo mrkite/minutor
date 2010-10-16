@@ -1,23 +1,17 @@
 All 3 platform source files are here.
 MinutorMap/ contains the map generating code used by all 3 versions. (in C)
-Minutor/ contains the Windows UI (in C#)
+Win/ contains the Windows UI (in C++)
 OSX/ contains the OSX UI (in ObjC)
 ./ contains the GTK UI. (in C)
 
 COMPILING:
 ---------
 
-Windows - (Everything can be done with the Express versions of VS..)
-	Open MinutorMap.sln in Visual C++, compile the solution to
-		generate MinutorMap.dll
-	Then open Minutor.sln in Visual C#, compile the solution
-		to generate Minutor.exe.
+Windows - (You can compile this with Visual Studio Express 2010)
+	Open Minutorwin.sln in Visual C++, switch the target to Release, compile the solution to
+		generate Minutor.exe
 	Run make_installer.bat to make the minutor.msi installer.
 		(This part requires you to install WiX)
-
-	The separate dll is because the map generating code is written
-	in unmanaged C to be portable.. the gui is written in C# due to
-	simplicity.
 
 OSX -
 	Open minutor.xcodeproj in XCode. Compile the solution to
@@ -29,3 +23,5 @@ Linux -
 	$ sudo make install
 
 	or you can go crazy and use debuild to make a .deb file
+	$ debuild -us  ; makes a deb for your platform (unsigned)
+	$ debuild -ai386 -us ; makes an x86 .deb (unsigned)
