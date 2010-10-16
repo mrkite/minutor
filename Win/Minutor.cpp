@@ -31,7 +31,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
 #include <Shlwapi.h>
 #include <CommDlg.h>
 
-#define MAXZOOM 6.0
+#define MAXZOOM 7.0
 #define MINZOOM 1.0
 
 #define MAX_LOADSTRING 100

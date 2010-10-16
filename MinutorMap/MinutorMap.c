@@ -71,9 +71,9 @@ void DrawMap(const char *world,double cx,double cz,int y,int w,int h,double zoom
 	int z,x,px,py;
 	int blockScale=(int)(16*zoom);
 
-	// number of blocks to fill the screen
-	int hBlocks=(w+(blockScale-1))/blockScale;
-	int vBlocks=(h+(blockScale-1))/blockScale;
+	// number of blocks to fill the screen (plus 2 blocks for floating point inaccuracy)
+	int hBlocks=(w+blockScale*2)/blockScale;
+	int vBlocks=(h+blockScale*2)/blockScale;
 
 
 	// cx/cz is the center, so find the upper left corner from that
