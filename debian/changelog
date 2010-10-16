@@ -1,3 +1,10 @@
+minutor (0.3.1) unstable; urgency=low
+
+  * Floating point fix
+  * Increased zoom to 10x
+  
+ -- Sean Kasun <sean@seancode.com> Sat, 16 Oct 2010 13:37:15 -0700
+
 minutor (0.3) unstable; urgency=low
 
   * Single window
