@@ -31,7 +31,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
 #include "minutor.xpm"
 
 #define MINZOOM 1.0
-#define MAXZOOM 6.0
+#define MAXZOOM 10.0
 
 static GtkWidget *win;
 static GtkWidget *slider,*da,*status;

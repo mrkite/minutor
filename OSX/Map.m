@@ -29,7 +29,7 @@
 #include "MinutorMap.h"
 
 #define MINZOOM 1.0
-#define MAXZOOM 6.0
+#define MAXZOOM 10.0
 
 
 @implementation Map
