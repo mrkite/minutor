@@ -37,5 +37,7 @@
 	IBOutlet id mapViewer;
 }
 - (IBAction) openWorld: sender;
+- (IBAction) jumpToSpawn: sender;
+- (IBAction) jumpToPlayer: sender;
 
 @end

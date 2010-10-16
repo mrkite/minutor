@@ -205,6 +205,7 @@
 {
 	curX=x;
 	curZ=z;
+	[self setNeedsDisplay:YES];
 }
 - (void)setDepth:(int)depth
 {

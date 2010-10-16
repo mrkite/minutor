@@ -36,14 +36,18 @@
 	curDepth=0;
 	return self;
 }
+-(BOOL)isVisible
+{
+	return [window isVisible];
+}
 
 -(void)openWorld:(NSString *)world
 {
 	CloseAll();
 	[map setStatus:status];
 	[map setWorld:world];
-	int spawnX,spawnY,spawnZ;
 	GetSpawn([world UTF8String], &spawnX, &spawnY, &spawnZ);
+	GetPlayer([world UTF8String], &playerX, &playerY, &playerZ);
 	[map setX:spawnX andZ:spawnZ];
 	[map setDepth:127-curDepth];
 	
@@ -51,6 +55,14 @@
 	[window setTitle:[world lastPathComponent]];
 	[status setStringValue:@""];
 	[window setAcceptsMouseMovedEvents: YES];
+}
+-(void)jumpToSpawn
+{
+	[map setX:spawnX andZ:spawnZ];
+}
+-(void)jumpToPlayer
+{
+	[map setX:playerX andZ:playerZ];
 }
 -(IBAction)sliderChanged:(NSSlider *)sender
 {

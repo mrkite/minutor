@@ -35,8 +35,12 @@
 	IBOutlet id depthText;
 	IBOutlet id status;
 	int curDepth;
+	int spawnX,spawnY,spawnZ;
+	int playerX,playerY,playerZ;
 }
 -(void)openWorld:(NSString *)world;
+-(void)jumpToSpawn;
+-(void)jumpToPlayer;
 -(IBAction) sliderChanged:(NSSlider*)sender;
 
 @end

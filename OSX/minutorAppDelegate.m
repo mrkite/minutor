@@ -43,6 +43,8 @@
 	int tag=[menuItem tag];
 	if (tag!=0)
 	{
+		if (tag>100)
+			return [mapViewer isVisible];
 		NSString *root=[self worldToPath:tag];
 		id files=[NSFileManager defaultManager];
 		BOOL isDirectory;
@@ -51,7 +53,7 @@
 			return YES;
 		return NO;
 	}
-	return [super validateMenuItem:menuItem];
+	return YES;
 }
 
 - (IBAction) openWorld:sender
@@ -71,6 +73,14 @@
 		world=[self worldToPath:tag];
 	if (world!=nil)
 		[mapViewer openWorld:world];
+}
+-(IBAction) jumpToSpawn:sender
+{
+	[mapViewer jumpToSpawn];
+}
+-(IBAction) jumpToPlayer:sender
+{
+	[mapViewer jumpToPlayer];
 }
 
 - (NSString *) worldToPath:(int)world
