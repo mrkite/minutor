@@ -3,7 +3,7 @@ minutor (0.3.1) unstable; urgency=low
   * Floating point fix
   * Increased zoom to 10x
   
- -- Sean Kasun <sean@seancode.com> Sat, 16 Oct 2010 13:37:15 -0700
+ -- Sean Kasun <sean@seancode.com>  Sat, 16 Oct 2010 13:37:15 -0700
 
 minutor (0.3) unstable; urgency=low
 
@@ -14,7 +14,7 @@ minutor (0.3) unstable; urgency=low
   * Diagonal movement
   * Map alignment fix
 
- -- Sean Kasun <sean@seancode.com> Fri, 15 Oct 2010 20:00:01 -0700
+ -- Sean Kasun <sean@seancode.com>  Fri, 15 Oct 2010 20:00:01 -0700
 
 minutor (0.2.5) unstable; urgency=low
 
@@ -24,7 +24,7 @@ minutor (0.2.5) unstable; urgency=low
   *  north orientation
   *  IDBlock fixes
 
- -- Sean Kasun <sean@seancode.com> Mon, 4 Oct 2010 20:02:03 -0700
+ -- Sean Kasun <sean@seancode.com>  Mon, 4 Oct 2010 20:02:03 -0700
 
 minutor (0.2) unstable; urgency=low
 
