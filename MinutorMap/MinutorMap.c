@@ -34,7 +34,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
 #include "blockInfo.h"
 #include <string.h>
 
-static void draw(const char *world,int bx,int bz,int y,unsigned char *bits);
+static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *bits);
 static void blit(unsigned char *block,unsigned char *bits,int px,int py,
 	double zoom,int w,int h);
 static Block *LoadBlock(char *filename);
@@ -48,7 +48,12 @@ static void b36(char *dest,int num);
 //h = output height
 //zoom = zoom amount (1.0 = 100%)
 //bits = byte array for output
-void DrawMap(const char *world,double cx,double cz,int y,int w,int h,double zoom,unsigned char *bits)
+//opts = bitmask of render options
+//  1<<0 Cave Mode
+//  1<<1 Show Obscured
+//  1<<2 Depth Shading
+//  1<<3 Raytrace Shadows (TODO)
+void DrawMap(const char *world,double cx,double cz,int y,int w,int h,double zoom,unsigned char *bits,int opts)
 {
     /* We're converting between coordinate systems, so this gets kinda ugly 
      *
@@ -101,7 +106,7 @@ void DrawMap(const char *world,double cx,double cz,int y,int w,int h,double zoom
         // z increases west, decreases east
         for (z=0,px=-shiftx;z<=hBlocks;z++,px+=blockScale)
         {
-			draw(world,startxblock+x,startzblock-z,y,blockbits);
+			draw(world,startxblock+x,startzblock-z,y,opts,blockbits);
 			blit(blockbits,bits,px,py,zoom,w,h);
 		}
 	}
@@ -122,7 +127,7 @@ const char *IDBlock(int bx, int by, double cx, double cz, int w, int h, double z
 	Block *block;
     int x,y,z,px,py,xoff,zoff;
 	int blockScale=(int)(16*zoom);
-
+    
 	// cx/cz is the center, so find the upper left corner from that
 	double startx=cx-(double)h/(2*zoom);
 	double startz=cz+(double)w/(2*zoom);
@@ -159,6 +164,10 @@ const char *IDBlock(int bx, int by, double cx, double cz, int w, int h, double z
         return "Unknown";
 
     y=block->heightmap[xoff+zoff*16];
+
+    if (y == (unsigned char)-1) 
+        return "Empty";  // nothing was rendered here
+
     return blocks[block->grid[y+(zoff+xoff*16)*128]].name;
 }
 
@@ -197,8 +206,12 @@ void CloseAll()
 	Cache_Empty();
 }
 
-
-static void draw(const char *world,int bx,int bz,int y,unsigned char *bits)
+// opts is a bitmask representing render options:
+// 1<<0 Cave Mode
+// 1<<1 Show Obscured
+// 1<<2 Depth Shading
+// 1<<3 Raytrace Shadows (TODO)
+static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *bits)
 {
 	int first,second;
 	Block *block, *prevblock;
@@ -206,7 +219,14 @@ static void draw(const char *world,int bx,int bz,int y,unsigned char *bits)
 	int ofs=0,xOfs=0,prevy,zOfs,bofs;
 	int x,z,i;
 	unsigned int color, watercolor = blocks[BLOCK_WATER].color, water;
-	unsigned char pixel, r, g, b;
+	unsigned char pixel, r, g, b, seenempty;
+
+    char cavemode, showobscured, depthshading, raytrace;
+
+    cavemode=!(!(opts&(1<<0)));
+    showobscured=!(!(opts&(1<<1)));
+    depthshading=!(!(opts&(1<<2)));
+    raytrace=!(!(opts&(1<<3)));
 
 	block=(Block *)Cache_Find(bx,bz);
 
@@ -237,16 +257,33 @@ static void draw(const char *world,int bx,int bz,int y,unsigned char *bits)
 		Cache_Add(bx,bz,block);
 	}
 
-    if (block->rendery == y) //block already rendered
-    {
+    if (block->rendery==y && block->renderopts==opts) // already rendered, use cache
+    { 
         memcpy(bits, block->rendercache, sizeof(unsigned char)*16*16*4);
-        return;
+
+        if (block->rendermissing) // wait, the last render was incomplete
+        {
+            if (Cache_Find(bx, bz+block->rendermissing) != NULL)
+                ; // we can do a better render now that the missing block is loaded
+            else
+                return; // re-rendering wouldn't change anything
+        } else
+            return;
     }
 
-    // find the block to the west, so we can use its prevy
+    block->rendery=y;
+    block->renderopts=opts;
+    block->rendermissing=0;
+
+    // find the block to the west, so we can use its heightmap for shading
     prevblock=(Block *)Cache_Find(bx, bz + 1);
-    if (prevblock!=NULL && prevblock->rendery != y)
+
+    if (prevblock==NULL)
+        block->rendermissing=1; //note no loaded block to west
+    else if (prevblock->rendery!=y || prevblock->renderopts!=opts) {
+        block->rendermissing=1; //note improperly rendered block to west
         prevblock = NULL; //block was rendered at a different y level, ignore
+    }
 
     // x increases south, decreases north
 	for (x=0;x<16;x++,xOfs+=128*16)
@@ -264,15 +301,22 @@ static void draw(const char *world,int bx,int bz,int y,unsigned char *bits)
 			bofs=zOfs+y;
 			color=0;
             water=0;
+            seenempty=0;
 			for (i=y;i>=0;i--,bofs--)
 			{
 				pixel=block->grid[bofs];
+                if (pixel==BLOCK_AIR)
+                {
+                    seenempty=1;
+                    continue;
+                }
                 if (pixel==BLOCK_STATIONARY_WATER || pixel==BLOCK_WATER) 
                 {
+                    seenempty=1; // count water as an "empty" (see-through) block
                     if (++water < 8)
                         continue;
                 }
-                if (pixel<numBlocks && blocks[pixel].canDraw)
+                if ((showobscured || seenempty) && pixel<numBlocks && blocks[pixel].canDraw)
 				{
 					if (prevy==-1) prevy=i;
 					if (prevy<i)
@@ -289,10 +333,51 @@ static void draw(const char *world,int bx,int bz,int y,unsigned char *bits)
                         color = r<<16 | g<<8 | b;
                     }
 
-					prevy=i;
 					break;
 				}
 			}
+
+			prevy=i;
+
+            if (depthshading) // darken deeper blocks
+            {
+                int num=prevy+50-(128-y)/5;
+                int denom=y+50-(128-y)/5;
+
+                r=(color>>16)*num/denom;
+                g=(color>>8&0xff)*num/denom;
+                b=(color&0xff)*num/denom;
+                color = r<<16 | g<<8 | b;
+            }
+
+            if (cavemode) {
+                seenempty=0;
+                pixel=block->grid[bofs];
+
+                if (pixel==BLOCK_LEAVES || pixel==BLOCK_WOOD) //special case surface trees
+                    for (; i>=1; i--,pixel=block->grid[--bofs])
+                        if (!(pixel==BLOCK_WOOD||pixel==BLOCK_LEAVES||pixel==BLOCK_AIR))
+                            break; // skip leaves, wood, air
+
+                for (;i>=1;i--,bofs--)
+                {
+                    pixel=block->grid[bofs];
+                    if (pixel==BLOCK_AIR)
+                    {
+                        seenempty=1;
+                        continue;
+                    }
+                    if (seenempty && pixel<numBlocks && blocks[pixel].canDraw)
+                    {
+                        r=(color>>16)*(prevy-i+10)/138;
+                        g=(color>>8&0xff)*(prevy-i+10)/138;
+                        b=(color&0xff)*(prevy-i+10)/138; 
+                        color = r<<16 | g<<8 | b;
+                        break;
+                    }
+                }
+            }
+
 			bits[ofs++]=color>>16;
 			bits[ofs++]=color>>8;
 			bits[ofs++]=color;
@@ -302,7 +387,6 @@ static void draw(const char *world,int bx,int bz,int y,unsigned char *bits)
 		}
 	}
 
-    block->rendery = y;
     memcpy(block->rendercache, bits, sizeof(unsigned char)*16*16*4);
 }
 Block *LoadBlock(char *filename)

@@ -38,10 +38,16 @@ typedef struct BlockCache {
 } BlockCache;
 
 typedef struct Block {
-    unsigned char grid[16*16*128];
-    unsigned char rendercache[16*16*4];
-    unsigned char heightmap[16*16];
-    int rendery;
+    unsigned char grid[16*16*128];  // blockid array [y+(z+x*16)*128]
+
+    unsigned char rendercache[16*16*4]; // bitmap of last render
+    unsigned char heightmap[16*16]; // height of rendered block [x+z*16]
+
+    int rendery;        // slice height for last render
+    int renderopts;     // options bitmask for last render
+    int rendermissing;  // the z-offset of a block that was missing
+                        // when it was last rendered (for blocks on the
+                        // left edge of the map, this might be +1)
 } Block;
 
 void *Cache_Find(int bx,int bz);

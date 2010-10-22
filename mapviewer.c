@@ -36,6 +36,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
 static GtkWidget *win;
 static GtkWidget *slider,*da,*status;
 static GtkWidget *jumpplayer,*jumpspawn;
+static GtkWidget *cavemode, *showobscured, *depthshading;
 static double curX,curZ;
 static int curDepth=127;
 static double curScale=1.0;
@@ -55,20 +56,27 @@ static void destroy()
 
 static gboolean drawMap(GtkWidget *widget)
 {
+    // don't do anything if we haven't loaded a world
+    if (world==NULL) return FALSE;
 	// don't draw anything for a disabled widget
 	if (!gtk_widget_get_sensitive(widget)) return FALSE;
-	int w=widget->allocation.width;
-	int h=widget->allocation.height;
+	int w=da->allocation.width;
+	int h=da->allocation.height;
 	if (w!=curWidth || h!=curHeight)
 	{
 		curWidth=w;
 		curHeight=h;
 		bits=g_realloc(bits,curWidth*curHeight*4);
 	}
-	DrawMap(world,curX,curZ,curDepth,curWidth,curHeight,curScale,bits);
+    int opts=gtk_check_menu_item_get_active((GtkCheckMenuItem *)cavemode)
+           | gtk_check_menu_item_get_active((GtkCheckMenuItem *)showobscured)<<1
+           | gtk_check_menu_item_get_active((GtkCheckMenuItem *)depthshading)<<2;
+
+	DrawMap(world,curX,curZ,curDepth,curWidth,curHeight,curScale,bits,opts);
+
 	gdk_draw_rgb_32_image(
-		widget->window,
-		widget->style->white_gc,
+		da->window,
+		da->style->white_gc,
 		0,0,curWidth,curHeight,
 		GDK_RGB_DITHER_NONE,
 		bits,
@@ -348,9 +356,9 @@ void createMapViewer()
 	GtkWidget *sep=gtk_separator_menu_item_new();
 	gtk_menu_shell_append(GTK_MENU_SHELL(fileitems),sep);
 
-	GtkWidget *close=gtk_image_menu_item_new_from_stock(GTK_STOCK_CLOSE,menuGroup);
-	gtk_menu_shell_append(GTK_MENU_SHELL(fileitems),close);
-	g_signal_connect(G_OBJECT(close),"activate",
+	GtkWidget *quit=gtk_image_menu_item_new_from_stock(GTK_STOCK_QUIT,menuGroup);
+	gtk_menu_shell_append(GTK_MENU_SHELL(fileitems),quit);
+	g_signal_connect(G_OBJECT(quit),"activate",
 		G_CALLBACK(destroy),NULL);
 
 	GtkWidget *viewmenu=gtk_menu_item_new_with_mnemonic("_View");
@@ -414,6 +422,30 @@ void createMapViewer()
 
 	g_signal_connect(G_OBJECT(slider),"value-changed",
 		G_CALLBACK(adjustMap),G_OBJECT(da));
+
+    //view menu > rendering options
+    cavemode=gtk_check_menu_item_new_with_mnemonic("_Cave Mode");
+    gtk_widget_add_accelerator(cavemode,"activate",menuGroup,
+        GDK_1,0,GTK_ACCEL_VISIBLE);
+    gtk_menu_shell_append(GTK_MENU_SHELL(viewitems),cavemode);
+    g_signal_connect(G_OBJECT(cavemode),"toggled",
+        G_CALLBACK(drawMap),NULL);
+
+    showobscured=gtk_check_menu_item_new_with_mnemonic("Show _Obscured");
+    gtk_check_menu_item_set_active((GtkCheckMenuItem *)showobscured, 1);
+    gtk_widget_add_accelerator(showobscured,"activate",menuGroup,
+        GDK_2,0,GTK_ACCEL_VISIBLE);
+    gtk_menu_shell_append(GTK_MENU_SHELL(viewitems),showobscured);
+    g_signal_connect(G_OBJECT(showobscured),"toggled",
+        G_CALLBACK(drawMap),NULL);
+
+    depthshading=gtk_check_menu_item_new_with_mnemonic("_Depth Shading");
+    gtk_check_menu_item_set_active((GtkCheckMenuItem *)depthshading, 1);
+    gtk_widget_add_accelerator(depthshading,"activate",menuGroup,
+        GDK_3,0,GTK_ACCEL_VISIBLE);
+    gtk_menu_shell_append(GTK_MENU_SHELL(viewitems),depthshading);
+    g_signal_connect(G_OBJECT(depthshading),"toggled",
+        G_CALLBACK(drawMap),NULL);
 
 	//statusbar
 	status=gtk_statusbar_new();
