@@ -98,8 +98,8 @@
 }
 -(IBAction) toggleObscured:sender
 {
-	opts^=SHOWOBSCURED;
-	[sender setState:((opts&SHOWOBSCURED)!=0)?NSOnState:NSOffState];
+	opts^=HIDEOBSCURED;
+	[sender setState:((opts&HIDEOBSCURED)!=0)?NSOnState:NSOffState];
 	[mapViewer setOptions:opts];
 }
 -(IBAction) toggleDepth:sender

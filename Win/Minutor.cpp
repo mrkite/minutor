@@ -472,7 +472,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			UpdateWindow(hWnd);
 			break;
 		case IDM_OBSCURED:
-			opts^=SHOWOBSCURED;
+			opts^=HIDEOBSCURED;
 			CheckMenuItem(GetMenu(hWnd),wmId,(opts&LIGHTING)?MF_CHECKED:MF_UNCHECKED);
 			draw();
 			InvalidateRect(hWnd,NULL,TRUE);

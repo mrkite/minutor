@@ -227,7 +227,7 @@ static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *b
     char cavemode, showobscured, depthshading, lighting;
 
 	cavemode=!!(opts&CAVEMODE);
-    showobscured=!!(opts&SHOWOBSCURED);
+    showobscured=!(opts&HIDEOBSCURED);
     depthshading=!!(opts&DEPTHSHADING);
     lighting=!!(opts&LIGHTING);
 
@@ -313,7 +313,9 @@ static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *b
                     seenempty=1;
                     continue;
                 }
-                if ((!showobscured || seenempty) && pixel<numBlocks && blocks[pixel].alpha!=0.0)
+                if (pixel==BLOCK_STATIONARY_WATER)
+                    seenempty=1;
+                if ((showobscured || seenempty) && pixel<numBlocks && blocks[pixel].alpha!=0.0)
 				{
 					int light=12;
 					if (lighting)

@@ -40,7 +40,7 @@ extern "C" {
 #endif
 
 #define CAVEMODE		0x01
-#define SHOWOBSCURED	0x02
+#define HIDEOBSCURED	0x02
 #define DEPTHSHADING	0x04
 #define LIGHTING		0x08
 

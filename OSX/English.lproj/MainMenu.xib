@@ -323,7 +323,7 @@
 								</object>
 								<object class="NSMenuItem" id="608160970">
 									<reference key="NSMenu" ref="799204025"/>
-									<string key="NSTitle">Show Obscured</string>
+									<string key="NSTitle">Hide Obscured</string>
 									<string key="NSKeyEquiv">3</string>
 									<int key="NSKeyEquivModMask">262144</int>
 									<int key="NSMnemonicLoc">2147483647</int>
