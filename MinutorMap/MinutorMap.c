@@ -327,6 +327,7 @@ static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *b
 					{
 						light=block->light[bofs>>1];
 						if (!(bofs&1)) light>>=4;
+						light&=0xf;
 					}
 					if (prevy==-1) prevy=i;
 					if (prevy<i)
