@@ -44,6 +44,9 @@ static void initColors();
 static int colorsInited=0;
 static unsigned int blockColors[256*16];
 
+#define clamp(v,a,b) ((v)<b?((v)>a?(v):a):b)
+
+
 //world = path to world saves
 //cx = center x world
 //cz = center z world
@@ -52,12 +55,7 @@ static unsigned int blockColors[256*16];
 //h = output height
 //zoom = zoom amount (1.0 = 100%)
 //bits = byte array for output
-//opts = bitmask of render options
-//  1<<0 Cave Mode
-//  1<<1 Show Obscured
-//  1<<2 Depth Shading
-//  1<<3 Use Lighting
-//  1<<4 Raytrace Shadows (TODO)
+//opts = bitmask of render options (see MinutorMap.h)
 void DrawMap(const char *world,double cx,double cz,int y,int w,int h,double zoom,unsigned char *bits,int opts)
 {
     /* We're converting between coordinate systems, so this gets kinda ugly 
@@ -214,12 +212,7 @@ void CloseAll()
 	Cache_Empty();
 }
 
-// opts is a bitmask representing render options:
-// 1<<0 Cave Mode
-// 1<<1 Show Obscured
-// 1<<2 Depth Shading
-// 1<<3 Lighting
-// 1<<4 Raytrace Shadows (TODO)
+// opts is a bitmask representing render options (see MinutorMap.h)
 static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *bits)
 {
 	int first,second;
@@ -230,14 +223,12 @@ static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *b
 	unsigned int color, watercolor = blocks[BLOCK_WATER].color, water;
 	unsigned char pixel, r, g, b, seenempty;
 
-    char cavemode, showobscured, depthshading, lighting, raytrace;
+    char cavemode, showobscured, depthshading, lighting;
 
-    cavemode=!(!(opts&(1<<0)));
-    showobscured=!(!(opts&(1<<1)));
-    depthshading=!(!(opts&(1<<2)));
-    lighting=!!(opts&(1<<3));
-	lighting=1;
-    raytrace=!(!(opts&(1<<4)));
+	cavemode=!!(opts&CAVEMODE);
+    showobscured=!!(opts&SHOWOBSCURED);
+    depthshading=!!(opts&DEPTHSHADING);
+    lighting=!!(opts&LIGHTING);
 
 	block=(Block *)Cache_Find(bx,bz);
 
@@ -329,26 +320,21 @@ static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *b
                     if (++water < 8)
                         continue;
                 }
-                if ((showobscured || seenempty) && pixel<numBlocks && blocks[pixel].canDraw)
+                if ((!showobscured || seenempty) && pixel<numBlocks && blocks[pixel].canDraw)
 				{
+					int light=12,hilite=15,lolite=3;
 					if (lighting)
 					{
-						//this doesn't work right... I need to look into the structure of the lighting more closely...
-						int light=block->light[bofs>>1];
-						if (bofs&1) light>>=4;
-						if (light!=0) printf("%d\n",light);
-						color=blockColors[pixel*16+(light&0xf)];
+						light=block->light[bofs>>1];
+						if (!(bofs&1)) light>>=4;
 					}
-					else
-					{
-						if (prevy==-1) prevy=i;
-						if (prevy<i)
-							color=blockColors[pixel*16+15];
-						else if (prevy>i)
-							color=blockColors[pixel*16+3];
-						else
-							color=blockColors[pixel*16+12];
-					}
+					if (prevy==-1) prevy=i;
+					if (prevy<i)
+						light+=2;
+					else if (prevy>i)
+						light-=5;
+					light=clamp(light,0,15);
+					color=blockColors[pixel*16+light];
 
                     if (water != 0) {
                         r=(color>>16)/(water + 1) + (watercolor>>16)*water/(water + 1);
@@ -410,7 +396,6 @@ static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *b
             block->heightmap[x+z*16] = prevy;
 		}
 	}
-
     memcpy(block->rendercache, bits, sizeof(unsigned char)*16*16*4);
 }
 Block *LoadBlock(char *filename)
@@ -448,7 +433,6 @@ void GetPlayer(const char *world,int *px,int *py,int *pz)
 	nbtClose(gz);
 }
 
-#define clamp(v) ((v)<255?((v)>0?(v):0):255)
 
 // for each block color, calculate light levels 0-15
 static void initColors()
@@ -466,17 +450,16 @@ static void initColors()
 		//we'll use YUV to darken the blocks.. gives a nice even
 		//coloring
 		y=0.299*r+0.587*g+0.114*b;
-		u=-0.169*r-0.331*g+0.499*b;
-		v=0.499*r-0.418*g-0.0813*b;
-		delta=y/16;
+		u=(b-y)*0.565;
+		v=(r-y)*0.713;
+		delta=y/15;
 
-		//0 light = completely black.. that might not be good.
 		for (shade=0;shade<16;shade++)
 		{
 			y=shade*delta;
-			r=clamp(y+1.402*v);
-			g=clamp(y-0.344*u-0.714*v);
-			b=clamp(y+1.772*u);
+			r=(unsigned int)clamp(y+1.403*v,0,255);
+			g=(unsigned int)clamp(y-0.344*u-0.714*v,0,255);
+			b=(unsigned int)clamp(y+1.770*u,0,255);
 			blockColors[i*16+shade]=(r<<16)|(g<<8)|b;
 		}
 	}

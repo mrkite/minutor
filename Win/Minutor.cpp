@@ -51,6 +51,8 @@ static int curDepth=127;								//current depth
 static int spawnX,spawnY,spawnZ;
 static int playerX,playerY,playerZ;
 
+static int opts=0;
+
 // Forward declarations of functions included in this code module:
 ATOM				MyRegisterClass(HINSTANCE hInstance);
 BOOL				InitInstance(HINSTANCE, int);
@@ -455,6 +457,34 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			InvalidateRect(hWnd,NULL,TRUE);
 			UpdateWindow(hWnd);
 			break;
+		case IDM_LIGHTING:
+			opts^=LIGHTING;
+			CheckMenuItem(GetMenu(hWnd),wmId,(opts&LIGHTING)?MF_CHECKED:MF_UNCHECKED);
+			draw();
+			InvalidateRect(hWnd,NULL,TRUE);
+			UpdateWindow(hWnd);
+			break;
+		case IDM_CAVEMODE:
+			opts^=CAVEMODE;
+			CheckMenuItem(GetMenu(hWnd),wmId,(opts&LIGHTING)?MF_CHECKED:MF_UNCHECKED);
+			draw();
+			InvalidateRect(hWnd,NULL,TRUE);
+			UpdateWindow(hWnd);
+			break;
+		case IDM_OBSCURED:
+			opts^=SHOWOBSCURED;
+			CheckMenuItem(GetMenu(hWnd),wmId,(opts&LIGHTING)?MF_CHECKED:MF_UNCHECKED);
+			draw();
+			InvalidateRect(hWnd,NULL,TRUE);
+			UpdateWindow(hWnd);
+			break;
+		case IDM_DEPTH:
+			opts^=DEPTHSHADING;
+			CheckMenuItem(GetMenu(hWnd),wmId,(opts&LIGHTING)?MF_CHECKED:MF_UNCHECKED);
+			draw();
+			InvalidateRect(hWnd,NULL,TRUE);
+			UpdateWindow(hWnd);
+			break;
 		default:
 			return DefWindowProc(hWnd, message, wParam, lParam);
 		}
@@ -521,7 +551,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 static void draw()
 {
 	if (loaded)
-		DrawMap(world,curX,curZ,curDepth,bitWidth,bitHeight,curScale,map);
+		DrawMap(world,curX,curZ,curDepth,bitWidth,bitHeight,curScale,map,opts);
 	else
 		memset(map,0xff,bitWidth*bitHeight*4);
 	for (int i=0;i<bitWidth*bitHeight*4;i+=4)

@@ -38,6 +38,12 @@ THE POSSIBILITY OF SUCH DAMAGE.
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#define CAVEMODE		0x01
+#define SHOWOBSCURED	0x02
+#define DEPTHSHADING	0x04
+#define LIGHTING		0x08
+
 	__declspec(dllexport) void __cdecl DrawMap(const char *world,double cx,double cz,int y,int w,int h,double zoom,unsigned char *bits, int opts);
 	__declspec(dllexport) const char * __cdecl IDBlock(int bx, int by, double cx, double cz, int w, int h, double zoom,int *ox,int *oz);
 	__declspec(dllexport) void __cdecl CloseAll();

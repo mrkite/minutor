@@ -36,7 +36,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
 static GtkWidget *win;
 static GtkWidget *slider,*da,*status;
 static GtkWidget *jumpplayer,*jumpspawn;
-static GtkWidget *cavemode, *showobscured, *depthshading;
+static GtkWidget *lighting, *cavemode, *showobscured, *depthshading;
 static double curX,curZ;
 static int curDepth=127;
 static double curScale=1.0;
@@ -68,9 +68,11 @@ static gboolean drawMap(GtkWidget *widget)
 		curHeight=h;
 		bits=g_realloc(bits,curWidth*curHeight*4);
 	}
-    int opts=gtk_check_menu_item_get_active((GtkCheckMenuItem *)cavemode)
-           | gtk_check_menu_item_get_active((GtkCheckMenuItem *)showobscured)<<1
-           | gtk_check_menu_item_get_active((GtkCheckMenuItem *)depthshading)<<2;
+	int opts=0;
+	opts|=gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(cavemode))?CAVEMODE:0;
+	opts|=gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(showobscured))?SHOWOBSCURED:0;
+    opts|=gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(depthshading))?DEPTHSHADING:0;
+	opts|=gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(lighting))?LIGHTING:0;
 
 	DrawMap(world,curX,curZ,curDepth,curWidth,curHeight,curScale,bits,opts);
 
@@ -424,17 +426,24 @@ void createMapViewer()
 		G_CALLBACK(adjustMap),G_OBJECT(da));
 
     //view menu > rendering options
+	lighting=gtk_check_menu_item_new_with_mnemonic("_Lighting");
+	gtk_widget_add_accelerator(lighting,"activate",menuGroup,
+		GDK_1,0,GTK_ACCEL_VISIBLE);
+	g_signal_connect(G_OBJECT(lighting),"toggled",
+		G_CALLBACK(drawMap),NULL);
+		
     cavemode=gtk_check_menu_item_new_with_mnemonic("_Cave Mode");
     gtk_widget_add_accelerator(cavemode,"activate",menuGroup,
-        GDK_1,0,GTK_ACCEL_VISIBLE);
+        GDK_2,0,GTK_ACCEL_VISIBLE);
     gtk_menu_shell_append(GTK_MENU_SHELL(viewitems),cavemode);
     g_signal_connect(G_OBJECT(cavemode),"toggled",
         G_CALLBACK(drawMap),NULL);
 
     showobscured=gtk_check_menu_item_new_with_mnemonic("Show _Obscured");
-    gtk_check_menu_item_set_active((GtkCheckMenuItem *)showobscured, 1);
+	// off by default
+    //gtk_check_menu_item_set_active((GtkCheckMenuItem *)showobscured, 1);
     gtk_widget_add_accelerator(showobscured,"activate",menuGroup,
-        GDK_2,0,GTK_ACCEL_VISIBLE);
+        GDK_3,0,GTK_ACCEL_VISIBLE);
     gtk_menu_shell_append(GTK_MENU_SHELL(viewitems),showobscured);
     g_signal_connect(G_OBJECT(showobscured),"toggled",
         G_CALLBACK(drawMap),NULL);
@@ -443,7 +452,7 @@ void createMapViewer()
  // off by default
  //   gtk_check_menu_item_set_active((GtkCheckMenuItem *)depthshading, 1);
     gtk_widget_add_accelerator(depthshading,"activate",menuGroup,
-        GDK_3,0,GTK_ACCEL_VISIBLE);
+        GDK_4,0,GTK_ACCEL_VISIBLE);
     gtk_menu_shell_append(GTK_MENU_SHELL(viewitems),depthshading);
     g_signal_connect(G_OBJECT(depthshading),"toggled",
         G_CALLBACK(drawMap),NULL);
