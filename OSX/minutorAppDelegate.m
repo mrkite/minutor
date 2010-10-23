@@ -27,6 +27,7 @@
 
 #import "minutorAppDelegate.h"
 #import "MapViewer.h"
+#include "MinutorMap.h"
 
 @interface minutorAppDelegate (private)
 - (NSString *) worldToPath:(int)world;
@@ -36,6 +37,7 @@
 
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+	opts=0;
 }
 
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem
@@ -81,6 +83,30 @@
 -(IBAction) jumpToPlayer:sender
 {
 	[mapViewer jumpToPlayer];
+}
+-(IBAction) toggleLighting:sender
+{
+	opts^=LIGHTING;
+	[sender setState:((opts&LIGHTING)!=0)?NSOnState:NSOffState];
+	[mapViewer setOptions:opts];
+}
+-(IBAction) toggleCaveMode:sender
+{
+	opts^=CAVEMODE;
+	[sender setState:((opts&CAVEMODE)!=0)?NSOnState:NSOffState];
+	[mapViewer setOptions:opts];
+}
+-(IBAction) toggleObscured:sender
+{
+	opts^=SHOWOBSCURED;
+	[sender setState:((opts&SHOWOBSCURED)!=0)?NSOnState:NSOffState];
+	[mapViewer setOptions:opts];
+}
+-(IBAction) toggleDepth:sender
+{
+	opts^=DEPTHSHADING;
+	[sender setState:((opts&DEPTHSHADING)!=0)?NSOnState:NSOffState];
+	[mapViewer setOptions:opts];
 }
 
 - (NSString *) worldToPath:(int)world

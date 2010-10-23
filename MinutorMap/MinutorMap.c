@@ -322,7 +322,7 @@ static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *b
                 }
                 if ((!showobscured || seenempty) && pixel<numBlocks && blocks[pixel].canDraw)
 				{
-					int light=12,hilite=15,lolite=3;
+					int light=12;
 					if (lighting)
 					{
 						light=block->light[bofs>>1];

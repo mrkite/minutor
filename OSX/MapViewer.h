@@ -42,5 +42,6 @@
 -(void)jumpToSpawn;
 -(void)jumpToPlayer;
 -(IBAction) sliderChanged:(NSSlider*)sender;
+-(void)setOptions:(int)options;
 
 @end

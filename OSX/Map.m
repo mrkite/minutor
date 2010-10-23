@@ -63,7 +63,7 @@
 	NSRect myRect = NSMakeRect(0,0,curWidth,curHeight);
 	
 	
-	DrawMap([world UTF8String], curX, curZ, curDepth, curWidth, curHeight, curScale, bits);
+	DrawMap([world UTF8String], curX, curZ, curDepth, curWidth, curHeight, curScale, bits, opts);
 	
 	NSBitmapImageRep *mapImage=[[NSBitmapImageRep alloc]
 								initWithBitmapDataPlanes:&bits
@@ -221,6 +221,11 @@
 {
 	[status autorelease];
 	status=[statusbar retain];
+}
+- (void)setOptions:(int)options
+{
+	opts=options;
+	[self setNeedsDisplay:YES];
 }
 
 @end

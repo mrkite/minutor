@@ -36,10 +36,12 @@
 	int curWidth,curHeight;
 	int moving;
 	id status;
+	int opts;
 }
 -(void)setX:(double)x andZ:(double)z;
 -(void)setDepth:(int)depth;
 -(void)setWorld:(NSString *)newWorld;
 -(void)setStatus:(id)status;
+-(void)setOptions:(int)options;
 
 @end

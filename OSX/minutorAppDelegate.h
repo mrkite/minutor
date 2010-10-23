@@ -35,9 +35,15 @@
 	NSMutableArray *worldPaths;
 	NSString *customWorld;
 	IBOutlet id mapViewer;
+	int opts;
 }
 - (IBAction) openWorld: sender;
 - (IBAction) jumpToSpawn: sender;
 - (IBAction) jumpToPlayer: sender;
+- (IBAction) toggleLighting: sender;
+- (IBAction) toggleCaveMode: sender;
+- (IBAction) toggleObscured: sender;
+- (IBAction) toggleDepth: sender;
+
 
 @end

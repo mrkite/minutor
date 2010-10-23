@@ -74,5 +74,9 @@
 		[map setDepth:127-curDepth];
 	}
 }
+-(void)setOptions:(int)options
+{
+	[map setOptions:options];
+}
 
 @end
