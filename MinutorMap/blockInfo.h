@@ -31,12 +31,6 @@ THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <stdlib.h>
 
-/*
-IMPORTANT:
-Change the colors all you want, but it's very important that all colors
-are unqiue... otherwise the identifier might report a different block.
-*/
-
 static struct {
 	const char *name;
 	int canDraw;

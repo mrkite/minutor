@@ -440,7 +440,8 @@ void createMapViewer()
         G_CALLBACK(drawMap),NULL);
 
     depthshading=gtk_check_menu_item_new_with_mnemonic("_Depth Shading");
-    gtk_check_menu_item_set_active((GtkCheckMenuItem *)depthshading, 1);
+ // off by default
+ //   gtk_check_menu_item_set_active((GtkCheckMenuItem *)depthshading, 1);
     gtk_widget_add_accelerator(depthshading,"activate",menuGroup,
         GDK_3,0,GTK_ACCEL_VISIBLE);
     gtk_menu_shell_append(GTK_MENU_SHELL(viewitems),depthshading);

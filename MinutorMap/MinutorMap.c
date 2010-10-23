@@ -39,6 +39,10 @@ static void blit(unsigned char *block,unsigned char *bits,int px,int py,
 	double zoom,int w,int h);
 static Block *LoadBlock(char *filename);
 static void b36(char *dest,int num);
+static void initColors();
+
+static int colorsInited=0;
+static unsigned int blockColors[256*16];
 
 //world = path to world saves
 //cx = center x world
@@ -52,7 +56,8 @@ static void b36(char *dest,int num);
 //  1<<0 Cave Mode
 //  1<<1 Show Obscured
 //  1<<2 Depth Shading
-//  1<<3 Raytrace Shadows (TODO)
+//  1<<3 Use Lighting
+//  1<<4 Raytrace Shadows (TODO)
 void DrawMap(const char *world,double cx,double cz,int y,int w,int h,double zoom,unsigned char *bits,int opts)
 {
     /* We're converting between coordinate systems, so this gets kinda ugly 
@@ -99,6 +104,9 @@ void DrawMap(const char *world,double cx,double cz,int y,int w,int h,double zoom
 		startxblock--;
 		shifty+=blockScale;
 	}
+
+	if (!colorsInited)
+		initColors();
 
     // x increases south, decreases north
     for (x=0,py=-shifty;x<=vBlocks;x++,py+=blockScale)
@@ -210,7 +218,8 @@ void CloseAll()
 // 1<<0 Cave Mode
 // 1<<1 Show Obscured
 // 1<<2 Depth Shading
-// 1<<3 Raytrace Shadows (TODO)
+// 1<<3 Lighting
+// 1<<4 Raytrace Shadows (TODO)
 static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *bits)
 {
 	int first,second;
@@ -221,12 +230,14 @@ static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *b
 	unsigned int color, watercolor = blocks[BLOCK_WATER].color, water;
 	unsigned char pixel, r, g, b, seenempty;
 
-    char cavemode, showobscured, depthshading, raytrace;
+    char cavemode, showobscured, depthshading, lighting, raytrace;
 
     cavemode=!(!(opts&(1<<0)));
     showobscured=!(!(opts&(1<<1)));
     depthshading=!(!(opts&(1<<2)));
-    raytrace=!(!(opts&(1<<3)));
+    lighting=!!(opts&(1<<3));
+	lighting=1;
+    raytrace=!(!(opts&(1<<4)));
 
 	block=(Block *)Cache_Find(bx,bz);
 
@@ -285,6 +296,8 @@ static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *b
         prevblock = NULL; //block was rendered at a different y level, ignore
     }
 
+	if (lighting)
+		watercolor=blockColors[BLOCK_WATER*16+0];
     // x increases south, decreases north
 	for (x=0;x<16;x++,xOfs+=128*16)
 	{
@@ -318,13 +331,24 @@ static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *b
                 }
                 if ((showobscured || seenempty) && pixel<numBlocks && blocks[pixel].canDraw)
 				{
-					if (prevy==-1) prevy=i;
-					if (prevy<i)
-						color=blocks[pixel].light;
-					else if (prevy>i)
-						color=blocks[pixel].dark;
+					if (lighting)
+					{
+						//this doesn't work right... I need to look into the structure of the lighting more closely...
+						int light=block->light[bofs>>1];
+						if (bofs&1) light>>=4;
+						if (light!=0) printf("%d\n",light);
+						color=blockColors[pixel*16+(light&0xf)];
+					}
 					else
-						color=blocks[pixel].color;
+					{
+						if (prevy==-1) prevy=i;
+						if (prevy<i)
+							color=blockColors[pixel*16+15];
+						else if (prevy>i)
+							color=blockColors[pixel*16+3];
+						else
+							color=blockColors[pixel*16+12];
+					}
 
                     if (water != 0) {
                         r=(color>>16)/(water + 1) + (watercolor>>16)*water/(water + 1);
@@ -392,12 +416,13 @@ static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *b
 Block *LoadBlock(char *filename)
 {
 	gzFile gz=newNBT(filename);
-    Block *block=malloc(sizeof(Block));
-    block->rendery = -1;
-	if (nbtGetBlocks(gz, block->grid) == NULL) {
-        free(block);
-        block = NULL;
-    }
+	Block *block=malloc(sizeof(Block));
+	block->rendery = -1;
+	if (!nbtGetBlocks(gz, block->grid,block->light))
+	{
+        	free(block);
+	        block = NULL;
+    	}
 	nbtClose(gz);
 	return block;
 }
@@ -421,6 +446,40 @@ void GetPlayer(const char *world,int *px,int *py,int *pz)
 	gz=newNBT(filename);
 	nbtGetPlayer(gz,px,py,pz);
 	nbtClose(gz);
+}
+
+#define clamp(v) ((v)<255?((v)>0?(v):0):255)
+
+// for each block color, calculate light levels 0-15
+static void initColors()
+{
+	unsigned r,g,b,i,shade;
+	double y,u,v,delta;
+	unsigned int color;
+	colorsInited=1;
+	for (i=0;i<numBlocks;i++)
+	{
+		color=blocks[i].color;
+		r=color>>16;
+		g=(color>>8)&0xff;
+		b=color&0xff;
+		//we'll use YUV to darken the blocks.. gives a nice even
+		//coloring
+		y=0.299*r+0.587*g+0.114*b;
+		u=-0.169*r-0.331*g+0.499*b;
+		v=0.499*r-0.418*g-0.0813*b;
+		delta=y/16;
+
+		//0 light = completely black.. that might not be good.
+		for (shade=0;shade<16;shade++)
+		{
+			y=shade*delta;
+			r=clamp(y+1.402*v);
+			g=clamp(y-0.344*u-0.714*v);
+			b=clamp(y+1.772*u);
+			blockColors[i*16+shade]=(r<<16)|(g<<8)|b;
+		}
+	}
 }
 
 static void b36(char *dest,int num)

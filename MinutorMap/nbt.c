@@ -199,7 +199,7 @@ static int findElement(gzFile gz,char *name)
 	}
 }
 
-unsigned char *nbtGetBlocks(gzFile gz, unsigned char *buff)
+int nbtGetBlocks(gzFile gz, unsigned char *buff,unsigned char *blockLight)
 {
 	int len;
 	//Level/Blocks
@@ -207,12 +207,17 @@ unsigned char *nbtGetBlocks(gzFile gz, unsigned char *buff)
 	len=readWord(gz); //name length
 	gzseek(gz,len,SEEK_CUR); //skip name ()
 	if (findElement(gz,"Level")!=10)
-		return NULL;
+		return 0;
+	if (findElement(gz,"BlockLight")!=7)
+		return 0;
+	len=readDword(gz); //array length
+	gzread(gz,blockLight,len); 
 	if (findElement(gz,"Blocks")!=7)
-		return NULL;
+		return 0;
 	len=readDword(gz); //array length
 	gzread(gz,buff,len);
-	return buff;
+
+	return 1;
 }
 void nbtGetSpawn(gzFile gz,int *x,int *y,int *z)
 {

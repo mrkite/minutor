@@ -39,6 +39,7 @@ typedef struct BlockCache {
 
 typedef struct Block {
     unsigned char grid[16*16*128];  // blockid array [y+(z+x*16)*128]
+    unsigned char light[16*16*64];
 
     unsigned char rendercache[16*16*4]; // bitmap of last render
     unsigned char heightmap[16*16]; // height of rendered block [x+z*16]
