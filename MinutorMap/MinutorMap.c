@@ -220,8 +220,9 @@ static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *b
 	char filename[256];
 	int ofs=0,xOfs=0,prevy,zOfs,bofs;
 	int x,z,i;
-	unsigned int color, watercolor = blocks[BLOCK_WATER].color, water;
+	unsigned int color;
 	unsigned char pixel, r, g, b, seenempty;
+	double alpha;
 
     char cavemode, showobscured, depthshading, lighting;
 
@@ -286,9 +287,6 @@ static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *b
         block->rendermissing=1; //note improperly rendered block to west
         prevblock = NULL; //block was rendered at a different y level, ignore
     }
-
-	if (lighting)
-		watercolor=blockColors[BLOCK_WATER*16+0];
     // x increases south, decreases north
 	for (x=0;x<16;x++,xOfs+=128*16)
 	{
@@ -304,8 +302,8 @@ static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *b
 		{
 			bofs=zOfs+y;
 			color=0;
-            water=0;
             seenempty=0;
+			alpha=0.0;
 			for (i=y;i>=0;i--,bofs--)
 			{
 				pixel=block->grid[bofs];
@@ -314,13 +312,7 @@ static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *b
                     seenempty=1;
                     continue;
                 }
-                if (pixel==BLOCK_STATIONARY_WATER || pixel==BLOCK_WATER) 
-                {
-                    seenempty=1; // count water as an "empty" (see-through) block
-                    if (++water < 8)
-                        continue;
-                }
-                if ((!showobscured || seenempty) && pixel<numBlocks && blocks[pixel].canDraw)
+                if ((!showobscured || seenempty) && pixel<numBlocks && blocks[pixel].alpha!=0.0)
 				{
 					int light=12;
 					if (lighting)
@@ -336,15 +328,22 @@ static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *b
 						light-=5;
 					light=clamp(light,0,15);
 					color=blockColors[pixel*16+light];
-
-                    if (water != 0) {
-                        r=(color>>16)/(water + 1) + (watercolor>>16)*water/(water + 1);
-                        g=(color>>8&0xff)/(water + 1) + (watercolor>>8&0xff)*water/(water + 1);
-                        b=(color&0xff)/(water + 1) + (watercolor&0xff)*water/(water + 1);
-                        color = r<<16 | g<<8 | b;
-                    }
-
-					break;
+					if (alpha==0.0)
+					{
+						alpha=blocks[pixel].alpha;
+						r=color>>16;
+						g=(color>>8)&0xff;
+						b=color&0xff;
+					}
+					else
+					{
+							r+=(unsigned char)((1.0-alpha)*(color>>16));
+							g+=(unsigned char)((1.0-alpha)*((color>>8)&0xff));
+							b+=(unsigned char)((1.0-alpha)*(color&0xff));
+							alpha+=blocks[pixel].alpha*(1.0-alpha);
+					}
+					if (blocks[pixel].alpha==1.0)
+						break;
 				}
 			}
 
@@ -355,13 +354,13 @@ static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *b
                 int num=prevy+50-(128-y)/5;
                 int denom=y+50-(128-y)/5;
 
-                r=(color>>16)*num/denom;
-                g=(color>>8&0xff)*num/denom;
-                b=(color&0xff)*num/denom;
-                color = r<<16 | g<<8 | b;
+				r=r*num/denom;
+                g=g*num/denom;
+                b=b*num/denom;
             }
 
-            if (cavemode) {
+            if (cavemode)
+			{
                 seenempty=0;
                 pixel=block->grid[bofs];
 
@@ -378,20 +377,19 @@ static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *b
                         seenempty=1;
                         continue;
                     }
-                    if (seenempty && pixel<numBlocks && blocks[pixel].canDraw)
+                    if (seenempty && pixel<numBlocks && blocks[pixel].alpha!=0.0)
                     {
-                        r=(color>>16)*(prevy-i+10)/138;
-                        g=(color>>8&0xff)*(prevy-i+10)/138;
-                        b=(color&0xff)*(prevy-i+10)/138; 
-                        color = r<<16 | g<<8 | b;
+                        r=r*(prevy-i+10)/138;
+                        g=g*(prevy-i+10)/138;
+                        b=b*(prevy-i+10)/138; 
                         break;
                     }
                 }
             }
 
-			bits[ofs++]=color>>16;
-			bits[ofs++]=color>>8;
-			bits[ofs++]=color;
+			bits[ofs++]=r;
+			bits[ofs++]=g;
+			bits[ofs++]=b;
 			bits[ofs++]=0xff;
 
             block->heightmap[x+z*16] = prevy;
