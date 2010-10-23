@@ -302,6 +302,7 @@ static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *b
 		{
 			bofs=zOfs+y;
 			color=0;
+			r=g=b=0;
             seenempty=0;
 			alpha=0.0;
 			for (i=y;i>=0;i--,bofs--)
