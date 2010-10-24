@@ -318,9 +318,9 @@ static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *b
                 if ((showobscured || seenempty) && pixel<numBlocks && blocks[pixel].alpha!=0.0)
 				{
 					int light=12;
-					if (lighting)
+					if (lighting && i < 127)
 					{
-						light=block->light[bofs>>1];
+						light=block->light[(bofs+1)/2];
 						if (!(bofs&1)) light>>=4;
 						light&=0xf;
 					}
@@ -329,7 +329,7 @@ static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *b
 						light+=2;
 					else if (prevy>i)
 						light-=5;
-					light=clamp(light,0,15);
+					light=clamp(light,1,15);
 					color=blockColors[pixel*16+light];
 					if (alpha==0.0)
 					{

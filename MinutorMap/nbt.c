@@ -32,6 +32,21 @@ THE POSSIBILITY OF SUCH DAMAGE.
 static void skipList(gzFile gz);
 static void skipCompound(gzFile gz);
 
+static inline int min(int a, int b);
+static inline int max(int a, int b);
+
+static inline int min(int a, int b) {
+    if (a < b)
+        return a;
+    return b;
+}
+
+static inline int max(int a, int b) {
+    if (a > b)
+        return a;
+    return b;
+}
+
 gzFile newNBT(const char *filename)
 {
 	return gzopen(filename,"rb");
@@ -201,6 +216,7 @@ static int findElement(gzFile gz,char *name)
 
 int nbtGetBlocks(gzFile gz, unsigned char *buff,unsigned char *blockLight)
 {
+    unsigned char skyLight[16*16*128/2];
 	int len;
 	//Level/Blocks
 	gzseek(gz,1,SEEK_CUR); //skip type
@@ -208,10 +224,18 @@ int nbtGetBlocks(gzFile gz, unsigned char *buff,unsigned char *blockLight)
 	gzseek(gz,len,SEEK_CUR); //skip name ()
 	if (findElement(gz,"Level")!=10)
 		return 0;
+	if (findElement(gz,"SkyLight")!=7)
+		return 0;
+	len=readDword(gz); //array length
+	gzread(gz,skyLight,len);
 	if (findElement(gz,"BlockLight")!=7)
 		return 0;
 	len=readDword(gz); //array length
-	gzread(gz,blockLight,len); 
+	gzread(gz,blockLight,len);
+    for (int i = 0; i < len; ++i) {
+        blockLight[i] = min((blockLight[i]&0xf0) + max((skyLight[i]&0xf0)-(3<<4),0), 0xf0)
+                      | min((blockLight[i]&0x0f) + max((skyLight[i]&0x0f)-3,0), 0x0f);
+    }
 	if (findElement(gz,"Blocks")!=7)
 		return 0;
 	len=readDword(gz); //array length

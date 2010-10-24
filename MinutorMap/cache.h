@@ -46,7 +46,7 @@ typedef struct Block {
 
     int rendery;        // slice height for last render
     int renderopts;     // options bitmask for last render
-    int rendermissing;  // the z-offset of a block that was missing
+    char rendermissing;  // the z-offset of a block that was missing
                         // when it was last rendered (for blocks on the
                         // left edge of the map, this might be +1)
 } Block;
