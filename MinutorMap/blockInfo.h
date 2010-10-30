@@ -41,7 +41,7 @@ static struct {
 	const char *name;
 	unsigned int color;
 	double alpha;
-} blocks[]={
+} blocks[256]={
 {"Air",                    0x000000,0.0},	//00
 {"Stone",                  0x787878,1.0},	//01
 {"Grass",                  0x78b34d,1.0},	//02

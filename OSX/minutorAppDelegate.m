@@ -38,6 +38,7 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	opts=0;
+	[colorSchemes readDefaults];
 }
 
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem
@@ -88,25 +89,31 @@
 {
 	opts^=LIGHTING;
 	[sender setState:((opts&LIGHTING)!=0)?NSOnState:NSOffState];
-	[mapViewer setOptions:opts];
+	[mapViewer setOpts:opts];
 }
 -(IBAction) toggleCaveMode:sender
 {
 	opts^=CAVEMODE;
 	[sender setState:((opts&CAVEMODE)!=0)?NSOnState:NSOffState];
-	[mapViewer setOptions:opts];
+	[mapViewer setOpts:opts];
 }
 -(IBAction) toggleObscured:sender
 {
 	opts^=HIDEOBSCURED;
 	[sender setState:((opts&HIDEOBSCURED)!=0)?NSOnState:NSOffState];
-	[mapViewer setOptions:opts];
+	[mapViewer setOpts:opts];
 }
 -(IBAction) toggleDepth:sender
 {
 	opts^=DEPTHSHADING;
 	[sender setState:((opts&DEPTHSHADING)!=0)?NSOnState:NSOffState];
-	[mapViewer setOptions:opts];
+	[mapViewer setOpts:opts];
+}
+
+-(IBAction)selectScheme:sender
+{
+	[colorSchemes select:sender];
+	[mapViewer setColorScheme:[colorSchemes current]];
 }
 
 - (NSString *) worldToPath:(int)world

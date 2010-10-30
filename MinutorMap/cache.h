@@ -49,6 +49,7 @@ typedef struct Block {
     char rendermissing;  // the z-offset of a block that was missing
                         // when it was last rendered (for blocks on the
                         // left edge of the map, this might be +1)
+	unsigned short colormap; //color map when this was rendered
 } Block;
 
 void *Cache_Find(int bx,int bz);

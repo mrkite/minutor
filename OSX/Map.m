@@ -227,5 +227,10 @@
 	opts=options;
 	[self setNeedsDisplay:YES];
 }
+-(void)setColorScheme:(unsigned int *)colors
+{
+	SetPalette(colors, 256);
+	[self setNeedsDisplay:YES];
+}
 
 @end

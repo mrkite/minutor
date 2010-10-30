@@ -44,6 +44,8 @@ static void initColors();
 static int colorsInited=0;
 static unsigned int blockColors[256*16];
 
+static unsigned short colormap=0;
+
 #define clamp(v,a,b) ((v)<b?((v)>a?(v):a):b)
 
 
@@ -212,6 +214,8 @@ void CloseAll()
 	Cache_Empty();
 }
 
+
+
 // opts is a bitmask representing render options (see MinutorMap.h)
 static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *bits)
 {
@@ -260,7 +264,7 @@ static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *b
 		Cache_Add(bx,bz,block);
 	}
 
-    if (block->rendery==y && block->renderopts==opts) // already rendered, use cache
+    if (block->rendery==y && block->renderopts==opts && block->colormap==colormap) // already rendered, use cache
     { 
         memcpy(bits, block->rendercache, sizeof(unsigned char)*16*16*4);
 
@@ -277,6 +281,7 @@ static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *b
     block->rendery=y;
     block->renderopts=opts;
     block->rendermissing=0;
+	block->colormap=colormap;
 
     // find the block to the west, so we can use its heightmap for shading
     prevblock=(Block *)Cache_Find(bx, bz + 1);
@@ -435,6 +440,28 @@ void GetPlayer(const char *world,int *px,int *py,int *pz)
 	nbtClose(gz);
 }
 
+//palette should be in RGBA format
+void SetPalette(unsigned int *palette,int num)
+{
+	unsigned char r,g,b;
+	double a;
+	int i;
+	
+	colormap++;
+	for (i=0;i<num;i++)
+	{
+		r=palette[i]>>24;
+		g=palette[i]>>16;
+		b=palette[i]>>8;
+		a=((double)(palette[i]&0xff))/255.0;
+		r*=a; //premultiply alpha
+		g*=a;
+		b*=a;
+		blocks[i].color=(r<<16)|(g<<8)|b;
+		blocks[i].alpha=a;
+	}
+	initColors();
+}
 
 // for each block color, calculate light levels 0-15
 static void initColors()

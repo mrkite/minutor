@@ -49,6 +49,9 @@ extern "C" {
 	__declspec(dllexport) void __cdecl CloseAll();
 	__declspec(dllexport) void __cdecl GetSpawn(const char *world,int *x,int *y,int *z);
 	__declspec(dllexport) void __cdecl GetPlayer(const char *world,int *px,int *py,int *pz);
+	
+	// palette should be in RGBA format, num colors in the palette
+	__declspec(dllexport) void __cdecl SetPalette(unsigned int *palette,int num);
 #ifdef __cplusplus
 }
 #endif

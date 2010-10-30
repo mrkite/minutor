@@ -14,6 +14,7 @@
 		14A14FA2124BDCAA002E2FA9 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 14A14FA1124BDCAA002E2FA9 /* libz.dylib */; };
 		14A15134124C11F2002E2FA9 /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 14A15133124C11F2002E2FA9 /* icon.icns */; };
 		14D1F3E2124ACEF8008A7C07 /* MapViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = 14D1F3E1124ACEF8008A7C07 /* MapViewer.m */; };
+		14EC3C4E127B5E33001B3B24 /* ColorScheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 14EC3C4D127B5E33001B3B24 /* ColorScheme.m */; };
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		256AC3DA0F4B6AC300CF3369 /* minutorAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* minutorAppDelegate.m */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
@@ -39,6 +40,8 @@
 		14A15133124C11F2002E2FA9 /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
 		14D1F3E0124ACEF8008A7C07 /* MapViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewer.h; sourceTree = "<group>"; };
 		14D1F3E1124ACEF8008A7C07 /* MapViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewer.m; sourceTree = "<group>"; };
+		14EC3C4C127B5E33001B3B24 /* ColorScheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorScheme.h; sourceTree = "<group>"; };
+		14EC3C4D127B5E33001B3B24 /* ColorScheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorScheme.m; sourceTree = "<group>"; };
 		1DDD58150DA1D0A300B32029 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		256AC3D80F4B6AC300CF3369 /* minutorAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = minutorAppDelegate.h; sourceTree = "<group>"; };
 		256AC3D90F4B6AC300CF3369 /* minutorAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = minutorAppDelegate.m; sourceTree = "<group>"; };
@@ -74,6 +77,8 @@
 				14A14F82124BD800002E2FA9 /* Map.h */,
 				14A14F83124BD800002E2FA9 /* Map.m */,
 				14A14FA1124BDCAA002E2FA9 /* libz.dylib */,
+				14EC3C4C127B5E33001B3B24 /* ColorScheme.h */,
+				14EC3C4D127B5E33001B3B24 /* ColorScheme.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -233,6 +238,7 @@
 				14A14F99124BDC27002E2FA9 /* cache.c in Sources */,
 				14A14F9A124BDC27002E2FA9 /* MinutorMap.c in Sources */,
 				14A14F9B124BDC27002E2FA9 /* nbt.c in Sources */,
+				14EC3C4E127B5E33001B3B24 /* ColorScheme.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

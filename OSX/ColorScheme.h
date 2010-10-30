@@ -25,62 +25,28 @@
  THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "MapViewer.h"
-#include "MinutorMap.h"
+#import <Cocoa/Cocoa.h>
 
 
-@implementation MapViewer
--(NSObject *)init
-{
-	self = [super init];
-	curDepth=0;
-	return self;
+@interface ColorSchemes : NSObject {
+	NSMutableArray *schemes;
+	IBOutlet id menu;
+	IBOutlet id schemeList;
+	IBOutlet id schemesWin;
+	IBOutlet id schemeWin;
+	id standard;
+	int selected;
 }
--(BOOL)isVisible
-{
-	return [window isVisible];
-}
+-(id)tableView:(NSTableView *)tv objectValueForTableColumn:(NSTableColumn *)tc row:(NSInteger)row;
+-(void)tableView:(NSTableView *)tv setObjectValue:obj forTableColumn:(NSTableColumn *)tc row:(NSInteger)row;
+-(NSInteger)numberOfRowsInTableView:(NSTableView *)tableView;
 
--(void)openWorld:(NSString *)world
-{
-	CloseAll();
-	[map setStatus:status];
-	[map setWorld:world];
-	GetSpawn([world UTF8String], &spawnX, &spawnY, &spawnZ);
-	GetPlayer([world UTF8String], &playerX, &playerY, &playerZ);
-	[map setX:spawnX andZ:spawnZ];
-	[map setDepth:127-curDepth];
-	
-	[window makeKeyAndOrderFront:self];
-	[window setTitle:[world lastPathComponent]];
-	[status setStringValue:@""];
-	[window setAcceptsMouseMovedEvents: YES];
-}
--(void)jumpToSpawn
-{
-	[map setX:spawnX andZ:spawnZ];
-}
--(void)jumpToPlayer
-{
-	[map setX:playerX andZ:playerZ];
-}
--(IBAction)sliderChanged:(NSSlider *)sender
-{
-	int newDepth=[slider intValue];
-	if (newDepth!=curDepth)
-	{
-		curDepth=newDepth;
-		[depthText setStringValue:[NSString stringWithFormat:@"%d",127-curDepth]];
-		[map setDepth:127-curDepth];
-	}
-}
--(void)setOpts:(int)options
-{
-	[map setOptions:options];
-}
--(void)setColorScheme:(unsigned int *)colors
-{
-	[map setColorScheme:colors];
-}
+-(void)readDefaults;
+-(void)select:sender;
+-(unsigned int *)current;
+
+-(IBAction)editColorSchemes:sender;
+-(IBAction)addOrRemove:sender;
+-(IBAction)edit:sender;
 
 @end

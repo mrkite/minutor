@@ -43,5 +43,6 @@
 -(void)setWorld:(NSString *)newWorld;
 -(void)setStatus:(id)status;
 -(void)setOptions:(int)options;
+-(void)setColorScheme:(unsigned int *)colors;
 
 @end

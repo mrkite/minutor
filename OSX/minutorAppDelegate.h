@@ -26,6 +26,7 @@
  */
 
 #import <Cocoa/Cocoa.h>
+#import "ColorScheme.h"
 
 @protocol NSApplicationDelegate <NSObject>
 @end
@@ -36,6 +37,7 @@
 	NSString *customWorld;
 	IBOutlet id mapViewer;
 	int opts;
+	IBOutlet id colorSchemes;
 }
 - (IBAction) openWorld: sender;
 - (IBAction) jumpToSpawn: sender;
@@ -44,6 +46,7 @@
 - (IBAction) toggleCaveMode: sender;
 - (IBAction) toggleObscured: sender;
 - (IBAction) toggleDepth: sender;
+- (IBAction) selectScheme: sender;
 
 
 @end

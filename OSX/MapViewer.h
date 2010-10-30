@@ -42,6 +42,7 @@
 -(void)jumpToSpawn;
 -(void)jumpToPlayer;
 -(IBAction) sliderChanged:(NSSlider*)sender;
--(void)setOptions:(int)options;
+-(void)setOpts:(int)options;
+-(void)setColorScheme:(unsigned int *)colors;
 
 @end
