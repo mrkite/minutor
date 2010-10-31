@@ -204,7 +204,6 @@ static int findElement(gzFile gz,char *name)
 
 int nbtGetBlocks(gzFile gz, unsigned char *buff,unsigned char *blockLight)
 {
-    //unsigned char skyLight[16*16*128/2];
 	int len;
 	//Level/Blocks
 	gzseek(gz,1,SEEK_CUR); //skip type
@@ -212,23 +211,36 @@ int nbtGetBlocks(gzFile gz, unsigned char *buff,unsigned char *blockLight)
 	gzseek(gz,len,SEEK_CUR); //skip name ()
 	if (findElement(gz,"Level")!=10)
 		return 0;
-	/*if (findElement(gz,"SkyLight")!=7)
-		return 0;
-	len=readDword(gz); //array length
-	gzread(gz,skyLight,len);*/
-	if (findElement(gz,"BlockLight")!=7)
-		return 0;
-	len=readDword(gz); //array length
-	gzread(gz,blockLight,len);
-    /*for (i = 0; i < len; ++i) {
-        blockLight[i] = MIN((blockLight[i]&0xf0) + MAX((skyLight[i]&0xf0)-(3<<4),0), 0xf0)
-                      | MIN((blockLight[i]&0x0f) + MAX((skyLight[i]&0x0f)-3,0), 0x0f);
-    }*/
-	if (findElement(gz,"Blocks")!=7)
-		return 0;
-	len=readDword(gz); //array length
-	gzread(gz,buff,len);
 
+	int found=0;
+	while (found!=2)
+	{
+		unsigned char type=0;
+		gzread(gz,&type,1);
+		if (type==0) return 0;
+		int ret=0;
+		len=readWord(gz);
+		char *thisName=malloc(len+1);
+		gzread(gz,thisName,len);
+		thisName[len]=0;
+		if (strcmp(thisName,"BlockLight")==0)
+		{
+			found++;
+			ret=1;
+			len=readDword(gz); //array length
+			gzread(gz,blockLight,len);
+		}
+		if (strcmp(thisName,"Blocks")==0)
+		{
+			found++;
+			ret=1;
+			len=readDword(gz); //array length
+			gzread(gz,buff,len);
+		}
+		free(thisName);
+		if (!ret)
+			skipType(gz,type);
+	}
 	return 1;
 }
 void nbtGetSpawn(gzFile gz,int *x,int *y,int *z)
