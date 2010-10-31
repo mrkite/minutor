@@ -52,7 +52,7 @@ extern "C" {
 	__declspec(dllexport) void __cdecl GetPlayer(const char *world,int *px,int *py,int *pz);
 	
 	// palette should be in RGBA format, num colors in the palette
-	__declspec(dllexport) void __cdecl SetPalette(unsigned int *palette,int num);
+	__declspec(dllexport) void __cdecl SetMapPalette(unsigned int *palette,int num);
 #ifdef __cplusplus
 }
 #endif

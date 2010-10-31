@@ -109,6 +109,13 @@
 	[sender setState:((opts&DEPTHSHADING)!=0)?NSOnState:NSOffState];
 	[mapViewer setOpts:opts];
 }
+-(IBAction) toggleHell:sender
+{
+	opts^=HELL;
+	[sender setState:((opts&HELL)!=0)?NSOnState:NSOffState];
+	CloseAll();
+	[mapViewer setOpts:opts];
+}
 
 -(IBAction)selectScheme:sender
 {

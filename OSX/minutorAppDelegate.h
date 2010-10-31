@@ -46,6 +46,7 @@
 - (IBAction) toggleCaveMode: sender;
 - (IBAction) toggleObscured: sender;
 - (IBAction) toggleDepth: sender;
+- (IBAction) toggleHell: sender;
 - (IBAction) selectScheme: sender;
 
 

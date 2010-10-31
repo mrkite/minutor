@@ -445,7 +445,7 @@ void GetPlayer(const char *world,int *px,int *py,int *pz)
 }
 
 //palette should be in RGBA format
-void SetPalette(unsigned int *palette,int num)
+void SetMapPalette(unsigned int *palette,int num)
 {
 	unsigned char r,g,b;
 	double a;

@@ -203,6 +203,11 @@
 
 - (void)setX:(double)x andZ:(double)z
 {
+	if (opts&HELL)
+	{
+		x/=16.0;
+		z/=16.0;
+	}
 	curX=x;
 	curZ=z;
 	[self setNeedsDisplay:YES];
@@ -224,12 +229,25 @@
 }
 - (void)setOptions:(int)options
 {
+	if ((opts^options)==HELL) //hell toggled
+	{
+		if (options&HELL)
+		{
+			curX/=16.0;
+			curZ/=16.0;
+		}
+		else
+		{
+			curX*=16.0;
+			curZ*=16.0;
+		}
+	}
 	opts=options;
 	[self setNeedsDisplay:YES];
 }
 -(void)setColorScheme:(unsigned int *)colors
 {
-	SetPalette(colors, 256);
+	SetMapPalette(colors, 256);
 	[self setNeedsDisplay:YES];
 }
 

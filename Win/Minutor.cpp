@@ -629,7 +629,7 @@ static void useCustomColor(int wmId,HWND hWnd)
 	}
 	else
 		ColorManager::Init(&cs);
-	SetPalette(cs.colors,256);
+	SetMapPalette(cs.colors,256);
 	draw();
 	InvalidateRect(hWnd,NULL,TRUE);
 	UpdateWindow(hWnd);
