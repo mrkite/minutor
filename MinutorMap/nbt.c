@@ -204,7 +204,7 @@ static int findElement(gzFile gz,char *name)
 
 int nbtGetBlocks(gzFile gz, unsigned char *buff,unsigned char *blockLight)
 {
-	int len;
+	int len,found;
 	//Level/Blocks
 	gzseek(gz,1,SEEK_CUR); //skip type
 	len=readWord(gz); //name length
@@ -212,15 +212,16 @@ int nbtGetBlocks(gzFile gz, unsigned char *buff,unsigned char *blockLight)
 	if (findElement(gz,"Level")!=10)
 		return 0;
 
-	int found=0;
+	found=0;
 	while (found!=2)
 	{
+		int ret=0;
+		char *thisName;
 		unsigned char type=0;
 		gzread(gz,&type,1);
 		if (type==0) return 0;
-		int ret=0;
 		len=readWord(gz);
-		char *thisName=malloc(len+1);
+		thisName=malloc(len+1);
 		gzread(gz,thisName,len);
 		thisName[len]=0;
 		if (strcmp(thisName,"BlockLight")==0)

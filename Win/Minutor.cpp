@@ -488,21 +488,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			break;
 		case IDM_CAVEMODE:
 			opts^=CAVEMODE;
-			CheckMenuItem(GetMenu(hWnd),wmId,(opts&LIGHTING)?MF_CHECKED:MF_UNCHECKED);
+			CheckMenuItem(GetMenu(hWnd),wmId,(opts&CAVEMODE)?MF_CHECKED:MF_UNCHECKED);
 			draw();
 			InvalidateRect(hWnd,NULL,TRUE);
 			UpdateWindow(hWnd);
 			break;
 		case IDM_OBSCURED:
 			opts^=HIDEOBSCURED;
-			CheckMenuItem(GetMenu(hWnd),wmId,(opts&LIGHTING)?MF_CHECKED:MF_UNCHECKED);
+			CheckMenuItem(GetMenu(hWnd),wmId,(opts&HIDEOBSCURED)?MF_CHECKED:MF_UNCHECKED);
 			draw();
 			InvalidateRect(hWnd,NULL,TRUE);
 			UpdateWindow(hWnd);
 			break;
 		case IDM_DEPTH:
 			opts^=DEPTHSHADING;
-			CheckMenuItem(GetMenu(hWnd),wmId,(opts&LIGHTING)?MF_CHECKED:MF_UNCHECKED);
+			CheckMenuItem(GetMenu(hWnd),wmId,(opts&DEPTHSHADING)?MF_CHECKED:MF_UNCHECKED);
 			draw();
 			InvalidateRect(hWnd,NULL,TRUE);
 			UpdateWindow(hWnd);

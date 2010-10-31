@@ -129,9 +129,9 @@ static struct {
 {"Jukebox",                0x8a5a40,1.0},	//54
 {"Fence",                  0x9f814e,1.0},	//55
 {"Pumpkin",                0xc07615,1.0},	//56
-{"Bloodstone",             0x723a38,1.0},   //57
+{"Netherstone",            0x723a38,1.0},   //57
 {"Mud",                    0x554134,1.0},   //58
-{"Brimstone",              0xf9d49c,1.0},   //59
+{"Lightstone",             0xf9d49c,1.0},   //59
 {"Portal",                 0xd67fff,1.0},   //5a
 {"Jack-o-Lantern",         0xe9b416,1.0}    //5b
 };
@@ -209,9 +209,9 @@ enum block_types {
     BLOCK_JUKEBOX = 0x54,
     BLOCK_FENCE = 0x55,
 	BLOCK_PUMPKIN = 0x56,
-	BLOCK_BLOODSTONE = 0x57,
+	BLOCK_NETHERSTONE = 0x57,
 	BLOCK_MUD = 0x58,
-	BLOCK_BRIMSTONE = 0x59,
+	BLOCK_LIGHTSTONE = 0x59,
 	BLOCK_PORTAL = 0x5a,
 	BLOCK_JACK_O_LANTERN = 0x5b
 };
