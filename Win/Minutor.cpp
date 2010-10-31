@@ -63,6 +63,8 @@ static void loadWorld();
 static void worldPath(int num,TCHAR *path);
 static void validateItems(HMENU menu);
 static void draw();
+static void populateColorSchemes(HMENU menu);
+static void useCustomColor(int wmId,HWND hWnd);
 
 int APIENTRY _tWinMain(HINSTANCE hInstance,
                      HINSTANCE hPrevInstance,
@@ -207,6 +209,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_CREATE:
 
 		validateItems(GetMenu(hWnd));
+		populateColorSchemes(GetMenu(hWnd));
+		CheckMenuItem(GetMenu(hWnd),IDM_CUSTOMCOLOR,MF_CHECKED);
 
 		ice.dwSize=sizeof(INITCOMMONCONTROLSEX);
 		ice.dwICC=ICC_BAR_CLASSES;
@@ -397,6 +401,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		wmId    = LOWORD(wParam);
 		wmEvent = HIWORD(wParam);
 		// Parse the menu selections:
+		if (wmId>=IDM_CUSTOMCOLOR)
+			useCustomColor(wmId,hWnd);
 		switch (wmId)
 		{
 		case IDM_ABOUT:
@@ -404,6 +410,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			break;
 		case IDM_COLOR:
 			doColorSchemes(hInst,hWnd);
+			populateColorSchemes(GetMenu(hWnd));
+			useCustomColor(IDM_CUSTOMCOLOR,hWnd);
 			break;
 		case IDM_CLOSE:
 			DestroyWindow(hWnd);
@@ -450,6 +458,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		case IDM_JUMPSPAWN:
 			curX=spawnX;
 			curZ=spawnZ;
+			if (opts&HELL)
+			{
+				curX/=16;
+				curZ/=16;
+			}
 			draw();
 			InvalidateRect(hWnd,NULL,TRUE);
 			UpdateWindow(hWnd);
@@ -457,6 +470,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		case IDM_JUMPPLAYER:
 			curX=playerX;
 			curZ=playerZ;
+			if (opts&HELL)
+			{
+				curX/=16;
+				curZ/=16;
+			}
 			draw();
 			InvalidateRect(hWnd,NULL,TRUE);
 			UpdateWindow(hWnd);
@@ -502,6 +520,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				curZ*=16.0;
 			}
 			CheckMenuItem(GetMenu(hWnd),wmId,(opts&HELL)?MF_CHECKED:MF_UNCHECKED);
+			CloseAll();
 			draw();
 			InvalidateRect(hWnd,NULL,TRUE);
 			UpdateWindow(hWnd);
@@ -567,6 +586,53 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		return DefWindowProc(hWnd, message, wParam, lParam);
 	}
 	return 0;
+}
+
+static int numCustom=1;
+static void populateColorSchemes(HMENU menu)
+{
+	MENUITEMINFO info;
+	for (int i=1;i<numCustom;i++)
+		DeleteMenu(menu,IDM_CUSTOMCOLOR+i,MF_BYCOMMAND);
+	info.cbSize=sizeof(MENUITEMINFO);
+	info.fMask=MIIM_FTYPE|MIIM_ID|MIIM_STRING|MIIM_DATA;
+	info.fType=MFT_STRING;
+	int id=0;
+	numCustom=1;
+	ColorManager cm;
+	ColorScheme cs;
+	while (id=cm.next(id,&cs))
+	{
+		info.wID=IDM_CUSTOMCOLOR+numCustom;
+		info.cch=wcslen(cs.name);
+		info.dwTypeData=cs.name;
+		info.dwItemData=cs.id;
+		InsertMenuItem(menu,IDM_CUSTOMCOLOR,FALSE,&info);
+		numCustom++;
+	}
+}
+static void useCustomColor(int wmId,HWND hWnd)
+{
+	for (int i=0;i<numCustom;i++)
+		CheckMenuItem(GetMenu(hWnd),IDM_CUSTOMCOLOR+i,MF_UNCHECKED);
+	CheckMenuItem(GetMenu(hWnd),wmId,MF_CHECKED);
+	ColorManager cm;
+	ColorScheme cs;
+	if (wmId>IDM_CUSTOMCOLOR)
+	{
+		MENUITEMINFO info;
+		info.cbSize=sizeof(MENUITEMINFO);
+		info.fMask=MIIM_DATA;
+		GetMenuItemInfo(GetMenu(hWnd),wmId,FALSE,&info);
+		cs.id=info.dwItemData;
+		cm.load(&cs);
+	}
+	else
+		ColorManager::Init(&cs);
+	SetPalette(cs.colors,256);
+	draw();
+	InvalidateRect(hWnd,NULL,TRUE);
+	UpdateWindow(hWnd);
 }
 
 static void draw()

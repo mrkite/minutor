@@ -47,9 +47,9 @@ THE POSSIBILITY OF SUCH DAMAGE.
 #define IDM_CAVEMODE			511
 #define IDM_OBSCURED			512
 #define IDM_DEPTH				513
-#define IDM_STANDARD			514
-#define IDM_COLOR				515
-#define IDM_HELL				516
+#define IDM_COLOR				514
+#define IDM_HELL				515
+#define IDM_CUSTOMCOLOR			3000
 #define IDI_MINUTOR				600
 #define IDI_SMALL				601
 #define IDC_MINUTOR				700
