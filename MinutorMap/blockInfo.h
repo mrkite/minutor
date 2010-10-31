@@ -127,7 +127,13 @@ static struct {
 {"Clay",                   0xa2a7b4,1.0},	//52
 {"Reed",                   0x72944e,1.0},	//53
 {"Jukebox",                0x8a5a40,1.0},	//54
-{"Fence",                  0x9f814e,1.0}	//55
+{"Fence",                  0x9f814e,1.0},	//55
+{"Pumpkin",                0xc07615,1.0},	//56
+{"Brimstone",              0x95696e,1.0},   //57
+{"Barren Dirt",            0x966c78,1.0},   //58
+{"Brittle Gold",           0xf9d49c,1.0},   //59
+{"Portal",                 0xd67fff,1.0},   //5a
+{"Glowing Pumpkin",        0xe9b416,1.0}    //5b
 };
 
 enum block_types {
@@ -202,8 +208,14 @@ enum block_types {
     BLOCK_REED = 0x53,
     BLOCK_JUKEBOX = 0x54,
     BLOCK_FENCE = 0x55,
+	BLOCK_PUMPKIN = 0x56,
+	BLOCK_BRIMSTONE = 0x57,
+	BLOCK_BARREN_DIRT = 0x58,
+	BLOCK_BRITTLE_GOLD = 0x59,
+	BLOCK_PORTAL = 0x5a,
+	BLOCK_GLOWING_PUMPKIN = 0x5b
 };
 
-#define numBlocks 0x56
+#define numBlocks 0x5c
 
 #endif

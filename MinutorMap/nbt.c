@@ -205,7 +205,7 @@ static int findElement(gzFile gz,char *name)
 int nbtGetBlocks(gzFile gz, unsigned char *buff,unsigned char *blockLight)
 {
     //unsigned char skyLight[16*16*128/2];
-	int len,i;
+	int len;
 	//Level/Blocks
 	gzseek(gz,1,SEEK_CUR); //skip type
 	len=readWord(gz); //name length

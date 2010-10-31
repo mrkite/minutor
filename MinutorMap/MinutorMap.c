@@ -241,6 +241,10 @@ static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *b
 	{
         strncpy_s(filename,256,world,256);
         strncat_s(filename,256,"/",256);
+		if (opts&HELL)
+		{
+			strncat_s(filename,256,"DIM-1/",256);
+		}
         first=bx%64;
         if (first<0) first+=64;
         b36(filename,first);
@@ -454,9 +458,9 @@ void SetPalette(unsigned int *palette,int num)
 		g=palette[i]>>16;
 		b=palette[i]>>8;
 		a=((double)(palette[i]&0xff))/255.0;
-		r*=a; //premultiply alpha
-		g*=a;
-		b*=a;
+		r=(unsigned char)(r*a); //premultiply alpha
+		g=(unsigned char)(g*a);
+		b=(unsigned char)(b*a);
 		blocks[i].color=(r<<16)|(g<<8)|b;
 		blocks[i].alpha=a;
 	}

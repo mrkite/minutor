@@ -27,6 +27,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "stdafx.h"
 #include "Minutor.h"
+#include "ColorSchemes.h"
 #include <ShlObj.h>
 #include <Shlwapi.h>
 #include <CommDlg.h>
@@ -401,6 +402,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		case IDM_ABOUT:
 			DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
 			break;
+		case IDM_COLOR:
+			doColorSchemes(hInst,hWnd);
+			break;
 		case IDM_CLOSE:
 			DestroyWindow(hWnd);
 			break;
@@ -481,6 +485,23 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		case IDM_DEPTH:
 			opts^=DEPTHSHADING;
 			CheckMenuItem(GetMenu(hWnd),wmId,(opts&LIGHTING)?MF_CHECKED:MF_UNCHECKED);
+			draw();
+			InvalidateRect(hWnd,NULL,TRUE);
+			UpdateWindow(hWnd);
+			break;
+		case IDM_HELL:
+			opts^=HELL;
+			if (opts&HELL)
+			{
+				curX/=16.0;
+				curZ/=16.0;
+			}
+			else
+			{
+				curX*=16.0;
+				curZ*=16.0;
+			}
+			CheckMenuItem(GetMenu(hWnd),wmId,(opts&HELL)?MF_CHECKED:MF_UNCHECKED);
 			draw();
 			InvalidateRect(hWnd,NULL,TRUE);
 			UpdateWindow(hWnd);
@@ -627,3 +648,4 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 	}
 	return (INT_PTR)FALSE;
 }
+

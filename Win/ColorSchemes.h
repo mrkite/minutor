@@ -25,36 +25,26 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
 THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+typedef struct
+{
+	int id;
+	wchar_t name[255];
+	unsigned int colors[256];
+} ColorScheme;
 
-#ifndef __MINUTOR_MAP_H__
-#define __MINUTOR_MAP_H__
+class ColorManager
+{
+public:
+	ColorManager();
+	~ColorManager();
+	static void Init(ColorScheme *cs); // initializes a colorscheme with default colors
+	void create(ColorScheme *cs); //creates a colorscheme, inits it and saves it
+	int next(int id,ColorScheme *cs); //enumerate colorschemes
+	void load(ColorScheme *cs); //loads a color scheme (id must be set)
+	void save(ColorScheme *cs); //saves a color scheme
+	void remove(int id); //remove a color scheme
+private:
+	HKEY key;
+};
 
-#ifndef WIN32
-#define __declspec(a)
-#define dllexport 0
-#define __cdecl
-#endif
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#define CAVEMODE		0x01
-#define HIDEOBSCURED	0x02
-#define DEPTHSHADING	0x04
-#define LIGHTING		0x08
-#define HELL			0x10
-
-	__declspec(dllexport) void __cdecl DrawMap(const char *world,double cx,double cz,int y,int w,int h,double zoom,unsigned char *bits, int opts);
-	__declspec(dllexport) const char * __cdecl IDBlock(int bx, int by, double cx, double cz, int w, int h, double zoom,int *ox,int *oz);
-	__declspec(dllexport) void __cdecl CloseAll();
-	__declspec(dllexport) void __cdecl GetSpawn(const char *world,int *x,int *y,int *z);
-	__declspec(dllexport) void __cdecl GetPlayer(const char *world,int *px,int *py,int *pz);
-	
-	// palette should be in RGBA format, num colors in the palette
-	__declspec(dllexport) void __cdecl SetPalette(unsigned int *palette,int num);
-#ifdef __cplusplus
-}
-#endif
-
-#endif
+void doColorSchemes(HINSTANCE hInst,HWND hWnd);
