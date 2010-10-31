@@ -29,6 +29,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
 #include <gdk/gdkkeysyms.h>
 #include "MinutorMap/MinutorMap.h"
 #include "minutor.xpm"
+#include "colorschemes.h"
 
 #define MINZOOM 1.0
 #define MAXZOOM 10.0
@@ -36,7 +37,8 @@ THE POSSIBILITY OF SUCH DAMAGE.
 static GtkWidget *win;
 static GtkWidget *slider,*da,*status;
 static GtkWidget *jumpplayer,*jumpspawn;
-static GtkWidget *lighting, *cavemode, *hideobscured, *depthshading;
+static GtkWidget *lighting, *cavemode, *hideobscured, *depthshading, *hell;
+static GtkWidget *standard;
 static double curX,curZ;
 static int curDepth=127;
 static double curScale=1.0;
@@ -73,6 +75,7 @@ static gboolean drawMap(GtkWidget *widget)
 	opts|=gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(hideobscured))?HIDEOBSCURED:0;
     opts|=gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(depthshading))?DEPTHSHADING:0;
 	opts|=gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(lighting))?LIGHTING:0;
+	opts|=gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(hell))?HELL:0;
 
 	DrawMap(world,curX,curZ,curDepth,curWidth,curHeight,curScale,bits,opts);
 
@@ -304,6 +307,28 @@ static void jumpToPlayer(GtkMenuItem *menuItem,gpointer user_data)
 	curZ=playerZ;
 	gdk_window_invalidate_rect(da->window,NULL,FALSE);
 }
+static void toggleHell(GtkMenuItem *menuItem,gpointer user_data)
+{
+	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(hell)))
+	{
+		curX/=16.0;
+		curZ/=16.0;
+	}
+	else
+	{
+		curX*=16.0;
+		curZ*=16.0;
+	}
+	CloseAll();
+	gdk_window_invalidate_rect(da->window,NULL,FALSE);
+}
+void selectColorScheme(GtkMenuItem *menuItem,gpointer user_data)
+{
+	int id=GPOINTER_TO_INT(user_data);
+	uint32_t *colors=getColorScheme(id);
+	SetMapPalette(colors,256);
+	gdk_window_invalidate_rect(da->window,NULL,FALSE);
+}
 
 void createMapViewer()
 {
@@ -383,6 +408,38 @@ void createMapViewer()
 	g_signal_connect(G_OBJECT(jumpplayer),"activate",
 		G_CALLBACK(jumpToPlayer),NULL);
 	gtk_widget_set_sensitive(jumpplayer,FALSE);
+	
+	GtkWidget *sep2=gtk_separator_menu_item_new();
+	gtk_menu_shell_append(GTK_MENU_SHELL(viewitems),sep2);
+	
+	hell=gtk_check_menu_item_new_with_label("Hell");
+	gtk_widget_add_accelerator(hell,"activate",menuGroup,
+		GDK_F5,0,GTK_ACCEL_VISIBLE);
+	gtk_menu_shell_append(GTK_MENU_SHELL(viewitems),hell);
+	g_signal_connect(G_OBJECT(hell),"activate",
+		G_CALLBACK(toggleHell),NULL);
+
+	GtkWidget *sep3=gtk_separator_menu_item_new();
+	gtk_menu_shell_append(GTK_MENU_SHELL(viewitems),sep3);
+
+
+	GtkWidget *colormenu=gtk_menu_item_new_with_mnemonic("_Colors");
+	gtk_menu_shell_append(GTK_MENU_SHELL(menubar),colormenu);
+	GtkWidget *coloritems=gtk_menu_new();
+	gtk_menu_item_set_submenu(GTK_MENU_ITEM(colormenu),coloritems);
+
+	standard=gtk_radio_menu_item_new_with_label(NULL,"Standard");
+	GSList *group=gtk_radio_menu_item_group(GTK_RADIO_MENU_ITEM(standard));
+	gtk_menu_shell_append(GTK_MENU_SHELL(coloritems),standard);
+	g_signal_connect(G_OBJECT(standard),"activate",
+		G_CALLBACK(selectColorScheme),GINT_TO_POINTER(-1));
+	GtkWidget *sep4=gtk_separator_menu_item_new();
+	gtk_menu_shell_append(GTK_MENU_SHELL(coloritems),sep4);
+
+	GtkWidget *colorschemes=gtk_menu_item_new_with_label("Color Schemes...");
+	gtk_menu_shell_append(GTK_MENU_SHELL(coloritems),colorschemes);
+	g_signal_connect(G_OBJECT(colorschemes),"activate",
+		G_CALLBACK(editColorSchemes),NULL);
 
 	gtk_window_add_accel_group(GTK_WINDOW(win),menuGroup);
 
@@ -432,6 +489,7 @@ void createMapViewer()
     gtk_menu_shell_append(GTK_MENU_SHELL(viewitems),lighting);
 	g_signal_connect(G_OBJECT(lighting),"toggled",
 		G_CALLBACK(drawMap),NULL);
+
 		
     cavemode=gtk_check_menu_item_new_with_mnemonic("_Cave Mode");
     gtk_widget_add_accelerator(cavemode,"activate",menuGroup,
@@ -460,6 +518,9 @@ void createMapViewer()
 
 
 	bits=g_malloc(curWidth*curHeight*4);
+
+	// 2 = position to start inserting color schemes
+	initColorSchemes(GTK_MENU_SHELL(coloritems),1,group);
 
 	//and show it
 	gtk_widget_show_all(win);

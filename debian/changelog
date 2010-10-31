@@ -1,3 +1,15 @@
+minutor (0.9) unstable; urgency=low
+
+  * Color scheme editor
+  * Hell mode
+  * New blocks from hell
+  * Lighting
+  * Cave modes
+  * Depth shading
+  * Obscured toggle
+
+ -- Sean Kasun <sean@seancode.com>  Sun, 31 Oct 2010 02:18:33 -0700
+
 minutor (0.3.1) unstable; urgency=low
 
   * Floating point fix
