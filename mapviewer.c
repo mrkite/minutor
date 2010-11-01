@@ -298,6 +298,11 @@ static void jumpToSpawn(GtkMenuItem *menuItem,gpointer user_data)
 {
 	curX=spawnX;
 	curZ=spawnZ;
+	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(hell)))
+	{
+		curX/=8.0;
+		curZ/=8.0;
+	}
 	gdk_window_invalidate_rect(da->window,NULL,FALSE);
 }
 
@@ -305,19 +310,24 @@ static void jumpToPlayer(GtkMenuItem *menuItem,gpointer user_data)
 {
 	curX=playerX;
 	curZ=playerZ;
+	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(hell)))
+	{
+		curX/=8.0;
+		curZ/=8.0;
+	}
 	gdk_window_invalidate_rect(da->window,NULL,FALSE);
 }
 static void toggleHell(GtkMenuItem *menuItem,gpointer user_data)
 {
 	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(hell)))
 	{
-		curX/=16.0;
-		curZ/=16.0;
+		curX/=8.0;
+		curZ/=8.0;
 	}
 	else
 	{
-		curX*=16.0;
-		curZ*=16.0;
+		curX*=8.0;
+		curZ*=8.0;
 	}
 	CloseAll();
 	gdk_window_invalidate_rect(da->window,NULL,FALSE);

@@ -460,8 +460,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			curZ=spawnZ;
 			if (opts&HELL)
 			{
-				curX/=16;
-				curZ/=16;
+				curX/=8.0;
+				curZ/=8.0;
 			}
 			draw();
 			InvalidateRect(hWnd,NULL,TRUE);
@@ -472,8 +472,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			curZ=playerZ;
 			if (opts&HELL)
 			{
-				curX/=16;
-				curZ/=16;
+				curX/=8.0;
+				curZ/=8.0;
 			}
 			draw();
 			InvalidateRect(hWnd,NULL,TRUE);
@@ -511,13 +511,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			opts^=HELL;
 			if (opts&HELL)
 			{
-				curX/=16.0;
-				curZ/=16.0;
+				curX/=8.0;
+				curZ/=8.0;
 			}
 			else
 			{
-				curX*=16.0;
-				curZ*=16.0;
+				curX*=8.0;
+				curZ*=8.0;
 			}
 			CheckMenuItem(GetMenu(hWnd),wmId,(opts&HELL)?MF_CHECKED:MF_UNCHECKED);
 			CloseAll();

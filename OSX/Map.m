@@ -205,8 +205,8 @@
 {
 	if (opts&HELL)
 	{
-		x/=16.0;
-		z/=16.0;
+		x/=8.0;
+		z/=8.0;
 	}
 	curX=x;
 	curZ=z;
@@ -233,13 +233,13 @@
 	{
 		if (options&HELL)
 		{
-			curX/=16.0;
-			curZ/=16.0;
+			curX/=8.0;
+			curZ/=8.0;
 		}
 		else
 		{
-			curX*=16.0;
-			curZ*=16.0;
+			curX*=8.0;
+			curZ*=8.0;
 		}
 	}
 	opts=options;
