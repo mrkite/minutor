@@ -1,3 +1,9 @@
+minutor (0.9.3) unstable; urgency=low
+
+  * Color scheme uses GKeyFile instead of GSettings for compatibility
+
+ -- Sean Kasun <sean@seancode.com>  Wed, 3 Nov 2010 14:22:44 -0700
+
 minutor (0.9) unstable; urgency=low
 
   * Color scheme editor

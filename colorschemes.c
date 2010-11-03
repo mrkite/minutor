@@ -58,7 +58,8 @@ static void destroy()
 
 GArray *menuitems=NULL;
 
-static GSettings *settings;
+#define COLORGROUP "ColorSchemes"
+
 static GtkMenuShell *menu;
 static int menupos;
 static GSList *itemgroup;
@@ -67,52 +68,76 @@ void initColorSchemes(GtkMenuShell *menushell,int startpos,GSList *group)
 	menu=menushell;
 	menupos=startpos;
 	itemgroup=group;
-	settings=g_settings_new("com.seancode.minutor");
-	GVariant *var=g_settings_get_value(settings,"colorschemes");
-	GVariantIter *iter;
-	g_variant_get(var,"a(sau)",&iter);
-	ColorScheme cs;
-	GVariantIter *subiter;
-	gchar *name;
+
 	menuitems=g_array_new(FALSE,TRUE,sizeof(GtkWidget *));
 	schemes=g_array_new(FALSE,TRUE,sizeof(ColorScheme));
-	while (g_variant_iter_loop(iter,"(sau)",&name,&subiter))
+
+	GKeyFile *keyfile=g_key_file_new();
+	gchar *filename=g_strdup_printf("%s/.minutor",g_get_home_dir());
+	if (g_key_file_load_from_file(keyfile,filename,G_KEY_FILE_NONE,NULL))
 	{
-		g_stpcpy(cs.name,name);
-		int i=0;
-		uint32_t color;
-		while (g_variant_iter_loop(subiter,"u",&color))
-			cs.colors[i++]=color;
-		cs.id=schemes->len;
-		g_array_append_val(schemes,cs);
-		GtkWidget *item=gtk_radio_menu_item_new_with_label(itemgroup,cs.name);
-		itemgroup=gtk_radio_menu_item_group(GTK_RADIO_MENU_ITEM(item));
-		g_array_append_val(menuitems,item);
-		gtk_menu_shell_insert(menu,item,menupos);
-		g_signal_connect(G_OBJECT(item),"activate",
-			G_CALLBACK(selectColorScheme),GINT_TO_POINTER(cs.id));
+		ColorScheme cs;
+		int num=g_key_file_get_integer(keyfile,COLORGROUP,"count",NULL);
+		for (int i=0;i<num;i++)
+		{
+			gchar *key=g_strdup_printf("name%d",i);
+			g_stpcpy(cs.name,g_key_file_get_string(keyfile,COLORGROUP,key,NULL));
+			g_free(key);
+			key=g_strdup_printf("color%d",i);
+			gsize len;
+			gint *colors=g_key_file_get_integer_list(keyfile,COLORGROUP,key,&len,NULL);
+			g_free(key);
+			for (int j=0;j<len;j++)
+				cs.colors[j]=colors[j];
+			cs.id=schemes->len;
+			g_array_append_val(schemes,cs);
+			GtkWidget *item=gtk_radio_menu_item_new_with_label(itemgroup,cs.name);
+			itemgroup=gtk_radio_menu_item_group(GTK_RADIO_MENU_ITEM(item));
+			g_array_append_val(menuitems,item);
+			gtk_menu_shell_insert(menu,item,menupos);
+			g_signal_connect(G_OBJECT(item),"activate",
+				G_CALLBACK(selectColorScheme),GINT_TO_POINTER(cs.id));
+		}
 	}
-	g_variant_unref(var);
+	g_key_file_free(keyfile);
+	g_free(filename);
 }
 static void saveSchemes()
 {
+	GKeyFile *keyfile=g_key_file_new();
+	gchar *filename=g_strdup_printf("%s/.minutor",g_get_home_dir());
+	g_key_file_load_from_file(keyfile,filename,G_KEY_FILE_NONE,NULL);
+
+	//should delete all existing colorschemes
+	g_key_file_remove_group(keyfile,COLORGROUP,NULL);
+
 	ColorScheme *cs;
-	GVariantBuilder *builder;
-	builder=g_variant_builder_new(G_VARIANT_TYPE("a(sau)"));
+	int num=0;
+	gint list[256];
 	for (int i=0;i<schemes->len;i++)
 	{
 		cs=&g_array_index(schemes,ColorScheme,i);
 		if (cs->id==-1) continue;
-		GVariantBuilder *colorbuild;
-		colorbuild=g_variant_builder_new(G_VARIANT_TYPE("au"));
-		for (int c=0;c<256;c++)
-			g_variant_builder_add(colorbuild,"u",cs->colors[c]);
-		g_variant_builder_add(builder,"(sau)",cs->name,colorbuild);
-		g_variant_builder_unref(colorbuild);
+		gchar *key=g_strdup_printf("name%d",num);
+		g_key_file_set_string(keyfile,COLORGROUP,key,cs->name);
+		g_free(key);
+		key=g_strdup_printf("color%d",num);
+		for (int j=0;j<256;j++)
+			list[j]=cs->colors[j];
+		g_key_file_set_integer_list(keyfile,COLORGROUP,key,list,256);
+		g_free(key);
+		num++;
 	}
-	GVariant *value=g_variant_new("a(sau)",builder);
-	g_variant_builder_unref(builder);
-	g_settings_set_value(settings,"colorschemes",value);
+	g_key_file_set_integer(keyfile,COLORGROUP,"count",num);
+
+	gsize len;
+	gchar *data=g_key_file_to_data(keyfile,&len,NULL);
+	GFile *f=g_file_new_for_path(filename);
+	g_file_replace_contents(f,data,len,NULL,FALSE,G_FILE_CREATE_NONE,NULL,NULL,NULL);
+	g_free(data);
+	g_free(filename);
+	g_key_file_free(keyfile);
+	g_object_unref(G_OBJECT(f));
 }
 
 ColorScheme *newScheme(char *name)
@@ -224,6 +249,8 @@ static void renameScheme(GtkCellRendererText *renderer,gchar *path,gchar *text,G
 	gtk_tree_model_get(model,&iter,1,&id,-1);
 	ColorScheme *cs=&g_array_index(schemes,ColorScheme,id);
 	g_stpcpy(cs->name,text);
+	GtkWidget *item=g_array_index(menuitems,GtkWidget *,id);
+	gtk_menu_item_set_label(GTK_MENU_ITEM(item),text);
 	saveSchemes();
 }
 static void addScheme(GtkButton *widget,GtkListStore *store)

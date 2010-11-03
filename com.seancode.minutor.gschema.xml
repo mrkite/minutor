@@ -1,7 +1,0 @@
-<schemalist>
-	<schema id="com.seancode.minutor" path="/apps/minutor/">
-		<key name="colorschemes" type="a(sau)">
-			<default>[]</default>
-		</key>
-	</schema>
-</schemalist>
