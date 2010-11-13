@@ -45,7 +45,9 @@ extern "C" {
 #define LIGHTING		0x08
 #define HELL			0x10
 
-	__declspec(dllexport) void __cdecl DrawMap(const char *world,double cx,double cz,int y,int w,int h,double zoom,unsigned char *bits, int opts);
+typedef void (*ProgressCallback)(float progress);
+
+	__declspec(dllexport) void __cdecl DrawMap(const char *world,double cx,double cz,int y,int w,int h,double zoom,unsigned char *bits, int opts,ProgressCallback callback);
 	__declspec(dllexport) const char * __cdecl IDBlock(int bx, int by, double cx, double cz, int w, int h, double zoom,int *ox,int *oz);
 	__declspec(dllexport) void __cdecl CloseAll();
 	__declspec(dllexport) void __cdecl GetSpawn(const char *world,int *x,int *y,int *z);

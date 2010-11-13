@@ -36,7 +36,7 @@ about that
 // we'll hold 5000 blocks at a time, that's 163 megs full up
 // that sounds like a lot, but it's only enough space for a 1136x1136 grid
 
-#define CLEANINTERVAL 2000
+#define CLEANINTERVAL 5000
 
 static BlockCache *root=NULL;
 static long lastClean=0;

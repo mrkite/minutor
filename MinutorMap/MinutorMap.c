@@ -34,7 +34,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
 #include "blockInfo.h"
 #include <string.h>
 
-static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *bits);
+static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *bits,ProgressCallback callback,float percent);
 static void blit(unsigned char *block,unsigned char *bits,int px,int py,
 	double zoom,int w,int h);
 static Block *LoadBlock(char *filename);
@@ -58,7 +58,7 @@ static unsigned short colormap=0;
 //zoom = zoom amount (1.0 = 100%)
 //bits = byte array for output
 //opts = bitmask of render options (see MinutorMap.h)
-void DrawMap(const char *world,double cx,double cz,int y,int w,int h,double zoom,unsigned char *bits,int opts)
+void DrawMap(const char *world,double cx,double cz,int y,int w,int h,double zoom,unsigned char *bits,int opts,ProgressCallback callback)
 {
     /* We're converting between coordinate systems, so this gets kinda ugly 
      *
@@ -114,7 +114,7 @@ void DrawMap(const char *world,double cx,double cz,int y,int w,int h,double zoom
         // z increases west, decreases east
         for (z=0,px=-shiftx;z<=hBlocks;z++,px+=blockScale)
         {
-			draw(world,startxblock+x,startzblock-z,y,opts,blockbits);
+			draw(world,startxblock+x,startzblock-z,y,opts,blockbits,callback,(float)(x*hBlocks+z)/(float)(vBlocks*hBlocks));
 			blit(blockbits,bits,px,py,zoom,w,h);
 		}
 	}
@@ -217,7 +217,7 @@ void CloseAll()
 
 
 // opts is a bitmask representing render options (see MinutorMap.h)
-static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *bits)
+static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *bits,ProgressCallback callback,float percent)
 {
 	int first,second;
 	Block *block, *prevblock;
@@ -264,6 +264,8 @@ static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *b
 			memset(bits,0xff,16*16*4);
 			return;
 		}
+		//lets only update the progress bar if we're loading
+		callback(percent);
 
 		Cache_Add(bx,bz,block);
 	}

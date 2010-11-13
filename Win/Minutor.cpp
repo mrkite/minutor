@@ -183,6 +183,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 static unsigned char *map;
 static int bitWidth=0;
 static int bitHeight=0;
+static HWND progressBar=NULL;
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	int wmId, wmEvent;
@@ -238,6 +239,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			WS_CHILD | WS_VISIBLE | WS_BORDER,
 			-100,-100,10,10,
 			hWnd,(HMENU)ID_STATUSBAR,NULL,NULL);
+		{
+		int parts[]={300,400};
+		RECT rect;
+		SendMessage(hwndStatus,SB_SETPARTS,2,(LPARAM)parts);
+
+		progressBar=CreateWindowEx(
+			0,PROGRESS_CLASS,NULL,
+			WS_CHILD | WS_VISIBLE,
+			0,0,10,10,hwndStatus,(HMENU)ID_PROGRESS,NULL,NULL);
+		SendMessage(hwndStatus,SB_GETRECT,1,(LPARAM)&rect);
+		MoveWindow(progressBar,rect.left,rect.top,rect.right-rect.left,rect.bottom-rect.top,TRUE);
+		SendMessage(progressBar,PBM_SETSTEP,(WPARAM)5,0);
+		SendMessage(progressBar,PBM_SETPOS,0,0);
+		}
 
 		rect.top+=30;
 		bitWidth=rect.right-rect.left;
@@ -558,9 +573,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			rect.right-rect.left-50,30,SWP_NOMOVE|SWP_NOZORDER | SWP_NOACTIVATE);
 		SetWindowPos(hwndLabel,NULL,rect.right-40,5,
 			30,20,SWP_NOACTIVATE);
+
 		break;
 	case WM_SIZE: //resize window
 		SendMessage(hwndStatus,WM_SIZE,0,0);
+		SendMessage(hwndStatus,SB_GETRECT,1,(LPARAM)&rect);
+		MoveWindow(progressBar,rect.left,rect.top,rect.right-rect.left,rect.bottom-rect.top,TRUE);
+
 		GetClientRect(hWnd,&rect);
 		SetWindowPos(hwndSlider,NULL,0,0,
 			rect.right-rect.left-50,30,SWP_NOMOVE|SWP_NOZORDER | SWP_NOACTIVATE);
@@ -635,12 +654,18 @@ static void useCustomColor(int wmId,HWND hWnd)
 	UpdateWindow(hWnd);
 }
 
+static void updateProgress(float progress)
+{
+	SendMessage(progressBar,PBM_SETPOS,(int)(progress*100),0);
+}
+
 static void draw()
 {
 	if (loaded)
-		DrawMap(world,curX,curZ,curDepth,bitWidth,bitHeight,curScale,map,opts);
+		DrawMap(world,curX,curZ,curDepth,bitWidth,bitHeight,curScale,map,opts,updateProgress);
 	else
 		memset(map,0xff,bitWidth*bitHeight*4);
+	SendMessage(progressBar,PBM_SETPOS,0,0);
 	for (int i=0;i<bitWidth*bitHeight*4;i+=4)
 	{
 		map[i]^=map[i+2];
