@@ -44,5 +44,6 @@
 -(void)setStatus:(id)status;
 -(void)setOptions:(int)options;
 -(void)setColorScheme:(unsigned int *)colors;
+-(void)setProgress:(id)progress;
 
 @end

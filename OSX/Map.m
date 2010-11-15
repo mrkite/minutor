@@ -50,6 +50,18 @@
     return self;
 }
 
+static id progressBar;
+- (void)setProgress:(id)progress
+{
+	progressBar=progress;
+}
+
+void updateProgress(float progress)
+{
+	[progressBar setDoubleValue:progress*100.0];
+	[progressBar displayIfNeeded];
+}
+
 - (void)drawRect:(NSRect)dirtyRect {
 	if (world==nil) return;
 	
@@ -63,8 +75,7 @@
 	NSRect myRect = NSMakeRect(0,0,curWidth,curHeight);
 	
 	
-	DrawMap([world UTF8String], curX, curZ, curDepth, curWidth, curHeight, curScale, bits, opts);
-	
+	DrawMap([world UTF8String], curX, curZ, curDepth, curWidth, curHeight, curScale, bits, opts, updateProgress);
 	NSBitmapImageRep *mapImage=[[NSBitmapImageRep alloc]
 								initWithBitmapDataPlanes:&bits
 								pixelsWide:curWidth
@@ -80,6 +91,7 @@
 	
 	[mapImage drawInRect: myRect];
 	[mapImage release];
+	updateProgress(0.0);
 }
 
 - (BOOL)acceptsFirstResponder

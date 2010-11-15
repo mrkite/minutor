@@ -44,6 +44,7 @@
 -(void)openWorld:(NSString *)world
 {
 	CloseAll();
+	[map setProgress:progressBar];
 	[map setStatus:status];
 	[map setWorld:world];
 	GetSpawn([world UTF8String], &spawnX, &spawnY, &spawnZ);

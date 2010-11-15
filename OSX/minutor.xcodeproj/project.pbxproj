@@ -264,6 +264,39 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		148DE24F1283497800B6DF83 /* Release Intel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application: Sean Kasun";
+				CURRENT_PROJECT_VERSION = 0.9.3;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INSTALL_PATH = "";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				PREBINDING = NO;
+				PRODUCT_NAME = minutor;
+				SDKROOT = macosx10.5;
+				VALID_ARCHS = "i386 x86_64";
+			};
+			name = "Release Intel";
+		};
+		148DE2501283497800B6DF83 /* Release Intel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = minutor_Prefix.pch;
+				INFOPLIST_FILE = "minutor-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = minutor;
+			};
+			name = "Release Intel";
+		};
 		C01FCF4B08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -299,6 +332,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application: Sean Kasun";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -333,6 +367,7 @@
 			buildConfigurations = (
 				C01FCF4B08A954540054247B /* Debug */,
 				C01FCF4C08A954540054247B /* Release */,
+				148DE2501283497800B6DF83 /* Release Intel */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -342,6 +377,7 @@
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,
 				C01FCF5008A954540054247B /* Release */,
+				148DE24F1283497800B6DF83 /* Release Intel */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

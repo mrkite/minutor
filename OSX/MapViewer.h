@@ -34,6 +34,7 @@
 	IBOutlet id slider;
 	IBOutlet id depthText;
 	IBOutlet id status;
+	IBOutlet id progressBar;
 	int curDepth;
 	int spawnX,spawnY,spawnZ;
 	int playerX,playerY,playerZ;
