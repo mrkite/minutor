@@ -265,7 +265,8 @@ static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *b
 			return;
 		}
 		//lets only update the progress bar if we're loading
-		callback(percent);
+		if (callback)
+			callback(percent);
 
 		Cache_Add(bx,bz,block);
 	}

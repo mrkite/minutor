@@ -35,7 +35,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
 #define MAXZOOM 10.0
 
 static GtkWidget *win;
-static GtkWidget *slider,*da,*status;
+static GtkWidget *slider,*da,*status,*progressbar;
 static GtkWidget *jumpplayer,*jumpspawn;
 static GtkWidget *lighting, *cavemode, *hideobscured, *depthshading, *hell;
 static GtkWidget *standard;
@@ -53,6 +53,12 @@ static gboolean mouseUp(GtkWidget *widget,GdkEventButton *event);
 static void destroy()
 {
 	gtk_main_quit();
+}
+
+static void updateProgress(float progress)
+{
+	if (progress>1.0) progress=1.0;
+	gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(progressbar),progress);
 }
 
 
@@ -77,7 +83,7 @@ static gboolean drawMap(GtkWidget *widget)
 	opts|=gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(lighting))?LIGHTING:0;
 	opts|=gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(hell))?HELL:0;
 
-	DrawMap(world,curX,curZ,curDepth,curWidth,curHeight,curScale,bits,opts);
+	DrawMap(world,curX,curZ,curDepth,curWidth,curHeight,curScale,bits,opts,updateProgress);
 
 	gdk_draw_rgb_32_image(
 		da->window,
@@ -86,6 +92,7 @@ static gboolean drawMap(GtkWidget *widget)
 		GDK_RGB_DITHER_NONE,
 		bits,
 		curWidth*4);
+	updateProgress(0.0);
 	return TRUE;
 }
 
@@ -525,6 +532,9 @@ void createMapViewer()
 	//statusbar
 	status=gtk_statusbar_new();
 	gtk_box_pack_end(GTK_BOX(vbox),status,FALSE,TRUE,0);
+	//progressbar
+	progressbar=gtk_progress_bar_new();
+	gtk_box_pack_start(GTK_BOX(status),progressbar,FALSE,TRUE,0);
 
 
 	bits=g_malloc(curWidth*curHeight*4);
