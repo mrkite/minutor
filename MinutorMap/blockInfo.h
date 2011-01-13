@@ -47,7 +47,7 @@ static struct {
 {"Grass",                  0x78b34d,1.0},	//02
 {"Dirt",                   0x8c6344,1.0},	//03
 {"Cobblestone",            0x828282,1.0},	//04
-{"Wood",                   0x9f8150,1.0},	//05
+{"Wooden Plank",           0x9f8150,1.0},	//05
 {"Sapling",                0x000000,0.0},	//06
 {"Bedrock",                0x565656,1.0},	//07
 {"Water",                  0x163288,0.535},	//08
@@ -59,15 +59,15 @@ static struct {
 {"Gold Ore",               0xfcee4b,1.0},	//0e
 {"Iron Ore",               0xbc9980,1.0},	//0f
 {"Coal Ore",               0x343434,1.0},	//10
-{"Log",                    0xb1905a,1.0},	//11
+{"Wood",                   0xb1905a,1.0},	//11
 {"Leaves",                 0x39ab27,1.0},	//12
 {"Sponge",                 0xc7c743,1.0},	//13
 {"Glass",                  0x607b7f,0.5},	//14
-{"",                       0x000000,0.0},	//15
-{"",                       0x000000,0.0},	//16
-{"",                       0x000000,0.0},	//17
-{"",                       0x000000,0.0},	//18
-{"",                       0x000000,0.0},	//19
+{"Lapis Lazuli Ore",       0x143880,1.0},	//15
+{"Lapis Lazuli Block",     0x1b4ebb,1.0},	//16
+{"Dispenser",              0x6f6f6f,1.0},	//17
+{"Sandstone",              0xe0d8a6,1.0},	//18
+{"Note Block",             0x342017,1.0},	//19
 {"",                       0x000000,0.0},	//1a
 {"",                       0x000000,0.0},	//1b
 {"",                       0x000000,0.0},	//1c
@@ -77,7 +77,7 @@ static struct {
 {"",                       0x000000,0.0},	//20
 {"",                       0x000000,0.0},	//21
 {"",                       0x000000,0.0},	//22
-{"Cloth",                  0xdcdcdc,1.0},	//23
+{"Wool",                   0xdcdcdc,1.0},	//23
 {"",                       0x000000,0.0},	//24
 {"Yellow Flower",          0x000000,0.0},	//25
 {"Red Rose",               0x000000,0.0},	//26
@@ -85,16 +85,16 @@ static struct {
 {"Red Mushroom",           0x000000,0.0},	//28
 {"Gold Block",             0xfef74e,1.0},	//29
 {"Iron Block",             0xeeeeee,1.0},	//2a
-{"Double Step",            0xa6a6a6,1.0},	//2b
-{"Step",                   0xa5a5a5,1.0},	//2c
+{"Double Stone Slab",      0xa6a6a6,1.0},	//2b
+{"Stone Slab",             0xa5a5a5,1.0},	//2c
 {"Brick",                  0xa0807b,1.0},	//2d
 {"TNT",                    0xdb441a,1.0},	//2e
-{"Bookcase",               0x795a39,1.0},	//2f
-{"Mossy Cobblestone",      0x627162,1.0},	//30
+{"Bookshelf",              0x795a39,1.0},	//2f
+{"Moss Stone",             0x627162,1.0},	//30
 {"Obsidian",               0x1b1729,1.0},	//31
 {"Torch",                  0xfcfc00,1.0},	//32
 {"Fire",                   0xfca100,1.0},	//33
-{"Mob Spawner",            0x254254,1.0},	//34
+{"Monster Spawner",        0x254254,1.0},	//34
 {"Wooden Stairs",          0x9e804f,1.0},	//35
 {"Chest",                  0xa06f23,1.0},	//36
 {"Redstone Wire",          0xd60000,1.0},	//37
@@ -125,15 +125,16 @@ static struct {
 {"Snow Block",             0xf1fafa,1.0},	//50
 {"Cactus",                 0x0f791d,1.0},	//51
 {"Clay",                   0xa2a7b4,1.0},	//52
-{"Reed",                   0x72944e,1.0},	//53
+{"Sugar Cane",             0x72944e,1.0},	//53
 {"Jukebox",                0x8a5a40,1.0},	//54
 {"Fence",                  0x9f814e,1.0},	//55
 {"Pumpkin",                0xc07615,1.0},	//56
-{"Netherstone",            0x723a38,1.0},   //57
-{"Mud",                    0x554134,1.0},   //58
-{"Lightstone",             0xf9d49c,1.0},   //59
-{"Portal",                 0xd67fff,1.0},   //5a
-{"Jack-o-Lantern",         0xe9b416,1.0}    //5b
+{"Netherrack",             0x723a38,1.0},       //57
+{"Soul Sand",              0x554134,1.0},       //58
+{"Glowstone",              0xf9d49c,1.0},       //59
+{"Portal",                 0xd67fff,1.0},       //5a
+{"Jack-O-Lantern",         0xe9b416,1.0},       //5b
+{"Cake Block",             0xffffff,1.0}        //5c
 };
 
 enum block_types {
@@ -216,6 +217,6 @@ enum block_types {
 	BLOCK_JACK_O_LANTERN = 0x5b
 };
 
-#define numBlocks 0x5c
+#define numBlocks 0x5d
 
 #endif
