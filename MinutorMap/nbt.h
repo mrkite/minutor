@@ -33,10 +33,21 @@ THE POSSIBILITY OF SUCH DAMAGE.
 #include "zlib.h"
 #include <stdio.h>
 
-gzFile newNBT(const char *filename);
-int nbtGetBlocks(gzFile gz, unsigned char *buff,unsigned char *blockLight);
-void nbtGetSpawn(gzFile gz,int *x,int *y,int *z);
-void nbtGetPlayer(gzFile gz,int *px,int *py,int *pz);
-void nbtClose(gzFile gz);
+enum {BF_BUFFER, BF_GZIP};
+
+// wraps gzFile and memory buffers with a consistent interface
+typedef struct {
+    int type;
+    unsigned char *buf;
+    int *offset;
+    int _offset;
+    gzFile gz;
+} bfFile;
+
+bfFile newNBT(const char *filename);
+int nbtGetBlocks(bfFile bf, unsigned char *buff,unsigned char *blockLight);
+void nbtGetSpawn(bfFile bf,int *x,int *y,int *z);
+void nbtGetPlayer(bfFile bf,int *px,int *py,int *pz);
+void nbtClose(bfFile bf);
 
 #endif

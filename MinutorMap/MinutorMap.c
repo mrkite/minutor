@@ -36,8 +36,8 @@ THE POSSIBILITY OF SUCH DAMAGE.
 
 static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *bits,ProgressCallback callback,float percent);
 static void blit(unsigned char *block,unsigned char *bits,int px,int py,
-	double zoom,int w,int h);
-static Block *LoadBlock(char *filename);
+        double zoom,int w,int h);
+static Block *LoadBlock(char *directory,int bx,int bz);
 static void b36(char *dest,int num);
 static void initColors();
 
@@ -219,14 +219,12 @@ void CloseAll()
 // opts is a bitmask representing render options (see MinutorMap.h)
 static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *bits,ProgressCallback callback,float percent)
 {
-	int first,second;
-	Block *block, *prevblock;
-	char filename[256];
-	int ofs=0,xOfs=0,prevy,zOfs,bofs;
-	int x,z,i;
-	unsigned int color;
-	unsigned char pixel, r, g, b, seenempty;
-	double alpha;
+    Block *block, *prevblock;
+    int ofs=0,xOfs=0,prevy,zOfs,bofs;
+    int x,z,i;
+    unsigned int color;
+    unsigned char pixel, r, g, b, seenempty;
+    double alpha;
 
     char cavemode, showobscured, depthshading, lighting;
 
@@ -237,36 +235,25 @@ static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *b
 
 	block=(Block *)Cache_Find(bx,bz);
 
-	if (block==NULL)
-	{
-        strncpy_s(filename,256,world,256);
-        strncat_s(filename,256,"/",256);
-		if (opts&HELL)
-		{
-			strncat_s(filename,256,"DIM-1/",256);
-		}
-        first=bx%64;
-        if (first<0) first+=64;
-        b36(filename,first);
-        strncat_s(filename,256,"/",256);
-        second=bz%64;
-        if (second<0) second+=64;
-        b36(filename,second);
-        strncat_s(filename,256,"/c.",256);
-        b36(filename,bx);
-        strncat_s(filename,256,".",256);
-        b36(filename,bz);
-        strncat_s(filename,256,".dat",256);
+    if (block==NULL)
+    {
+        char directory[256];
+        strncpy_s(directory,255,world,255);
+        strncat_s(directory,255,"/",255);
+        if (opts&HELL)
+        {
+            strncat_s(directory,255,"DIM-1/",255);
+        }
 
-		block=LoadBlock(filename);
-		if (block==NULL) //blank tile
-		{
-			memset(bits,0xff,16*16*4);
-			return;
-		}
-		//lets only update the progress bar if we're loading
-		if (callback)
-			callback(percent);
+        block=LoadBlock(directory,bx,bz);
+        if (block==NULL) //blank tile
+        {
+            memset(bits,0xff,16*16*4);
+            return;
+        }
+        //lets only update the progress bar if we're loading
+        if (callback)
+            callback(percent);
 
 		Cache_Add(bx,bz,block);
 	}
@@ -412,39 +399,62 @@ static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *b
 	}
     memcpy(block->rendercache, bits, sizeof(unsigned char)*16*16*4);
 }
-Block *LoadBlock(char *filename)
+Block *LoadBlock(char *directory, int cx, int cz)
 {
-	gzFile gz=newNBT(filename);
-	Block *block=malloc(sizeof(Block));
-	block->rendery = -1;
-	if (!nbtGetBlocks(gz, block->grid,block->light))
-	{
-        	free(block);
-	        block = NULL;
-    	}
-	nbtClose(gz);
-	return block;
+    int first, second;
+    char filename[256];
+
+    Block *block=malloc(sizeof(Block));
+    block->rendery = -1; // force redraw
+
+    if (regionGetBlocks(directory, cx, cz, block->grid, block->light)) {
+        return block;
+    }
+
+    strncpy_s(filename,255,directory,255);
+    first=cx%64;
+    if (first<0) first+=64;
+    b36(filename,first);
+    strncat_s(filename,255,"/",255);
+    second=cz%64;
+    if (second<0) second+=64;
+    b36(filename,second);
+    strncat_s(filename,255,"/c.",255);
+    b36(filename,cx);
+    strncat_s(filename,255,".",255);
+    b36(filename,cz);
+    strncat_s(filename,255,".dat",255);
+
+    bfFile bf=newNBT(filename);
+    block->rendery = -1;
+    if (!nbtGetBlocks(bf, block->grid,block->light))
+    {
+        free(block);
+        block = NULL;
+    }
+    nbtClose(bf);
+    return block;
 }
 
 void GetSpawn(const char *world,int *x,int *y,int *z)
 {
-	gzFile gz;
+	bfFile bf;
 	char filename[256];
 	strncpy_s(filename,256,world,256);
 	strncat_s(filename,256,"/level.dat",256);
-	gz=newNBT(filename);
-	nbtGetSpawn(gz,x,y,z);
-	nbtClose(gz);
+	bf=newNBT(filename);
+	nbtGetSpawn(bf,x,y,z);
+	nbtClose(bf);
 }
 void GetPlayer(const char *world,int *px,int *py,int *pz)
 {
-	gzFile gz;
+	bfFile bf;
 	char filename[256];
 	strncpy_s(filename,256,world,256);
 	strncat_s(filename,256,"/level.dat",256);
-	gz=newNBT(filename);
-	nbtGetPlayer(gz,px,py,pz);
-	nbtClose(gz);
+	bf=newNBT(filename);
+	nbtGetPlayer(bf,px,py,pz);
+	nbtClose(bf);
 }
 
 //palette should be in RGBA format

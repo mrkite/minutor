@@ -1,7 +1,7 @@
-OBJS=MinutorMap.o cache.o nbt.o
+OBJS=MinutorMap.o cache.o nbt.o region.o
 CC=gcc
 AR=ar
-CFLAGS=-Wall -std=c99
+CFLAGS=-Wall -std=c99 -O2
 
 LIB=MinutorMap.a
 
