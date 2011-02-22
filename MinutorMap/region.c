@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2010, Ryan Hitchman
+Copyright (c) 2011, Ryan Hitchman
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -30,35 +30,33 @@ Concept: The minimum unit of storage on hard drives is 4KB. 90% of Minecraft
  container to store chunks in single files in runs of 4KB sectors.
 
 Each region file represents a 32x32 group of chunks. The conversion from
-chunk number to region number is floor(coord / 32): a chunk at (30, -3)
+chunk number to region number is floor(coord / 32); a chunk at (30, -3)
 would be in region (0, -1), and one at (70, -30) would be at (3, -1).
-Region files are named "r.x.z.data", where x and z are the region coordinates.
+Region files are named "r.x.z.mcr", where x and z are the region coordinates.
 
-A region file begins with a 4KB header that describes where chunks are stored
-in the file. A 4-byte big-endian integer represents sector offsets and sector
-counts. The chunk offset for a chunk (x, z) begins at byte 4*(x+z*32) in the
-file. The bottom byte of the chunk offset indicates the number of sectors the
-chunk takes up, and the top 3 bytes represent the sector number of the chunk.
-Given a chunk offset o, the chunk data begins at byte 4096*(o/256) and takes up
-at most 4096*(o%256) bytes. A chunk cannot exceed 1MB in size. If a chunk
-offset is 0, the corresponding chunk is not stored in the region file.
+A region file begins with an 8KB header that describes where chunks are stored
+in the file and when they were last modified. A 4-byte big-endian integer 
+represents sector offsets and sector counts. The chunk offset for a chunk 
+located at (x, z) begins at byte 4*(x+z*32) in the file. The bottom byte of 
+the chunk offset indicates the number of sectors the chunk takes up,and 
+the top 3 bytes represent the sector number of the chunk. Given a chunk
+offset o, the chunk data begins at byte 4096*(o/256) and takes up at 
+most 4096*(o%256) bytes. A chunk cannot exceed 1MB in size. A chunk offset 
+of 0 indicates a missing chunk.
+
+The 4-byte big-endian modification time for a chunk (x,z) begins at byte 
+4096+4*(x+z*32) in the file. The time is stored as the number of seconds
+since Jan 1, 1970 that the chunk was last written (aka Unix Time).
 
 Chunk data begins with a 4-byte big-endian integer representing the chunk data
 length in bytes, not counting the length field. The length must be smaller than
-4096 times the number of sectors. The next byte is a version field, to allow
+4096 times the number of sectors. The next byte is a version number, to allow
 backwards-compatible updates to how chunks are encoded.
 
-A version of 1 represents a gzipped NBT file. The gzipped data is the chunk
-length - 1.
+A version number of 1 is never used, for obscure historical reasons.
 
-A version of 2 represents a deflated (zlib compressed) NBT file. The deflated
-data is the chunk length - 1.
-
-CHANGES FOR INCLUSION IN MINECRAFT BETA 1.3:
-
-* Region files are named "r.x.z.dat"
-* Chunk version 2 (zlib compression) replaces version 1 (gzip compression)
-* An additional 4KB sector after the header is reserved for future use.
+A version number of 2 represents a deflated (zlib compressed) NBT file. The 
+deflated data is the chunk length - 1.
 
 */
 
@@ -80,7 +78,7 @@ int regionGetBlocks(char *directory, int cx, int cz, unsigned char *block, unsig
     char filename[256];
     FILE *regionFile;
 
-	unsigned char buf[5];
+    unsigned char buf[5];
     int sectorNumber, offset, chunkLength;
     
     z_stream strm;
@@ -88,7 +86,7 @@ int regionGetBlocks(char *directory, int cx, int cz, unsigned char *block, unsig
     unsigned char in[CHUNK_DEFLATE_MAX], out[CHUNK_INFLATE_MAX];
 
     // open the region file
-    snprintf(filename, 256, "%s/region/r.%d.%d.data", directory, cx>>5, cz>>5);
+    snprintf(filename, 256, "%s/region/r.%d.%d.mcr", directory, cx>>5, cz>>5);
 
     regionFile = fopen(filename, "r");
     if (regionFile == NULL)

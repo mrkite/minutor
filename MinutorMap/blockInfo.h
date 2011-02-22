@@ -134,7 +134,9 @@ static struct {
 {"Glowstone",              0xf9d49c,1.0},       //59
 {"Portal",                 0xd67fff,1.0},       //5a
 {"Jack-O-Lantern",         0xe9b416,1.0},       //5b
-{"Cake Block",             0xffffff,1.0}        //5c
+{"Cake Block",             0xffffff,1.0},       //5c
+{"Bed",                    0xff3333,1.0},       //5d
+{"Diode",                  0xee5555,1.0}        //5e
 };
 
 enum block_types {
@@ -214,7 +216,10 @@ enum block_types {
 	BLOCK_MUD = 0x58,
 	BLOCK_LIGHTSTONE = 0x59,
 	BLOCK_PORTAL = 0x5a,
-	BLOCK_JACK_O_LANTERN = 0x5b
+	BLOCK_JACK_O_LANTERN = 0x5b,
+    BLOCK_CAKE = 0x5c,
+    BLOCK_BED = 0x5d,
+    BLOCK_DIODE = 0x5e
 };
 
 #define numBlocks 0x5d

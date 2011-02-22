@@ -25,6 +25,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
 THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include <dirent.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 #include "MinutorMap/MinutorMap.h"
@@ -263,16 +264,14 @@ static void loadMap(const gchar *path)
 	gdk_window_invalidate_rect(da->window,NULL,FALSE);
 }
 
-static gchar *getWorldPath(int num)
+static gchar *getSavePath()
 {
-	return g_strdup_printf("%s/.minecraft/saves/World%d",g_get_home_dir(),num);
+	return g_strdup_printf("%s/.minecraft/saves/",g_get_home_dir());
 }
 
 static void openWorld(GtkMenuItem *menuItem,gpointer user_data)
 {
-	gchar *path=getWorldPath(GPOINTER_TO_INT(user_data));
-	loadMap(path);
-	g_free(path);
+	loadMap(user_data);
 }
 
 static void openCustom(GtkMenuItem *menuItem,gpointer user_data)
@@ -375,23 +374,30 @@ void createMapViewer()
 	GtkWidget *openitems=gtk_menu_new();
 	gtk_menu_item_set_submenu(GTK_MENU_ITEM(openworld),openitems);
 
-	for (int i=0;i<5;i++)
-	{
-		gchar *label=g_strdup_printf("World %d",i+1);
-		GtkWidget *w=gtk_menu_item_new_with_label(label);
-		gtk_widget_add_accelerator(w,"activate",menuGroup,
-			GDK_1+i,GDK_CONTROL_MASK,GTK_ACCEL_VISIBLE);
-		gtk_menu_shell_append(GTK_MENU_SHELL(openitems),w);
-		g_free(label);
+    gchar *save_dir = getSavePath();
+    DIR* save_dirp = opendir(save_dir);
 
-		gchar *path=getWorldPath(i+1);
-		GFile *file=g_file_new_for_path(path);
-		if (!g_file_query_exists(file,NULL))
-			gtk_widget_set_sensitive(w,FALSE);
-		g_free(path);
-		g_signal_connect(G_OBJECT(w),"activate",
-			G_CALLBACK(openWorld),GINT_TO_POINTER(i+1));
-	}
+    int n = 0;
+    if (save_dirp) 
+    {
+        gchar *level_dat;
+        struct dirent *world_dir;
+        while ((world_dir = readdir(save_dirp)) != NULL) {
+            level_dat = g_strdup_printf("%s%s/level.dat", save_dir, world_dir->d_name);
+            if (g_file_test(level_dat, G_FILE_TEST_IS_REGULAR)) {
+                GtkWidget *w=gtk_menu_item_new_with_label(world_dir->d_name);
+                if (n < 8) {
+                    gtk_widget_add_accelerator(w,"activate",menuGroup,
+                        GDK_1+n,GDK_CONTROL_MASK,GTK_ACCEL_VISIBLE);
+                    n++;
+                }
+                gtk_menu_shell_append(GTK_MENU_SHELL(openitems),w);
+                g_signal_connect(G_OBJECT(w),"activate",
+                    G_CALLBACK(openWorld),g_strdup_printf("%s%s", save_dir, world_dir->d_name));
+            }
+            g_free(level_dat);
+        }
+    }
 	GtkWidget *open=gtk_image_menu_item_new_from_stock(GTK_STOCK_OPEN,menuGroup);
 	gtk_menu_shell_append(GTK_MENU_SHELL(fileitems),open);
 	g_signal_connect(G_OBJECT(open),"activate",
