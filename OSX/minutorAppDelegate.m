@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2010, Sean Kasun
+ Copyright (c) 2011, Sean Kasun
  All rights reserved.
  
  Redistribution and use in source and binary forms, with or without
@@ -29,16 +29,34 @@
 #import "MapViewer.h"
 #include "MinutorMap.h"
 
-@interface minutorAppDelegate (private)
-- (NSString *) worldToPath:(int)world;
-@end
-
 @implementation minutorAppDelegate
 
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	opts=0;
 	[colorSchemes readDefaults];
+	
+	worldPaths=[[NSMutableArray alloc] initWithCapacity:10];
+	NSArray *paths=NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
+	NSString *root=[paths objectAtIndex:0];
+	root=[root stringByAppendingPathComponent:@"minecraft/saves"];
+	
+	id files=[NSFileManager defaultManager];
+	id subs=[files contentsOfDirectoryAtPath:root error:NULL];
+	for (NSString *f in subs)
+	{
+		NSString *path=[root stringByAppendingPathComponent:f];
+		BOOL isDirectory;
+		BOOL exists=[files fileExistsAtPath:path isDirectory:&isDirectory];
+		if (exists && isDirectory)
+		{
+			[worldPaths addObject:path];
+			NSMenuItem *item=[[NSMenuItem alloc] initWithTitle:f action:@selector(openWorld:) keyEquivalent:@""];
+			[item setTag:[worldPaths count]];
+			[worldMenu insertItem:item atIndex:[worldPaths count]-1];
+			[item release];
+		}
+	}
 }
 
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem
@@ -48,10 +66,9 @@
 	{
 		if (tag>100)
 			return [mapViewer isVisible];
-		NSString *root=[self worldToPath:tag];
 		id files=[NSFileManager defaultManager];
 		BOOL isDirectory;
-		BOOL exists=[files fileExistsAtPath:root isDirectory:&isDirectory];
+		BOOL exists=[files fileExistsAtPath:[worldPaths objectAtIndex:tag-1] isDirectory:&isDirectory];
 		if (exists && isDirectory)
 			return YES;
 		return NO;
@@ -73,7 +90,7 @@
 			world=[[openDlg filename] stringByDeletingLastPathComponent];
 	}
 	else
-		world=[self worldToPath:tag];
+		world=[worldPaths objectAtIndex:tag-1];
 	if (world!=nil)
 		[mapViewer openWorld:world];
 }
@@ -121,15 +138,6 @@
 {
 	[colorSchemes select:sender];
 	[mapViewer setColorScheme:[colorSchemes current]];
-}
-
-- (NSString *) worldToPath:(int)world
-{
-	NSArray *paths=NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
-	NSString *root=[paths objectAtIndex:0];
-	root=[root stringByAppendingPathComponent:@"minecraft/saves"];
-	root=[root stringByAppendingFormat:@"/World%d",world];
-	return root;
 }
 
 @end

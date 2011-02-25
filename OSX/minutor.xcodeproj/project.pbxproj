@@ -17,6 +17,7 @@
 		14EC3C4E127B5E33001B3B24 /* ColorScheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 14EC3C4D127B5E33001B3B24 /* ColorScheme.m */; };
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		256AC3DA0F4B6AC300CF3369 /* minutorAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* minutorAppDelegate.m */; };
+		31A4926613174ACB00719F98 /* region.c in Sources */ = {isa = PBXBuildFile; fileRef = 31A4926513174ACB00719F98 /* region.c */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -49,6 +50,8 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		31A4926513174ACB00719F98 /* region.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = region.c; path = ../MinutorMap/region.c; sourceTree = SOURCE_ROOT; };
+		31A4926713174AD600719F98 /* region.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = region.h; path = ../MinutorMap/region.h; sourceTree = SOURCE_ROOT; };
 		8D1107310486CEB800E47090 /* minutor-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "minutor-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* minutor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = minutor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -104,6 +107,8 @@
 		145BC0FB12511655005AED91 /* MinutorMap */ = {
 			isa = PBXGroup;
 			children = (
+				31A4926713174AD600719F98 /* region.h */,
+				31A4926513174ACB00719F98 /* region.c */,
 				14A14F91124BDC27002E2FA9 /* blockInfo.h */,
 				14A14F92124BDC27002E2FA9 /* cache.c */,
 				14A14F93124BDC27002E2FA9 /* cache.h */,
@@ -239,6 +244,7 @@
 				14A14F9A124BDC27002E2FA9 /* MinutorMap.c in Sources */,
 				14A14F9B124BDC27002E2FA9 /* nbt.c in Sources */,
 				14EC3C4E127B5E33001B3B24 /* ColorScheme.m in Sources */,
+				31A4926613174ACB00719F98 /* region.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -268,7 +274,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application: Sean Kasun";
+				CODE_SIGN_IDENTITY = "Don't Code Sign";
 				CURRENT_PROJECT_VERSION = 0.9.3;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -278,7 +284,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PREBINDING = NO;
 				PRODUCT_NAME = minutor;
-				SDKROOT = macosx10.5;
+				SDKROOT = macosx10.6;
 				VALID_ARCHS = "i386 x86_64";
 			};
 			name = "Release Intel";
@@ -332,7 +338,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application: Sean Kasun";
+				CODE_SIGN_IDENTITY = "Don't Code Sign";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -347,7 +353,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application: Sean Kasun";
+				CODE_SIGN_IDENTITY = "Don't Code Sign";
 				CURRENT_PROJECT_VERSION = 0.9.3;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;

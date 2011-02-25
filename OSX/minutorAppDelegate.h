@@ -38,6 +38,7 @@
 	IBOutlet id mapViewer;
 	int opts;
 	IBOutlet id colorSchemes;
+	IBOutlet id worldMenu;
 }
 - (IBAction) openWorld: sender;
 - (IBAction) jumpToSpawn: sender;
