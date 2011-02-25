@@ -89,7 +89,7 @@ int regionGetBlocks(char *directory, int cx, int cz, unsigned char *block, unsig
     // open the region file
 	sprintf_s(filename,256,"%s/region/r.%d.%d.mcr",directory,cx>>5,cz>>5);
 
-    fopen_s(&regionFile,filename, "r");
+    fopen_s(&regionFile,filename, "rb");
     if (regionFile == NULL)
         return 0;
 
