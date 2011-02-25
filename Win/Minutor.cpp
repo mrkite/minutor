@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2010, Sean Kasun
+Copyright (c) 2011, Sean Kasun
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -42,6 +42,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
 HINSTANCE hInst;								// current instance
 TCHAR szTitle[MAX_LOADSTRING];					// The title bar text
 TCHAR szWindowClass[MAX_LOADSTRING];			// the main window class name
+TCHAR *worlds[1000];							// up to 1000 worlds
 
 static char world[MAX_PATH];							//path to currently loaded world
 static BOOL loaded=FALSE;								//world loaded?
@@ -60,8 +61,9 @@ BOOL				InitInstance(HINSTANCE, int);
 LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK	About(HWND, UINT, WPARAM, LPARAM);
 static void loadWorld();
-static void worldPath(int num,TCHAR *path);
+static void worldPath(TCHAR *path);
 static void validateItems(HMENU menu);
+static void loadWorldList(HMENU menu);
 static void draw();
 static void populateColorSchemes(HMENU menu);
 static void useCustomColor(int wmId,HWND hWnd);
@@ -210,6 +212,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_CREATE:
 
 		validateItems(GetMenu(hWnd));
+		loadWorldList(GetMenu(hWnd));
 		populateColorSchemes(GetMenu(hWnd));
 		CheckMenuItem(GetMenu(hWnd),IDM_CUSTOMCOLOR,MF_CHECKED);
 
@@ -416,8 +419,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		wmId    = LOWORD(wParam);
 		wmEvent = HIWORD(wParam);
 		// Parse the menu selections:
-		if (wmId>=IDM_CUSTOMCOLOR)
+		if (wmId>=IDM_CUSTOMCOLOR && wmId<IDM_CUSTOMCOLOR+1000)
 			useCustomColor(wmId,hWnd);
+		if (wmId>IDM_WORLD && wmId<IDM_WORLD+1000)
+		{
+			//convert path to utf8
+			WideCharToMultiByte(CP_UTF8,0,worlds[wmId-IDM_WORLD],-1,world,MAX_PATH,NULL,NULL);
+			loadWorld();
+			EnableWindow(hwndSlider,TRUE);
+			EnableWindow(hwndLabel,TRUE);
+			InvalidateRect(hWnd,NULL,TRUE);
+			UpdateWindow(hWnd);
+		}
 		switch (wmId)
 		{
 		case IDM_ABOUT:
@@ -431,20 +444,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		case IDM_CLOSE:
 			DestroyWindow(hWnd);
 			break;
-		case IDM_WORLD1:
-		case IDM_WORLD2:
-		case IDM_WORLD3:
-		case IDM_WORLD4:
-		case IDM_WORLD5:
-			worldPath((wmId-IDM_WORLD1)+1,path);
-			//convert path to utf8
-			WideCharToMultiByte(CP_UTF8,0,path,-1,world,MAX_PATH,NULL,NULL);
-			loadWorld();
-			EnableWindow(hwndSlider,TRUE);
-			EnableWindow(hwndLabel,TRUE);
-			InvalidateRect(hWnd,NULL,TRUE);
-			UpdateWindow(hWnd);
-			break;
+		case IDM_WORLD:
 		case IDM_OPEN:
 			ZeroMemory(&ofn,sizeof(OPENFILENAME));
 			ofn.lStructSize=sizeof(OPENFILENAME);
@@ -686,28 +686,52 @@ static void loadWorld()
 
 }
 
-static void worldPath(int num,TCHAR *path)
+static void worldPath(TCHAR *path)
 {
-	wchar_t file[10];
 	SHGetFolderPath(NULL,CSIDL_APPDATA,NULL,0,path);
 	PathAppend(path,L".minecraft");
 	PathAppend(path,L"saves");
-	swprintf(file,10,L"World%d",num);
-	PathAppend(path,file);
+}
+
+static void loadWorldList(HMENU menu)
+{
+	MENUITEMINFO info;
+	info.cbSize=sizeof(MENUITEMINFO);
+	info.fMask=MIIM_FTYPE|MIIM_ID|MIIM_STRING|MIIM_DATA;
+	info.fType=MFT_STRING;
+	TCHAR path[MAX_PATH];
+	HANDLE hFind;
+	WIN32_FIND_DATA ffd;
+	int numWorlds=1;
+
+	worldPath(path);
+	PathAppend(path,L"*");
+	hFind=FindFirstFile(path,&ffd);
+
+	do
+	{
+		if (ffd.dwFileAttributes&FILE_ATTRIBUTE_DIRECTORY)
+		{
+			if (ffd.cFileName[0]!='.')
+			{
+				info.wID=IDM_WORLD+numWorlds;
+				info.cch=wcslen(ffd.cFileName);
+				info.dwTypeData=ffd.cFileName;
+				info.dwItemData=numWorlds;
+				InsertMenuItem(menu,IDM_WORLD,FALSE,&info);
+				worlds[numWorlds]=(TCHAR*)malloc(sizeof(TCHAR)*MAX_PATH);
+				worldPath(worlds[numWorlds]);
+				PathAppend(worlds[numWorlds],ffd.cFileName);
+				numWorlds++;
+			}
+		}
+	} while (FindNextFile(hFind,&ffd)!=0);
 }
 
 // validate menu items
 static void validateItems(HMENU menu)
 {
-	TCHAR path[MAX_PATH];
-	for (int i=0;i<5;i++)
-	{
-		worldPath(i+1,path);
-		if (!PathFileExists(path))
-			EnableMenuItem(menu,IDM_WORLD1+i,MF_DISABLED);
-		else
-			EnableMenuItem(menu,IDM_WORLD1+i,MF_ENABLED);
-	}
+
 	if (loaded)
 	{
 		EnableMenuItem(menu,IDM_JUMPSPAWN,MF_ENABLED);

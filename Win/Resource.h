@@ -36,11 +36,6 @@ THE POSSIBILITY OF SUCH DAMAGE.
 #define IDM_ABOUT				500
 #define IDM_CLOSE				501
 #define IDM_OPEN				502
-#define IDM_WORLD1				503
-#define IDM_WORLD2				504
-#define IDM_WORLD3				505
-#define IDM_WORLD4				506
-#define IDM_WORLD5				507
 #define IDM_JUMPSPAWN			508
 #define IDM_JUMPPLAYER			509
 #define IDM_LIGHTING			510
@@ -49,6 +44,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
 #define IDM_DEPTH				513
 #define IDM_COLOR				514
 #define IDM_HELL				515
+#define IDM_WORLD				2000
 #define IDM_CUSTOMCOLOR			3000
 #define IDI_MINUTOR				600
 #define IDI_SMALL				601

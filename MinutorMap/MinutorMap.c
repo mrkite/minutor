@@ -403,6 +403,7 @@ Block *LoadBlock(char *directory, int cx, int cz)
 {
     int first, second;
     char filename[256];
+	bfFile bf;
 
     Block *block=malloc(sizeof(Block));
     block->rendery = -1; // force redraw
@@ -425,7 +426,7 @@ Block *LoadBlock(char *directory, int cx, int cz)
     b36(filename,cz);
     strncat_s(filename,255,".dat",255);
 
-    bfFile bf=newNBT(filename);
+    bf=newNBT(filename);
     block->rendery = -1;
     if (!nbtGetBlocks(bf, block->grid,block->light))
     {

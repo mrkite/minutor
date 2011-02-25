@@ -62,10 +62,10 @@ deflated data is the chunk length - 1.
 
 #include "stdafx.h"
 
-const int CHUNK_DEFLATE_MAX = 1024 * 64;  // 64KB limit for compressed chunks
-const int CHUNK_INFLATE_MAX = 1024 * 128; // 128KB limit for inflated chunks
+#define CHUNK_DEFLATE_MAX (1024 * 64)  // 64KB limit for compressed chunks
+#define CHUNK_INFLATE_MAX (1024 * 128) // 128KB limit for inflated chunks
 
-#define ERROR(x) if(x) { fclose(regionFile); return 0; }
+#define RERROR(x) if(x) { fclose(regionFile); return 0; }
 
 // directory: the base world directory, e.g. "/home/ryan/.minecraft/saves/World1/"
 // cx, cz: the chunk's x and z offset
@@ -84,39 +84,40 @@ int regionGetBlocks(char *directory, int cx, int cz, unsigned char *block, unsig
     z_stream strm;
     int status;
     unsigned char in[CHUNK_DEFLATE_MAX], out[CHUNK_INFLATE_MAX];
+	bfFile bf;
 
     // open the region file
-    snprintf(filename, 256, "%s/region/r.%d.%d.mcr", directory, cx>>5, cz>>5);
+	sprintf_s(filename,256,"%s/region/r.%d.%d.mcr",directory,cx>>5,cz>>5);
 
-    regionFile = fopen(filename, "r");
+    fopen_s(&regionFile,filename, "r");
     if (regionFile == NULL)
         return 0;
 
     // seek to the chunk offset
-    ERROR(fseek(regionFile, 4*((cx&31)+(cz&31)*32), SEEK_SET));
+    RERROR(fseek(regionFile, 4*((cx&31)+(cz&31)*32), SEEK_SET));
 
     // get the chunk offset
-    ERROR(fread(buf, 4, 1, regionFile) != 1);
+    RERROR(fread(buf, 4, 1, regionFile) != 1);
 
     sectorNumber = buf[3]; // how many 4096B sectors the chunk takes up
-    offset = buf[0]<<16|buf[1]<<8|buf[2]; // 4KB sector the chunk is in
+    offset = (buf[0]<<16)|(buf[1]<<8)|buf[2]; // 4KB sector the chunk is in
 
-    ERROR(offset == 0); // an empty chunk
+    RERROR(offset == 0); // an empty chunk
 
-    ERROR(fseek(regionFile, 4096*offset, SEEK_SET));
+    RERROR(fseek(regionFile, 4096*offset, SEEK_SET));
 
-    ERROR(fread(buf, 5, 1, regionFile) != 1); // get chunk length & version
+    RERROR(fread(buf, 5, 1, regionFile) != 1); // get chunk length & version
     
-    chunkLength = buf[0]<<24|buf[1]<<16|buf[2]<<8|buf[3];
+    chunkLength = (buf[0]<<24)|(buf[1]<<16)|(buf[2]<<8)|buf[3];
 
     // sanity check chunk size
-    ERROR(chunkLength > sectorNumber * 4096 || chunkLength > CHUNK_DEFLATE_MAX);
+    RERROR(chunkLength > sectorNumber * 4096 || chunkLength > CHUNK_DEFLATE_MAX);
     
     // only handle zlib-compressed chunks (v2)
-    ERROR(buf[4] != 2);
+    RERROR(buf[4] != 2);
     
     // read compressed chunk data
-    ERROR(fread(in, chunkLength - 1, 1, regionFile) != 1);
+    RERROR(fread(in, chunkLength - 1, 1, regionFile) != 1);
 
     fclose(regionFile);
 
@@ -139,7 +140,6 @@ int regionGetBlocks(char *directory, int cx, int cz, unsigned char *block, unsig
 
     // the uncompressed chunk data is now in "out", with length strm.avail_out
 
-    bfFile bf;
     bf.type = BF_BUFFER;
     bf.buf = out;
     bf._offset = 0;
