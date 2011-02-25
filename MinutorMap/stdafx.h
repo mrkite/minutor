@@ -52,4 +52,6 @@ THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef WIN32
 #define strncpy_s(f,n,w,m) strncpy(f,w,m)
 #define strncat_s(f,n,w,m) strncat(f,w,m)
+#define sprintf_s snprintf
+#define fopen_s(f,p,m) *f=fopen(p,m)
 #endif
