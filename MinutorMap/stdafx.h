@@ -55,3 +55,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
 #define sprintf_s snprintf
 #define fopen_s(f,p,m) *f=fopen(p,m)
 #endif
+
+#if __STDC_VERSION__ >= 199901L
+#define C99
+#endif

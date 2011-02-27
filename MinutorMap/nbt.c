@@ -202,12 +202,18 @@ static int compare(bfFile bf,char *name)
 {
 	int ret=0;
 	int len=readWord(bf);
+#ifdef C99
+    char thisName[len+1];
+#else
 	char *thisName=malloc(len+1);
+#endif
 	bfread(bf,thisName,len);
 	thisName[len]=0;
 	if (strcmp(thisName,name)==0)
 		ret=1;
+#ifndef C99
 	free(thisName);
+#endif
 	return ret;
 }
 
@@ -242,12 +248,15 @@ int nbtGetBlocks(bfFile bf, unsigned char *buff,unsigned char *blockLight)
 	{
 		int ret=0;
 		unsigned char type=0;
-		char *thisName;
 		bfread(bf,&type,1);
 		if (type==0) 
             return 0;
 		len=readWord(bf);
-		thisName=malloc(len+1);
+#ifdef C99
+        char thisName[len+1];
+#else
+		char *thisName=malloc(len+1);
+#endif
 		bfread(bf,thisName,len);
 		thisName[len]=0;
 		if (strcmp(thisName,"BlockLight")==0)
@@ -264,7 +273,9 @@ int nbtGetBlocks(bfFile bf, unsigned char *buff,unsigned char *blockLight)
 			len=readDword(bf); //array length
 			bfread(bf,buff,len);
 		}
+#ifndef C99
 		free(thisName);
+#endif
 		if (!ret)
 			skipType(bf,type);
 	}

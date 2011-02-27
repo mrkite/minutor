@@ -33,19 +33,19 @@ THE POSSIBILITY OF SUCH DAMAGE.
 
 /* a simple cache based on a hashtable with separate chaining */
 
-
 // these must be powers of two
 #define HASH_XDIM 64
 #define HASH_ZDIM 64
 #define HASH_SIZE (HASH_XDIM * HASH_ZDIM)
 
 // arbitrary, let users tune this?
+// 6000 entries translates to minutor using ~300MB of RAM (on x64)
 #define HASH_MAX_ENTRIES 6000
 
 typedef struct block_entry {
     int x, z;
     struct block_entry *next;
-    void *data;
+    Block *data;
 } block_entry;
 
 typedef struct {
@@ -79,27 +79,37 @@ void Cache_Add(int bx, int bz, void *data)
         cacheN = 0;
     }
 
+    int hash = hash_coord(bx, bz);
+    block_entry *to_del = NULL;
+
     if (cacheN >= HASH_MAX_ENTRIES) {
         // we need to remove an old entry
         Point coord = cacheHistory[cacheN % HASH_MAX_ENTRIES];
         int oldhash = hash_coord(coord.x, coord.z);
 
-        block_entry **cur = &blockCache[oldhash], *to_del;
+        block_entry **cur = &blockCache[oldhash];
         while (*cur != NULL) {
             if ((**cur).x == coord.x && (**cur).z == coord.z) {
                 to_del = *cur;
                 *cur = to_del->next;
-                free(to_del->data);
-                free(to_del);
+                block_free(to_del->data);
+                //free(to_del); // we will re-use this entry
                 break;
             }
             cur = &((**cur).next);
         }
     }
 
-    int hash = hash_coord(bx, bz);
-    
-    blockCache[hash] = hash_new(bx, bz, data, blockCache[hash]);
+    if (to_del != NULL) {
+        // re-use the old entry for the new one
+        to_del->next = blockCache[hash];
+        to_del->x = bx;
+        to_del->z = bz;
+        to_del->data = data;
+        blockCache[hash] = to_del;
+    } else {
+        blockCache[hash] = hash_new(bx, bz, data, blockCache[hash]);
+    }
 
     cacheHistory[cacheN % HASH_MAX_ENTRIES].x = bx;
     cacheHistory[cacheN % HASH_MAX_ENTRIES].z = bz;
@@ -140,4 +150,37 @@ void Cache_Empty()
     free(blockCache);
     free(cacheHistory);
     blockCache = NULL;
+}
+
+/* a simple malloc wrapper, based on the observation that a common
+ * behavior pattern for Minutor when the cache is at max capacity
+ * is something like:
+ *
+ * newBlock = malloc(sizeof(Block));
+ * cacheAdd(newBlock)
+ *  free(oldBlock) // same size
+ *
+ * Repeatedly. Recycling the old block can prevent the need for 
+ * malloc and free.
+ */
+
+static Block* last_block = NULL;
+
+Block* block_alloc() 
+{
+    if (last_block != NULL)
+    {
+        Block* ret = last_block;
+        last_block = NULL;
+        return ret;
+    }
+    return malloc(sizeof(Block));
+}
+
+void block_free(Block* block)
+{
+    if (last_block != NULL)
+        free(last_block);
+    
+    last_block = block;
 }

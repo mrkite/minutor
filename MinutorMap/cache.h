@@ -1,6 +1,6 @@
 /*
 Copyright (c) 2010, Sean Kasun
-	Parts Copyright (c) 2010, Ryan Hitchman
+	Parts Copyright (c) 2010-2011, Ryan Hitchman
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -48,5 +48,20 @@ typedef struct Block {
 void *Cache_Find(int bx,int bz);
 void Cache_Add(int bx,int bz,void *data);
 void Cache_Empty();
+
+/* a simple malloc wrapper, based on the observation that a common
+ * behavior pattern for Minutor when the cache is at max capacity
+ * is something like:
+ *
+ * newBlock = malloc(sizeof(Block));
+ * cacheAdd(newBlock)
+ *  free(oldBlock) // same size
+ *
+ * Repeated over and over. Recycling the most recently freed block
+ * prevents expensive reallocations.
+ */
+
+Block* block_alloc();           // allocate memory for a block
+void block_free(Block* block); // release memory for a block
 
 #endif

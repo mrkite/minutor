@@ -78,13 +78,12 @@ int regionGetBlocks(char *directory, int cx, int cz, unsigned char *block, unsig
     char filename[256];
     FILE *regionFile;
 
-    unsigned char buf[5];
     int sectorNumber, offset, chunkLength;
     
     z_stream strm;
     int status;
-    unsigned char in[CHUNK_DEFLATE_MAX], out[CHUNK_INFLATE_MAX];
 	bfFile bf;
+    unsigned char buf[CHUNK_DEFLATE_MAX], out[CHUNK_INFLATE_MAX];
 
     // open the region file
 	sprintf_s(filename,256,"%s/region/r.%d.%d.mcr",directory,cx>>5,cz>>5);
@@ -106,7 +105,11 @@ int regionGetBlocks(char *directory, int cx, int cz, unsigned char *block, unsig
 
     RERROR(fseek(regionFile, 4096*offset, SEEK_SET));
 
-    RERROR(fread(buf, 5, 1, regionFile) != 1); // get chunk length & version
+    RERROR(sectorNumber * 4096 > CHUNK_DEFLATE_MAX);
+
+    // read chunk in one shot
+    // this is faster than reading the header and data separately
+    RERROR(fread(buf, 4096 * sectorNumber, 1, regionFile) != 1);
     
     chunkLength = (buf[0]<<24)|(buf[1]<<16)|(buf[2]<<8)|buf[3];
 
@@ -115,9 +118,6 @@ int regionGetBlocks(char *directory, int cx, int cz, unsigned char *block, unsig
     
     // only handle zlib-compressed chunks (v2)
     RERROR(buf[4] != 2);
-    
-    // read compressed chunk data
-    RERROR(fread(in, chunkLength - 1, 1, regionFile) != 1);
 
     fclose(regionFile);
 
@@ -129,7 +129,7 @@ int regionGetBlocks(char *directory, int cx, int cz, unsigned char *block, unsig
     strm.next_out = out;
     strm.avail_out = CHUNK_INFLATE_MAX;
     strm.avail_in = chunkLength - 1;
-    strm.next_in = in;
+    strm.next_in = buf + 5;
 
     inflateInit(&strm);
     status = inflate(&strm, Z_FINISH); // decompress in one step

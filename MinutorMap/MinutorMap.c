@@ -404,14 +404,14 @@ static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *b
 }
 Block *LoadBlock(char *directory, int cx, int cz)
 {
-    Block *block=malloc(sizeof(Block));
+    Block *block=block_alloc();
     block->rendery = -1; // force redraw
 
     if (regionGetBlocks(directory, cx, cz, block->grid, block->light)) {
         return block;
     }
 
-    free(block);
+    block_free(block);
     return NULL;
 }
 
