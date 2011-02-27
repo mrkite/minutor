@@ -81,7 +81,9 @@ void initColorSchemes(GtkMenuShell *menushell,int startpos,GSList *group)
 		for (int i=0;i<num;i++)
 		{
 			gchar *key=g_strdup_printf("name%d",i);
-			g_stpcpy(cs.name,g_key_file_get_string(keyfile,COLORGROUP,key,NULL));
+			gchar *key_name=g_key_file_get_string(keyfile,COLORGROUP,key,NULL);
+            g_stpcpy(cs.name,key_name);
+            g_free(key_name);
 			g_free(key);
 			key=g_strdup_printf("color%d",i);
 			gsize len;
@@ -89,6 +91,7 @@ void initColorSchemes(GtkMenuShell *menushell,int startpos,GSList *group)
 			g_free(key);
 			for (int j=0;j<len;j++)
 				cs.colors[j]=colors[j];
+            g_free(colors);
 			cs.id=schemes->len;
 			g_array_append_val(schemes,cs);
 			GtkWidget *item=gtk_radio_menu_item_new_with_label(itemgroup,cs.name);

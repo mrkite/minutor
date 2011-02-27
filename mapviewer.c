@@ -397,7 +397,12 @@ void createMapViewer()
             }
             g_free(level_dat);
         }
+
+        closedir(save_dirp);
     }
+
+    g_free(save_dir);
+
 	GtkWidget *open=gtk_image_menu_item_new_from_stock(GTK_STOCK_OPEN,menuGroup);
 	gtk_menu_shell_append(GTK_MENU_SHELL(fileitems),open);
 	g_signal_connect(G_OBJECT(open),"activate",

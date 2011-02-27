@@ -30,13 +30,6 @@ THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef __CACHE_H__
 #define __CACHE_H__
 
-typedef struct BlockCache {
-	struct BlockCache *left,*right;
-	int bx,bz;
-	void *data;
-	long age;
-} BlockCache;
-
 typedef struct Block {
     unsigned char grid[16*16*128];  // blockid array [y+(z+x*16)*128]
     unsigned char light[16*16*64];
@@ -54,7 +47,6 @@ typedef struct Block {
 
 void *Cache_Find(int bx,int bz);
 void Cache_Add(int bx,int bz,void *data);
-void Cache_Clean();
 void Cache_Empty();
 
 #endif

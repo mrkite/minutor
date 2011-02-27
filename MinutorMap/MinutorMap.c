@@ -38,7 +38,6 @@ static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *b
 static void blit(unsigned char *block,unsigned char *bits,int px,int py,
         double zoom,int w,int h);
 static Block *LoadBlock(char *directory,int bx,int bz);
-static void b36(char *dest,int num);
 static void initColors();
 
 static int colorsInited=0;
@@ -258,18 +257,16 @@ static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *b
 		Cache_Add(bx,bz,block);
 	}
 
-    if (block->rendery==y && block->renderopts==opts && block->colormap==colormap) // already rendered, use cache
+    if (block->rendery==y && block->renderopts==opts && block->colormap==colormap) // already rendered
     { 
-        memcpy(bits, block->rendercache, sizeof(unsigned char)*16*16*4);
-
-        if (block->rendermissing) // wait, the last render was incomplete
-        {
-            if (Cache_Find(bx, bz+block->rendermissing) != NULL)
-                ; // we can do a better render now that the missing block is loaded
-            else
-                return; // re-rendering wouldn't change anything
-        } else
-            return;
+        if (block->rendermissing // wait, the last render was incomplete
+            && Cache_Find(bx, bz+block->rendermissing) != NULL) {
+          ; // we can do a better render now that the missing block is loaded
+        } else {
+          // there's no need to re-render, use cache
+          memcpy(bits, block->rendercache, sizeof(unsigned char)*16*16*4);
+          return;
+        }
     }
 
     block->rendery=y;
@@ -401,10 +398,6 @@ static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *b
 }
 Block *LoadBlock(char *directory, int cx, int cz)
 {
-    int first, second;
-    char filename[256];
-	bfFile bf;
-
     Block *block=malloc(sizeof(Block));
     block->rendery = -1; // force redraw
 
@@ -412,29 +405,8 @@ Block *LoadBlock(char *directory, int cx, int cz)
         return block;
     }
 
-    strncpy_s(filename,255,directory,255);
-    first=cx%64;
-    if (first<0) first+=64;
-    b36(filename,first);
-    strncat_s(filename,255,"/",255);
-    second=cz%64;
-    if (second<0) second+=64;
-    b36(filename,second);
-    strncat_s(filename,255,"/c.",255);
-    b36(filename,cx);
-    strncat_s(filename,255,".",255);
-    b36(filename,cz);
-    strncat_s(filename,255,".dat",255);
-
-    bf=newNBT(filename);
-    block->rendery = -1;
-    if (!nbtGetBlocks(bf, block->grid,block->light))
-    {
-        free(block);
-        block = NULL;
-    }
-    nbtClose(bf);
-    return block;
+    free(block);
+    return NULL;
 }
 
 void GetSpawn(const char *world,int *x,int *y,int *z)
@@ -510,26 +482,4 @@ static void initColors()
 			blockColors[i*16+shade]=(r<<16)|(g<<8)|b;
 		}
 	}
-}
-
-static void b36(char *dest,int num)
-{
-	int lnum,i;
-	int pos=strlen(dest);
-	int len=0;
-	for (lnum=num;lnum;len++)
-		lnum/=36;
-	if (num<0)
-	{
-		num=-num;
-		dest[pos++]='-';
-	}
-	for (i=0;num;i++)
-	{
-		dest[pos+len-i-1]="0123456789abcdefghijklmnopqrstuvwxyz"[num%36];
-		num/=36;
-	}
-	if (len==0)
-		dest[pos++]='0';
-	dest[pos+len]=0;
 }
