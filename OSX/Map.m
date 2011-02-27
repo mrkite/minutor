@@ -113,7 +113,7 @@ void updateProgress(float progress)
 		int mx,mz;
 		const char *label=IDBlock(loc.x, loc.y, curX, curZ,
 							curWidth, curHeight, curScale, &mx, &mz);
-		[status setStringValue:[NSString stringWithFormat:@"%d,%d %s",mz,mx,label]];
+		[status setStringValue:[NSString stringWithFormat:@"%d,%d %s",mx,mz,label]];
 	}
 }
 - (void)scrollWheel:(NSEvent *)theEvent

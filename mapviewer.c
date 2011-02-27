@@ -135,7 +135,7 @@ static gboolean mouseMove(GtkWidget *widget,GdkEventMotion *event)
 	int mx,mz;
 	const char *blockLabel=IDBlock(event->x,event->y,curX,curZ,
 		curWidth,curHeight,curScale,&mx,&mz);
-	char *buf=g_strdup_printf("%d,%d %s",mz,mx,blockLabel);
+	char *buf=g_strdup_printf("%d,%d %s",mx,mz,blockLabel);
 	gtk_statusbar_pop(GTK_STATUSBAR(status),1);
 	gtk_statusbar_push(GTK_STATUSBAR(status),1,buf);
 	g_free(buf);
@@ -264,6 +264,11 @@ static void loadMap(const gchar *path)
 	gdk_window_invalidate_rect(da->window,NULL,FALSE);
 }
 
+static void reloadWorld(void* data)
+{
+    CloseAll();
+}
+
 static gchar *getSavePath()
 {
 	return g_strdup_printf("%s/.minecraft/saves/",g_get_home_dir());
@@ -386,7 +391,7 @@ void createMapViewer()
             level_dat = g_strdup_printf("%s%s/level.dat", save_dir, world_dir->d_name);
             if (g_file_test(level_dat, G_FILE_TEST_IS_REGULAR)) {
                 GtkWidget *w=gtk_menu_item_new_with_label(world_dir->d_name);
-                if (n < 8) {
+                if (n < 9) {
                     gtk_widget_add_accelerator(w,"activate",menuGroup,
                         GDK_1+n,GDK_CONTROL_MASK,GTK_ACCEL_VISIBLE);
                     n++;
@@ -407,6 +412,13 @@ void createMapViewer()
 	gtk_menu_shell_append(GTK_MENU_SHELL(fileitems),open);
 	g_signal_connect(G_OBJECT(open),"activate",
 		G_CALLBACK(openCustom),NULL);
+
+    GtkWidget *reload=gtk_image_menu_item_new_with_mnemonic("_Reload");
+    gtk_widget_add_accelerator(reload,"activate",menuGroup,
+            GDK_R,GDK_CONTROL_MASK,GTK_ACCEL_VISIBLE);
+    gtk_menu_shell_append(GTK_MENU_SHELL(fileitems),reload);
+    g_signal_connect(G_OBJECT(reload),"activate",
+        G_CALLBACK(reloadWorld),NULL);
 
 	GtkWidget *sep=gtk_separator_menu_item_new();
 	gtk_menu_shell_append(GTK_MENU_SHELL(fileitems),sep);

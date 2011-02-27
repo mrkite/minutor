@@ -73,7 +73,6 @@ static block_entry* hash_new(int x, int z, void* data, block_entry* next) {
 void Cache_Add(int bx, int bz, void *data)
 {
     if (blockCache == NULL) {
-        printf("%d\n", sizeof(Block));
         blockCache = malloc(sizeof(block_entry*) * HASH_SIZE);
         memset(blockCache, 0, sizeof(block_entry*) * HASH_SIZE);
         cacheHistory = malloc(sizeof(Point) * HASH_MAX_ENTRIES);

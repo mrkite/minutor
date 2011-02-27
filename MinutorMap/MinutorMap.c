@@ -299,7 +299,7 @@ static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *b
 			bofs=zOfs+y;
 			color=0;
 			r=g=b=0;
-            seenempty=0;
+            seenempty=(y==127?1:0);
 			alpha=0.0;
 			for (i=y;i>=0;i--,bofs--)
 			{
@@ -314,11 +314,17 @@ static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *b
                 if ((showobscured || seenempty) && pixel<numBlocks && blocks[pixel].alpha!=0.0)
 				{
 					int light=12;
-					if (lighting && i < 127)
-					{
-						light=block->light[(bofs+1)/2];
-						if (!(bofs&1)) light>>=4;
-						light&=0xf;
+					if (lighting)
+                    {
+                        if (i < 127)
+                        {
+						    light=block->light[(bofs+1)/2];
+						    if (!(bofs&1)) light>>=4;
+						    light&=0xf;
+                        } else
+                        {
+                            light = 0;
+                        }
 					}
 					if (prevy==-1) prevy=i;
 					if (prevy<i)

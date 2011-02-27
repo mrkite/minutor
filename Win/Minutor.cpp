@@ -308,7 +308,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			int mx,mz;
 			blockLabel=IDBlock(LOWORD(lParam),HIWORD(lParam)-30,curX,curZ,
 					bitWidth,bitHeight,curScale,&mx,&mz);
-			wsprintf(buf,L"%d,%d %S",mz,mx,blockLabel);
+			wsprintf(buf,L"%d,%d %S",mx,mz,blockLabel);
 			SendMessage(hwndStatus,SB_SETTEXT,0,(LPARAM)buf);
 		}
 		break;
