@@ -34,7 +34,8 @@ THE POSSIBILITY OF SUCH DAMAGE.
 #include "blockInfo.h"
 #include <string.h>
 
-static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *bits,ProgressCallback callback,float percent);
+static unsigned char* draw(const char *world,int bx,int bz,int y,int opts,
+        ProgressCallback callback,float percent);
 static void blit(unsigned char *block,unsigned char *bits,int px,int py,
         double zoom,int w,int h);
 static Block *LoadBlock(char *directory,int bx,int bz);
@@ -42,6 +43,7 @@ static void initColors();
 
 static int colorsInited=0;
 static unsigned int blockColors[256*16];
+static unsigned char blank_tile[16*16*4];
 
 static unsigned short colormap=0;
 
@@ -76,7 +78,7 @@ void DrawMap(const char *world,double cx,double cz,int y,int w,int h,double zoom
      *                S
      */
 
-	unsigned char blockbits[16*16*4];
+	unsigned char *blockbits;
 	int z,x,px,py;
 	int blockScale=(int)(16*zoom);
 
@@ -113,7 +115,7 @@ void DrawMap(const char *world,double cx,double cz,int y,int w,int h,double zoom
         // z increases west, decreases east
         for (z=0,px=-shiftx;z<=hBlocks;z++,px+=blockScale)
         {
-			draw(world,startxblock+x,startzblock-z,y,opts,blockbits,callback,(float)(x*hBlocks+z)/(float)(vBlocks*hBlocks));
+            blockbits = draw(world,startxblock+x,startzblock-z,y,opts,callback,(float)(x*hBlocks+z)/(float)(vBlocks*hBlocks));
 			blit(blockbits,bits,px,py,zoom,w,h);
 		}
 	}
@@ -200,11 +202,15 @@ static void blit(unsigned char *block,unsigned char *bits,int px,int py,
 		if (y<skipy) continue;
 		yofs=((int)(y/zoom))<<6;
 		bitofs=0;
-		for (x=0;x<bw;x++,bitofs+=4)
-		{
-			if (x<skipx) continue;
-			memcpy(bits+bitofs,block+yofs+(((int)(x/zoom))<<2),4);
-		}
+        if (zoom == 1.0 && skipx == 0 && bw == 16) {
+            memcpy(bits+bitofs,block+yofs,16*4);
+        } else {
+		    for (x=0;x<bw;x++,bitofs+=4)
+		    {
+			    if (x<skipx) continue;
+			    memcpy(bits+bitofs,block+yofs+(((int)(x/zoom))<<2),4);
+		    }
+        }
 	}
 }
 
@@ -213,10 +219,8 @@ void CloseAll()
 	Cache_Empty();
 }
 
-
-
 // opts is a bitmask representing render options (see MinutorMap.h)
-static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *bits,ProgressCallback callback,float percent)
+static unsigned char* draw(const char *world,int bx,int bz,int y,int opts,ProgressCallback callback,float percent)
 {
     Block *block, *prevblock;
     int ofs=0,xOfs=0,prevy,zOfs,bofs;
@@ -246,11 +250,9 @@ static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *b
 
         block=LoadBlock(directory,bx,bz);
         if (block==NULL) //blank tile
-        {
-            memset(bits,0xff,16*16*4);
-            return;
-        }
-        //lets only update the progress bar if we're loading
+            return blank_tile;
+
+        //let's only update the progress bar if we're loading
         if (callback)
             callback(percent);
 
@@ -264,8 +266,7 @@ static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *b
           ; // we can do a better render now that the missing block is loaded
         } else {
           // there's no need to re-render, use cache
-          memcpy(bits, block->rendercache, sizeof(unsigned char)*16*16*4);
-          return;
+          return block->rendercache;
         }
     }
 
@@ -273,6 +274,8 @@ static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *b
     block->renderopts=opts;
     block->rendermissing=0;
 	block->colormap=colormap;
+
+    unsigned char *bits = block->rendercache;
 
     // find the block to the west, so we can use its heightmap for shading
     prevblock=(Block *)Cache_Find(bx, bz + 1);
@@ -326,8 +329,9 @@ static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *b
                             light = 0;
                         }
 					}
-					if (prevy==-1) prevy=i;
-					if (prevy<i)
+					if (prevy==-1) 
+                        prevy=i;
+                    else if (prevy<i)
 						light+=2;
 					else if (prevy>i)
 						light-=5;
@@ -397,10 +401,10 @@ static void draw(const char *world,int bx,int bz,int y,int opts,unsigned char *b
 			bits[ofs++]=b;
 			bits[ofs++]=0xff;
 
-            block->heightmap[x+z*16] = prevy;
+			block->heightmap[x+z*16] = prevy;
 		}
 	}
-    memcpy(block->rendercache, bits, sizeof(unsigned char)*16*16*4);
+	return bits;
 }
 Block *LoadBlock(char *directory, int cx, int cz)
 {
@@ -488,4 +492,21 @@ static void initColors()
 			blockColors[i*16+shade]=(r<<16)|(g<<8)|b;
 		}
 	}
+
+    // also initialize the "missing tile" graphic
+    int rx, ry;
+    for (rx = 0; rx < 16; ++rx)
+    {
+        for (ry = 0; ry < 16; ++ry)
+        {
+            int off = (rx+ry*16)*4;
+            int tone = 150;
+            if ((rx/4)%2 ^ (ry/4)%2)
+                tone=140;
+            blank_tile[off] = tone;
+            blank_tile[off+1] = tone;
+            blank_tile[off+2] = tone;
+            blank_tile[off+3] = 128;
+        }
+    }
 }

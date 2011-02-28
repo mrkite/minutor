@@ -67,6 +67,7 @@ deflated data is the chunk length - 1.
 
 #define RERROR(x) if(x) { fclose(regionFile); return 0; }
 
+
 // directory: the base world directory, e.g. "/home/ryan/.minecraft/saves/World1/"
 // cx, cz: the chunk's x and z offset
 // block: a 32KB buffer to write block data into
@@ -80,7 +81,6 @@ int regionGetBlocks(char *directory, int cx, int cz, unsigned char *block, unsig
 
     int sectorNumber, offset, chunkLength;
     
-    z_stream strm;
     int status;
 	bfFile bf;
     unsigned char buf[CHUNK_DEFLATE_MAX], out[CHUNK_INFLATE_MAX];
@@ -122,18 +122,26 @@ int regionGetBlocks(char *directory, int cx, int cz, unsigned char *block, unsig
     fclose(regionFile);
 
     // decompress chunk
-    strm.zalloc = (alloc_func)NULL;
-    strm.zfree = (free_func)NULL;
-    strm.opaque = NULL;
+    
+    static z_stream strm;
+    static int strm_initialized = 0;
+
+    if (!strm_initialized) {
+        // we re-use dynamically allocated memory
+        strm.zalloc = (alloc_func)NULL;
+        strm.zfree = (free_func)NULL;
+        strm.opaque = NULL;
+        inflateInit(&strm);
+        strm_initialized = 1;
+    }
 
     strm.next_out = out;
     strm.avail_out = CHUNK_INFLATE_MAX;
     strm.avail_in = chunkLength - 1;
     strm.next_in = buf + 5;
 
-    inflateInit(&strm);
+    inflateReset(&strm);
     status = inflate(&strm, Z_FINISH); // decompress in one step
-    inflateEnd(&strm);
 
     if (status != Z_STREAM_END) // error inflating (not enough space?)
         return 0;
