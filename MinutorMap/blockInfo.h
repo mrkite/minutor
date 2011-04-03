@@ -68,7 +68,7 @@ static struct {
 {"Dispenser",              0x6f6f6f,1.0},	//17
 {"Sandstone",              0xe0d8a6,1.0},	//18
 {"Note Block",             0x342017,1.0},	//19
-{"",                       0x000000,0.0},	//1a
+{"Bed",                    0xff3333,1.0},	//1a
 {"",                       0x000000,0.0},	//1b
 {"",                       0x000000,0.0},	//1c
 {"",                       0x000000,0.0},	//1d
@@ -135,8 +135,9 @@ static struct {
 {"Portal",                 0xd67fff,1.0},       //5a
 {"Jack-O-Lantern",         0xe9b416,1.0},       //5b
 {"Cake Block",             0xffffff,1.0},       //5c
-{"Bed",                    0xff3333,1.0},       //5d
-{"Diode",                  0xee5555,1.0}        //5e
+{"Redstone Repeater (off)",0x560000,1.0},       //5d
+{"Redstone Repeater (on)", 0xee5555,1.0},       //5e
+{"Locked Chest",           0xa06f23,1.0}	//5f
 };
 
 enum block_types {

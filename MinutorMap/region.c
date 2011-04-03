@@ -65,7 +65,7 @@ deflated data is the chunk length - 1.
 #define CHUNK_DEFLATE_MAX (1024 * 64)  // 64KB limit for compressed chunks
 #define CHUNK_INFLATE_MAX (1024 * 128) // 128KB limit for inflated chunks
 
-#define RERROR(x) if(x) { fclose(regionFile); return 0; }
+#define RERROR(x) if(x) { PortaClose(regionFile); return 0; }
 
 
 // directory: the base world directory, e.g. "/home/ryan/.minecraft/saves/World1/"
@@ -77,7 +77,10 @@ deflated data is the chunk length - 1.
 int regionGetBlocks(char *directory, int cx, int cz, unsigned char *block, unsigned char *blockLight) 
 {
     char filename[256];
-    FILE *regionFile;
+    PORTAFILE regionFile;
+#ifdef WIN32
+    DWORD br;
+#endif
 
     int sectorNumber, offset, chunkLength;
     
@@ -88,28 +91,28 @@ int regionGetBlocks(char *directory, int cx, int cz, unsigned char *block, unsig
     // open the region file
 	sprintf_s(filename,256,"%s/region/r.%d.%d.mcr",directory,cx>>5,cz>>5);
 
-    fopen_s(&regionFile,filename, "rb");
+    regionFile=PortaOpen(filename);
     if (regionFile == NULL)
         return 0;
 
     // seek to the chunk offset
-    RERROR(fseek(regionFile, 4*((cx&31)+(cz&31)*32), SEEK_SET));
+    RERROR(PortaSeek(regionFile, 4*((cx&31)+(cz&31)*32)));
 
     // get the chunk offset
-    RERROR(fread(buf, 4, 1, regionFile) != 1);
+    RERROR(PortaRead(regionFile,buf, 4));
 
     sectorNumber = buf[3]; // how many 4096B sectors the chunk takes up
     offset = (buf[0]<<16)|(buf[1]<<8)|buf[2]; // 4KB sector the chunk is in
 
     RERROR(offset == 0); // an empty chunk
 
-    RERROR(fseek(regionFile, 4096*offset, SEEK_SET));
+    RERROR(PortaSeek(regionFile, 4096*offset));
 
     RERROR(sectorNumber * 4096 > CHUNK_DEFLATE_MAX);
 
     // read chunk in one shot
     // this is faster than reading the header and data separately
-    RERROR(fread(buf, 4096 * sectorNumber, 1, regionFile) != 1);
+    RERROR(PortaRead(regionFile,buf, 4096 * sectorNumber));
     
     chunkLength = (buf[0]<<24)|(buf[1]<<16)|(buf[2]<<8)|buf[3];
 
@@ -119,7 +122,7 @@ int regionGetBlocks(char *directory, int cx, int cz, unsigned char *block, unsig
     // only handle zlib-compressed chunks (v2)
     RERROR(buf[4] != 2);
 
-    fclose(regionFile);
+    PortaClose(regionFile);
 
     // decompress chunk
     

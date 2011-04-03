@@ -49,11 +49,23 @@ THE POSSIBILITY OF SUCH DAMAGE.
 #include <stdio.h>
 #include <stdlib.h>
 
+#ifdef WIN32
+#define PORTAFILE HANDLE
+#define PortaOpen(fn) CreateFileA(fn,GENERIC_READ,FILE_SHARE_READ | FILE_SHARE_WRITE,NULL,OPEN_EXISTING,0,NULL)
+#define PortaSeek(h,ofs) SetFilePointer(h,ofs,NULL,FILE_BEGIN)==INVALID_SET_FILE_POINTER
+#define PortaRead(h,buf,len) !ReadFile(h,buf,len,&br,NULL)
+#define PortaClose(h) CloseHandle(h)
+#endif
+
 #ifndef WIN32
 #define strncpy_s(f,n,w,m) strncpy(f,w,m)
 #define strncat_s(f,n,w,m) strncat(f,w,m)
 #define sprintf_s snprintf
-#define fopen_s(f,p,m) *f=fopen(p,m)
+#define PORTAFILE FILE*
+#define PortaOpen(fn) fopen(fn,"rb")
+#define PortaSeek(h,ofs) fseek(h,ofs,SEEK_SET)
+#define PortaRead(h,buf,len) fread(buf,len,1,h)!=1
+#define PortaClose(h) fclose(h)
 #endif
 
 #if __STDC_VERSION__ >= 199901L
