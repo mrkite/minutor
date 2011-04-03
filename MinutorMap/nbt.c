@@ -236,6 +236,11 @@ static int nbtFindElement(bfFile bf,char *name)
 int nbtGetBlocks(bfFile bf, unsigned char *buff,unsigned char *blockLight)
 {
 	int len,found;
+
+#ifndef C99
+	char *thisName;
+#endif
+
 	//Level/Blocks
 	bfseek(bf,1,SEEK_CUR); //skip type
 	len=readWord(bf); //name length
@@ -255,7 +260,7 @@ int nbtGetBlocks(bfFile bf, unsigned char *buff,unsigned char *blockLight)
 #ifdef C99
         char thisName[len+1];
 #else
-		char *thisName=malloc(len+1);
+		thisName=(char *)malloc(len+1);
 #endif
 		bfread(bf,thisName,len);
 		thisName[len]=0;

@@ -230,6 +230,7 @@ static unsigned char* draw(const char *world,int bx,int bz,int y,int opts,Progre
     double alpha;
 
     char cavemode, showobscured, depthshading, lighting;
+	unsigned char *bits;
 
 	cavemode=!!(opts&CAVEMODE);
     showobscured=!(opts&HIDEOBSCURED);
@@ -275,7 +276,7 @@ static unsigned char* draw(const char *world,int bx,int bz,int y,int opts,Progre
     block->rendermissing=0;
 	block->colormap=colormap;
 
-    unsigned char *bits = block->rendercache;
+    bits = block->rendercache;
 
     // find the block to the west, so we can use its heightmap for shading
     prevblock=(Block *)Cache_Find(bx, bz + 1);
@@ -469,6 +470,8 @@ static void initColors()
 	unsigned r,g,b,i,shade;
 	double y,u,v,delta;
 	unsigned int color;
+	int rx, ry;
+
 	colorsInited=1;
 	for (i=0;i<numBlocks;i++)
 	{
@@ -494,7 +497,7 @@ static void initColors()
 	}
 
     // also initialize the "missing tile" graphic
-    int rx, ry;
+
     for (rx = 0; rx < 16; ++rx)
     {
         for (ry = 0; ry < 16; ++ry)

@@ -72,15 +72,17 @@ static block_entry* hash_new(int x, int z, void* data, block_entry* next) {
 
 void Cache_Add(int bx, int bz, void *data)
 {
+	int hash;
+	block_entry *to_del=NULL;
+
     if (blockCache == NULL) {
-        blockCache = malloc(sizeof(block_entry*) * HASH_SIZE);
+        blockCache = (block_entry**)malloc(sizeof(block_entry*) * HASH_SIZE);
         memset(blockCache, 0, sizeof(block_entry*) * HASH_SIZE);
-        cacheHistory = malloc(sizeof(Point) * HASH_MAX_ENTRIES);
+        cacheHistory = (Point*)malloc(sizeof(Point) * HASH_MAX_ENTRIES);
         cacheN = 0;
     }
 
-    int hash = hash_coord(bx, bz);
-    block_entry *to_del = NULL;
+    hash = hash_coord(bx, bz);
 
     if (cacheN >= HASH_MAX_ENTRIES) {
         // we need to remove an old entry
@@ -118,10 +120,10 @@ void Cache_Add(int bx, int bz, void *data)
 
 void *Cache_Find(int bx,int bz)
 {
+	block_entry *entry;
+
     if (blockCache == NULL)
         return NULL;
-
-    block_entry *entry;
 
     for (entry = blockCache[hash_coord(bx, bz)]; entry != NULL; entry = entry->next)
         if (entry->x == bx && entry->z == bz)
@@ -132,11 +134,12 @@ void *Cache_Find(int bx,int bz)
 
 void Cache_Empty()
 {
+	int hash;
+	block_entry *entry,*next;
+
     if (blockCache == NULL)
         return;
 
-    int hash;
-    block_entry *entry, *next;
     for (hash = 0; hash < HASH_SIZE; hash++) {
         entry = blockCache[hash];
         while (entry != NULL) {

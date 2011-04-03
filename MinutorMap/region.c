@@ -87,6 +87,9 @@ int regionGetBlocks(char *directory, int cx, int cz, unsigned char *block, unsig
     int status;
 	bfFile bf;
     unsigned char buf[CHUNK_DEFLATE_MAX], out[CHUNK_INFLATE_MAX];
+	
+    static z_stream strm;
+    static int strm_initialized = 0;
 
     // open the region file
 	sprintf_s(filename,256,"%s/region/r.%d.%d.mcr",directory,cx>>5,cz>>5);
@@ -126,8 +129,6 @@ int regionGetBlocks(char *directory, int cx, int cz, unsigned char *block, unsig
 
     // decompress chunk
     
-    static z_stream strm;
-    static int strm_initialized = 0;
 
     if (!strm_initialized) {
         // we re-use dynamically allocated memory
