@@ -1,3 +1,10 @@
+minutor (1.2) unstable; urgency=low
+
+  * Added new blocks
+  * Fixed windows GDI leak
+
+ -- Sean Kasun <sean@seancode.com>  Thu, 16 Jun 2011 12:51:11 -0700
+
 minutor (1.1) unstable; urgency=low
 
   * Using new cache

@@ -186,6 +186,7 @@ static unsigned char *map;
 static int bitWidth=0;
 static int bitHeight=0;
 static HWND progressBar=NULL;
+static HBRUSH ctlBrush=NULL;
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	int wmId, wmEvent;
@@ -215,6 +216,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		loadWorldList(GetMenu(hWnd));
 		populateColorSchemes(GetMenu(hWnd));
 		CheckMenuItem(GetMenu(hWnd),IDM_CUSTOMCOLOR,MF_CHECKED);
+
+		ctlBrush=CreateSolidBrush(GetSysColor(COLOR_WINDOW));
 
 		ice.dwSize=sizeof(INITCOMMONCONTROLSEX);
 		ice.dwICC=ICC_BAR_CLASSES;
@@ -412,7 +415,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			HDC hdcStatic=(HDC)wParam;
 			SetTextColor(hdcStatic,GetSysColor(COLOR_WINDOWTEXT));
 			SetBkColor(hdcStatic,GetSysColor(COLOR_WINDOW));
-			return (INT_PTR)CreateSolidBrush(GetSysColor(COLOR_WINDOW));
+			return ctlBrush;
 		}
 		break;
 	case WM_COMMAND:
