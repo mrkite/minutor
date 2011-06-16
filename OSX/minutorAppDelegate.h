@@ -28,9 +28,6 @@
 #import <Cocoa/Cocoa.h>
 #import "ColorScheme.h"
 
-@protocol NSApplicationDelegate <NSObject>
-@end
-
 @interface minutorAppDelegate : NSObject <NSApplicationDelegate> {
     NSWindow *window;
 	NSMutableArray *worldPaths;

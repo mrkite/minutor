@@ -374,9 +374,9 @@ static unsigned char* draw(const char *world,int bx,int bz,int y,int opts,Progre
                 seenempty=0;
                 pixel=block->grid[bofs];
 
-                if (pixel==BLOCK_LEAVES || pixel==BLOCK_WOOD) //special case surface trees
+                if (pixel==BLOCK_LEAVES || pixel==BLOCK_LOG) //special case surface trees
                     for (; i>=1; i--,pixel=block->grid[--bofs])
-                        if (!(pixel==BLOCK_WOOD||pixel==BLOCK_LEAVES||pixel==BLOCK_AIR))
+                        if (!(pixel==BLOCK_LOG||pixel==BLOCK_LEAVES||pixel==BLOCK_AIR))
                             break; // skip leaves, wood, air
 
                 for (;i>=1;i--,bofs--)
