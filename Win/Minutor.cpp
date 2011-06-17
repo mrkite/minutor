@@ -415,7 +415,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			HDC hdcStatic=(HDC)wParam;
 			SetTextColor(hdcStatic,GetSysColor(COLOR_WINDOWTEXT));
 			SetBkColor(hdcStatic,GetSysColor(COLOR_WINDOW));
-			return ctlBrush;
+			return (INT_PTR)ctlBrush;
 		}
 		break;
 	case WM_COMMAND:
@@ -433,6 +433,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			EnableWindow(hwndLabel,TRUE);
 			InvalidateRect(hWnd,NULL,TRUE);
 			UpdateWindow(hWnd);
+			validateItems(GetMenu(hWnd));
 		}
 		switch (wmId)
 		{
