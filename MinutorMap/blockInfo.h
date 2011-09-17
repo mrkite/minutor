@@ -137,8 +137,21 @@ static struct {
 {"Cake",                   0xffffff,1.0},   //5c
 {"Redstone Repeater (off)",0x560000,1.0},   //5d
 {"Redstone Repeater (on)", 0xee5555,1.0},   //5e
-{"Locked Chest",           0xa06f23,1.0},	//5f
-{"Trapdoor",               0x886634,1.0}    //60
+{"Locked Chest",           0xa06f23,1.0},   //5f
+{"Trapdoor",               0x886634,1.0},   //60
+{"Hidden Silverfish",      0x787878,1.0},   //61
+{"Stone Brick",            0x797979,1.0},   //62
+{"Huge Red Mushroom",      0xa91b19,1.0},   //63
+{"Huge Brown Mushroom",    0x8c6b54,1.0},   //64
+{"Iron Bars",              0xa3a4a4,1.0},   //65
+{"Glass Pane",             0x607b7f,0.5},   //66
+{"Melon",                  0xaead27,1.0},   //67
+{"Pumpkin Stem",           0x000000,0.0},   //68
+{"Melon Stem",             0x000000,0.0},   //69
+{"Vines",                  0x1e4c0a,1.0},   //6a
+{"Fence Gate",             0xa88754,1.0},   //6b
+{"Brick Stairs",           0xa0807b,1.0},   //6c
+{"Stone Brick Stairs",     0x797979,1.0}    //6d
 };
 
 enum block_types {
