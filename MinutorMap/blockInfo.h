@@ -71,12 +71,12 @@ static struct {
 {"Bed",                    0xff3333,1.0},	//1a
 {"Powered Rail",           0x693838,1.0},	//1b
 {"Detector Rail",          0x694d3a,1.0},	//1c
-{"",                       0x000000,0.0},	//1d
+{"Sticky Piston",          0x719e60,1.0},	//1d
 {"Cobweb",                 0xeeeeee,1.0},	//1e
 {"Tall Grass",             0x68a33d,1.0},	//1f
 {"Dead Shrubs",            0x946428,1.0},	//20
-{"",                       0x000000,0.0},	//21
-{"",                       0x000000,0.0},	//22
+{"Piston",                 0x95774b,1.0},	//21
+{"Piston Head",            0x95774b,1.0},	//22
 {"Wool",                   0xdcdcdc,1.0},	//23
 {"",                       0x000000,0.0},	//24
 {"Dandelion",              0x000000,0.0},	//25
