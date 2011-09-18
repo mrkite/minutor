@@ -161,6 +161,6 @@ enum block_types {
     BLOCK_LEAVES = 0x12
 };
 
-#define numBlocks 0x61
+#define numBlocks 0x6e
 
 #endif
