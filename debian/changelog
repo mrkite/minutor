@@ -1,3 +1,9 @@
+minutor (1.2.3) unstable; urgency=low
+
+  * Added 1.9 blocks, reversed giant mushroom blocks
+
+ -- Sean Kasun <sean@seancode.com>  Wed, 28 Sep 2011 11:47:05 -0700
+
 minutor (1.2.2) unstable; urgency=low
 
   * Fixed a bug that prevented newer blocks from showing up

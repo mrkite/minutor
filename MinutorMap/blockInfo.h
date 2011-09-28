@@ -141,8 +141,8 @@ static struct {
 {"Trapdoor",               0x886634,1.0},   //60
 {"Hidden Silverfish",      0x787878,1.0},   //61
 {"Stone Brick",            0x797979,1.0},   //62
-{"Huge Red Mushroom",      0xa91b19,1.0},   //63
-{"Huge Brown Mushroom",    0x8c6b54,1.0},   //64
+{"Huge Brown Mushroom",    0x654b39,1.0},   //63
+{"Huge Red Mushroom",      0xa91b19,1.0},   //64
 {"Iron Bars",              0xa3a4a4,1.0},   //65
 {"Glass Pane",             0x607b7f,0.5},   //66
 {"Melon",                  0xaead27,1.0},   //67
@@ -151,8 +151,16 @@ static struct {
 {"Vines",                  0x1e4c0a,1.0},   //6a
 {"Fence Gate",             0xa88754,1.0},   //6b
 {"Brick Stairs",           0xa0807b,1.0},   //6c
-{"Stone Brick Stairs",     0x797979,1.0}    //6d
+{"Stone Brick Stairs",     0x797979,1.0},   //6d
+{"Mycelium",               0x685d69,1.0},   //6e
+{"Lily Pad",               0x0c5f14,1.0},   //6f
+{"Nether Brick",           0x32171c,1.0},   //70
+{"Nether Brick Fence",     0x241316,1.0},   //71
+{"Nether Brick Stairs",    0x32171c,1.0},   //72
+{"Nether Wart",            0x81080a,1.0}    //73
 };
+
+#define numBlocks 0x74
 
 enum block_types {
     BLOCK_AIR = 0x00,
@@ -161,6 +169,5 @@ enum block_types {
     BLOCK_LEAVES = 0x12
 };
 
-#define numBlocks 0x6e
 
 #endif
