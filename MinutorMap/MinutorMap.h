@@ -44,6 +44,7 @@ extern "C" {
 #define DEPTHSHADING	0x04
 #define LIGHTING		0x08
 #define HELL			0x10
+#define ENDER			0x20
 
 typedef void (*ProgressCallback)(float progress);
 

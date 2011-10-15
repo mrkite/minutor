@@ -157,10 +157,16 @@ static struct {
 {"Nether Brick",           0x32171c,1.0},   //70
 {"Nether Brick Fence",     0x241316,1.0},   //71
 {"Nether Brick Stairs",    0x32171c,1.0},   //72
-{"Nether Wart",            0x81080a,1.0}    //73
+{"Nether Wart",            0x81080a,1.0},   //73
+{"Enchantment Table",      0x45dec3,1.0},   //74
+{"Brewing Stand",          0x77692e,1.0},   //75
+{"Cauldron",               0x323232,1.0},   //76
+{"End Portal",             0x000000,1.0},   //77
+{"End Portal Frame",       0x366059,1.0},   //78
+{"White Stone",            0xdadca6,1.0}    //79
 };
 
-#define numBlocks 0x74
+#define numBlocks 0x7a
 
 enum block_types {
     BLOCK_AIR = 0x00,

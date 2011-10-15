@@ -248,6 +248,10 @@ static unsigned char* draw(const char *world,int bx,int bz,int y,int opts,Progre
         {
             strncat_s(directory,255,"DIM-1/",255);
         }
+		if (opts&ENDER)
+		{
+			strncat_s(directory,255,"DIM1/",255);
+		}
 
         block=LoadBlock(directory,bx,bz);
         if (block==NULL) //blank tile

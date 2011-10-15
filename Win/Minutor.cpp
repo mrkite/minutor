@@ -539,6 +539,29 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				curZ*=8.0;
 			}
 			CheckMenuItem(GetMenu(hWnd),wmId,(opts&HELL)?MF_CHECKED:MF_UNCHECKED);
+			if (opts&ENDER)
+			{
+				CheckMenuItem(GetMenu(hWnd),IDM_END,MF_UNCHECKED);
+				opts&=~ENDER;
+			}
+			CloseAll();
+			draw();
+			InvalidateRect(hWnd,NULL,TRUE);
+			UpdateWindow(hWnd);
+			break;
+		case IDM_END:
+			opts^=ENDER;
+			CheckMenuItem(GetMenu(hWnd),wmId,(opts&ENDER)?MF_CHECKED:MF_UNCHECKED);
+			if (opts&ENDER)
+			{
+				if (opts&HELL)
+				{
+					curX*=8.0;
+					curZ*=8.0;
+					CheckMenuItem(GetMenu(hWnd),IDM_HELL,MF_UNCHECKED);
+					opts&=~HELL;
+				}
+			}
 			CloseAll();
 			draw();
 			InvalidateRect(hWnd,NULL,TRUE);
