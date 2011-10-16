@@ -1,3 +1,9 @@
+minutor (1.2.4) unstable; urgency=low
+
+  * More 1.9 blocks, can view the End
+
+ -- Sean Kasun <sean@seancode.com>  Sat, 15 Oct 2011 18:17:53 -0700
+ 
 minutor (1.2.3) unstable; urgency=low
 
   * Added 1.9 blocks, reversed giant mushroom blocks
