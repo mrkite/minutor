@@ -77,6 +77,23 @@ static unsigned int readDword(bfFile bf)
 	bfread(bf,buf,4);
 	return (buf[0]<<24)|(buf[1]<<16)|(buf[2]<<8)|buf[3];
 }
+static unsigned long long readLong(bfFile bf)
+{
+	int i;
+	union {
+		double f;
+		unsigned long long l;
+	} fl;
+	unsigned char buf[8];
+	bfread(bf,buf,8);
+	fl.l=0;
+	for (i=0;i<8;i++)
+	{
+		fl.l<<=8;
+		fl.l|=buf[i];
+	}
+	return fl.l;
+}
 static double readDouble(bfFile bf)
 {
 	int i;
@@ -301,6 +318,19 @@ void nbtGetSpawn(bfFile bf,int *x,int *y,int *z)
 	*y=readDword(bf);
 	if (nbtFindElement(bf,"SpawnZ")!=3) return;
 	*z=readDword(bf);
+}
+
+void nbtGetRandomSeed(bfFile bf,long long *seed)
+{
+	int len;
+	*seed=0;
+	//Data/RandomSeed
+	bfseek(bf,1,SEEK_CUR); //skip type
+	len=readWord(bf); //name length
+	bfseek(bf,len,SEEK_CUR); //skip name ()
+	if (nbtFindElement(bf,"Data")!=10) return;
+	if (nbtFindElement(bf,"RandomSeed")!=4) return;
+	*seed=readLong(bf);
 }
 void nbtGetPlayer(bfFile bf,int *px,int *py,int *pz)
 {

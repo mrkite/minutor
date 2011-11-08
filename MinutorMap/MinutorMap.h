@@ -45,6 +45,7 @@ extern "C" {
 #define LIGHTING		0x08
 #define HELL			0x10
 #define ENDER			0x20
+#define SLIME			0x40
 
 typedef void (*ProgressCallback)(float progress);
 
@@ -53,6 +54,7 @@ typedef void (*ProgressCallback)(float progress);
 	__declspec(dllexport) void __cdecl CloseAll();
 	__declspec(dllexport) void __cdecl GetSpawn(const char *world,int *x,int *y,int *z);
 	__declspec(dllexport) void __cdecl GetPlayer(const char *world,int *px,int *py,int *pz);
+	__declspec(dllexport) void __cdecl GetRandomSeed(const char *world,long long* pseed);
 	
 	// palette should be in RGBA format, num colors in the palette
 	__declspec(dllexport) void __cdecl SetMapPalette(unsigned int *palette,int num);

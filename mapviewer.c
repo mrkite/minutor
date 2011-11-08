@@ -38,17 +38,18 @@ THE POSSIBILITY OF SUCH DAMAGE.
 static GtkWidget *win;
 static GtkWidget *slider,*da,*status,*progressbar;
 static GtkWidget *jumpplayer,*jumpspawn;
-static GtkWidget *lighting, *cavemode, *hideobscured, *depthshading, *hell, *ender;
+static GtkWidget *lighting, *cavemode, *hideobscured, *depthshading, *hell, *ender, *slime;
 static GtkWidget *standard;
 static double curX,curZ;
 static int curDepth=127;
+static int showSlime=0;
 static double curScale=1.0;
 static char *world=NULL;
 static unsigned char *bits;
 static int curWidth,curHeight;
 static int spawnX,spawnY,spawnZ;
 static int playerX,playerY,playerZ;
-
+static long long randomSeed;
 static gboolean mouseUp(GtkWidget *widget,GdkEventButton *event);
 
 static void destroy()
@@ -84,6 +85,7 @@ static gboolean drawMap(GtkWidget *widget)
 	opts|=gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(lighting))?LIGHTING:0;
 	opts|=gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(hell))?HELL:0;
 	opts|=gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(ender))?ENDER:0;
+	opts|=gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(slime))?SLIME:0;
 
 	DrawMap(world,curX,curZ,curDepth,curWidth,curHeight,curScale,bits,opts,updateProgress);
 
@@ -257,6 +259,7 @@ static void loadMap(const gchar *path)
 	GetPlayer(path,&playerX,&playerY,&playerZ);
 	curX=spawnX;
 	curZ=spawnZ;
+	GetRandomSeed(path, &randomSeed);
 
 	gtk_widget_set_sensitive(jumpspawn,TRUE);
 	gtk_widget_set_sensitive(jumpplayer,TRUE);
@@ -341,6 +344,20 @@ static void toggleHell(GtkMenuItem *menuItem,gpointer user_data)
 	{
 		curX*=8.0;
 		curZ*=8.0;
+	}
+	CloseAll();
+	gdk_window_invalidate_rect(da->window,NULL,FALSE);
+}
+
+static void toggleSlime(GtkMenuItem *menuItem,gpointer user_data)
+{
+	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(slime)))
+	{
+		showSlime = 1;
+	}
+	else
+	{
+		showSlime = 0;
 	}
 	CloseAll();
 	gdk_window_invalidate_rect(da->window,NULL,FALSE);
@@ -460,7 +477,7 @@ void createMapViewer()
 	
 	GtkWidget *sep2=gtk_separator_menu_item_new();
 	gtk_menu_shell_append(GTK_MENU_SHELL(viewitems),sep2);
-	
+
 	hell=gtk_check_menu_item_new_with_label("Nether");
 	gtk_widget_add_accelerator(hell,"activate",menuGroup,
 		GDK_F5,0,GTK_ACCEL_VISIBLE);
@@ -474,7 +491,6 @@ void createMapViewer()
 	gtk_menu_shell_append(GTK_MENU_SHELL(viewitems),ender);
 	g_signal_connect(G_OBJECT(ender),"activate",
 		G_CALLBACK(toggleEnd),NULL);
-
 	GtkWidget *sep3=gtk_separator_menu_item_new();
 	gtk_menu_shell_append(GTK_MENU_SHELL(viewitems),sep3);
 
@@ -567,6 +583,13 @@ void createMapViewer()
     gtk_menu_shell_append(GTK_MENU_SHELL(viewitems),depthshading);
     g_signal_connect(G_OBJECT(depthshading),"toggled",
         G_CALLBACK(drawMap),NULL);
+
+	slime=gtk_check_menu_item_new_with_label("Slime Spawning");
+	gtk_widget_add_accelerator(slime,"activate",menuGroup,
+		GDK_5,0,GTK_ACCEL_VISIBLE);
+	gtk_menu_shell_append(GTK_MENU_SHELL(viewitems),slime);
+	g_signal_connect(G_OBJECT(slime),"activate",
+	G_CALLBACK(toggleSlime),NULL);		
 
 	//statusbar
 	status=gtk_statusbar_new();

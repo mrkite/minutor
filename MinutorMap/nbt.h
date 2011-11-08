@@ -48,6 +48,7 @@ bfFile newNBT(const char *filename);
 int nbtGetBlocks(bfFile bf, unsigned char *buff,unsigned char *blockLight);
 void nbtGetSpawn(bfFile bf,int *x,int *y,int *z);
 void nbtGetPlayer(bfFile bf,int *px,int *py,int *pz);
+void nbtGetRandomSeed(bfFile bf,long long *seed);
 void nbtClose(bfFile bf);
 
 #endif

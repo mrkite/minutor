@@ -35,3 +35,6 @@ clean: cleanmaplib
 	rm -f $(EXEC) $(OBJS)
 cleanmaplib:
 	cd MinutorMap && $(MAKE) clean
+
+test: $(EXEC)
+	./minutor

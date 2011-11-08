@@ -46,9 +46,53 @@ static unsigned int blockColors[256*16];
 static unsigned char blank_tile[16*16*4];
 
 static unsigned short colormap=0;
+static long long mapSeed;
 
 #define clamp(v,a,b) ((v)<b?((v)>a?(v):a):b)
 
+
+
+
+
+
+
+static long long randomSeed;
+static void javaRandomSetSeed(long long seed){
+  randomSeed = (seed ^ 0x5DEECE66DL) & ((1LL << 48) - 1);
+}
+
+static long long javaRandomNext(int bits) {
+  long long r = randomSeed;
+  r = (r * 0x5DEECE66DL + 0xBL) & ((1LL << 48) - 1);
+  return (long long)(r >> (48 - bits));
+}
+static int javaRandomNextInt(int n) {
+   if ((n & -n) == n)  // i.e., n is a power of 2
+       return (int)((n * (long long)javaRandomNext(31)) >> 31);
+
+   long long bits, val;
+   do {
+       bits = javaRandomNext(31);
+       val = bits % n;
+   } while(bits - val + (n-1) < 0);
+   return val;
+}
+
+static long long getChunkSeed(int xPosition, int zPosition){
+	return (mapSeed + (long long) (xPosition * xPosition * 0x4c1906) + (long long) (xPosition * 0x5ac0db) +
+             (long long) (zPosition * zPosition) * 0x4307a7L + (long long) (zPosition * 0x5f24f)) ^ 0x3ad8025f;
+}
+
+static int isSlimeChunk(int x, int z){
+	long long nextSeed = getChunkSeed(x, z);
+	javaRandomSetSeed(nextSeed);
+	int result = javaRandomNextInt(10);
+    if(result==0){
+    	return 1;
+    }else{
+    	return 0;
+    }
+}
 
 //world = path to world saves
 //cx = center x world
@@ -224,6 +268,14 @@ static unsigned char* draw(const char *world,int bx,int bz,int y,int opts,Progre
 {
     Block *block, *prevblock;
     int ofs=0,xOfs=0,prevy,zOfs,bofs;
+    int hasSlime = 0;
+    if(opts&HELL || opts&ENDER){
+    }else{
+	    if(opts&SLIME){
+		    hasSlime = isSlimeChunk(bx, bz);
+		}
+    }
+    
     int x,z,i;
     unsigned int color;
     unsigned char pixel, r, g, b, seenempty;
@@ -373,6 +425,16 @@ static unsigned char* draw(const char *world,int bx,int bz,int y,int opts,Progre
                 b=b*num/denom;
             }
 
+            if(hasSlime > 0){
+            	if(y<=16){
+	            	g=clamp(g+20,0,255);
+            	}else{
+            		if(x%15==0 || z%15==0){
+		            	g=clamp(g+20,0,255);
+            		}
+            	}
+            }
+
             if (cavemode)
 			{
                 seenempty=0;
@@ -433,6 +495,18 @@ void GetSpawn(const char *world,int *x,int *y,int *z)
 	bf=newNBT(filename);
 	nbtGetSpawn(bf,x,y,z);
 	nbtClose(bf);
+}
+void GetRandomSeed(const char *world,long long *seed)
+{
+	bfFile bf;
+	char filename[256];
+	strncpy_s(filename,256,world,256);
+	strncat_s(filename,256,"/level.dat",256);
+	bf=newNBT(filename);
+	nbtGetRandomSeed(bf,seed);
+	mapSeed = *seed;
+	nbtClose(bf);
+
 }
 void GetPlayer(const char *world,int *px,int *py,int *pz)
 {
