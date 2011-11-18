@@ -318,7 +318,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		}
 		break;
 	case WM_KEYDOWN:
-		if (loaded)
+		// only care about keys hit when loaded, and control is up
+		if (loaded && GetKeyState(VK_CONTROL)>=0)
 		{
 			BOOL changed=FALSE;
 			switch (wParam)
@@ -360,6 +361,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			case VK_END:
 				curScale=MINZOOM;
 				changed=TRUE;
+				break;
+			default:
+				moving=0;
 				break;
 			}
 			if (moving!=0)
