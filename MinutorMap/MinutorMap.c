@@ -200,6 +200,8 @@ const char *IDBlock(int bx, int by, double cx, double cz, int w, int h, double z
 		shifty+=blockScale;
 	}
 
+	if (by<0) return "";
+
     x=(by+shifty)/blockScale;
     py=x*blockScale-shifty;
     z=(bx+shiftx)/blockScale;
