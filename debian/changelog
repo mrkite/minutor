@@ -1,3 +1,10 @@
+minutor (1.5.0) unstable; urgency=low
+
+  * Blocks for MC1.0
+  * Various windows fixes
+
+ -- Sean Kasun <sean@seancode.com>  Fri, 18 Nov 2011 15:23:29 -0700
+
 minutor (1.2.4) unstable; urgency=low
 
   * More 1.9 blocks, can view the End

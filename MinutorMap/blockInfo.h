@@ -163,10 +163,11 @@ static struct {
 {"Cauldron",               0x323232,1.0},   //76
 {"End Portal",             0x000000,1.0},   //77
 {"End Portal Frame",       0x366059,1.0},   //78
-{"White Stone",            0xdadca6,1.0}    //79
+{"End Stone",              0xdadca6,1.0},   //79
+{"Dragon Egg",             0x1b1729,1.0}    //7a
 };
 
-#define numBlocks 0x7a
+#define numBlocks 0x7b
 
 enum block_types {
     BLOCK_AIR = 0x00,
