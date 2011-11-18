@@ -275,6 +275,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_LBUTTONDOWN:
 		dragging=TRUE;
 		SetFocus(hWnd);
+		SetCapture(hWnd);
 		oldX=LOWORD(lParam);
 		oldY=HIWORD(lParam);
 		break;
@@ -294,6 +295,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		break;
 	case WM_LBUTTONUP:
 		dragging=FALSE;
+		ReleaseCapture();
 		break;
 	case WM_MOUSEMOVE:
 		if (loaded)
