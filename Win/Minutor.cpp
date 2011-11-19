@@ -300,21 +300,26 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_MOUSEMOVE:
 		if (loaded)
 		{
+			short bx=LOWORD(lParam);
+			short by=HIWORD(lParam);
 			if (dragging)
 			{
-				curZ+=(LOWORD(lParam)-oldX)/curScale;
-				curX-=(HIWORD(lParam)-oldY)/curScale;
-				oldX=LOWORD(lParam);
-				oldY=HIWORD(lParam);
+				curZ+=(bx-oldX)/curScale;
+				curX-=(by-oldY)/curScale;
+				oldX=bx;
+				oldY=by;
 				draw();
 				InvalidateRect(hWnd,NULL,FALSE);
 				UpdateWindow(hWnd);
 			}
-			int mx,mz;
-			blockLabel=IDBlock(LOWORD(lParam),HIWORD(lParam)-30,curX,curZ,
-					bitWidth,bitHeight,curScale,&mx,&mz);
-			wsprintf(buf,L"%d,%d %S",mx,mz,blockLabel);
-			SendMessage(hwndStatus,SB_SETTEXT,0,(LPARAM)buf);
+			else //don't update statusbar while dragging
+			{
+				int mx,mz;
+				blockLabel=IDBlock(bx,by-30,curX,curZ,
+						bitWidth,bitHeight,curScale,&mx,&mz);
+				wsprintf(buf,L"%d,%d %S",mx,mz,blockLabel);
+				SendMessage(hwndStatus,SB_SETTEXT,0,(LPARAM)buf);
+			}
 		}
 		break;
 	case WM_KEYDOWN:
