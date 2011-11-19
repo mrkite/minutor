@@ -532,6 +532,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			InvalidateRect(hWnd,NULL,TRUE);
 			UpdateWindow(hWnd);
 			break;
+		case IDM_SLIME:
+			opts^=SLIME;
+			CheckMenuItem(GetMenu(hWnd),wmId,(opts&SLIME)?MF_CHECKED:MF_UNCHECKED);
+			draw();
+			InvalidateRect(hWnd,NULL,TRUE);
+			UpdateWindow(hWnd);
+			break;
 		case IDM_HELL:
 			opts^=HELL;
 			if (opts&HELL)

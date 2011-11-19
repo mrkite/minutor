@@ -67,15 +67,14 @@ static long long javaRandomNext(int bits) {
   return (long long)(r >> (48 - bits));
 }
 static int javaRandomNextInt(int n) {
+	long long bits,val;
    if ((n & -n) == n)  // i.e., n is a power of 2
        return (int)((n * (long long)javaRandomNext(31)) >> 31);
-
-   long long bits, val;
    do {
        bits = javaRandomNext(31);
        val = bits % n;
    } while(bits - val + (n-1) < 0);
-   return val;
+   return (int)val;
 }
 
 static long long getChunkSeed(int xPosition, int zPosition){
@@ -86,12 +85,7 @@ static long long getChunkSeed(int xPosition, int zPosition){
 static int isSlimeChunk(int x, int z){
 	long long nextSeed = getChunkSeed(x, z);
 	javaRandomSetSeed(nextSeed);
-	int result = javaRandomNextInt(10);
-    if(result==0){
-    	return 1;
-    }else{
-    	return 0;
-    }
+	return javaRandomNextInt(10)==0;
 }
 
 //world = path to world saves
@@ -271,12 +265,6 @@ static unsigned char* draw(const char *world,int bx,int bz,int y,int opts,Progre
     Block *block, *prevblock;
     int ofs=0,xOfs=0,prevy,zOfs,bofs;
     int hasSlime = 0;
-    if(opts&HELL || opts&ENDER){
-    }else{
-	    if(opts&SLIME){
-		    hasSlime = isSlimeChunk(bx, bz);
-		}
-    }
     
     int x,z,i;
     unsigned int color;
@@ -285,6 +273,9 @@ static unsigned char* draw(const char *world,int bx,int bz,int y,int opts,Progre
 
     char cavemode, showobscured, depthshading, lighting;
 	unsigned char *bits;
+
+	if ((opts&(HELL|ENDER|SLIME))==SLIME)
+		    hasSlime = isSlimeChunk(bx, bz);
 
 	cavemode=!!(opts&CAVEMODE);
     showobscured=!(opts&HIDEOBSCURED);
