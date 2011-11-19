@@ -2,20 +2,20 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1050</int>
-		<string key="IBDocument.SystemVersion">10J567</string>
+		<string key="IBDocument.SystemVersion">10J869</string>
 		<string key="IBDocument.InterfaceBuilderVersion">823</string>
 		<string key="IBDocument.AppKitVersion">1038.35</string>
-		<string key="IBDocument.HIToolboxVersion">462.00</string>
+		<string key="IBDocument.HIToolboxVersion">461.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
 			<string key="NS.object.0">823</string>
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="693"/>
+			<integer value="645"/>
 			<integer value="559"/>
 			<integer value="669"/>
-			<integer value="617"/>
+			<integer value="693"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -257,8 +257,16 @@
 								</object>
 								<object class="NSMenuItem" id="152175375">
 									<reference key="NSMenu" ref="799204025"/>
-									<string key="NSTitle">Hell</string>
+									<string key="NSTitle">Nether</string>
 									<string key="NSKeyEquiv"></string>
+									<int key="NSMnemonicLoc">2147483647</int>
+									<reference key="NSOnImage" ref="35465992"/>
+									<reference key="NSMixedImage" ref="502551668"/>
+								</object>
+								<object class="NSMenuItem" id="853467384">
+									<reference key="NSMenu" ref="799204025"/>
+									<string key="NSTitle">End</string>
+									<string key="NSKeyEquiv"></string>
 									<int key="NSMnemonicLoc">2147483647</int>
 									<reference key="NSOnImage" ref="35465992"/>
 									<reference key="NSMixedImage" ref="502551668"/>
@@ -304,6 +312,15 @@
 									<reference key="NSMenu" ref="799204025"/>
 									<string key="NSTitle">Depth Shading</string>
 									<string key="NSKeyEquiv">4</string>
+									<int key="NSKeyEquivModMask">262144</int>
+									<int key="NSMnemonicLoc">2147483647</int>
+									<reference key="NSOnImage" ref="35465992"/>
+									<reference key="NSMixedImage" ref="502551668"/>
+								</object>
+								<object class="NSMenuItem" id="369976524">
+									<reference key="NSMenu" ref="799204025"/>
+									<string key="NSTitle">Slime Spawning</string>
+									<string key="NSKeyEquiv">5</string>
 									<int key="NSKeyEquivModMask">262144</int>
 									<int key="NSMnemonicLoc">2147483647</int>
 									<reference key="NSOnImage" ref="35465992"/>
@@ -1334,6 +1351,38 @@
 					</object>
 					<int key="connectionID">758</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">hellItem</string>
+						<reference key="source" ref="976324537"/>
+						<reference key="destination" ref="152175375"/>
+					</object>
+					<int key="connectionID">761</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">enderItem</string>
+						<reference key="source" ref="976324537"/>
+						<reference key="destination" ref="853467384"/>
+					</object>
+					<int key="connectionID">762</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">toggleEnder:</string>
+						<reference key="source" ref="976324537"/>
+						<reference key="destination" ref="853467384"/>
+					</object>
+					<int key="connectionID">763</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">toggleSlime:</string>
+						<reference key="source" ref="976324537"/>
+						<reference key="destination" ref="369976524"/>
+					</object>
+					<int key="connectionID">764</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -1647,6 +1696,8 @@
 							<reference ref="1009513998"/>
 							<reference ref="152175375"/>
 							<reference ref="670035036"/>
+							<reference ref="369976524"/>
+							<reference ref="853467384"/>
 						</object>
 						<reference key="parent" ref="918363285"/>
 					</object>
@@ -1986,6 +2037,16 @@
 						<reference key="object" ref="666604163"/>
 						<reference key="parent" ref="74067688"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">759</int>
+						<reference key="object" ref="369976524"/>
+						<reference key="parent" ref="799204025"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">760</int>
+						<reference key="object" ref="853467384"/>
+						<reference key="parent" ref="799204025"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -2116,6 +2177,8 @@
 					<string>753.IBPluginDependency</string>
 					<string>755.IBPluginDependency</string>
 					<string>755.IBViewBoundsToFrameTransform</string>
+					<string>759.IBPluginDependency</string>
+					<string>760.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -2182,7 +2245,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{459, 673}, {182, 163}}</string>
+					<string>{{459, 633}, {186, 203}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -2198,9 +2261,9 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{509, 633}, {363, 223}}</string>
+					<string>{{783, 319}, {363, 223}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{509, 633}, {363, 223}}</string>
+					<string>{{783, 319}, {363, 223}}</string>
 					<boolean value="NO"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -2251,6 +2314,8 @@
 					<object class="NSAffineTransform">
 						<bytes key="NSTransformStruct">P4AAAL+AAABDvwAAwRAAAA</bytes>
 					</object>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="unlocalizedProperties">
@@ -2269,7 +2334,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">758</int>
+			<int key="maxID">764</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -2492,12 +2557,16 @@
 							<string>selectScheme:</string>
 							<string>toggleCaveMode:</string>
 							<string>toggleDepth:</string>
+							<string>toggleEnder:</string>
 							<string>toggleHell:</string>
 							<string>toggleLighting:</string>
 							<string>toggleObscured:</string>
+							<string>toggleSlime:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -2519,9 +2588,11 @@
 							<string>selectScheme:</string>
 							<string>toggleCaveMode:</string>
 							<string>toggleDepth:</string>
+							<string>toggleEnder:</string>
 							<string>toggleHell:</string>
 							<string>toggleLighting:</string>
 							<string>toggleObscured:</string>
+							<string>toggleSlime:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -2550,6 +2621,10 @@
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
+								<string key="name">toggleEnder:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
 								<string key="name">toggleHell:</string>
 								<string key="candidateClassName">id</string>
 							</object>
@@ -2561,6 +2636,10 @@
 								<string key="name">toggleObscured:</string>
 								<string key="candidateClassName">id</string>
 							</object>
+							<object class="IBActionInfo">
+								<string key="name">toggleSlime:</string>
+								<string key="candidateClassName">id</string>
+							</object>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="outlets">
@@ -2568,11 +2647,15 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>colorSchemes</string>
+							<string>enderItem</string>
+							<string>hellItem</string>
 							<string>mapViewer</string>
 							<string>worldMenu</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -2583,6 +2666,8 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>colorSchemes</string>
+							<string>enderItem</string>
+							<string>hellItem</string>
 							<string>mapViewer</string>
 							<string>worldMenu</string>
 						</object>
@@ -2590,6 +2675,14 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBToOneOutletInfo">
 								<string key="name">colorSchemes</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">enderItem</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">hellItem</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBToOneOutletInfo">
@@ -3129,7 +3222,7 @@
 		</object>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin.macosx</string>
-			<integer value="1050" key="NS.object.0"/>
+			<integer value="1060" key="NS.object.0"/>
 		</object>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDevelopmentDependencies">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin.InterfaceBuilder3</string>

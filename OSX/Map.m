@@ -241,7 +241,7 @@ void updateProgress(float progress)
 }
 - (void)setOptions:(int)options
 {
-	if ((opts^options)==HELL) //hell toggled
+	if (((opts^options)&HELL)==HELL) //hell toggled
 	{
 		if (options&HELL)
 		{

@@ -129,8 +129,25 @@
 -(IBAction) toggleHell:sender
 {
 	opts^=HELL;
+	opts&=~ENDER;
 	[sender setState:((opts&HELL)!=0)?NSOnState:NSOffState];
+	[enderItem setState:NSOffState];
 	CloseAll();
+	[mapViewer setOpts:opts];
+}
+-(IBAction) toggleEnder:sender
+{
+	opts^=ENDER;
+	opts&=~HELL;
+	[sender setState:((opts&ENDER)!=0)?NSOnState:NSOffState];
+	[hellItem setState:NSOffState];
+	CloseAll();
+	[mapViewer setOpts:opts];
+}
+-(IBAction) toggleSlime:sender
+{
+	opts^=SLIME;
+	[sender setState:((opts&SLIME)!=0)?NSOnState:NSOffState];
 	[mapViewer setOpts:opts];
 }
 

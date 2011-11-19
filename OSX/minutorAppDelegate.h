@@ -36,6 +36,8 @@
 	int opts;
 	IBOutlet id colorSchemes;
 	IBOutlet id worldMenu;
+	IBOutlet id hellItem;
+	IBOutlet id enderItem;
 }
 - (IBAction) openWorld: sender;
 - (IBAction) jumpToSpawn: sender;
@@ -45,6 +47,8 @@
 - (IBAction) toggleObscured: sender;
 - (IBAction) toggleDepth: sender;
 - (IBAction) toggleHell: sender;
+- (IBAction) toggleEnder: sender;
+- (IBAction) toggleSlime: sender;
 - (IBAction) selectScheme: sender;
 
 
