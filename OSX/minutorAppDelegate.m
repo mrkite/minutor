@@ -144,12 +144,6 @@
 	CloseAll();
 	[mapViewer setOpts:opts];
 }
--(IBAction) toggleSlime:sender
-{
-	opts^=SLIME;
-	[sender setState:((opts&SLIME)!=0)?NSOnState:NSOffState];
-	[mapViewer setOpts:opts];
-}
 
 -(IBAction)selectScheme:sender
 {

@@ -48,7 +48,6 @@
 - (IBAction) toggleDepth: sender;
 - (IBAction) toggleHell: sender;
 - (IBAction) toggleEnder: sender;
-- (IBAction) toggleSlime: sender;
 - (IBAction) selectScheme: sender;
 
 

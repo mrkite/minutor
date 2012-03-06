@@ -317,15 +317,6 @@
 									<reference key="NSOnImage" ref="35465992"/>
 									<reference key="NSMixedImage" ref="502551668"/>
 								</object>
-								<object class="NSMenuItem" id="369976524">
-									<reference key="NSMenu" ref="799204025"/>
-									<string key="NSTitle">Slime Spawning</string>
-									<string key="NSKeyEquiv">5</string>
-									<int key="NSKeyEquivModMask">262144</int>
-									<int key="NSMnemonicLoc">2147483647</int>
-									<reference key="NSOnImage" ref="35465992"/>
-									<reference key="NSMixedImage" ref="502551668"/>
-								</object>
 							</object>
 						</object>
 					</object>
@@ -482,7 +473,7 @@
 								<int key="NSCellFlags2">0</int>
 								<string key="NSContents"/>
 								<reference key="NSControlView" ref="741892174"/>
-								<double key="NSMaxValue">127</double>
+								<double key="NSMaxValue">255</double>
 								<double key="NSMinValue">0.0</double>
 								<double key="NSValue">0.0</double>
 								<double key="NSAltIncValue">0.0</double>
@@ -508,7 +499,7 @@
 							<object class="NSTextFieldCell" key="NSCell" id="880690487">
 								<int key="NSCellFlags">-2072904127</int>
 								<int key="NSCellFlags2">-1874852864</int>
-								<string key="NSContents">127</string>
+								<string key="NSContents">255</string>
 								<object class="NSFont" key="NSSupport" id="934340565">
 									<string key="NSName">LucidaGrande</string>
 									<double key="NSSize">13</double>
@@ -1374,14 +1365,6 @@
 						<reference key="destination" ref="853467384"/>
 					</object>
 					<int key="connectionID">763</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">toggleSlime:</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="369976524"/>
-					</object>
-					<int key="connectionID">764</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -2561,7 +2544,6 @@
 							<string>toggleHell:</string>
 							<string>toggleLighting:</string>
 							<string>toggleObscured:</string>
-							<string>toggleSlime:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -2592,7 +2574,6 @@
 							<string>toggleHell:</string>
 							<string>toggleLighting:</string>
 							<string>toggleObscured:</string>
-							<string>toggleSlime:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -2634,10 +2615,6 @@
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">toggleObscured:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleSlime:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 						</object>

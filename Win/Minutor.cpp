@@ -48,7 +48,7 @@ static char world[MAX_PATH];							//path to currently loaded world
 static BOOL loaded=FALSE;								//world loaded?
 static double curX,curZ;								//current X and Z
 static double curScale=1.0;							//current scale
-static int curDepth=127;								//current depth
+static int curDepth=255;								//current depth
 
 static int spawnX,spawnY,spawnZ;
 static int playerX,playerY,playerZ;
@@ -228,7 +228,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			WS_CHILD | WS_VISIBLE | TBS_NOTICKS,
 			10,0,rect.right-rect.left-50,30,
 			hWnd,(HMENU)ID_LAYERSLIDER,NULL,NULL);
-		SendMessage(hwndSlider,TBM_SETRANGE,TRUE,MAKELONG(0,127));
+		SendMessage(hwndSlider,TBM_SETRANGE,TRUE,MAKELONG(0,255));
 		SendMessage(hwndSlider,TBM_SETPAGESIZE,0,10);
 		EnableWindow(hwndSlider,FALSE);
 		
@@ -237,7 +237,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			WS_CHILD | WS_VISIBLE | ES_RIGHT,
 			rect.right-40,5,30,20,
 			hWnd,(HMENU)ID_LAYERLABEL,NULL,NULL);
-		SetWindowText(hwndLabel,L"127");
+		SetWindowText(hwndLabel,L"255");
 		EnableWindow(hwndLabel,FALSE);
 
 		hwndStatus=CreateWindowEx(
@@ -414,9 +414,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		break;
 	case WM_HSCROLL:
 		pos=SendMessage(hwndSlider,TBM_GETPOS,0,0);
-		_itow_s(127-pos,text,10);
+		_itow_s(255-pos,text,10);
 		SetWindowText(hwndLabel,text);
-		curDepth=127-pos;
+		curDepth=255-pos;
 		draw();
 		InvalidateRect(hWnd,NULL,FALSE);
 		UpdateWindow(hWnd);
@@ -533,13 +533,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		case IDM_DEPTH:
 			opts^=DEPTHSHADING;
 			CheckMenuItem(GetMenu(hWnd),wmId,(opts&DEPTHSHADING)?MF_CHECKED:MF_UNCHECKED);
-			draw();
-			InvalidateRect(hWnd,NULL,TRUE);
-			UpdateWindow(hWnd);
-			break;
-		case IDM_SLIME:
-			opts^=SLIME;
-			CheckMenuItem(GetMenu(hWnd),wmId,(opts&SLIME)?MF_CHECKED:MF_UNCHECKED);
 			draw();
 			InvalidateRect(hWnd,NULL,TRUE);
 			UpdateWindow(hWnd);

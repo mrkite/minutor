@@ -50,7 +50,7 @@
 	GetSpawn([world UTF8String], &spawnX, &spawnY, &spawnZ);
 	GetPlayer([world UTF8String], &playerX, &playerY, &playerZ);
 	[map setX:spawnX andZ:spawnZ];
-	[map setDepth:127-curDepth];
+	[map setDepth:255-curDepth];
 	
 	[window makeKeyAndOrderFront:self];
 	[window setTitle:[world lastPathComponent]];
@@ -71,8 +71,8 @@
 	if (newDepth!=curDepth)
 	{
 		curDepth=newDepth;
-		[depthText setStringValue:[NSString stringWithFormat:@"%d",127-curDepth]];
-		[map setDepth:127-curDepth];
+		[depthText setStringValue:[NSString stringWithFormat:@"%d",255-curDepth]];
+		[map setDepth:255-curDepth];
 	}
 }
 -(void)setOpts:(int)options

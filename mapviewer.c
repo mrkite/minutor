@@ -38,11 +38,10 @@ THE POSSIBILITY OF SUCH DAMAGE.
 static GtkWidget *win;
 static GtkWidget *slider,*da,*status,*progressbar;
 static GtkWidget *jumpplayer,*jumpspawn;
-static GtkWidget *lighting, *cavemode, *hideobscured, *depthshading, *hell, *ender, *slime;
+static GtkWidget *lighting, *cavemode, *hideobscured, *depthshading, *hell, *ender;
 static GtkWidget *standard;
 static double curX,curZ;
 static int curDepth=255;
-static int showSlime=0;
 static double curScale=1.0;
 static char *world=NULL;
 static unsigned char *bits;
@@ -85,7 +84,6 @@ static gboolean drawMap(GtkWidget *widget)
 	opts|=gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(lighting))?LIGHTING:0;
 	opts|=gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(hell))?HELL:0;
 	opts|=gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(ender))?ENDER:0;
-	opts|=gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(slime))?SLIME:0;
 
 	DrawMap(world,curX,curZ,curDepth,curWidth,curHeight,curScale,bits,opts,updateProgress);
 
@@ -349,19 +347,6 @@ static void toggleHell(GtkMenuItem *menuItem,gpointer user_data)
 	gdk_window_invalidate_rect(da->window,NULL,FALSE);
 }
 
-static void toggleSlime(GtkMenuItem *menuItem,gpointer user_data)
-{
-	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(slime)))
-	{
-		showSlime = 1;
-	}
-	else
-	{
-		showSlime = 0;
-	}
-	CloseAll();
-	gdk_window_invalidate_rect(da->window,NULL,FALSE);
-}
 static void toggleEnd(GtkMenuItem *menuItem,gpointer user_data)
 {
 	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(ender)))
@@ -583,13 +568,6 @@ void createMapViewer()
     gtk_menu_shell_append(GTK_MENU_SHELL(viewitems),depthshading);
     g_signal_connect(G_OBJECT(depthshading),"toggled",
         G_CALLBACK(drawMap),NULL);
-
-	slime=gtk_check_menu_item_new_with_label("Slime Spawning");
-	gtk_widget_add_accelerator(slime,"activate",menuGroup,
-		GDK_5,0,GTK_ACCEL_VISIBLE);
-	gtk_menu_shell_append(GTK_MENU_SHELL(viewitems),slime);
-	g_signal_connect(G_OBJECT(slime),"activate",
-	G_CALLBACK(toggleSlime),NULL);		
 
 	//statusbar
 	status=gtk_statusbar_new();

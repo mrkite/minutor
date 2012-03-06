@@ -39,7 +39,7 @@
     if (self) {
 		curX=0.0;
 		curZ=0.0;
-		curDepth=127;
+		curDepth=255;
 		curScale=1.0;
 		world=nil;
 		curWidth=496;
