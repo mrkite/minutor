@@ -148,6 +148,10 @@ static void skipType(bfFile bf,int type)
 		case 10: //compound
 			skipCompound(bf);
 			break;
+		case 11: //int array
+			len=readDword(bf);
+			bfseek(bf,len*4,SEEK_CUR);
+			break;
 	}
 }
 static void skipList(bfFile bf)
@@ -197,6 +201,13 @@ static void skipList(bfFile bf)
 		case 10: //compound
 			for (i=0;i<len;i++)
 				skipCompound(bf);
+			break;
+		case 11: //int array
+			for (i=0;i<len;i++)
+			{
+				int slen=readDword(bf);
+				bfseek(bf,slen*4,SEEK_CUR);
+			}
 			break;
 	}
 }
@@ -252,7 +263,7 @@ static int nbtFindElement(bfFile bf,char *name)
 
 int nbtGetBlocks(bfFile bf, unsigned char *buff,unsigned char *blockLight)
 {
-	int len,found;
+	int len,found, nsections;
 
 #ifndef C99
 	char *thisName;
@@ -265,14 +276,38 @@ int nbtGetBlocks(bfFile bf, unsigned char *buff,unsigned char *blockLight)
 	if (nbtFindElement(bf,"Level")!=10)
 		return 0;
 
-	found=0;
-	while (found!=2)
+	if (nbtFindElement(bf,"Sections")!= 9)
+		return 0;
+
 	{
+	  unsigned char type=0;
+	  bfread(bf,&type,1);
+	  if (type != 10)
+	    return 0;
+	}
+
+	memset(buff, 0, 16*16*256);
+	memset(blockLight, 0, 16*16*128);
+
+	nsections=readDword(bf);
+
+	while (nsections--)
+	{	
+	    unsigned char y;
+	    int save = *bf.offset;
+	    if (nbtFindElement(bf,"Y")!=1) //which section is this?
+		return 0;
+	    bfread(bf,&y,1);
+	    bfseek(bf,save,SEEK_SET); //rewind to start of section
+
+	    found=0;
+	    while (1)
+	    {
 		int ret=0;
 		unsigned char type=0;
 		bfread(bf,&type,1);
 		if (type==0) 
-            return 0;
+		    break;
 		len=readWord(bf);
 #ifdef C99
         char thisName[len+1];
@@ -286,20 +321,21 @@ int nbtGetBlocks(bfFile bf, unsigned char *buff,unsigned char *blockLight)
 			found++;
 			ret=1;
 			len=readDword(bf); //array length
-			bfread(bf,blockLight,len);
+			bfread(bf,blockLight+16*16*8*y,len);
 		}
 		if (strcmp(thisName,"Blocks")==0)
 		{
 			found++;
 			ret=1;
 			len=readDword(bf); //array length
-			bfread(bf,buff,len);
+			bfread(bf,buff+16*16*16*y,len);
 		}
 #ifndef C99
 		free(thisName);
 #endif
 		if (!ret)
 			skipType(bf,type);
+	    }
 	}
 	return 1;
 }

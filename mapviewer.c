@@ -41,7 +41,7 @@ static GtkWidget *jumpplayer,*jumpspawn;
 static GtkWidget *lighting, *cavemode, *hideobscured, *depthshading, *hell, *ender, *slime;
 static GtkWidget *standard;
 static double curX,curZ;
-static int curDepth=127;
+static int curDepth=255;
 static int showSlime=0;
 static double curScale=1.0;
 static char *world=NULL;
@@ -103,11 +103,11 @@ static gboolean drawMap(GtkWidget *widget)
 static gchar *getSliderText(GtkScale *scale,gdouble value)
 {
 	return g_strdup_printf("%d",
-		127-(int)value);
+		255-(int)value);
 }
 static void adjustMap(GtkRange *range,gpointer user_data)
 {
-	curDepth=127-(int)gtk_range_get_value(range);
+	curDepth=255-(int)gtk_range_get_value(range);
 	gdk_window_invalidate_rect(GTK_WIDGET(user_data)->window,NULL,FALSE);
 }
 static gboolean tracking=FALSE;
@@ -520,7 +520,7 @@ void createMapViewer()
 	gtk_box_pack_start(GTK_BOX(vbox),hbox,FALSE,TRUE,0);
 
 	//slider
-	slider=gtk_hscale_new_with_range(0.0,127.0,1.0);
+	slider=gtk_hscale_new_with_range(0.0,255.0,1.0);
 	gtk_widget_set_sensitive(slider,FALSE);
 	gtk_box_pack_start(GTK_BOX(hbox),slider,TRUE,TRUE,0);
 	g_signal_connect(G_OBJECT(slider),"format-value",

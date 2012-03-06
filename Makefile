@@ -7,7 +7,8 @@ PIXMAP=$(DESTDIR)/usr/share/pixmaps
 OBJS=minutor.o mapviewer.o colorschemes.o
 CC=gcc
 MAKE=make
-CFLAGS=-Wall -std=c99 -O2
+#CFLAGS=-Wall -std=c99 -O2
+CFLAGS=-Wall -std=c99 -g
 INCLUDE=$(GTK_INC)
 LIBS=$(GTK_LIB)
 

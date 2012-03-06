@@ -164,10 +164,12 @@ static struct {
 {"End Portal",             0x000000,1.0},   //77
 {"End Portal Frame",       0x366059,1.0},   //78
 {"End Stone",              0xdadca6,1.0},   //79
-{"Dragon Egg",             0x1b1729,1.0}    //7a
+{"Dragon Egg",             0x1b1729,1.0},   //7a
+{"Redstone Lamp (off)",    0xf9d49c,1.0},   //7b
+{"Redstone Lamp (on)",     0xf9d49c,1.0}    //7c
 };
 
-#define numBlocks 0x7b
+#define numBlocks 0x7d
 
 enum block_types {
     BLOCK_AIR = 0x00,

@@ -62,8 +62,8 @@ deflated data is the chunk length - 1.
 
 #include "stdafx.h"
 
-#define CHUNK_DEFLATE_MAX (1024 * 64)  // 64KB limit for compressed chunks
-#define CHUNK_INFLATE_MAX (1024 * 128) // 128KB limit for inflated chunks
+#define CHUNK_DEFLATE_MAX (1024 * 1024)  // 1MB limit for compressed chunks
+#define CHUNK_INFLATE_MAX (1024 * 2048) // 2MB limit for inflated chunks
 
 #define RERROR(x) if(x) { PortaClose(regionFile); return 0; }
 
@@ -78,21 +78,24 @@ int regionGetBlocks(char *directory, int cx, int cz, unsigned char *block, unsig
 {
     char filename[256];
     PORTAFILE regionFile;
-#ifdef WIN32
-    DWORD br;
-#endif
+	static unsigned char *buf=NULL,*out=NULL;
 
     int sectorNumber, offset, chunkLength;
     
     int status;
 	bfFile bf;
-    unsigned char buf[CHUNK_DEFLATE_MAX], out[CHUNK_INFLATE_MAX];
 	
     static z_stream strm;
     static int strm_initialized = 0;
 
+	if (buf==NULL)
+	{
+		buf=malloc(CHUNK_DEFLATE_MAX);
+		out=malloc(CHUNK_INFLATE_MAX);
+	}
+
     // open the region file
-	sprintf_s(filename,256,"%s/region/r.%d.%d.mcr",directory,cx>>5,cz>>5);
+	sprintf_s(filename,256,"%s/region/r.%d.%d.mca",directory,cx>>5,cz>>5);
 
     regionFile=PortaOpen(filename);
     if (regionFile == NULL)

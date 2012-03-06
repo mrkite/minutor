@@ -40,7 +40,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
 
 // arbitrary, let users tune this?
 // 6000 entries translates to minutor using ~300MB of RAM (on x64)
-#define HASH_MAX_ENTRIES 6000
+#define HASH_MAX_ENTRIES 12000
 
 typedef struct block_entry {
     int x, z;

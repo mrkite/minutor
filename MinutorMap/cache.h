@@ -31,8 +31,8 @@ THE POSSIBILITY OF SUCH DAMAGE.
 #define __CACHE_H__
 
 typedef struct Block {
-    unsigned char grid[16*16*128];  // blockid array [y+(z+x*16)*128]
-    unsigned char light[16*16*64];
+    unsigned char grid[16*16*256];  // blockid array [y+(z+x*16)*256]
+    unsigned char light[16*16*128];
 
     unsigned char rendercache[16*16*4]; // bitmap of last render
     unsigned char heightmap[16*16]; // height of rendered block [x+z*16]

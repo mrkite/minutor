@@ -217,7 +217,7 @@ const char *IDBlock(int bx, int by, double cx, double cz, int w, int h, double z
     if (y == (unsigned char)-1) 
         return "Empty";  // nothing was rendered here
 
-    return blocks[block->grid[y+(zoff+xoff*16)*128]].name;
+    return blocks[block->grid[xoff+(zoff+y*16)*16]].name;
 }
 
 
@@ -263,7 +263,7 @@ void CloseAll()
 static unsigned char* draw(const char *world,int bx,int bz,int y,int opts,ProgressCallback callback,float percent)
 {
     Block *block, *prevblock;
-    int ofs=0,xOfs=0,prevy,zOfs,bofs;
+    int ofs=0,prevy,bofs;
     int hasSlime = 0;
     
     int x,z,i;
@@ -337,24 +337,22 @@ static unsigned char* draw(const char *world,int bx,int bz,int y,int opts,Progre
         prevblock = NULL; //block was rendered at a different y level, ignore
     }
     // x increases south, decreases north
-	for (x=0;x<16;x++,xOfs+=128*16)
+	for (x=0;x<16;x++)
 	{
         if (prevblock!=NULL)
             prevy = prevblock->heightmap[x];
         else
     		prevy=-1;
 
-		zOfs=xOfs+128*15;
-
         // z increases west, decreases east
-		for (z=15;z>=0;z--,zOfs-=128)
+		for (z=15;z>=0;z--)
 		{
-			bofs=zOfs+y;
+		        bofs=((y*16+z)*16+x);
 			color=0;
 			r=g=b=0;
-            seenempty=(y==127?1:0);
+			seenempty=(y==255?1:0);
 			alpha=0.0;
-			for (i=y;i>=0;i--,bofs--)
+			for (i=y;i>=0;i--,bofs-=16*16)
 			{
 				pixel=block->grid[bofs];
                 if (pixel==BLOCK_AIR)
@@ -369,7 +367,7 @@ static unsigned char* draw(const char *world,int bx,int bz,int y,int opts,Progre
 					int light=12;
 					if (lighting)
                     {
-                        if (i < 127)
+                        if (i < 255)
                         {
 						    light=block->light[(bofs+1)/2];
 						    if (!(bofs&1)) light>>=4;
@@ -410,8 +408,8 @@ static unsigned char* draw(const char *world,int bx,int bz,int y,int opts,Progre
 
             if (depthshading) // darken deeper blocks
             {
-                int num=prevy+50-(128-y)/5;
-                int denom=y+50-(128-y)/5;
+                int num=prevy+50-(256-y)/5;
+                int denom=y+50-(256-y)/5;
 
 				r=r*num/denom;
                 g=g*num/denom;
