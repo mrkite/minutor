@@ -12,10 +12,10 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="645"/>
-			<integer value="559"/>
+			<integer value="560"/>
 			<integer value="669"/>
 			<integer value="693"/>
+			<integer value="29"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -498,7 +498,7 @@
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="880690487">
 								<int key="NSCellFlags">-2072904127</int>
-								<int key="NSCellFlags2">-1874852864</int>
+								<int key="NSCellFlags2">272630784</int>
 								<string key="NSContents">255</string>
 								<object class="NSFont" key="NSSupport" id="934340565">
 									<string key="NSName">LucidaGrande</string>
@@ -1679,7 +1679,6 @@
 							<reference ref="1009513998"/>
 							<reference ref="152175375"/>
 							<reference ref="670035036"/>
-							<reference ref="369976524"/>
 							<reference ref="853467384"/>
 						</object>
 						<reference key="parent" ref="918363285"/>
@@ -2021,11 +2020,6 @@
 						<reference key="parent" ref="74067688"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">759</int>
-						<reference key="object" ref="369976524"/>
-						<reference key="parent" ref="799204025"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">760</int>
 						<reference key="object" ref="853467384"/>
 						<reference key="parent" ref="799204025"/>
@@ -2160,7 +2154,6 @@
 					<string>753.IBPluginDependency</string>
 					<string>755.IBPluginDependency</string>
 					<string>755.IBViewBoundsToFrameTransform</string>
-					<string>759.IBPluginDependency</string>
 					<string>760.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
@@ -2191,7 +2184,7 @@
 					<string>{74, 862}</string>
 					<string>{{6, 978}, {478, 20}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{353, 859}, {161, 23}}</string>
+					<string>{{642, 813}, {161, 23}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>{{371, 92}, {496, 453}}</string>
@@ -2207,7 +2200,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{392, 683}, {193, 153}}</string>
+					<string>{{341, 683}, {190, 153}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>{{23, 794}, {245, 183}}</string>
@@ -2228,12 +2221,12 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{459, 633}, {186, 203}}</string>
+					<string>{{459, 653}, {182, 183}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{282, 809}, {194, 73}}</string>
+					<string>{{571, 763}, {194, 73}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -2297,7 +2290,6 @@
 					<object class="NSAffineTransform">
 						<bytes key="NSTransformStruct">P4AAAL+AAABDvwAAwRAAAA</bytes>
 					</object>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 				</object>
 			</object>
@@ -2547,7 +2539,6 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
