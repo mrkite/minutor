@@ -304,8 +304,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			short by=HIWORD(lParam);
 			if (dragging)
 			{
-				curZ+=(bx-oldX)/curScale;
-				curX-=(by-oldY)/curScale;
+				curZ-=(by-oldY)/curScale;
+				curX-=(bx-oldX)/curScale;
 				oldX=bx;
 				oldY=by;
 				draw();
@@ -374,13 +374,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			if (moving!=0)
 			{
 				if (moving&1) //up
-					curX-=10.0/curScale;
-				if (moving&2) //down
-					curX+=10.0/curScale;
-				if (moving&4) //left
-					curZ+=10.0/curScale;
-				if (moving&8) //right
 					curZ-=10.0/curScale;
+				if (moving&2) //down
+					curZ+=10.0/curScale;
+				if (moving&4) //left
+					curX-=10.0/curScale;
+				if (moving&8) //right
+					curX+=10.0/curScale;
 				changed=TRUE;
 			}
 			if (changed)

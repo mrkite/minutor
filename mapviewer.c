@@ -100,8 +100,7 @@ static gboolean drawMap(GtkWidget *widget)
 
 static gchar *getSliderText(GtkScale *scale,gdouble value)
 {
-	return g_strdup_printf("%d",
-		255-(int)value);
+	return g_strdup_printf("%d",255-(int)value);
 }
 static void adjustMap(GtkRange *range,gpointer user_data)
 {
@@ -127,8 +126,8 @@ static gboolean mouseMove(GtkWidget *widget,GdkEventMotion *event)
 {
 	if (tracking)
 	{
-		curX+=(oldY-event->y)/curScale;
-		curZ-=(oldX-event->x)/curScale;
+		curX+=(oldX-event->x)/curScale;
+		curZ+=(oldY-event->y)/curScale;
 		oldX=event->x;
 		oldY=event->y;
 		gdk_window_invalidate_rect(widget->window,NULL,FALSE);
@@ -198,13 +197,13 @@ static gboolean keyDown(GtkWidget *widget,GdkEventKey *event)
 	if (moving!=0)
 	{
 		if (moving&1) //up
-			curX-=10.0/curScale;
-		if (moving&2) //down
-			curX+=10.0/curScale;
-		if (moving&4) //left
-			curZ+=10.0/curScale;
-		if (moving&8) //right
 			curZ-=10.0/curScale;
+		if (moving&2) //down
+			curZ+=10.0/curScale;
+		if (moving&4) //left
+			curX-=10.0/curScale;
+		if (moving&8) //right
+			curX+=10.0/curScale;
 		changed=TRUE;
 	}
 	if (changed)

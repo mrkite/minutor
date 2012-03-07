@@ -100,8 +100,8 @@ void updateProgress(float progress)
 }
 - (void)mouseDragged:(NSEvent *)theEvent
 {
-	curX-=[theEvent deltaY]/curScale;
-	curZ+=[theEvent deltaX]/curScale;
+	curX-=[theEvent deltaX]/curScale;
+	curZ-=[theEvent deltaY]/curScale;
 	[self setNeedsDisplay:YES];
 }
 - (void)mouseMoved:(NSEvent *)theEvent
@@ -175,13 +175,13 @@ void updateProgress(float progress)
 	if (moving)
 	{
 		if (moving&1)
-			curX-=10.0/curScale;
-		if (moving&2)
-			curX+=10.0/curScale;
-		if (moving&4)
-			curZ+=10.0/curScale;
-		if (moving&8)
 			curZ-=10.0/curScale;
+		if (moving&2)
+			curZ+=10.0/curScale;
+		if (moving&4)
+			curX-=10.0/curScale;
+		if (moving&8)
+			curX+=10.0/curScale;
 		changed=YES;
 	}
 	if (changed)
