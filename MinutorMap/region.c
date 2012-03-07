@@ -79,7 +79,7 @@ int regionGetBlocks(char *directory, int cx, int cz, unsigned char *block, unsig
     char filename[256];
     PORTAFILE regionFile;
 	static unsigned char *buf=NULL,*out=NULL;
-
+	int br;
     int sectorNumber, offset, chunkLength;
     
     int status;
