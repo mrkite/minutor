@@ -362,7 +362,7 @@ static unsigned char* draw(const char *world,int bx,int bz,int y,int opts,Progre
 					{
 						if (i < 255)
 						{
-							light=block->light[bofs/2];
+							light=block->light[(bofs+256)/2];
 							if (bofs&1) light>>=4;
 							light&=0xf;
 						} else
