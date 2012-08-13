@@ -74,9 +74,9 @@ static struct {
 {"Sticky Piston",          0x719e60,1.0},	//1d
 {"Cobweb",                 0xeeeeee,1.0},	//1e
 {"Tall Grass",             0x68a33d,1.0},	//1f
-{"Dead Shrubs",            0x946428,1.0},	//20
+{"Dead Bush",              0x946428,1.0},	//20
 {"Piston",                 0x95774b,1.0},	//21
-{"Piston Head",            0x95774b,1.0},	//22
+{"Piston Extension",       0x95774b,1.0},	//22
 {"Wool",                   0xdcdcdc,1.0},	//23
 {"",                       0x000000,0.0},	//24
 {"Dandelion",              0x000000,0.0},	//25
@@ -86,7 +86,7 @@ static struct {
 {"Gold Block",             0xfef74e,1.0},	//29
 {"Iron Block",             0xeeeeee,1.0},	//2a
 {"Double Slab",            0xa6a6a6,1.0},	//2b
-{"Stone Slab",             0xa5a5a5,1.0},	//2c
+{"Slab",                   0xa5a5a5,1.0},	//2c
 {"Brick",                  0xa0807b,1.0},	//2d
 {"TNT",                    0xdb441a,1.0},	//2e
 {"Bookshelf",              0x795a39,1.0},	//2f
@@ -95,13 +95,13 @@ static struct {
 {"Torch",                  0xfcfc00,1.0},	//32
 {"Fire",                   0xfca100,1.0},	//33
 {"Monster Spawner",        0x254254,1.0},	//34
-{"Wooden Stairs",          0x9e804f,1.0},	//35
+{"Oak Wood Stairs",        0x9e804f,1.0},	//35
 {"Chest",                  0xa06f23,1.0},	//36
 {"Redstone Wire",          0xd60000,1.0},	//37
 {"Diamond Ore",            0x5decf5,1.0},	//38
 {"Diamond Block",          0x7fe3df,1.0},	//39
 {"Crafting Table",         0x825432,1.0},	//3a
-{"Crops",                  0x766615,1.0},	//3b
+{"Wheat",                  0x766615,1.0},	//3b
 {"Farmland",               0x40220b,1.0},	//3c
 {"Furnace",                0x767677,1.0},	//3d
 {"Burning Furnace",        0x777676,1.0},	//3e
@@ -132,14 +132,14 @@ static struct {
 {"Netherrack",             0x723a38,1.0},   //57
 {"Soul Sand",              0x554134,1.0},   //58
 {"Glowstone",              0xf9d49c,1.0},   //59
-{"Portal",                 0xd67fff,1.0},   //5a
+{"Nether Portal",          0xd67fff,1.0},   //5a
 {"Jack-O-Lantern",         0xe9b416,1.0},   //5b
 {"Cake",                   0xffffff,1.0},   //5c
 {"Redstone Repeater (off)",0x560000,1.0},   //5d
 {"Redstone Repeater (on)", 0xee5555,1.0},   //5e
 {"Locked Chest",           0xa06f23,1.0},   //5f
 {"Trapdoor",               0x886634,1.0},   //60
-{"Hidden Silverfish",      0x787878,1.0},   //61
+{"Monster Egg",            0x787878,1.0},   //61
 {"Stone Brick",            0x797979,1.0},   //62
 {"Huge Brown Mushroom",    0x654b39,1.0},   //63
 {"Huge Red Mushroom",      0xa91b19,1.0},   //64
@@ -166,10 +166,24 @@ static struct {
 {"End Stone",              0xdadca6,1.0},   //79
 {"Dragon Egg",             0x1b1729,1.0},   //7a
 {"Redstone Lamp (off)",    0xf9d49c,1.0},   //7b
-{"Redstone Lamp (on)",     0xf9d49c,1.0}    //7c
+{"Redstone Lamp (on)",     0xf9d49c,1.0},   //7c
+{"Wooden Double Slab",     0x9f8150,1.0},   //7d
+{"Wooden Slab",            0x9f8150,1.0},   //7e
+{"Cocoa Plant",            0x79350d,1.0},   //7f
+{"Sandstone Stairs",       0xe0d8a6,1.0},   //80
+{"Emerald Ore",            0x17ce5c,1.0},   //81
+{"Ender Chest",            0x2f4246,1.0},   //82
+{"Tripwire Hook",          0x343434,1.0},   //83
+{"Tripwire",               0xffeeee,1.0},   //84
+{"Emerald Block",          0x5edb81,1.0},   //85
+{"Spruce Wood Stairs",     0x4d3822,1.0},   //86
+{"Birch Wood Stairs",      0x897b55,1.0},   //87
+{"Jungle Wood Stairs",     0x66482f,1.0},   //88
+{"Command Block",          0xba764a,1.0},   //89
+{"Beacon Block",           0x9fdedb,1.0}    //8a
 };
 
-#define numBlocks 0x7d
+#define numBlocks 0x8b  //number just after last block
 
 enum block_types {
     BLOCK_AIR = 0x00,
