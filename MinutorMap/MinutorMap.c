@@ -397,8 +397,8 @@ static unsigned char* draw(const char *world,int bx,int bz,int y,int opts,Progre
 			prevy=i;
 			if (depthshading) // darken deeper blocks
 			{
-				int num=prevy+50-(256-y)/5;
-				int denom=y+50-(256-y)/5;
+				int num=prevy+50-(256-y)/10;
+				int denom=y+50-(256-y)/10;
 				r=r*num/denom;
 				g=g*num/denom;
 				b=b*num/denom;
