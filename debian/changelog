@@ -1,3 +1,11 @@
+minutor (1.6.1) unstable; urgency=low
+
+  * Fixed lighting
+  * Fixed depth-mode crash
+  * Added 1.3 blocks
+
+ -- Sean Kasun <sean@seancode.com>  Mon, 13 Aug 2012 13:33:45 -0700
+
 minutor (1.6.0) unstable; urgency=low
 
   * Anvil support by Bradley Bell
