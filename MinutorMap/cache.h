@@ -36,6 +36,7 @@ typedef struct Block {
 
     unsigned char rendercache[16*16*4]; // bitmap of last render
     unsigned char heightmap[16*16]; // height of rendered block [x+z*16]
+    unsigned char biomes[16*16]; //biome ids for block
 
     int rendery;        // slice height for last render
     int renderopts;     // options bitmask for last render

@@ -261,7 +261,7 @@ static int nbtFindElement(bfFile bf,char *name)
 	}
 }
 
-int nbtGetBlocks(bfFile bf, unsigned char *buff,unsigned char *blockLight)
+int nbtGetBlocks(bfFile bf, unsigned char *buff,unsigned char *blockLight,unsigned char *biomes)
 {
 	int len,found, nsections;
 
@@ -275,6 +275,15 @@ int nbtGetBlocks(bfFile bf, unsigned char *buff,unsigned char *blockLight)
 	bfseek(bf,len,SEEK_CUR); //skip name ()
 	if (nbtFindElement(bf,"Level")!=10)
 		return 0;
+
+	memset(biomes,127,16*16);
+	if (nbtFindElement(bf,"Biomes")!=7)
+		return 0;
+	{
+		unsigned int blen=0;
+		bfread(bf,&blen,4);
+		bfread(bf,biomes,16*16);
+	}
 
 	if (nbtFindElement(bf,"Sections")!= 9)
 		return 0;

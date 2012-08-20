@@ -111,9 +111,10 @@ void updateProgress(float progress)
 	if (loc.y>=0 && loc.x>=0 && loc.y<curHeight && loc.x<curWidth)
 	{
 		int mx,mz;
+		const char *biome;
 		const char *label=IDBlock(loc.x, loc.y, curX, curZ,
-							curWidth, curHeight, curScale, &mx, &mz);
-		[status setStringValue:[NSString stringWithFormat:@"%d,%d %s",mx,mz,label]];
+							curWidth, curHeight, curScale, &mx, &mz, &biome);
+		[status setStringValue:[NSString stringWithFormat:@"X:%d Z:%d %s - %s",mx,mz,biome,label]];
 	}
 }
 - (void)scrollWheel:(NSEvent *)theEvent

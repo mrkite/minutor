@@ -199,6 +199,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	static HDC hdcMem=NULL;
 	static int oldX=0,oldY=0;
 	static const char *blockLabel="";
+	static const char *biomeLabel="";
 	static BOOL dragging=FALSE;
 	static int moving=0;
 	INITCOMMONCONTROLSEX ice;
@@ -317,8 +318,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			{
 				int mx,mz;
 				blockLabel=IDBlock(bx,by-30,curX,curZ,
-						bitWidth,bitHeight,curScale,&mx,&mz);
-				wsprintf(buf,L"%d,%d %S",mx,mz,blockLabel);
+						bitWidth,bitHeight,curScale,&mx,&mz,&biomeLabel);
+				wsprintf(buf,L"X:%d Z:%d %S - %S",mx,mz,biomeLabel,blockLabel);
 				SendMessage(hwndStatus,SB_SETTEXT,0,(LPARAM)buf);
 			}
 		}

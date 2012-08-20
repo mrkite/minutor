@@ -156,6 +156,14 @@ void DrawMap(const char *world,double cx,double cz,int y,int w,int h,double zoom
 	}
 }
 
+const char *biomes[]={
+	"Ocean", "Plains", "Desert", "Extreme Hills", "Forest",
+	"Taiga", "Swampland", "River", "Hell", "Sky", "Frozen Ocean",
+	"Frozen River", "Ice Plains", "Ice Mountains", "Mushroom Island",
+	"Mushroom Island Shore", "Beach", "Desert Hills", "Forest Hills",
+	"Taiga Hills", "Extreme Hills Edge", "Jungle", "Jungle Hills"
+};
+
 //bx = x coord of pixel
 //by = y coord of pixel
 //cx = center x world
@@ -165,7 +173,8 @@ void DrawMap(const char *world,double cx,double cz,int y,int w,int h,double zoom
 //zoom = zoom amount (1.0 = 100%)
 //ox = world x at mouse
 //oz = world z at mouse
-const char *IDBlock(int bx, int by, double cx, double cz, int w, int h, double zoom,int *ox,int *oz)
+//biome = biome name at mouse
+const char *IDBlock(int bx, int by, double cx, double cz, int w, int h, double zoom,int *ox,int *oz,const char **biome)
 {
 	//WARNING: keep this code in sync with draw()
 	Block *block;
@@ -204,6 +213,8 @@ const char *IDBlock(int bx, int by, double cx, double cz, int w, int h, double z
 	*ox=(startxblock+x)*16+xoff;
 	*oz=(startzblock+z)*16+zoff;
 
+	*biome="Unknown Biome";
+
 	block=(Block *)Cache_Find(startxblock+x, startzblock+z);
 
 	if (block==NULL)
@@ -211,12 +222,14 @@ const char *IDBlock(int bx, int by, double cx, double cz, int w, int h, double z
 
 	y=block->heightmap[xoff+zoff*16];
 
+	if (block->biomes[xoff+zoff*16]<23)
+		*biome=biomes[block->biomes[xoff+zoff*16]];
+
 	if (y == (unsigned char)-1)
 		return "Empty";  // nothing was rendered here
 
 	return blocks[block->grid[xoff+zoff*16+y*256]].name;
 }
-
 
 //copy block to bits at px,py at zoom.  bits is wxh
 static void blit(unsigned char *block,unsigned char *bits,int px,int py,
@@ -449,7 +462,7 @@ Block *LoadBlock(char *directory, int cx, int cz)
     Block *block=block_alloc();
     block->rendery = -1; // force redraw
 
-    if (regionGetBlocks(directory, cx, cz, block->grid, block->light)) {
+    if (regionGetBlocks(directory, cx, cz, block->grid, block->light, block->biomes)) {
         return block;
     }
 

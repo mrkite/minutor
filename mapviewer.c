@@ -134,9 +134,10 @@ static gboolean mouseMove(GtkWidget *widget,GdkEventMotion *event)
 		gdk_window_invalidate_rect(widget->window,NULL,FALSE);
 	}
 	int mx,mz;
+	const char *biome;
 	const char *blockLabel=IDBlock(event->x,event->y,curX,curZ,
-		curWidth,curHeight,curScale,&mx,&mz);
-	char *buf=g_strdup_printf("%d,%d %s",mx,mz,blockLabel);
+		curWidth,curHeight,curScale,&mx,&mz,&biome);
+	char *buf=g_strdup_printf("X:%d Z:%d %s - %s",mx,mz,biome,blockLabel);
 	gtk_statusbar_pop(GTK_STATUSBAR(status),1);
 	gtk_statusbar_push(GTK_STATUSBAR(status),1,buf);
 	g_free(buf);

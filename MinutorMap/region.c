@@ -74,7 +74,7 @@ deflated data is the chunk length - 1.
 // blockLight: a 16KB buffer to write block light into (not skylight)
 //
 // returns 1 on success, 0 on error
-int regionGetBlocks(char *directory, int cx, int cz, unsigned char *block, unsigned char *blockLight) 
+int regionGetBlocks(char *directory, int cx, int cz, unsigned char *block, unsigned char *blockLight, unsigned char *biomes) 
 {
     char filename[256];
     PORTAFILE regionFile;
@@ -160,5 +160,5 @@ int regionGetBlocks(char *directory, int cx, int cz, unsigned char *block, unsig
     bf._offset = 0;
     bf.offset = &bf._offset;
 
-    return nbtGetBlocks(bf, block, blockLight);
+    return nbtGetBlocks(bf, block, blockLight, biomes);
 }

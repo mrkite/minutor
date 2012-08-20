@@ -45,7 +45,7 @@ typedef struct {
 } bfFile;
 
 bfFile newNBT(const char *filename);
-int nbtGetBlocks(bfFile bf, unsigned char *buff,unsigned char *blockLight);
+int nbtGetBlocks(bfFile bf, unsigned char *buff,unsigned char *blockLight,unsigned char *biomes);
 void nbtGetSpawn(bfFile bf,int *x,int *y,int *z);
 void nbtGetPlayer(bfFile bf,int *px,int *py,int *pz);
 void nbtGetPlayerSpawn(bfFile bf,int *px,int *py,int *pz);
