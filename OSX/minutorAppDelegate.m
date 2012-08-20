@@ -102,6 +102,10 @@
 {
 	[mapViewer jumpToPlayer];
 }
+-(IBAction) jumpToPlayerSpawn:sender
+{
+    [mapViewer jumpToPlayerSpawn];
+}
 -(IBAction) toggleLighting:sender
 {
 	opts^=LIGHTING;

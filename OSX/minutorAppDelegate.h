@@ -42,6 +42,7 @@
 - (IBAction) openWorld: sender;
 - (IBAction) jumpToSpawn: sender;
 - (IBAction) jumpToPlayer: sender;
+- (IBAction) jumpToPlayerSpawn: sender;
 - (IBAction) toggleLighting: sender;
 - (IBAction) toggleCaveMode: sender;
 - (IBAction) toggleObscured: sender;
