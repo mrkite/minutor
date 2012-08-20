@@ -37,7 +37,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
 
 static GtkWidget *win;
 static GtkWidget *slider,*da,*status,*progressbar;
-static GtkWidget *jumpplayer,*jumpspawn;
+static GtkWidget *jumpplayer,*jumpspawn,*jumpplayers;
 static GtkWidget *lighting, *cavemode, *hideobscured, *depthshading, *hell, *ender;
 static GtkWidget *standard;
 static double curX,curZ;
@@ -48,6 +48,7 @@ static unsigned char *bits;
 static int curWidth,curHeight;
 static int spawnX,spawnY,spawnZ;
 static int playerX,playerY,playerZ;
+static int playerSX,playerSY,playerSZ;
 static long long randomSeed;
 static gboolean mouseUp(GtkWidget *widget,GdkEventButton *event);
 
@@ -254,12 +255,14 @@ static void loadMap(const gchar *path)
 
 	GetSpawn(path,&spawnX,&spawnY,&spawnZ);
 	GetPlayer(path,&playerX,&playerY,&playerZ);
+	GetPlayerSpawn(path,&playerSX,&playerSY,&playerSZ);
 	curX=spawnX;
 	curZ=spawnZ;
 	GetRandomSeed(path, &randomSeed);
 
 	gtk_widget_set_sensitive(jumpspawn,TRUE);
 	gtk_widget_set_sensitive(jumpplayer,TRUE);
+	gtk_widget_set_sensitive(jumpplayers,TRUE);
 	gtk_widget_set_sensitive(slider,TRUE);
 	gtk_widget_set_sensitive(da,TRUE);
 	gdk_window_invalidate_rect(da->window,NULL,FALSE);
@@ -322,6 +325,18 @@ static void jumpToPlayer(GtkMenuItem *menuItem,gpointer user_data)
 {
 	curX=playerX;
 	curZ=playerZ;
+	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(hell)))
+	{
+		curX/=8.0;
+		curZ/=8.0;
+	}
+	gdk_window_invalidate_rect(da->window,NULL,FALSE);
+}
+
+static void jumpToPlayerSpawn(GtkMenuItem *menuItem,gpointer user_data)
+{
+	curX=playerSX;
+	curZ=playerSZ;
 	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(hell)))
 	{
 		curX/=8.0;
@@ -458,6 +473,14 @@ void createMapViewer()
 	g_signal_connect(G_OBJECT(jumpplayer),"activate",
 		G_CALLBACK(jumpToPlayer),NULL);
 	gtk_widget_set_sensitive(jumpplayer,FALSE);
+
+	jumpplayers=gtk_menu_item_new_with_label("Jump to Bed");
+	gtk_widget_add_accelerator(jumpplayers,"activate",menuGroup,
+		GDK_F4,0,GTK_ACCEL_VISIBLE);
+	gtk_menu_shell_append(GTK_MENU_SHELL(viewitems),jumpplayers);
+	g_signal_connect(G_OBJECT(jumpplayers),"activate",
+		G_CALLBACK(jumpToPlayerSpawn),NULL);
+	gtk_widget_set_sensitive(jumpplayers,FALSE);
 	
 	GtkWidget *sep2=gtk_separator_menu_item_new();
 	gtk_menu_shell_append(GTK_MENU_SHELL(viewitems),sep2);

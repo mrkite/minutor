@@ -355,6 +355,23 @@ void nbtGetSpawn(bfFile bf,int *x,int *y,int *z)
 	if (nbtFindElement(bf,"SpawnZ")!=3) return;
 	*z=readDword(bf);
 }
+void nbtGetPlayerSpawn(bfFile bf,int *x,int *y,int *z)
+{
+	int len;
+	*x=*y=*z=0;
+	//Data/Player/SpawnX
+	bfseek(bf,1,SEEK_CUR); //skip type
+	len=readWord(bf); //name length
+	bfseek(bf,len,SEEK_CUR); //skip name ()
+	if (nbtFindElement(bf,"Data")!=10) return;
+	if (nbtFindElement(bf,"Player")!=10) return;
+	if (nbtFindElement(bf,"SpawnX")!=3) return;
+	*x=readDword(bf);
+	if (nbtFindElement(bf,"SpawnY")!=3) return;
+	*y=readDword(bf);
+	if (nbtFindElement(bf,"SpawnZ")!=3) return;
+	*z=readDword(bf);
+}
 
 void nbtGetRandomSeed(bfFile bf,long long *seed)
 {

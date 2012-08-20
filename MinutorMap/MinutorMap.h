@@ -55,6 +55,7 @@ typedef void (*ProgressCallback)(float progress);
 	__declspec(dllexport) void __cdecl GetSpawn(const char *world,int *x,int *y,int *z);
 	__declspec(dllexport) void __cdecl GetPlayer(const char *world,int *px,int *py,int *pz);
 	__declspec(dllexport) void __cdecl GetRandomSeed(const char *world,long long* pseed);
+	__declspec(dllexport) void __cdecl GetPlayerSpawn(const char *world,int *px,int *py,int *pz);
 	
 	// palette should be in RGBA format, num colors in the palette
 	__declspec(dllexport) void __cdecl SetMapPalette(unsigned int *palette,int num);

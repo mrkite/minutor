@@ -489,6 +489,16 @@ void GetPlayer(const char *world,int *px,int *py,int *pz)
 	nbtGetPlayer(bf,px,py,pz);
 	nbtClose(bf);
 }
+void GetPlayerSpawn(const char *world,int *px,int *py,int *pz)
+{
+	bfFile bf;
+	char filename[256];
+	strncpy_s(filename,256,world,256);
+	strncat_s(filename,256,"/level.dat",256);
+	bf=newNBT(filename);
+	nbtGetPlayerSpawn(bf,px,py,pz);
+	nbtClose(bf);
+}
 
 //palette should be in RGBA format
 void SetMapPalette(unsigned int *palette,int num)

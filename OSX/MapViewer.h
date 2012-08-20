@@ -38,10 +38,12 @@
 	int curDepth;
 	int spawnX,spawnY,spawnZ;
 	int playerX,playerY,playerZ;
+	int playerSX,playerSY,playerSZ;
 }
 -(void)openWorld:(NSString *)world;
 -(void)jumpToSpawn;
 -(void)jumpToPlayer;
+-(void)jumpToPlayerSpawn;
 -(IBAction) sliderChanged:(NSSlider*)sender;
 -(void)setOpts:(int)options;
 -(void)setColorScheme:(unsigned int *)colors;
