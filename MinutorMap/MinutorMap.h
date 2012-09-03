@@ -46,6 +46,7 @@ extern "C" {
 #define HELL			0x10
 #define ENDER			0x20
 #define SLIME			0x40
+#define MOB				0x80
 
 typedef void (*ProgressCallback)(float progress);
 

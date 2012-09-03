@@ -281,7 +281,7 @@ static unsigned char* draw(const char *world,int bx,int bz,int y,int opts,Progre
 	unsigned char pixel, r, g, b, seenempty;
 	double alpha;
 
-	char cavemode, showobscured, depthshading, lighting;
+	char cavemode, showobscured, depthshading, lighting, mob;
 	unsigned char *bits;
 
 	if ((opts&(HELL|ENDER|SLIME))==SLIME)
@@ -291,6 +291,7 @@ static unsigned char* draw(const char *world,int bx,int bz,int y,int opts,Progre
 	showobscured=!(opts&HIDEOBSCURED);
 	depthshading=!!(opts&DEPTHSHADING);
 	lighting=!!(opts&LIGHTING);
+	mob=((opts&(HELL|ENDER|MOB))==MOB); //only do mob check in overworld
 
 	block=(Block *)Cache_Find(bx,bz);
 
@@ -353,7 +354,7 @@ static unsigned char* draw(const char *world,int bx,int bz,int y,int opts,Progre
 		// x increases west, decreases east
 		for (x=0;x<16;x++)
 		{
-		        bofs=((y*16+z)*16+x);
+		    bofs=((y*16+z)*16+x);
 			color=0;
 			r=g=b=0;
 			seenempty=(y==255?1:0);
@@ -371,7 +372,7 @@ static unsigned char* draw(const char *world,int bx,int bz,int y,int opts,Progre
 				if ((showobscured || seenempty) && pixel<numBlocks && blocks[pixel].alpha!=0.0)
 				{
 					int light=12;
-					if (lighting)
+					if (lighting || mob)
 					{
 						if (i < 255)
 						{
@@ -380,7 +381,22 @@ static unsigned char* draw(const char *world,int bx,int bz,int y,int opts,Progre
 							light&=0xf;
 						} else
 							light = 0;
+
+						if (mob && blocks[pixel].solid && light<8 && i<250)
+						{
+							int upone=block->grid[bofs+16*16];
+							int uptwo=block->grid[bofs+16*16*2];
+							if ((upone==BLOCK_AIR || upone==BLOCK_SNOW) && !blocks[uptwo].solid)
+							{
+								r=0xff;
+								g=0;
+								b=0;
+								break;
+							}
+						}
+						if (!lighting) light=12;
 					}
+
 					if (prevy==-1)
 						prevy=i;
 					else if (prevy<i)

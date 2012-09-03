@@ -52,7 +52,6 @@ static int curDepth=255;								//current depth
 
 static int spawnX,spawnY,spawnZ;
 static int playerX,playerY,playerZ;
-static int playerSX,playerSY,playerSZ;
 
 static int opts=0;
 
@@ -511,18 +510,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			InvalidateRect(hWnd,NULL,TRUE);
 			UpdateWindow(hWnd);
 			break;
-		case IDM_JUMPPLAYERSPAWN:
-			curX=playerSX;
-			curZ=playerSZ;
-			if (opts&HELL)
-			{
-				curX/=8.0;
-				curZ/=8.0;
-			}
-			draw();
-			InvalidateRect(hWnd,NULL,TRUE);
-			UpdateWindow(hWnd);
-			break;
 		case IDM_LIGHTING:
 			opts^=LIGHTING;
 			CheckMenuItem(GetMenu(hWnd),wmId,(opts&LIGHTING)?MF_CHECKED:MF_UNCHECKED);
@@ -547,6 +534,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		case IDM_DEPTH:
 			opts^=DEPTHSHADING;
 			CheckMenuItem(GetMenu(hWnd),wmId,(opts&DEPTHSHADING)?MF_CHECKED:MF_UNCHECKED);
+			draw();
+			InvalidateRect(hWnd,NULL,TRUE);
+			UpdateWindow(hWnd);
+			break;
+		case IDM_MOB:
+			opts^=MOB;
+			CheckMenuItem(GetMenu(hWnd),wmId,(opts&MOB)?MF_CHECKED:MF_UNCHECKED);
 			draw();
 			InvalidateRect(hWnd,NULL,TRUE);
 			UpdateWindow(hWnd);
@@ -731,7 +725,6 @@ static void loadWorld()
 	CloseAll();
 	GetSpawn(world,&spawnX,&spawnY,&spawnZ);
 	GetPlayer(world,&playerX,&playerY,&playerZ);
-	GetPlayerSpawn(world,&playerSX,&playerSY,&playerSZ);
 	curX=spawnX;
 	curZ=spawnZ;
 	loaded=TRUE;
@@ -789,13 +782,11 @@ static void validateItems(HMENU menu)
 	{
 		EnableMenuItem(menu,IDM_JUMPSPAWN,MF_ENABLED);
 		EnableMenuItem(menu,IDM_JUMPPLAYER,MF_ENABLED);
-		EnableMenuItem(menu,IDM_JUMPPLAYERSPAWN,MF_ENABLED);
 	}
 	else
 	{
 		EnableMenuItem(menu,IDM_JUMPSPAWN,MF_DISABLED);
 		EnableMenuItem(menu,IDM_JUMPPLAYER,MF_DISABLED);
-		EnableMenuItem(menu,IDM_JUMPPLAYERSPAWN,MF_DISABLED);
 	}
 }
 
