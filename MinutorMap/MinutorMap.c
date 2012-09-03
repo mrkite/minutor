@@ -382,15 +382,18 @@ static unsigned char* draw(const char *world,int bx,int bz,int y,int opts,Progre
 						} else
 							light = 0;
 
-						if (mob && blocks[pixel].solid && light<8 && i<250)
+						if (mob && blocks[pixel].type==BLOCK_TYPE_OPAQUE && light<8 && i<250)
 						{
 							int upone=block->grid[bofs+16*16];
 							int uptwo=block->grid[bofs+16*16*2];
-							if ((upone==BLOCK_AIR || upone==BLOCK_SNOW) && !blocks[uptwo].solid)
+							//spawn on solid blocks.  The "spawn block" must be transparent, not liquid, not solid.  The block above
+							//the spawn block must be transparent and non solid, but could be liquid.
+							if ((blocks[upone].type&(BLOCK_TYPE_SOLID|BLOCK_TYPE_TRANSPARENT|BLOCK_TYPE_LIQUID))==BLOCK_TYPE_TRANSPARENT &&
+								(blocks[uptwo].type&(BLOCK_TYPE_SOLID|BLOCK_TYPE_TRANSPARENT))==BLOCK_TYPE_TRANSPARENT)
 							{
 								r=0xff;
 								g=0;
-								b=0;
+								b=0xff;
 								break;
 							}
 						}
