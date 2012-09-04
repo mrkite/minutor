@@ -48,7 +48,6 @@ static unsigned char *bits;
 static int curWidth,curHeight;
 static int spawnX,spawnY,spawnZ;
 static int playerX,playerY,playerZ;
-static int playerSX,playerSY,playerSZ;
 static long long randomSeed;
 static gboolean mouseUp(GtkWidget *widget,GdkEventButton *event);
 
@@ -257,7 +256,6 @@ static void loadMap(const gchar *path)
 
 	GetSpawn(path,&spawnX,&spawnY,&spawnZ);
 	GetPlayer(path,&playerX,&playerY,&playerZ);
-	GetPlayerSpawn(path,&playerSX,&playerSY,&playerSZ);
 	curX=spawnX;
 	curZ=spawnZ;
 	GetRandomSeed(path, &randomSeed);
