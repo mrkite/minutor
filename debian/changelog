@@ -1,3 +1,10 @@
+minutor (1.6.2) unstable; urgency=low
+
+  * Added biomes to statusbar
+  * Added mob spawning highlight
+
+ -- Sean Kasun <sean@seancode.com>  Tue, 4 Sep 2012 11:13:10 -0700
+
 minutor (1.6.1) unstable; urgency=low
 
   * Fixed lighting
