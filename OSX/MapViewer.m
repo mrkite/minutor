@@ -49,7 +49,6 @@
 	[map setWorld:world];
 	GetSpawn([world UTF8String], &spawnX, &spawnY, &spawnZ);
 	GetPlayer([world UTF8String], &playerX, &playerY, &playerZ);
-	GetPlayerSpawn([world UTF8String], &playerSX, &playerSY, &playerSZ);
 	[map setX:spawnX andZ:spawnZ];
 	[map setDepth:255-curDepth];
 	
@@ -65,10 +64,6 @@
 -(void)jumpToPlayer
 {
 	[map setX:playerX andZ:playerZ];
-}
--(void)jumpToPlayerSpawn
-{
-	[map setX:playerSX andZ:playerSZ];
 }
 -(IBAction)sliderChanged:(NSSlider *)sender
 {

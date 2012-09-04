@@ -261,14 +261,6 @@
 									<reference key="NSMixedImage" ref="502551668"/>
 									<int key="NSTag">102</int>
 								</object>
-								<object class="NSMenuItem" id="749211351">
-									<reference key="NSMenu" ref="799204025"/>
-									<string key="NSTitle">Jump to Bed</string>
-									<string key="NSKeyEquiv"></string>
-									<int key="NSMnemonicLoc">2147483647</int>
-									<reference key="NSOnImage" ref="35465992"/>
-									<reference key="NSMixedImage" ref="502551668"/>
-								</object>
 								<object class="NSMenuItem" id="983556354">
 									<reference key="NSMenu" ref="799204025"/>
 									<bool key="NSIsDisabled">YES</bool>
@@ -336,6 +328,15 @@
 									<reference key="NSMenu" ref="799204025"/>
 									<string key="NSTitle">Depth Shading</string>
 									<string key="NSKeyEquiv">4</string>
+									<int key="NSKeyEquivModMask">262144</int>
+									<int key="NSMnemonicLoc">2147483647</int>
+									<reference key="NSOnImage" ref="35465992"/>
+									<reference key="NSMixedImage" ref="502551668"/>
+								</object>
+								<object class="NSMenuItem" id="426236230">
+									<reference key="NSMenu" ref="799204025"/>
+									<string key="NSTitle">Show Mob Spawn</string>
+									<string key="NSKeyEquiv">5</string>
 									<int key="NSKeyEquivModMask">262144</int>
 									<int key="NSMnemonicLoc">2147483647</int>
 									<reference key="NSOnImage" ref="35465992"/>
@@ -1265,11 +1266,11 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
-						<string key="label">jumpToPlayerSpawn:</string>
+						<string key="label">toggleMob:</string>
 						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="749211351"/>
+						<reference key="destination" ref="426236230"/>
 					</object>
-					<int key="connectionID">766</int>
+					<int key="connectionID">768</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -1713,7 +1714,7 @@
 							<reference ref="152175375"/>
 							<reference ref="670035036"/>
 							<reference ref="853467384"/>
-							<reference ref="749211351"/>
+							<reference ref="426236230"/>
 						</object>
 						<reference key="parent" ref="918363285"/>
 					</object>
@@ -2059,8 +2060,8 @@
 						<reference key="parent" ref="799204025"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">765</int>
-						<reference key="object" ref="749211351"/>
+						<int key="objectID">767</int>
+						<reference key="object" ref="426236230"/>
 						<reference key="parent" ref="799204025"/>
 					</object>
 				</object>
@@ -2166,7 +2167,7 @@
 					<string>753.IBPluginDependency</string>
 					<string>755.IBPluginDependency</string>
 					<string>760.IBPluginDependency</string>
-					<string>765.IBPluginDependency</string>
+					<string>767.IBPluginDependency</string>
 				</object>
 				<object class="NSArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -2282,7 +2283,7 @@
 				<reference key="dict.values" ref="379229531"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">766</int>
+			<int key="maxID">768</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -2483,10 +2484,12 @@
 							<string>toggleEnder:</string>
 							<string>toggleHell:</string>
 							<string>toggleLighting:</string>
+							<string>toggleMob:</string>
 							<string>toggleObscured:</string>
 						</object>
 						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -2512,6 +2515,7 @@
 							<string>toggleEnder:</string>
 							<string>toggleHell:</string>
 							<string>toggleLighting:</string>
+							<string>toggleMob:</string>
 							<string>toggleObscured:</string>
 						</object>
 						<object class="NSArray" key="dict.values">
@@ -2550,6 +2554,10 @@
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">toggleLighting:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">toggleMob:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">

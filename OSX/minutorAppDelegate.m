@@ -102,10 +102,6 @@
 {
 	[mapViewer jumpToPlayer];
 }
--(IBAction) jumpToPlayerSpawn:sender
-{
-    [mapViewer jumpToPlayerSpawn];
-}
 -(IBAction) toggleLighting:sender
 {
 	opts^=LIGHTING;
@@ -129,6 +125,12 @@
 	opts^=DEPTHSHADING;
 	[sender setState:((opts&DEPTHSHADING)!=0)?NSOnState:NSOffState];
 	[mapViewer setOpts:opts];
+}
+-(IBAction) toggleMob:sender
+{
+    opts^=MOB;
+    [sender setState:((opts&MOB)!=0)?NSOnState:NSOffState];
+    [mapViewer setOpts:opts];
 }
 -(IBAction) toggleHell:sender
 {
