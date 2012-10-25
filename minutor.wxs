@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!-- Increase product version each release.. and that's the only change -->
-<?define ProductVersion="1.6.2"?>
+<?define ProductVersion="1.6.3"?>
 <?define ProductUpgradeCode="5da343bf-7e4f-4849-acb0-da8c6682a71e"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <Product Id="*"

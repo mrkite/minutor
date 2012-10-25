@@ -126,7 +126,7 @@ static struct {
 {"Redstone Torch (off)",   0x560000,1.0,1},	//4b
 {"Redstone Torch (on)",    0xfd0000,1.0,1},	//4c
 {"Stone Button",           0x000000,0.0,1},	//4d
-{"Snow",                   0xf0fafa,0.9,1},	//4e
+{"Snow",                   0xf0fafa,1.0,1},	//4e
 {"Ice",                    0x4d6a9c,0.613,3},	//4f
 {"Snow Block",             0xf1fafa,1.0,0},	//50
 {"Cactus",                 0x0f791d,1.0,1},	//51
@@ -186,10 +186,17 @@ static struct {
 {"Birch Wood Stairs",      0x897b55,1.0,3},   //87
 {"Jungle Wood Stairs",     0x66482f,1.0,3},   //88
 {"Command Block",          0xba764a,1.0,0},   //89
-{"Beacon Block",           0x9fdedb,1.0,0}    //8a
+{"Beacon",                 0x9fdedb,1.0,0},   //8a
+{"Cobblestone Wall",       0x828282,1.0,3},   //8b
+{"Flower Pot",             0x5d3328,1.0,1},   //8c
+{"Carrots",                0x08c400,1.0,1},   //8d
+{"Potatoes",               0x00e01a,1.0,1},   //8e
+{"Wooden Button",          0x9f8150,0.0,1},   //8f
+{"Head",                   0x000000,0.0,1},   //90
+{"Anvil",                  0x393939,1.0,1}    //91
 };
 
-#define numBlocks 0x8b  //number just after last block
+#define numBlocks 0x92  //number just after last block
 
 enum block_types {
     BLOCK_AIR = 0x00,

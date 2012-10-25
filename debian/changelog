@@ -1,3 +1,9 @@
+minutor (1.6.3) unstable; urgency=low
+
+  * Added 1.4 blocks
+
+ -- Sean Kasun <sean@seancode.com>  Thu, 25 Oct 2012 10:51:27 -0700
+
 minutor (1.6.2) unstable; urgency=low
 
   * Added biomes to statusbar
