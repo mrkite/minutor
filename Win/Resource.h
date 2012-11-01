@@ -46,6 +46,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
 #define IDM_HELL				515
 #define IDM_END					516
 #define IDM_MOB					517
+#define IDM_SLIME				518
 #define IDM_WORLD				2000
 #define IDM_CUSTOMCOLOR			3000
 #define IDI_MINUTOR				600
