@@ -437,10 +437,10 @@ static unsigned char* draw(const char *world,int bx,int bz,int y,int opts,Progre
 			}
 			if (hasSlime > 0)
 			{
-				if (y<=16)
-					g=clamp(g+20,0,255);
+				if (y<=40)
+					g=clamp(g+40,0,255);
             			else if (x%15==0 || z%15==0)
-			            	g=clamp(g+20,0,255);
+			            	g=clamp(g+40,0,255);
             		}
             		if (cavemode)
 			{

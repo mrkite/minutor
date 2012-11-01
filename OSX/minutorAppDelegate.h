@@ -47,6 +47,7 @@
 - (IBAction) toggleObscured: sender;
 - (IBAction) toggleDepth: sender;
 - (IBAction) toggleMob: sender;
+- (IBAction) toggleSlime: sender;
 - (IBAction) toggleHell: sender;
 - (IBAction) toggleEnder: sender;
 - (IBAction) selectScheme: sender;

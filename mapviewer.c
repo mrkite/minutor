@@ -38,7 +38,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
 static GtkWidget *win;
 static GtkWidget *slider,*da,*status,*progressbar;
 static GtkWidget *jumpplayer,*jumpspawn;
-static GtkWidget *lighting, *cavemode, *hideobscured, *depthshading, *mob, *hell, *ender;
+static GtkWidget *lighting, *cavemode, *hideobscured, *depthshading, *mob, *hell, *ender, *slime;
 static GtkWidget *standard;
 static double curX,curZ;
 static int curDepth=255;
@@ -85,6 +85,7 @@ static gboolean drawMap(GtkWidget *widget)
 	opts|=gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(mob))?MOB:0;
 	opts|=gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(hell))?HELL:0;
 	opts|=gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(ender))?ENDER:0;
+	opts|=gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(slime))?SLIME:0;
 
 	DrawMap(world,curX,curZ,curDepth,curWidth,curHeight,curScale,bits,opts,updateProgress);
 
@@ -577,6 +578,14 @@ void createMapViewer()
 	gtk_menu_shell_append(GTK_MENU_SHELL(viewitems),mob);
 	g_signal_connect(G_OBJECT(mob),"toggled",
 		G_CALLBACK(drawMap),NULL);
+
+		
+    slime=gtk_check_menu_item_new_with_mnemonic("Show _Slime Chunks");
+    gtk_widget_add_accelerator(slime,"activate",menuGroup,
+        GDK_6,0,GTK_ACCEL_VISIBLE);
+    gtk_menu_shell_append(GTK_MENU_SHELL(viewitems),slime);
+    g_signal_connect(G_OBJECT(slime),"toggled",
+        G_CALLBACK(drawMap),NULL);
 
 	//statusbar
 	status=gtk_statusbar_new();
