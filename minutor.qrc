@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>definitions/vanilla_biomes.json</file>
+        <file>definitions/vanilla_ids.json</file>
+        <file>definitions/vanilla_dims.json</file>
+    </qresource>
+</RCC>
