@@ -93,6 +93,7 @@ DefinitionManager::DefinitionManager(QWidget *parent) : QWidget(parent)
 
 	QSettings settings;
 	sorted=settings.value("packs").toList();
+	lastUpdated=settings.value("packupdates").toHash();
 
 	//copy over built-in definitions if necessary
 	QString defdir=QStandardPaths::writableLocation(QStandardPaths::DataLocation);
@@ -226,6 +227,8 @@ void DefinitionManager::installJson(QString path,bool overwrite,bool install)
 								 QMessageBox::Cancel);
 			return;
 		}
+		// fix permissions since we might be copying a readonly resource.
+		QFile::setPermissions(dest, QFile::ReadOwner|QFile::WriteOwner);
 		sorted.prepend(dest);
 		if (install)
 			loadDefinition(dest);
@@ -360,6 +363,7 @@ void DefinitionManager::loadDefinition(QString path)
 			def=JSON::parse(f.readAll());
 			f.close();
 		} catch (JSONParseException e) {
+			f.close();
 			return;
 		}
 		Definition d;
@@ -393,6 +397,7 @@ void DefinitionManager::loadDefinition(QString path)
 		try {
 			info=JSON::parse(zip.get("pack_info.json"));
 		} catch (JSONParseException e) {
+			zip.close();
 			return;
 		}
 		Definition d;
@@ -488,7 +493,7 @@ void DefinitionManager::autoUpdate()
 			QDateTime last;
 			last.setMSecsSinceEpoch(0);
 			if (lastUpdated.contains(name))
-				last=lastUpdated[name];
+				last=lastUpdated[name].toDateTime();
 			DefinitionUpdater *updater=new DefinitionUpdater(name,def.update,last);
 			connect(updater,SIGNAL(updated(DefinitionUpdater *,QString,QDateTime)),
 					this,SLOT(updatePack(DefinitionUpdater *,QString,QDateTime)));
@@ -504,9 +509,10 @@ void DefinitionManager::updatePack(DefinitionUpdater *updater,QString filename, 
 	delete updater;
 	if (lastUpdated[filename]!=timestamp)
 	{
-		// updated
+		lastUpdated[filename]=timestamp;
+		QSettings settings;
+		settings.setValue("packupdates",lastUpdated);
 	}
-	lastUpdated[filename]=timestamp;
 	if (updateQueue.isEmpty())
 		emit updateFinished();
 }

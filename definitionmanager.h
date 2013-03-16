@@ -106,7 +106,7 @@ private:
 
 	bool isUpdating;
 	QList<DefinitionUpdater *> updateQueue;
-	QHash<QString,QDateTime> lastUpdated;
+	QHash<QString,QVariant> lastUpdated;
 };
 
 #endif

@@ -59,11 +59,10 @@ void DefinitionUpdater::checkTime()
 	if (lmod.isValid() && lmod.toDateTime()>timestamp)
 	{
 		timestamp=lmod.toDateTime();
-		qDebug()<<"timestamp:"<<timestamp;
 		reply->deleteLater();
 		reply=qnam.get(QNetworkRequest(url));
 		save=new QFile(filename);
-		save->open(QIODevice::WriteOnly);
+		save->open(QIODevice::WriteOnly|QIODevice::Truncate);
 		connect(reply,SIGNAL(finished()),
 				this,SLOT(didUpdate()));
 		connect(reply,SIGNAL(readyRead()),
