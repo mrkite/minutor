@@ -107,6 +107,12 @@ void MapView::setDepth(int depth)
 	redraw();
 }
 
+void MapView::setFlags(int flags)
+{
+	this->flags=flags;
+	redraw();
+}
+
 void MapView::chunkUpdated(int x, int z)
 {
 	drawChunk(x,z);
@@ -207,7 +213,7 @@ void MapView::drawChunk(int x, int z)
 	//fetch the chunk
 	Chunk *chunk=cache.fetch(x,z);
 
-	if (chunk && chunk->renderedAt!=depth)
+	if (chunk && (chunk->renderedAt!=depth || chunk->renderedFlags!=flags))
 		renderChunk(chunk);
 
 	//this figures out where on the screen this chunk should be drawn
@@ -299,13 +305,25 @@ void MapView::renderChunk(Chunk *chunk)
 				BlockInfo &block=blocks->getBlock(section->blocks[offset+yoffset],data&0xf);
 				if (block.alpha==0.0) continue;
 				int light=12;
+				if (flags&1) //use lighting
+				{
+					// light values are always the block above
+					light=0;
+					ChunkSection *lsec=chunk->sections[(y+1)>>4];
+					if (lsec)
+						light=lsec->light[(offset+(((y+1)&0xf)<<8))/2];
+					if (x&1) light>>=4;
+					light&=15;
+				}
 				if (alpha==0.0)
 				{
 					if (lasty!=-1 && lasty<y)
 						light+=2;
 					else if (lasty>y)
-						light-=5;
+						light-=2;
 				}
+				if (light<0) light=0;
+				if (light>15) light=15;
 				quint32 color=block.colors[light];
 				if (alpha==0.0)
 				{
@@ -333,6 +351,7 @@ void MapView::renderChunk(Chunk *chunk)
 		}
 	}
 	chunk->renderedAt=depth;
+	chunk->renderedFlags=flags;
 }
 
 void MapView::getToolTip(int x, int z)

@@ -36,6 +36,7 @@ Chunk::Chunk()
 void Chunk::load(NBT &nbt)
 {
 	renderedAt=-1; //impossible.
+	renderedFlags=0; //no flags
 	memset(this->biomes,127,256); //init to unknown biome
 	for (int i=0;i<16;i++)
 		this->sections[i]=NULL;

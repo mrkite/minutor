@@ -48,6 +48,7 @@ public:
 
 	void setLocation(double x,double z);
 	void setDimension(QString path,int scale);
+	void setFlags(int flags);
 
 public slots:
 	void setDepth(int depth);
@@ -75,6 +76,7 @@ private:
 	double x,z;
 	int scale;
 	double zoom;
+	int flags;
 	ChunkCache cache;
 	QImage image;
 	DefinitionManager *dm;

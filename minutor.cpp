@@ -120,6 +120,7 @@ void Minutor::open()
 
 void Minutor::reload()
 {
+	loadWorld(currentWorld);
 }
 
 void Minutor::closeWorld()
@@ -147,11 +148,14 @@ void Minutor::jumpToLocation()
 	}
 }
 
-void Minutor::toggleLighting()
+void Minutor::toggleFlags()
 {
-}
-void Minutor::toggleCaveMode()
-{
+	int flags=0;
+	if (lightingAct->isChecked())
+		flags|=1;
+	if (caveModeAct->isChecked())
+		flags|=2;
+	mapview->setFlags(flags);
 }
 
 void Minutor::viewDimension(Dimension &dim)
@@ -212,14 +216,14 @@ void Minutor::createActions()
 	lightingAct->setShortcut(tr("Ctrl+L"));
 	lightingAct->setStatusTip(tr("Toggle lighting on/off"));
 	connect(lightingAct, SIGNAL(triggered()),
-			this, SLOT(toggleLighting()));
+			this, SLOT(toggleFlags()));
 
 	caveModeAct=new QAction(tr("&Cave Mode"),this);
 	caveModeAct->setCheckable(true);
 	caveModeAct->setShortcut(tr("Ctrl+I"));
 	caveModeAct->setStatusTip(tr("Toggle cave mode on/off"));
 	connect(caveModeAct, SIGNAL(triggered()),
-			this, SLOT(toggleCaveMode()));
+			this, SLOT(toggleFlags()));
 
 
 	manageDefsAct=new QAction(tr("Manage &Definitions..."),this);
@@ -383,7 +387,7 @@ void Minutor::loadWorld(QDir path)
 	dimensions->getDimensions(path,dimMenu,this);
 	emit worldLoaded(true);
 	mapview->setLocation(locations.first().x,locations.first().z);
-
+	toggleFlags();
 }
 
 void Minutor::rescanWorlds()

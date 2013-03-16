@@ -65,8 +65,7 @@ private slots:
 
 	void jumpToLocation();
 	void viewDimension(Dimension &dim);
-	void toggleLighting();
-	void toggleCaveMode();
+	void toggleFlags();
 
 	void about();
 
