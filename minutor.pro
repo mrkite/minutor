@@ -5,6 +5,8 @@ INCLUDEPATH += .
 QT += widgets network
 unix:LIBS += -lz
 win32:LIBS+= $$PWD/zlibstat.lib
+win32:RC_FILE += winicon.rc
+macx:ICON=icon.icns
 
 # Input
 HEADERS += mapview.h minutor.h nbt.h zlib.h zconf.h \
