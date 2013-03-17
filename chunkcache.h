@@ -52,6 +52,7 @@ public:
 	~ChunkCache();
 	void clear();
 	void setPath(QString path);
+	QString getPath();
 	Chunk *fetch(int x,int z);
 
 signals:

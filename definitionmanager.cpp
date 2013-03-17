@@ -214,7 +214,7 @@ void DefinitionManager::installJson(QString path,bool overwrite,bool install)
 
 	QString key=def->at("name")->asString()+def->at("type")->asString();
 	delete def;
-	QString dest=QDir::toNativeSeparators(destdir+"/"+QString("%1").arg(qHash(key))+".json");
+	QString dest=destdir+"/"+QString("%1").arg(qHash(key))+".json";
 	if (!QFile::exists(dest) || overwrite)
 	{
 		if (QFile::exists(dest) && install)
@@ -278,7 +278,7 @@ void DefinitionManager::installZip(QString path,bool overwrite,bool install)
 
 	QString key=info->at("name")->asString()+info->at("type")->asString();
 	delete info;
-	QString dest=QDir::toNativeSeparators(destdir+"/"+QString("%1").arg(qHash(key))+".zip");
+	QString dest=destdir+"/"+QString("%1").arg(qHash(key))+".zip";
 	if (!QFile::exists(dest) || overwrite)
 	{
 		if (QFile::exists(dest) && install)

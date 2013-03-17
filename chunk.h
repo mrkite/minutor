@@ -57,6 +57,7 @@ protected:
 	uchar image[16*16*4];	//cached render
 	friend class MapView;
 	friend class ChunkCache;
+	friend class WorldSave;
 };
 
 #endif

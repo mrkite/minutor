@@ -119,6 +119,11 @@ void MapView::chunkUpdated(int x, int z)
 	update();
 }
 
+QString MapView::getWorldPath()
+{
+	return cache.getPath();
+}
+
 static int lastX=-1,lastY=-1;
 static bool dragging=false;
 void MapView::mousePressEvent(QMouseEvent *event)

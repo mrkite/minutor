@@ -33,6 +33,7 @@
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QStatusBar>
+#include <QProgressDialog>
 #include <QDir>
 #include "minutor.h"
 #include "mapview.h"
@@ -42,6 +43,7 @@
 #include "definitionmanager.h"
 #include "settings.h"
 #include "dimensions.h"
+#include "worldsave.h"
 
 Minutor::Minutor()
 {
@@ -123,6 +125,35 @@ void Minutor::reload()
 	loadWorld(currentWorld);
 }
 
+void Minutor::save()
+{
+	QString filename = QFileDialog::getSaveFileName(this,tr("Save PNG"),QString(),"*.png");
+	if (!filename.isEmpty())
+	{
+		WorldSave *ws=new WorldSave(filename,mapview);
+		progress=new QProgressDialog();
+		progress->setCancelButton(NULL);
+		progress->setMaximum(100);
+		progress->show();
+		connect(ws,SIGNAL(progress(QString,double)),
+				this,SLOT(saveProgress(QString,double)));
+		connect(ws,SIGNAL(finished()),
+				this,SLOT(saveFinished()));
+		QThreadPool::globalInstance()->start(ws);
+	}
+}
+
+void Minutor::saveProgress(QString status, double value)
+{
+	progress->setValue(value*100);
+	progress->setLabelText(status);
+}
+void Minutor::saveFinished()
+{
+	progress->hide();
+	delete progress;
+}
+
 void Minutor::closeWorld()
 {
 	locations.clear();
@@ -196,6 +227,14 @@ void Minutor::createActions()
 	connect(this, SIGNAL(worldLoaded(bool)),
 			reloadAct, SLOT(setEnabled(bool)));
 
+	saveAct=new QAction(tr("&Save PNG..."),this);
+	saveAct->setShortcut(tr("Ctrl+S"));
+	saveAct->setStatusTip(tr("Save as PNG"));
+	connect(saveAct, SIGNAL(triggered()),
+			this, SLOT(save()));
+	connect(this, SIGNAL(worldLoaded(bool)),
+			saveAct, SLOT(setEnabled(bool)));
+
 	exitAct=new QAction(tr("E&xit"),this);
 	exitAct->setShortcut(tr("Ctrl+Q"));
 	exitAct->setStatusTip(tr("Exit %1").arg(qApp->applicationName()));
@@ -258,6 +297,8 @@ void Minutor::createMenus()
 
 	fileMenu->addAction(openAct);
 	fileMenu->addAction(reloadAct);
+	fileMenu->addSeparator();
+	fileMenu->addAction(saveAct);
 	fileMenu->addSeparator();
 	fileMenu->addAction(exitAct);
 

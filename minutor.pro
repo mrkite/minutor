@@ -21,7 +21,8 @@ HEADERS += mapview.h minutor.h nbt.h zlib.h zconf.h \
     zipreader.h \
     settings.h \
     chunkloader.h \
-    definitionupdater.h
+    definitionupdater.h \
+    worldsave.h
 SOURCES += mapview.cpp main.cpp minutor.cpp nbt.cpp \
 	labelledslider.cpp \
     chunk.cpp \
@@ -34,5 +35,6 @@ SOURCES += mapview.cpp main.cpp minutor.cpp nbt.cpp \
     zipreader.cpp \
     settings.cpp \
     chunkloader.cpp \
-    definitionupdater.cpp
+    definitionupdater.cpp \
+    worldsave.cpp
 RESOURCES = minutor.qrc

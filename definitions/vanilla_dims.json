@@ -1,1 +1,1 @@
-{"name":"Vanilla","type":"dimension","version":"1.4.5","data":[{"name":"Overworld","path":".","scale":1},{"name":"Nether","path":"DIM-1","scale":8},{"name":"End","path":"DIM1","scale":0}],"update":"http://seancode.com/minutor/packs/vanilla_dims.json"}
+{"name":"Vanilla","type":"dimension","version":"1.5","data":[{"name":"Overworld","path":".","scale":1},{"name":"Nether","path":"DIM-1","scale":8},{"name":"End","path":"DIM1","scale":0}],"update":"http://seancode.com/minutor/packs/vanilla_dims.json"}

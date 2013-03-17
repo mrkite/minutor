@@ -35,6 +35,7 @@
 class QAction;
 class QActionGroup;
 class QMenu;
+class QProgressDialog;
 class MapView;
 class LabelledSlider;
 class DefinitionManager;
@@ -43,6 +44,7 @@ class BiomeIdentifier;
 class BlockIdentifier;
 class Dimensions;
 class Dimension;
+class WorldSave;
 
 class Location
 {
@@ -62,6 +64,7 @@ private slots:
 	void open();
 	void closeWorld();
 	void reload();
+	void save();
 
 	void jumpToLocation();
 	void viewDimension(Dimension &dim);
@@ -71,6 +74,8 @@ private slots:
 
 	void updateDimensions();
 	void rescanWorlds();
+	void saveProgress(QString status,double value);
+	void saveFinished();
 
 signals:
 	void worldLoaded(bool isLoaded);
@@ -87,13 +92,14 @@ private:
 
 	MapView *mapview;
 	LabelledSlider *depth;
+	QProgressDialog *progress;
 
 	QMenu *fileMenu, *worldMenu;
 	QMenu *viewMenu, *jumpMenu, *dimMenu;
 	QMenu *helpMenu;
 
 	QList<QAction *>worlds;
-	QAction *openAct, *reloadAct, *exitAct;
+	QAction *openAct, *reloadAct, *saveAct, *exitAct;
 	QAction *jumpSpawnAct;
 	QList<QAction *>players;
 	QAction *lightingAct, *caveModeAct;

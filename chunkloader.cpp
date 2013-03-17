@@ -40,7 +40,7 @@ void ChunkLoader::run()
 	int rx=x>>5;
 	int rz=z>>5;
 
-	QFile f(path+QDir::toNativeSeparators("/region/r.")+QString::number(rx)+"."+QString::number(rz)+".mca");
+	QFile f(path+"/region/r."+QString::number(rx)+"."+QString::number(rz)+".mca");
 	if (!f.open(QIODevice::ReadOnly)) //no chunks in this region
 	{
 		emit loaded(x,z);

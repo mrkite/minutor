@@ -25,68 +25,33 @@
  THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#ifndef __WORLDSAVE_H__
+#define __WORLDSAVE_H__
 
-#ifndef __MAPVIEW_H__
-#define __MAPVIEW_H__
+#include <QObject>
+#include <QRunnable>
 
-#include <QtWidgets/QWidget>
-#include "chunkcache.h"
-class DefinitionManager;
-class BiomeIdentifier;
-class BlockIdentifier;
+class MapView;
+class Chunk;
 
-class MapView : public QWidget
+class WorldSave : public QObject, public QRunnable
 {
 	Q_OBJECT
 public:
-	MapView(QWidget *parent=0);
-
-	QSize minimumSizeHint() const;
-	QSize sizeHint() const;
-
-	void attach(DefinitionManager *);
-
-	void setLocation(double x,double z);
-	void setDimension(QString path,int scale);
-	void setFlags(int flags);
-
-	// public for saving the png
-	void renderChunk(Chunk *chunk);
-	QString getWorldPath();
-
-
-public slots:
-	void setDepth(int depth);
-	void chunkUpdated(int x,int z);
-	void redraw();
-
+	WorldSave(QString filename,MapView *map);
+	~WorldSave();
 signals:
-	void hoverTextChanged(QString text);
-
+	void progress(QString status,double amount);
+	void finished();
 protected:
-	void mousePressEvent(QMouseEvent *event);
-	void mouseMoveEvent(QMouseEvent *event);
-	void mouseReleaseEvent(QMouseEvent *);
-	void wheelEvent(QWheelEvent *event);
-	void resizeEvent(QResizeEvent *);
-	void paintEvent(QPaintEvent *);
-
+	void run();
 private:
+	void findBounds(QString path,int *top,int *left,int *bottom,int *right);
+	void blankChunk(uchar *scanlines,int stride,int x);
+	void drawChunk(uchar *scanlines,int stride,int x,Chunk *chunk);
 
-	void drawChunk(int x,int z);
-	void getToolTip(int x,int z);
-
-	int depth;
-	double x,z;
-	int scale;
-	double zoom;
-	int flags;
-	ChunkCache cache;
-	QImage image;
-	DefinitionManager *dm;
-	BlockIdentifier *blocks;
-	BiomeIdentifier *biomes;
-	uchar placeholder[16*16*4]; // no chunk found placeholder
+	QString filename;
+	MapView *map;
 };
 
 #endif

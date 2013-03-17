@@ -59,6 +59,10 @@ void ChunkCache::setPath(QString path)
 {
 	this->path=path;
 }
+QString ChunkCache::getPath()
+{
+	return path;
+}
 
 Chunk *ChunkCache::fetch(int x, int z)
 {
