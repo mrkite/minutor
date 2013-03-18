@@ -44,6 +44,7 @@ class BiomeIdentifier
 {
 public:
 	BiomeIdentifier();
+	~BiomeIdentifier();
 	int addDefinitions(JSONArray *,int pack=-1);
 	void enableDefinitions(int);
 	void disableDefinitions(int);

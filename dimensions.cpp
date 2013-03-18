@@ -48,6 +48,11 @@ Dimensions::Dimensions()
 }
 Dimensions::~Dimensions()
 {
+	for (int i=0;i<packs.length();i++)
+	{
+		for (int j=0;j<packs[i].length();j++)
+			delete packs[i][j];
+	}
 }
 
 void Dimensions::enableDefinitions(int pack)

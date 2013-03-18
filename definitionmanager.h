@@ -64,6 +64,7 @@ class DefinitionManager : public QWidget
 	Q_OBJECT
 public:
 	explicit DefinitionManager(QWidget *parent = 0);
+    ~DefinitionManager();
 	void attachMapView(MapView *mapview);
 	QSize minimumSizeHint() const;
 	QSize sizeHint() const;

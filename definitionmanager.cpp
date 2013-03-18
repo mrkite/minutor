@@ -117,6 +117,13 @@ DefinitionManager::DefinitionManager(QWidget *parent) : QWidget(parent)
 	refresh();
 }
 
+DefinitionManager::~DefinitionManager()
+{
+    delete dimensionList;
+    delete blocks;
+    delete biomes;
+}
+
 BlockIdentifier *DefinitionManager::blockIdentifier()
 {
 	return blocks;

@@ -38,6 +38,16 @@ BlockIdentifier::BlockIdentifier()
 	unknownBlock.flags=0;
 	unknownBlock.name="Unknown";
 }
+BlockIdentifier::~BlockIdentifier()
+{
+	for (int i=0;i<65536;i++)
+		cache[i]=NULL;
+	for (int i=0;i<packs.length();i++)
+	{
+		for (int j=0;j<packs[i].length();j++)
+			delete packs[i][j];
+	}
+}
 
 // this routine is ridiculously slow
 BlockInfo &BlockIdentifier::getBlock(int id, int data)

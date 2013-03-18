@@ -61,6 +61,7 @@ class BlockIdentifier
 {
 public:
 	BlockIdentifier();
+	~BlockIdentifier();
 	int addDefinitions(JSONArray *,int pack=-1);
 	void enableDefinitions(int);
 	void disableDefinitions(int);
