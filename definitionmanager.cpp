@@ -264,12 +264,12 @@ void DefinitionManager::installZip(QString path,bool overwrite,bool install)
 		JSONData *def;
 		try {
 			def=JSON::parse(zip.get(info->at("data")->at(i)->asString()));
+			delete def;
 		} catch (JSONParseException e) {
 			QMessageBox::warning(this,
 								 tr("Couldn't install %1").arg(path),
 								 tr("%1: %2").arg(info->at("data")->at(i)->asString(),e.reason),
 								 QMessageBox::Cancel);
-			delete def;
 			delete info;
 			zip.close();
 			return;

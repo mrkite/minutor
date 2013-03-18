@@ -365,7 +365,7 @@ void MapView::getToolTip(int x, int z)
 	int cz=floor(z/16.0);
 	Chunk *chunk=cache.fetch(cx,cz);
 	int offset=(x&0xf)+(z&0xf)*16;
-	int id,bd;
+	int id=0,bd=0;
 
 	QString name="Unknown";
 	QString biome="Unknown Biome";
