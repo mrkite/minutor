@@ -85,5 +85,8 @@ Chunk::~Chunk()
 	if (loaded)
 		for (int i=0;i<16;i++)
 			if (sections[i])
+			{
 				delete sections[i];
+				sections[i]=NULL;
+			}
 }

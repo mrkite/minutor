@@ -31,12 +31,13 @@
 #include <QObject>
 #include <QRunnable>
 class Chunk;
+class ChunkID;
 
 class ChunkLoader : public QObject, public QRunnable
 {
 	Q_OBJECT
 public:
-	ChunkLoader(QString path,int x,int z,Chunk *chunk);
+	ChunkLoader(QString path,int x,int z,QCache<ChunkID,Chunk> &cache);
 	~ChunkLoader();
 signals:
 	void loaded(int x,int z);
@@ -45,7 +46,7 @@ protected:
 private:
 	QString path;
 	int x,z;
-	Chunk *chunk;
+	QCache<ChunkID,Chunk> &cache;
 };
 
 #endif

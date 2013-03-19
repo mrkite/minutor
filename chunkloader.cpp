@@ -26,9 +26,10 @@
  */
 
 #include "chunkloader.h"
+#include "chunkcache.h"
 #include "chunk.h"
 
-ChunkLoader::ChunkLoader(QString path,int x,int z,Chunk *chunk) : path(path),x(x),z(z),chunk(chunk)
+ChunkLoader::ChunkLoader(QString path,int x,int z,QCache<ChunkID,Chunk> &cache) : path(path),x(x),z(z),cache(cache)
 {
 }
 ChunkLoader::~ChunkLoader()
@@ -62,7 +63,10 @@ void ChunkLoader::run()
 
 	uchar *raw=f.map(coffset*4096,numSectors*4096);
 	NBT nbt(raw);
-	chunk->load(nbt);
+	ChunkID id(x,z);
+	Chunk *chunk=cache[id];
+	if (chunk)
+		chunk->load(nbt);
 	f.unmap(raw);
 	f.close();
 

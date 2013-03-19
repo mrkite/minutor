@@ -67,16 +67,17 @@ QString ChunkCache::getPath()
 Chunk *ChunkCache::fetch(int x, int z)
 {
 	ChunkID id(x,z);
-	if (cache.contains(id))
+	Chunk *chunk=cache[id];
+	if (chunk!=NULL)
 	{
-		if (cache[id]->loaded)
-			return cache[id];
+		if (chunk->loaded)
+			return chunk;
 		return NULL; //we're loading this chunk, or it's blank.
 	}
 	// launch background process to load this chunk
-	Chunk *chunk=new Chunk();
+	chunk=new Chunk();
 	cache.insert(id,chunk);
-	ChunkLoader *loader=new ChunkLoader(path,x,z,chunk);
+	ChunkLoader *loader=new ChunkLoader(path,x,z,cache);
 	connect(loader,SIGNAL(loaded(int,int)),
 			this,SLOT(gotChunk(int,int)));
 	QThreadPool::globalInstance()->start(loader);
