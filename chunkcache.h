@@ -64,6 +64,7 @@ private slots:
 private:
 	QString path;
 	QCache<ChunkID,Chunk> cache;
+	QMutex mutex;
 };
 
 #endif

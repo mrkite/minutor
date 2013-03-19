@@ -184,7 +184,16 @@ void MapView::paintEvent(QPaintEvent *)
 void MapView::redraw()
 {
 	if (!this->isEnabled())
+	{
+		// blank
+		uchar *bits=image.bits();
+		int imgstride=image.bytesPerLine();
+		int imgoffset=0;
+		for (int y=0;y<image.height();y++,imgoffset+=imgstride)
+			memset(bits+imgoffset,0xee,imgstride);
+		update();
 		return;
+	}
 
 	double chunksize=16*zoom;
 

@@ -52,7 +52,9 @@ ChunkCache::~ChunkCache()
 void ChunkCache::clear()
 {
 	QThreadPool::globalInstance()->waitForDone();
+	mutex.lock();
 	cache.clear();
+	mutex.unlock();
 }
 
 void ChunkCache::setPath(QString path)
@@ -67,7 +69,9 @@ QString ChunkCache::getPath()
 Chunk *ChunkCache::fetch(int x, int z)
 {
 	ChunkID id(x,z);
+	mutex.lock();
 	Chunk *chunk=cache[id];
+	mutex.unlock();
 	if (chunk!=NULL)
 	{
 		if (chunk->loaded)
@@ -76,8 +80,10 @@ Chunk *ChunkCache::fetch(int x, int z)
 	}
 	// launch background process to load this chunk
 	chunk=new Chunk();
+	mutex.lock();
 	cache.insert(id,chunk);
-	ChunkLoader *loader=new ChunkLoader(path,x,z,cache);
+	mutex.unlock();
+	ChunkLoader *loader=new ChunkLoader(path,x,z,cache,mutex);
 	connect(loader,SIGNAL(loaded(int,int)),
 			this,SLOT(gotChunk(int,int)));
 	QThreadPool::globalInstance()->start(loader);

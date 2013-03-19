@@ -32,12 +32,13 @@
 #include <QRunnable>
 class Chunk;
 class ChunkID;
+class QMutex;
 
 class ChunkLoader : public QObject, public QRunnable
 {
 	Q_OBJECT
 public:
-	ChunkLoader(QString path,int x,int z,QCache<ChunkID,Chunk> &cache);
+	ChunkLoader(QString path,int x,int z,QCache<ChunkID,Chunk> &cache,QMutex &mutex);
 	~ChunkLoader();
 signals:
 	void loaded(int x,int z);
@@ -47,6 +48,7 @@ private:
 	QString path;
 	int x,z;
 	QCache<ChunkID,Chunk> &cache;
+	QMutex &mutex;
 };
 
 #endif
