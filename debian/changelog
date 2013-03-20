@@ -1,3 +1,13 @@
+minutor (2.0) quantal; urgency=low
+
+  * Complete rewrite, uses QT5 now
+  * PNG Saving
+  * Background loading of tiles
+  * Much faster
+  * Supports mods and custom blocks
+
+ -- Sean Kasun <sean@seancode.com>  Wed, 20 Mar 2012 14:08:35 -0700
+
 minutor (1.6.3) unstable; urgency=low
 
   * Added 1.4 blocks

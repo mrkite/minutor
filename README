@@ -15,3 +15,12 @@ Use QtCreator (Qt5 version) and open minutor.pro. Change kit to Release.  Build.
 Linux:
 If you'd rather use the command line, run qmake to generate a Makefile from
 minutor.pro, then run make
+
+To make a package:
+
+    $ debuild
+
+To make a package for another distribution:
+    $ pbuilder-dist raring create   # called only once to generate environment
+    $ debuild -S -us
+    $ pbuilder-dist raring build *.dsc
