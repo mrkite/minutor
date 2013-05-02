@@ -11,3 +11,6 @@
 
 %:
 	dh  $@
+
+override_dh_auto_configure:
+	QT_SELECT=qt5 dh_auto_configure

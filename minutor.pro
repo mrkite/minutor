@@ -38,3 +38,10 @@ SOURCES += mapview.cpp main.cpp minutor.cpp nbt.cpp \
     definitionupdater.cpp \
     worldsave.cpp
 RESOURCES = minutor.qrc
+
+desktopfile.path = /usr/share/applications
+desktopfile.files = minutor.desktop
+pixmapfile.path = /usr/share/pixmaps
+pixmapfile.files = minutor.png minutor.xpm
+target.path = /usr/bin
+INSTALLS += desktopfile pixmapfile target

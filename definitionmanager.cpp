@@ -52,8 +52,8 @@ DefinitionManager::DefinitionManager(QWidget *parent) : QWidget(parent)
 
 	QVBoxLayout *layout=new QVBoxLayout;
 	QStringList labels;
-	labels<<tr("Name")<<tr("Version")<<tr("Type")<<tr("Active");
-	table=new QTableWidget(0,4);
+	labels<<tr("Name")<<tr("Version")<<tr("Type"); //<<tr("Active");
+	table=new QTableWidget(0,3);
 	table->setHorizontalHeaderLabels(labels);
 	table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 	table->horizontalHeader()->setSectionResizeMode(0,QHeaderView::Stretch);
@@ -160,12 +160,12 @@ void DefinitionManager::refresh()
 		type->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
 		type->setData(Qt::UserRole,def.path);
 		table->setItem(row,2,type);
-		QCheckBox *active=new QCheckBox;
+/*		QCheckBox *active=new QCheckBox;
 		active->setChecked(def.enabled);
 		connect(active,SIGNAL(toggled(bool)),
 				this,SLOT(toggledPack(bool)));
 		checks.append(active);
-		table->setCellWidget(row,3,active);
+		table->setCellWidget(row,3,active); */
 	}
 }
 
@@ -178,11 +178,50 @@ void DefinitionManager::selectedPack(QTableWidgetItem *item,QTableWidgetItem *)
 		selected=QString();
 }
 
-void DefinitionManager::toggledPack(bool)
+void DefinitionManager::toggledPack(bool onoff)
 {
-	qDebug()<<"toggled pack";
-	//we disable the pack
-	//emit packsChanged()
+	if (definitions.contains(selected))
+	{
+		Definition &def=definitions[selected];
+		def.enabled=onoff;
+		switch (def.type)
+		{
+		case Definition::Block:
+			if (onoff)
+				blocks->enableDefinitions(def.id);
+			else
+				blocks->disableDefinitions(def.id);
+			break;
+		case Definition::Biome:
+			if (onoff)
+				biomes->enableDefinitions(def.id);
+			else
+				biomes->disableDefinitions(def.id);
+			break;
+		case Definition::Dimension:
+			if (onoff)
+				dimensionList->enableDefinitions(def.id);
+			else
+				dimensionList->disableDefinitions(def.id);
+			break;
+		case Definition::Pack:
+			if (onoff)
+			{
+				blocks->enableDefinitions(def.blockid);
+				biomes->enableDefinitions(def.biomeid);
+				dimensionList->enableDefinitions(def.dimensionid);
+			}
+			else
+			{
+				blocks->disableDefinitions(def.blockid);
+				biomes->disableDefinitions(def.biomeid);
+				dimensionList->disableDefinitions(def.dimensionid);
+			}
+			break;
+		}
+	}
+	emit packsChanged();
+	refresh();
 }
 
 void DefinitionManager::addPack()
