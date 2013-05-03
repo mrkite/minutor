@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!-- Increase product version each release.. and that's the only change -->
-<?define ProductVersion="1.6.3"?>
+<?define ProductVersion="2.0"?>
 <?define ProductUpgradeCode="5da343bf-7e4f-4849-acb0-da8c6682a71e"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <Product Id="*"
@@ -51,6 +51,20 @@
           </Component>
         </Directory>
       </Directory>
+	  <Directory Id="DesktopFolder" Name="Desktop" />
+	  <Component Id="DesktopShortcut" Guid="b1f0c1de-c6a4-49ec-922f-69f830962b8d">
+	  	<Condition>INSTALLDESKTOPSHORTCUT</COndition>
+		<CreateFolder/>
+		<RegistryKey Root="HKCU" Key="Software\Sean Kasun\Minutor"
+			Action="createAndRemoveOnUninstall">
+			<RegistryValue Name="DTSC" Value="1" Type="integer" KeyPath="yes" />
+		</RegistryKey>
+		<Shortcut Id="DesktopShortcut"
+			Directory="DesktopFolder"
+			Name="Minutor"
+			Target="[#AppFile1]"
+			WorkingDirectory="INSTALLDIR" />
+		</Component>
     </Directory>
     <InstallExecuteSequence>
       <RemoveExistingProducts After="InstallValidate" />
@@ -59,41 +73,11 @@
     <Feature Id="DefaultFeature" Level="1">
       <ComponentRef Id="ApplicationFiles" />
       <ComponentRef Id="ApplicationShortcuts" />
+	  <ComponentRef Id="DesktopShortcut" />
     </Feature>
     <Property Id="WIXUI_INSTALLDIR">INSTALLDIR</Property>
-    <UI Id="WixUI_Minimal">
-      <TextStyle Id="WixUI_Font_Normal" FaceName="Tahoma" Size="8" />
-      <TextStyle Id="WixUI_Font_Bigger" FaceName="Tahoma" Size="12" />
-      <TextStyle Id="WixUI_Font_Title" FaceName="Tahoma" Size="9" Bold="yes" />
-      <Property Id="DefaultUIFont" Value="WixUI_Font_Normal" />
-      <Property Id="WixUI_Mode" Value="Minimal" />
-      <DialogRef Id="ErrorDlg" />
-      <DialogRef Id="FatalError" />
-      <DialogRef Id="FilesInUse" />
-      <DialogRef Id="MsiRMFilesInUse" />
-      <DialogRef Id="PrepareDlg" />
-      <DialogRef Id="ProgressDlg" />
-      <DialogRef Id="ResumeDlg" />
-      <DialogRef Id="UserExit" />
-      <DialogRef Id="WelcomeDlg" />
-
-      <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog"
-          Value="PrepareDlg">1</Publish>
-      <Publish Dialog="ExitDialog" Control="Finish" Event="EndDialog"
-          Value="Return" Order="999">1</Publish>
-      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog"
-          Value="MaintenanceTypeDlg">1</Publish>
-      <Publish Dialog="MaintenanceWelcomeDlg" Control="Next" Event="NewDialog"
-          Value="MaintenanceTypeDlg">1</Publish>
-      <Publish Dialog="MaintenanceTypeDlg" Control="RepairButton"
-          Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
-      <Publish Dialog="MaintenanceTypeDlg" Control="RemoveButton"
-          Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
-      <Publish Dialog="MaintenanceTypeDlg" Control="Back" Event="NewDialog"
-          Value="MaintenanceWelcomeDlg">1</Publish>
-      <Property Id="ARPNOMODIFY" Value="1" />
-    </UI>
-    <UIRef Id="WixUI_Common" />
+	<Property Id="INSTALLDESKTOPSHORTCUT" Value="1" />
+	<UIRef Id="MyWixUI_InstallDir" />
   </Product>
 </Wix>
 
