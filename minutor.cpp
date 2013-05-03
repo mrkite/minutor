@@ -310,7 +310,7 @@ void Minutor::createMenus()
 	dimMenu->setEnabled(false);
 	viewMenu->addSeparator();
 	viewMenu->addAction(lightingAct);
-	viewMenu->addAction(caveModeAct);
+	//viewMenu->addAction(caveModeAct);
 	viewMenu->addSeparator();
 	viewMenu->addAction(manageDefsAct);
 
