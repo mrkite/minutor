@@ -24,3 +24,17 @@ To make a package for another distribution:
     $ pbuilder-dist raring create   # called only once to generate environment
     $ debuild -S -us
     $ pbuilder-dist raring build *.dsc
+
+
+
+MacOS:
+Make a static compile of Qt by downloading the source code and then
+
+	cd qtbase
+    ./configure -prefix $PWD -opensource -confirm-license -nomake tests -nomake examples -release -static 
+	make
+
+Then compile Minutor by:
+
+	~/path/to/qtbase/bin/qmake
+	make
