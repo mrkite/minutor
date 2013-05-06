@@ -3,6 +3,7 @@ TARGET = minutor
 DEPENDPATH += .
 INCLUDEPATH += .
 QT += widgets network
+QMAKE_INFO_PLIST = minutor.plist
 unix:LIBS += -lz
 win32:LIBS+= $$PWD/zlibstat.lib
 win32:RC_FILE += winicon.rc
