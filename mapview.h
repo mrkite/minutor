@@ -68,6 +68,7 @@ protected:
 	void mouseMoveEvent(QMouseEvent *event);
 	void mouseReleaseEvent(QMouseEvent *);
 	void wheelEvent(QWheelEvent *event);
+	void keyPressEvent(QKeyEvent *event);
 	void resizeEvent(QResizeEvent *);
 	void paintEvent(QPaintEvent *);
 

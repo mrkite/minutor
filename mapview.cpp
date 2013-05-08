@@ -41,6 +41,7 @@ MapView::MapView(QWidget *parent) : QWidget(parent)
 	connect(&cache, SIGNAL(chunkLoaded(int,int)),
 			this, SLOT(chunkUpdated(int,int)));
 	setMouseTracking(true);
+	setFocusPolicy(Qt::StrongFocus);
 
 	int offset=0;
 	for (int y=0;y<16;y++)
@@ -167,6 +168,50 @@ void MapView::wheelEvent(QWheelEvent *event)
 	if (zoom<1.0) zoom=1.0;
 	if (zoom>20.0) zoom=20.0;
 	redraw();
+}
+void MapView::keyPressEvent(QKeyEvent *event)
+{
+	switch (event->key())
+	{
+	case Qt::Key_Up:
+	case Qt::Key_W:
+		z-=10.0/zoom;
+		redraw();
+		break;
+	case Qt::Key_Down:
+	case Qt::Key_S:
+		z+=10.0/zoom;
+		redraw();
+		break;
+	case Qt::Key_Left:
+	case Qt::Key_A:
+		x-=10.0/zoom;
+		redraw();
+		break;
+	case Qt::Key_Right:
+	case Qt::Key_D:
+		x+=10.0/zoom;
+		redraw();
+		break;
+	case Qt::Key_PageUp:
+	case Qt::Key_Q:
+		zoom++;
+		if (zoom>20.0) zoom=20.0;
+		redraw();
+		break;
+	case Qt::Key_PageDown:
+	case Qt::Key_E:
+		zoom--;
+		if (zoom<1.0) zoom=1.0;
+		redraw();
+		break;
+	case Qt::Key_Home:
+	case Qt::Key_BracketLeft:
+		break;
+	case Qt::Key_End:
+	case Qt::Key_BracketRight:
+		break;
+	}
 }
 
 void MapView::resizeEvent(QResizeEvent *event)
