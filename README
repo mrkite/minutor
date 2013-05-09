@@ -10,7 +10,55 @@ COMPILING:
 ---------
 
 All Platforms:
-Use QtCreator (Qt5 version) and open minutor.pro. Change kit to Release.  Build.
+Use QtCreator (Qt5 version) and open minutor.pro
+
+Windows:
+These are the instructions for doing a static compile on Windows.  These are the
+same steps I use to make the official versions.
+
+First you need a static compile of Qt5.  Get the Qt5 source from
+http://qt-project.org/downloads
+
+Unzip it whereever you wish, and then edit qtbase\mkspecs\win32-msvc2010\qmake.conf
+You'll need to find the CONFIG line and remove embed_manifest_dll and 
+embed_manifest_exe from that line.
+Next find the QMAKE_CFLAGS_* lines and change -MD to -MT, and -MDd to -MTd
+
+Now open up the Developer Command Prompt
+cd into the qtbase folder and run:
+
+configure -prefix %CD% -debug-and-release -opensource -confirm-license
+	-platform win32-msvc2010 -nomake tests -nomake examples -nomake demos
+	-no-angle -no-opengl -static -qt-zlib
+nmake
+
+If nmake complains about python or perl, install ActivePerl and ActivePython and
+try again.  This compile will take a long time.
+
+This should make a static Qt5 with both debug and release libraries.  Now in
+QtCreator, go to Tools->Options... and select Qt Versions from Build & Run.
+Add a new Qt Version and locate the qmake.exe that is inside qtbase\bin of
+the Qt5 you just compiled.  There will be a warning flag because we didn't
+compile qmlscene or qmlviewer or any
+helpers (we don't need them and by leaving them out we don't have to deal with
+Qt OpenGL headaches), you can ignore that.
+Then switch over to Kits and make a new kit that uses the Qt version you just
+created.  Again, there will be a warning flag for the same reasons as before, ignore
+it.
+
+Now we need to make a static zlib.  Download the zlib source code, and create a new
+C++ Library project.  Change the type to Statically Linked Library and call it
+zlibstat.  Use the static Kit we created in the previous step.  Uncheck all
+modules.  Delete the zlibstat source files it creates by default and instead add the
+following files from the zlib source to the project: adler32.c, crc32.c, crc32.h,
+deflate.c, deflate.h, gzguts.h, inffast.c, inffast.h, inffixed.h, inflate.c,
+inflate.h, inftrees.c, inftrees.h, trees.c, trees.h, zconf.h, zlib.h, zutil.c.
+Now edit zutil.c and delete the z_errmsg array (it conflicts with an exported
+array in Qt5).  Compile the library using the static kit you used earlier.
+Copy the resulting zlibstat.lib into the minutor directory.
+
+Now compile Minutor using the static Kit.  You should end up with a statically
+linked minutor.exe which doesn't require any dlls to run.
 
 Linux:
 If you'd rather use the command line, run qmake to generate a Makefile from
