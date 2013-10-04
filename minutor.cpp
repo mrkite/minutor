@@ -398,11 +398,18 @@ void Minutor::loadWorld(QDir path)
 				hasPlayers=true;
 				NBT player(it.filePath());
 				Tag *pos=player.at("Pos");
+				double posX=pos->at(0)->toDouble();
+				double posZ=pos->at(2)->toDouble();
+				Tag *dim=player.at("Dimension");
+				if (dim && (dim->toInt() == -1))
+				{
+					posX *= 8;
+					posZ *= 8;
+				}
 				QAction *p=new QAction(this);
 				p->setText(it.fileInfo().completeBaseName());
 				p->setData(locations.count());
-				locations.append(Location(pos->at(0)->toDouble(),
-										  pos->at(2)->toDouble()));
+				locations.append(Location(posX, posZ));
 				connect(p, SIGNAL(triggered()),
 						this, SLOT(jumpToLocation()));
 				players.append(p);
