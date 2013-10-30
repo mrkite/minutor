@@ -269,6 +269,8 @@ Tag_List::Tag_List(TagDataStream &s)
 {
 	quint8 type=s.r8();
 	int len=s.r32();
+    if (len==0) //empty list, type is invalid
+        return;
 
 	switch (type)
 	{
