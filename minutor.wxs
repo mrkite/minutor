@@ -1,83 +1,55 @@
 <?xml version="1.0"?>
 <!-- Increase product version each release.. and that's the only change -->
-<?define ProductVersion="2.0"?>
+<?define ProductVersion="2.0.1"?>
 <?define ProductUpgradeCode="5da343bf-7e4f-4849-acb0-da8c6682a71e"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Product Id="*"
-      Name="Minutor" Language="1033" Version="$(var.ProductVersion)"
-      Manufacturer="Sean Kasun"
-      UpgradeCode="$(var.ProductUpgradeCode)">
-    <Package Comments="Windows Installer Package"
-        InstallerVersion="200" Compressed="yes" />
-    <Media Id="1" Cabinet="minutor.cab" EmbedCab="yes" />
-    <Icon Id="ProductIcon" SourceFile="icon.ico" />
-    <Property Id="ARPPRODUCTICON" Value="ProductIcon" />
-    <Property Id="ARPHELPLINK" Value="http://seancode.com/minutor" />
-    <Property Id="ARPURLINFOABOUT" Value="http://seancode.com" />
-    <Property Id="ARPNOREPAIR" Value="1" />
-    <!--Property Id="ARPNOMODIFY" Value="1" -->
+	<Product Id="*" Name="Minutor" Language="1033" Version="$(var.ProductVersion)" Manufacturer="Sean Kasun" UpgradeCode="$(var.ProductUpgradeCode)">
+		<Package InstallerVersion="200" Compressed="yes" />
+		<Media Id="1" Cabinet="minutor.cab" EmbedCab="yes" CompressionLevel="high" />
+		
+		<Icon Id="ProductIcon" SourceFile="icon.ico" />
+		<Property Id="ARPPRODUCTICON" Value="ProductIcon" />
+		<Property Id="ARPHELPLINK" Value="http://seancode.com/minutor" />
+		<Property Id="ARPURLINFOABOUT" Value="http://seancode.com" />
+		<Property Id="ARPNOREPAIR" Value="1" />
+		
+		<Upgrade Id="$(var.ProductUpgradeCode)">
+			<UpgradeVersion Minimum="$(var.ProductVersion)" OnlyDetect="yes" Property="NEWESTVERSIONDETECTED" />
+			<UpgradeVersion Minimum="0.0.0" Maximum="$(var.ProductVersion)" IncludeMinimum="yes" IncludeMaximum="no" Property="OLDERVERSIONBEINGUPGRADED" />
+		 </Upgrade>
+		 
+		<Condition Message="A newer version of this software is already installed.">NOT NEWERVERSIONDETECTED</Condition>
 
-    <Upgrade Id="$(var.ProductUpgradeCode)">
-      <UpgradeVersion Minimum="$(var.ProductVersion)" OnlyDetect="yes"
-          Property="NEWESTVERSIONDETECTED" />
-      <UpgradeVersion Minimum="0.0.0" Maximum="$(var.ProductVersion)"
-          IncludeMinimum="yes" IncludeMaximum="no"
-          Property="OLDERVERSIONBEINGUPGRADED" />
-    </Upgrade>
-    <Condition Message="A newer version of this software is already installed.">
-	NOT NEWERVERSIONDETECTED
-    </Condition>
-
-    <Directory Id="TARGETDIR" Name="SourceDir">
-      <Directory Id="ProgramFilesFolder">
-        <Directory Id="INSTALLDIR" Name="Minutor">
-          <Component Id="ApplicationFiles"
-               Guid="670f74ff-eb96-4003-828a-2f24e5a42539">
-			   <File Id="AppFile1" Source="Release\Minutor.exe" />
-          </Component>
-        </Directory>
-      </Directory>
-      <Directory Id="ProgramMenuFolder">
-        <Directory Id="ProgramMenuSubfolder" Name="Minutor">
-          <Component Id="ApplicationShortcuts"
-              Guid="6e6901f0-d92a-43da-95bd-f21e48b5b37a">
-            <Shortcut Id="ApplicationShortcut1" Name="Minutor"
-               Description="Minecraft Map Viewer"
-               Target="[INSTALLDIR]Minutor.exe"
-               WorkingDirectory="INSTALLDIR" />
-            <RegistryValue Root="HKCU" Key="Software\Sean Kasun\Minutor"
-                Name="installed" Type="integer" Value="1" KeyPath="yes" />
-            <RemoveFolder Id="ProgramMenuSubfolder" On="uninstall" />
-          </Component>
-        </Directory>
-      </Directory>
-	  <Directory Id="DesktopFolder" Name="Desktop" />
-	  <Component Id="DesktopShortcut" Guid="b1f0c1de-c6a4-49ec-922f-69f830962b8d">
-	  	<Condition>INSTALLDESKTOPSHORTCUT</COndition>
-		<CreateFolder/>
-		<RegistryKey Root="HKCU" Key="Software\Sean Kasun\Minutor"
-			Action="createAndRemoveOnUninstall">
-			<RegistryValue Name="DTSC" Value="1" Type="integer" KeyPath="yes" />
-		</RegistryKey>
-		<Shortcut Id="DesktopShortcut"
-			Directory="DesktopFolder"
-			Name="Minutor"
-			Target="[#AppFile1]"
-			WorkingDirectory="INSTALLDIR" />
-		</Component>
-    </Directory>
-    <InstallExecuteSequence>
-      <RemoveExistingProducts After="InstallValidate" />
-    </InstallExecuteSequence>
-
-    <Feature Id="DefaultFeature" Level="1">
-      <ComponentRef Id="ApplicationFiles" />
-      <ComponentRef Id="ApplicationShortcuts" />
-	  <ComponentRef Id="DesktopShortcut" />
-    </Feature>
-    <Property Id="WIXUI_INSTALLDIR">INSTALLDIR</Property>
-	<Property Id="INSTALLDESKTOPSHORTCUT" Value="1" />
-	<UIRef Id="MyWixUI_InstallDir" />
-  </Product>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLDIR" Name="Minutor" />
+			</Directory>
+			<Directory Id="ProgramMenuFolder">
+				<Directory Id="ApplicationProgramsFolder" Name="Minutor" />
+			</Directory>
+		</Directory>
+		
+		<DirectoryRef Id="INSTALLDIR">
+			<Component Id="minutor.exe" Guid="670f74ff-eb96-4003-828a-2f24e5a42539">
+				<File Id="minutor.exe" Source="Release\Minutor.exe" KeyPath="yes" Checksum="yes">
+					<Shortcut Id="ApplicationShortcut" Directory="ApplicationProgramsFolder" Advertise="yes" Name="Minutor"
+					WorkingDirectory="INSTALLDIR"  Icon="icon.exe">
+						<Icon Id="icon.exe" SourceFile="icon.ico" />
+					</Shortcut>
+				</File>
+				<RemoveFolder Id="DeleteShortcutFolder" Directory="ApplicationProgramsFolder" On="uninstall" />
+			</Component>
+		</DirectoryRef>
+		
+		<InstallExecuteSequence>
+			<RemoveExistingProducts After="InstallValidate" />
+		</InstallExecuteSequence>
+		
+		<Feature Id="DefaultFeature" Level="1">
+			<ComponentRef Id="minutor.exe" />
+		</Feature>
+		
+		<Property Id="WIXUI_INSTALLDIR">INSTALLDIR</Property>
+		<UIRef Id="MyWixUI_InstallDir" />
+	</Product>
 </Wix>
-

@@ -19,7 +19,7 @@ same steps I use to make the official versions.
 First you need a static compile of Qt5.  Get the Qt5 source from
 http://qt-project.org/downloads
 
-Unzip it whereever you wish, and then edit qtbase\mkspecs\win32-msvc2010\qmake.conf
+Unzip it whereever you wish, and then edit qtbase\mkspecs\win32-msvc2012\qmake.conf
 You'll need to find the CONFIG line and remove embed_manifest_dll and 
 embed_manifest_exe from that line.
 Next find the QMAKE_CFLAGS_* lines and change -MD to -MT, and -MDd to -MTd
@@ -28,7 +28,7 @@ Now open up the Developer Command Prompt
 cd into the qtbase folder and run:
 
 configure -prefix %CD% -debug-and-release -opensource -confirm-license
-	-platform win32-msvc2010 -nomake tests -nomake examples -nomake demos
+	-platform win32-msvc2012 -nomake tests -nomake examples 
 	-no-angle -no-opengl -static -qt-zlib
 nmake
 
