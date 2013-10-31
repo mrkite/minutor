@@ -1,3 +1,9 @@
+minutor (2.0.1) raring; urgency=low
+
+  * Fixes for 1.7.2
+
+ -- Sean kasun <sean@seancode.com>  Wed, 30 Oct 2013 14:48:53 -0700
+
 minutor (2.0) quantal; urgency=low
 
   * Complete rewrite, uses QT5 now
