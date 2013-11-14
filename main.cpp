@@ -46,6 +46,23 @@ int main(int argc,char *argv[])
 	app.setOrganizationName("seancode");
 
 	Minutor minutor;
+
+	// Process the cmdline arguments:
+	auto args = app.arguments();
+	size_t numArgs = args.size();
+	for (size_t i = 0; i < numArgs; i++)
+	{
+		if (((args[i] == "-w") || (args[i] == "--world")) && (i + 1 < numArgs))
+		{
+			minutor.loadWorld(args[i + 1]);
+			continue;
+		}
+		if (((args[i] == "-j") || (args[i] == "--jump")) && (i + 2 < numArgs))
+		{
+			minutor.jumpToXZ(args[i + 1].toInt(), args[i + 2].toInt());
+		}
+	}  // for itr - args[]
+
 	minutor.show();
 	return app.exec();
 }
