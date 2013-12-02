@@ -48,7 +48,7 @@ int main(int argc,char *argv[])
 	Minutor minutor;
 
 	// Process the cmdline arguments:
-	auto args = app.arguments();
+	QStringList args = app.arguments();
 	size_t numArgs = args.size();
 	for (size_t i = 0; i < numArgs; i++)
 	{
