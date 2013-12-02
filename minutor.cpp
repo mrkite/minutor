@@ -179,6 +179,11 @@ void Minutor::jumpToLocation()
 	}
 }
 
+void Minutor::jumpToXZ(int blockX, int blockZ)
+{
+	mapview->setLocation(blockX, blockZ);
+}
+
 void Minutor::toggleFlags()
 {
 	int flags=0;

@@ -59,6 +59,11 @@ class Minutor : public QMainWindow
 public:
 	Minutor();
 
+	void loadWorld(QDir path);
+
+	/// Jumps to the block coords provided
+	void jumpToXZ(int blockX, int blockZ);
+
 private slots:
 	void openWorld();
 	void open();
@@ -87,8 +92,6 @@ private:
 
 	QString getWorldName(QDir path);
 	void getWorldList();
-
-	void loadWorld(QDir path);
 
 	MapView *mapview;
 	LabelledSlider *depth;
