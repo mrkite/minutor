@@ -125,6 +125,12 @@ QString MapView::getWorldPath()
 	return cache.getPath();
 }
 
+void MapView::clearCache()
+{
+	cache.clear();
+	redraw();
+}
+
 static int lastX=-1,lastY=-1;
 static bool dragging=false;
 void MapView::mousePressEvent(QMouseEvent *event)

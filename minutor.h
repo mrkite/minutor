@@ -107,6 +107,7 @@ private:
 	QList<QAction *>players;
 	QAction *lightingAct, *caveModeAct;
 	QAction *manageDefsAct;
+	QAction *refreshAct;
 	QAction *aboutAct;
 	QAction *settingsAct;
 	QAction *updatesAct;

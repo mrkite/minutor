@@ -275,6 +275,11 @@ void Minutor::createActions()
 	connect(manageDefsAct, SIGNAL(triggered()),
 			dm, SLOT(show()));
 
+	refreshAct = new QAction(tr("Refresh"), this);
+	refreshAct->setShortcut(tr("F2"));
+	refreshAct->setStatusTip(tr("Reloads all chunks, but keeps the same position / dimension"));
+	connect(refreshAct, SIGNAL(triggered()), mapview, SLOT(clearCache()));
+
 	aboutAct=new QAction(tr("&About"),this);
 	aboutAct->setStatusTip(tr("About %1").arg(qApp->applicationName()));
 	connect(aboutAct, SIGNAL(triggered()),
@@ -316,6 +321,8 @@ void Minutor::createMenus()
 	viewMenu->addSeparator();
 	viewMenu->addAction(lightingAct);
 	//viewMenu->addAction(caveModeAct);
+	viewMenu->addSeparator();
+	viewMenu->addAction(refreshAct);
 	viewMenu->addSeparator();
 	viewMenu->addAction(manageDefsAct);
 
