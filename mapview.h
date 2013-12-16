@@ -70,6 +70,9 @@ public slots:
 	void chunkUpdated(int x,int z);
 	void redraw();
 
+	/// Clears the cache and redraws, causing all chunks to be re-loaded; but keeps the viewport
+	void clearCache();
+
 signals:
 	void hoverTextChanged(QString text);
 
