@@ -39,6 +39,16 @@ class MapView : public QWidget
 {
 	Q_OBJECT
 public:
+
+	/// Values for the individual flags
+	enum
+	{
+		flgLighting     = 1,
+		flgCaveMode     = 2,
+		flgDepthShading = 4,
+	};
+
+
 	MapView(QWidget *parent=0);
 
 	QSize minimumSizeHint() const;

@@ -364,7 +364,7 @@ void MapView::renderChunk(Chunk *chunk)
 				BlockInfo &block=blocks->getBlock(section->blocks[offset+yoffset],data&0xf);
 				if (block.alpha==0.0) continue;
 				int light=12;
-				if (flags&1) //use lighting
+				if (flags & flgLighting)
 				{
 					// light values are always the block above
 					light=0;
@@ -384,13 +384,22 @@ void MapView::renderChunk(Chunk *chunk)
 				if (light<0) light=0;
 				if (light>15) light=15;
 				quint32 color=block.colors[light];
+				quint32 colr = color >> 16;
+				quint32 colg = (color >> 8) & 0xff;
+				quint32 colb = color & 0xff;
+				if (flags & flgDepthShading)
+				{
+					colr = colr * (256 - (depth - y)) / 256;
+					colg = colg * (256 - (depth - y)) / 256;
+					colb = colb * (256 - (depth - y)) / 256;
+				}
 				if (alpha==0.0)
 				{
-					alpha=block.alpha;
-					r=color>>16;
-					g=(color>>8)&0xff;
-					b=color&0xff;
-					highest=y;
+					alpha = block.alpha;
+					r = colr;
+					g = colg;
+					b = colb;
+					highest = y;
 				}
 				else
 				{

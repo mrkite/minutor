@@ -105,7 +105,7 @@ private:
 	QAction *openAct, *reloadAct, *saveAct, *exitAct;
 	QAction *jumpSpawnAct;
 	QList<QAction *>players;
-	QAction *lightingAct, *caveModeAct;
+	QAction *lightingAct, *caveModeAct, *depthShadingAct;
 	QAction *manageDefsAct;
 	QAction *aboutAct;
 	QAction *settingsAct;
