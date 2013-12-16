@@ -186,11 +186,13 @@ void Minutor::jumpToXZ(int blockX, int blockZ)
 
 void Minutor::toggleFlags()
 {
-	int flags=0;
+	int flags = 0;
 	if (lightingAct->isChecked())
-		flags|=1;
+		flags |= MapView::flgLighting;
 	if (caveModeAct->isChecked())
-		flags|=2;
+		flags |= MapView::flgCaveMode;
+	if (depthShadingAct->isChecked())
+		flags |= MapView::flgDepthShading;
 	mapview->setFlags(flags);
 }
 
@@ -262,6 +264,11 @@ void Minutor::createActions()
 	connect(lightingAct, SIGNAL(triggered()),
 			this, SLOT(toggleFlags()));
 
+	depthShadingAct = new QAction(tr("&Depth shading"), this);
+	depthShadingAct->setCheckable(true);
+	depthShadingAct->setStatusTip(tr("Toggle shading based on relative depth"));
+	connect(depthShadingAct, SIGNAL(triggered()), this, SLOT(toggleFlags()));
+
 	caveModeAct=new QAction(tr("&Cave Mode"),this);
 	caveModeAct->setCheckable(true);
 	caveModeAct->setShortcut(tr("Ctrl+I"));
@@ -316,6 +323,7 @@ void Minutor::createMenus()
 	viewMenu->addSeparator();
 	viewMenu->addAction(lightingAct);
 	//viewMenu->addAction(caveModeAct);
+	viewMenu->addAction(depthShadingAct);
 	viewMenu->addSeparator();
 	viewMenu->addAction(manageDefsAct);
 
