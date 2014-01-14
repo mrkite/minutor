@@ -42,7 +42,9 @@ uint qHash(const ChunkID &c)
 
 ChunkCache::ChunkCache()
 {
-	cache.setMaxCost(10000); // 10000 chunks, or a little bit more than 1920x1200 blocks
+	// set cache size to 37000 chunks (for UHD and 4K displays)
+	// a little bit more than 3840x2400 or 4096x2304 blocks 
+	cache.setMaxCost(37000);
 }
 
 ChunkCache::~ChunkCache()
