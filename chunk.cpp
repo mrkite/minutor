@@ -90,3 +90,32 @@ Chunk::~Chunk()
 				sections[i]=NULL;
 			}
 }
+
+
+quint16 ChunkSection::getBlock(int x, int y, int z)
+{
+    int xoffset = x;
+    int yoffset = (y&0x0f)<<8;
+    int zoffset = z<<4;
+    return blocks[xoffset+yoffset+zoffset];
+}
+
+quint8 ChunkSection::getData(int x, int y, int z)
+{
+    int xoffset = x;
+    int yoffset = (y&0x0f)<<8;
+    int zoffset = z<<4;
+    int value = data[(xoffset+yoffset+zoffset)/2];
+    if (x&1) value>>=4;
+    return value&0x0f;
+}
+
+quint8 ChunkSection::getLight(int x, int y, int z)
+{
+    int xoffset = x;
+    int yoffset = (y&0x0f)<<8;
+    int zoffset = z<<4;
+    int value = light[(xoffset+yoffset+zoffset)/2];
+    if (x&1) value>>=4;
+    return value&0x0f;
+}
