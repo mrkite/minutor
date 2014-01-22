@@ -30,18 +30,37 @@
 #include <QDebug>
 
 static BlockInfo unknownBlock;
+
+bool BlockInfo::isOpaque()
+{
+    return !(this->liquid || this->transparent);
+}
+
+bool BlockInfo::isLiquid()
+{
+    return this->liquid;
+}
+
+bool BlockInfo::isTransparent()
+{
+    return this->transparent;
+}
+
 BlockIdentifier::BlockIdentifier()
 {
+	// clear cache pointers
+	for (int i=0;i<65536;i++)
+		cache[i]=NULL;
 	for (int i=0;i<16;i++)
 		unknownBlock.colors[i]=0xff00ff;
 	unknownBlock.alpha=1.0;
-	unknownBlock.flags=0;
+	unknownBlock.transparent=false;
+	unknownBlock.cubesolid=false;
 	unknownBlock.name="Unknown";
 }
 BlockIdentifier::~BlockIdentifier()
 {
-	for (int i=0;i<65536;i++)
-		cache[i]=NULL;
+	clearCache();
 	for (int i=0;i<packs.length();i++)
 	{
 		for (int j=0;j<packs[i].length();j++)
@@ -98,8 +117,7 @@ void BlockIdentifier::enableDefinitions(int pack)
 	for (int i=0;i<len;i++)
 		packs[pack][i]->enabled=true;
 	//clear cache
-	for (int i=0;i<65536;i++)
-		cache[i]=NULL;
+	clearCache();
 }
 
 void BlockIdentifier::disableDefinitions(int pack)
@@ -109,8 +127,7 @@ void BlockIdentifier::disableDefinitions(int pack)
 	for (int i=0;i<len;i++)
 		packs[pack][i]->enabled=false;
 	//clear cache
-	for (int i=0;i<65536;i++)
-		cache[i]=NULL;
+	clearCache();
 }
 
 int BlockIdentifier::addDefinitions(JSONArray *defs,int pack)
@@ -124,14 +141,21 @@ int BlockIdentifier::addDefinitions(JSONArray *defs,int pack)
 	for (int i=0;i<len;i++)
 		parseDefinition(dynamic_cast<JSONObject *>(defs->at(i)),NULL,pack);
 	//clear cache
-	for (int i=0;i<65536;i++)
-		cache[i]=NULL;
+	clearCache();
 	return pack;
 }
 
 static int clamp(int v,int min,int max)
 {
 	return (v<max?(v>min?v:min):max);
+}
+
+void BlockIdentifier::clearCache()
+{
+	for (int i=0;i<65536;i++)
+	{
+        cache[i]=NULL;
+	}
 }
 
 void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent, int pack)
@@ -155,12 +179,28 @@ void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent, int pack
 	else
 		block->name="Unknown";
 	block->enabled=true;
-	if (b->has("flags"))
-		block->flags=b->at("flags")->asNumber();
+
+	if (b->has("transparent"))
+		block->transparent=b->at("transparent")->asBool();
 	else if (parent!=NULL)
-		block->flags=parent->flags;
+		block->transparent=parent->transparent;
 	else
-		block->flags=0;
+		block->transparent=false;
+
+	if (b->has("liquid"))
+		block->liquid=b->at("liquid")->asBool();
+	else if (parent!=NULL)
+		block->liquid=parent->liquid;
+	else
+		block->liquid=false;
+
+	if (b->has("cubesolid"))
+		block->cubesolid=b->at("cubesolid")->asBool();
+	else if (parent!=NULL)
+		block->cubesolid=parent->cubesolid;
+	else
+		block->cubesolid=false;
+
 	if (b->has("color"))
 	{
 		QString color=b->at("color")->asString();
