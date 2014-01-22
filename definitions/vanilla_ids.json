@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "block",
-  "version": "1.7.2a",
+  "version": "1.8.0",
   "data": [
     {
       "id": 0,
@@ -11,7 +11,39 @@
     {
       "id": 1,
       "name": "Stone",
-      "color": "747474"
+      "color": "747474",
+      "variants": [
+        {
+          "data": 1,
+          "name": "Granite",
+          "color": "684d43"
+        },
+        {
+          "data": 2,
+          "name": "Polished Granite",
+          "color": "6b4d42"
+        },
+        {
+          "data": 3,
+          "name": "Diorite",
+          "color": "79797b"
+        },
+        {
+          "data": 4,
+          "name": "Polished Diorite",
+          "color": "7b7b7d"
+        },
+        {
+          "data": 5,
+          "name": "Andesite",
+          "color": "585858"
+        },
+        {
+          "data": 6,
+          "name": "Polished Andesite",
+          "color": "59595a"
+        }
+      ]
     },
     {
       "id": 2,
@@ -1804,6 +1836,11 @@
       "name": "Dark Oak Stairs",
       "color": "492f17",
       "transparent": true
+    },
+    {
+      "id": 165,
+      "name": "Slime Block",
+      "color": "608756"
     },
     {
       "id": 170,
