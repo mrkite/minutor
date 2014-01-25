@@ -215,7 +215,7 @@
       "name": "Oak Leaves",
       "color": "3d9b3d",
       "transparent": true,
-      "cubesolid": true,
+      "rendercube": true,
       "mask": 3,
       "variants": [
         {
@@ -245,8 +245,7 @@
       "name": "Glass",
       "color": "c0f5fe",
       "alpha": 0.5,
-      "transparent": true,
-      "cubesolid": true
+      "transparent": true
     },
     {
       "id": 21,
@@ -301,14 +300,14 @@
       "id": 28,
       "name": "Detector Rail",
       "color": "7d7171",
-      "transparent": true
+      "transparent": true,
+      "canProvidePower": true
     },
     {
       "id": 29,
       "name": "Sticky Piston",
       "color": "7bc070",
-      "transparent": true,
-      "cubesolid": true
+      "transparent": true
     },
     {
       "id": 30,
@@ -346,8 +345,7 @@
       "id": 33,
       "name": "Piston",
       "color": "9f844d",
-      "transparent": true,
-      "cubesolid": true
+      "transparent": true
     },
     {
       "id": 34,
@@ -620,8 +618,7 @@
       "id": 46,
       "name": "TNT",
       "color": "a83414",
-      "transparent": true,
-      "cubesolid": true
+      "transparent": true
     },
     {
       "id": 47,
@@ -655,7 +652,7 @@
       "name": "Monster Spawner",
       "color": "1b2a35",
       "transparent": true,
-      "cubesolid": true
+      "rendercube": true
     },
     {
       "id": 53,
@@ -766,13 +763,15 @@
       "id": 69,
       "name": "Lever",
       "color": "735e39",
-      "transparent": true
+      "transparent": true,
+      "canProvidePower": true
     },
     {
       "id": 70,
       "name": "Stone Pressure Plate",
       "color": "8f8f8f",
-      "transparent": true
+      "transparent": true,
+      "canProvidePower": true
     },
     {
       "id": 71,
@@ -784,7 +783,8 @@
       "id": 72,
       "name": "Wooden Pressure Plate",
       "color": "bc9862",
-      "transparent": true
+      "transparent": true,
+      "canProvidePower": true
     },
     {
       "id": 73,
@@ -800,19 +800,22 @@
       "id": 75,
       "name": "Redstone Torch (off)",
       "color": "480000",
-      "transparent": true
+      "transparent": true,
+      "canProvidePower": true
     },
     {
       "id": 76,
       "name": "Redstone Torch (on)",
       "color": "fd0000",
-      "transparent": true
+      "transparent": true,
+      "canProvidePower": true
     },
     {
       "id": 77,
       "name": "Stone Button",
       "color": "a8a8a8",
-      "transparent": true
+      "transparent": true,
+      "canProvidePower": true
     },
     {
       "id": 78,
@@ -826,7 +829,7 @@
       "color": "77a9ff",
       "alpha": 0.62,
       "transparent": true,
-      "cubesolid": true
+      "rendercube": true
     },
     {
       "id": 80,
@@ -879,9 +882,7 @@
     {
       "id": 89,
       "name": "Glowstone Block",
-      "color": "f9d49c",
-      "transparent": true,
-      "cubesolid": true
+      "color": "f9d49c"
     },
     {
       "id": 90,
@@ -904,20 +905,21 @@
       "id": 93,
       "name": "Redstone Repeater (off)",
       "color": "2a0002",
-      "transparent": true
+      "transparent": true,
+      "canProvidePower": true
     },
     {
       "id": 94,
       "name": "Redstone Repeater (on)",
       "color": "fd0101",
-      "transparent": true
+      "transparent": true,
+      "canProvidePower": true
     },
     {
       "id": 95,
       "name": "White Stained Glass",
       "color": "ffffff",
       "transparent": true,
-      "cubesolid": true,
       "alpha": 0.5,
       "variants": [
         {
@@ -1250,6 +1252,8 @@
       "name": "End Portal Frame",
       "color": "2f5754",
       "mask": 4,
+      "transparent": true,
+      "rendercube": true,
       "variants": [
         {
           "data": 4,
@@ -1277,8 +1281,7 @@
       "id": 124,
       "name": "Redstone Lamp (on)",
       "color": "f1d1af",
-      "transparent": true,
-      "cubesolid": true
+      "transparent": true
     },
     {
       "id": 125,
@@ -1380,7 +1383,8 @@
       "id": 131,
       "name": "Tripwire Hook",
       "color": "6e6e6e",
-      "transparent": true
+      "transparent": true,
+      "canProvidePower": true
     },
     {
       "id": 132,
@@ -1520,7 +1524,8 @@
       "id": 143,
       "name": "Wooden Button",
       "color": "b4905a",
-      "transparent": true
+      "transparent": true,
+      "canProvidePower": true
     },
     {
       "id": 144,
@@ -1538,43 +1543,50 @@
       "id": 146,
       "name": "Trapped Chest",
       "color": "ab792d",
-      "transparent": true
+      "transparent": true,
+      "canProvidePower": true
     },
     {
       "id": 147,
       "name": "Weighted Pressure Plate (Light)",
       "color": "fdfb4f",
-      "transparent": true
+      "transparent": true,
+      "canProvidePower": true
     },
     {
       "id": 148,
       "name": "Weighted Pressure Plate (Heavy)",
       "color": "e6e6e6",
-      "transparent": true
+      "transparent": true,
+      "canProvidePower": true
     },
     {
       "id": 149,
-      "name": "Redstone Comparator (inaktiv)",
+      "name": "Redstone Comparator (off)",
       "color": "4f1010",
-      "transparent": true
+      "transparent": true,
+      "canProvidePower": true
     },
     {
       "id": 150,
-      "name": "Redstone Comparator (aktiv)",
+      "name": "Redstone Comparator (on)",
       "color": "fd1010",
-      "transparent": true
+      "transparent": true,
+      "canProvidePower": true
     },
     {
       "id": 151,
       "name": "Daylight Sensor",
       "color": "d2c1ab",
-      "transparent": true
+      "transparent": true,
+      "canProvidePower": true
     },
     {
       "id": 152,
       "name": "Redstone Block",
       "color": "bb1c0a",
-      "transparent": true
+      "transparent": true,
+      "canProvidePower": true
     },
     {
       "id": 153,
@@ -1802,7 +1814,7 @@
       "name": "Acacia Leaves",
       "color": "97a636",
       "transparent": true,
-      "cubesolid": true,
+      "rendercube": true,
       "mask": 1,
       "variants": [
         {

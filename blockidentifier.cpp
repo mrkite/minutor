@@ -31,20 +31,54 @@
 
 static BlockInfo unknownBlock;
 
+BlockInfo::BlockInfo()
+: transparent(false)
+, liquid(false)
+, rendernormal(true)
+, providepower(false)
+{}
+
 bool BlockInfo::isOpaque()
 {
-    return !(this->liquid || this->transparent);
+	return !(this->transparent);
 }
 
 bool BlockInfo::isLiquid()
 {
-    return this->liquid;
+	return this->liquid;
 }
 
-bool BlockInfo::isTransparent()
+bool BlockInfo::doesBlockHaveSolidTopSurface(int data)
 {
-    return this->transparent;
+	if (this->isOpaque() && this->renderAsNormalBlock()) return true;
+	if (this->name.contains("Stairs") && ((data&4)==4)) return true;
+	if (this->name.contains("Slab") && !this->name.contains("Double") &&
+	    ((data&8)==8)) return true;
+	if (this->name.contains("Hopper")) return true;
+	if (this->name.contains("Snow") && ((data&7)==7)) return true;
+	return false;
 }
+
+bool BlockInfo::isBlockNormalCube()
+{
+	return this->isOpaque() &&
+	       this->renderAsNormalBlock() &&
+	       !this->canProvidePower();
+}
+
+bool BlockInfo::renderAsNormalBlock()
+{
+//	if (this->name.contains("Redstone Wire")) && powered return true; else return false;
+	return this->rendernormal;
+}
+
+bool BlockInfo::canProvidePower()
+{
+	return this->providepower;
+}
+
+
+
 
 BlockIdentifier::BlockIdentifier()
 {
@@ -54,8 +88,6 @@ BlockIdentifier::BlockIdentifier()
 	for (int i=0;i<16;i++)
 		unknownBlock.colors[i]=0xff00ff;
 	unknownBlock.alpha=1.0;
-	unknownBlock.transparent=false;
-	unknownBlock.cubesolid=false;
 	unknownBlock.name="Unknown";
 }
 BlockIdentifier::~BlockIdentifier()
@@ -181,11 +213,22 @@ void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent, int pack
 	block->enabled=true;
 
 	if (b->has("transparent"))
+	{
 		block->transparent=b->at("transparent")->asBool();
+		block->rendernormal=false; // for most cases except the following
+		if (b->has("rendercube"))
+			block->rendernormal=b->at("rendercube")->asBool();
+	}
 	else if (parent!=NULL)
+	{
 		block->transparent=parent->transparent;
+		block->rendernormal=parent->rendernormal;
+	}
 	else
+	{
 		block->transparent=false;
+		block->rendernormal=true;
+	}
 
 	if (b->has("liquid"))
 		block->liquid=b->at("liquid")->asBool();
@@ -194,12 +237,12 @@ void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent, int pack
 	else
 		block->liquid=false;
 
-	if (b->has("cubesolid"))
-		block->cubesolid=b->at("cubesolid")->asBool();
+	if (b->has("canProvidePower"))
+		block->providepower=b->at("canProvidePower")->asBool();
 	else if (parent!=NULL)
-		block->cubesolid=parent->cubesolid;
+		block->providepower=parent->providepower;
 	else
-		block->cubesolid=false;
+		block->providepower=false;
 
 	if (b->has("color"))
 	{

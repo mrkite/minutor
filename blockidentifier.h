@@ -47,10 +47,13 @@ class JSONObject;
 class BlockInfo
 {
 public:
-	BlockInfo() {}
+	BlockInfo();
 	bool isOpaque();
 	bool isLiquid();
-	bool isTransparent();
+	bool doesBlockHaveSolidTopSurface(int data);
+	bool isBlockNormalCube();
+	bool renderAsNormalBlock();
+	bool canProvidePower();
 
 	int     id;
 	QString name;
@@ -59,7 +62,8 @@ public:
 	bool    enabled;
 	bool    transparent;
 	bool    liquid;
-	bool    cubesolid;
+	bool    rendernormal;
+	bool    providepower;
 	quint32 colors[16];
 };
 

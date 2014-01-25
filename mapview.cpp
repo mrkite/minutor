@@ -402,10 +402,14 @@ void MapView::renderChunk(Chunk *chunk)
 					colb = colb * (256 - (depth - y)) / 256;
 				}
 				if ( (flags & flgMobSpawn) && (mlight<8) &&
-				     ((block.flags & BlockTransparent) == 0) &&
-				     ((block.flags & BlockLiquid) == 0) )
+				      block.doesBlockHaveSolidTopSurface(data) &&
+				     !block.name.contains("Bedrock") )
 				{
 					// check for 2 air blocks above
+					//  to be correct we would have to test for:
+					//  block1: !isBlockNormalCube && !isLiquid
+					//  block2: !isBlockNormalCube
+					//  and then check the bounding box of the mob...
 					quint16 block1 = 0; // default to air
 					quint16 block2 = 0; // default to air
 					ChunkSection *section2=chunk->sections[(y+2)>>4];
