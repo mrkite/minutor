@@ -29,10 +29,23 @@
 #ifndef __LABELLEDSLIDER_H__
 #define __LABELLEDSLIDER_H__
 
-#include <QtWidgets/QWidget>
+#include <QWidget>
+#include <QSlider>
+#include <QLabel>
+#include <QWheelEvent>
+#include <QKeyEvent>
 
-class QSlider;
-class QLabel;
+class MSlider : public QSlider
+{
+	Q_OBJECT
+
+public:
+	MSlider(Qt::Orientation orientation, QWidget * parent = 0);
+
+public slots:
+	void wheelEvent( QWheelEvent* event );
+};
+
 
 class LabelledSlider : public QWidget
 {
@@ -48,10 +61,13 @@ public slots:
 	void setValue(int);
 
 private slots:
-	void invValueChanged(int);
+	void intValueChange(int);
+
+protected:
+	void wheelEvent( QWheelEvent* event );
 
 private:
-	QSlider *slider;
+	MSlider *slider;
 	QLabel *label;
 };
 

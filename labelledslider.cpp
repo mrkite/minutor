@@ -27,42 +27,57 @@
 
 
 #include "labelledslider.h"
-#include <QtWidgets/QSlider>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QHBoxLayout>
+#include <QVBoxLayout>
 
 LabelledSlider::LabelledSlider(QWidget *parent) : QWidget(parent)
 {
-	slider = new QSlider(Qt::Horizontal);
+	slider = new MSlider(Qt::Vertical);
 	slider->setRange(0,255);
 
 	label = new QLabel();
-	label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+	label->setAlignment(Qt::AlignCenter|Qt::AlignVCenter);
 	label->setFixedWidth(label->fontMetrics().width("888"));
 	label->setNum(255);
 
 	connect(slider, SIGNAL(valueChanged(int)),
-			this, SLOT(invValueChanged(int)));
+	        this,   SLOT(intValueChange(int)));
 
-	QHBoxLayout *myLayout = new QHBoxLayout;
-	myLayout->addWidget(slider);
+	QVBoxLayout *myLayout = new QVBoxLayout;
 	myLayout->addWidget(label);
+	myLayout->addWidget(slider);
 	setLayout(myLayout);
 	setFocusProxy(slider);
 }
 
 int LabelledSlider::value() const
 {
-	return 255-slider->value();
+	return slider->value();
 }
 
+// public slot
 void LabelledSlider::setValue(int v)
 {
-	slider->setValue(255-v);
+	slider->setValue(v);
 }
 
-void LabelledSlider::invValueChanged(int v)
+// private slot
+void LabelledSlider::intValueChange(int v)
 {
-	label->setNum(255-v);
-	emit valueChanged(255-v);
+	label->setNum(v);
+	emit valueChanged(v);
+}
+
+void  LabelledSlider::wheelEvent( QWheelEvent* event )
+{
+	slider->wheelEvent( event );
+}
+
+MSlider::MSlider(Qt::Orientation orientation, QWidget* parent)
+	: QSlider(orientation, parent)
+{}
+
+void  MSlider::wheelEvent( QWheelEvent* event )
+{
+	int delta = event->delta() / 120; // in order to make wheel intuitive
+	this->setValue(this->value()+delta);
 }

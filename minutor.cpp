@@ -78,9 +78,9 @@ Minutor::Minutor()
 	connect(this,  SIGNAL(worldLoaded(bool)),
 	        depth, SLOT(setEnabled(bool)));
 
-	QVBoxLayout *mainLayout = new QVBoxLayout;
-	mainLayout->addWidget(depth);
+	QHBoxLayout *mainLayout = new QHBoxLayout;
 	mainLayout->addWidget(mapview,1);
+	mainLayout->addWidget(depth);
 	mainLayout->setSpacing(0);
 	mainLayout->setContentsMargins(0,0,0,0);
 
