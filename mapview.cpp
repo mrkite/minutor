@@ -133,6 +133,9 @@ void MapView::clearCache()
 
 static int lastX=-1,lastY=-1;
 static bool dragging=false;
+static bool keyShift=false;
+static bool keyCtrl=false;
+static bool keyAlt=false;
 void MapView::mousePressEvent(QMouseEvent *event)
 {
 	lastX=event->x();
@@ -170,10 +173,17 @@ void MapView::mouseReleaseEvent(QMouseEvent *)
 }
 void MapView::wheelEvent(QWheelEvent *event)
 {
-	zoom+=floor(event->delta()/90.0);
-	if (zoom<1.0) zoom=1.0;
-	if (zoom>20.0) zoom=20.0;
-	redraw();
+	if (keyShift) // change depth
+	{
+		emit demandDepthChange(event->delta()/120);
+	}
+	else          // change zoom
+	{
+		zoom+=floor(event->delta()/90.0);
+		if (zoom<1.0) zoom=1.0;
+		if (zoom>20.0) zoom=20.0;
+		redraw();
+	}
 }
 void MapView::keyPressEvent(QKeyEvent *event)
 {
@@ -212,10 +222,39 @@ void MapView::keyPressEvent(QKeyEvent *event)
 		redraw();
 		break;
 	case Qt::Key_Home:
+	case Qt::Key_Plus:
 	case Qt::Key_BracketLeft:
+		emit demandDepthChange(+1);
 		break;
 	case Qt::Key_End:
+	case Qt::Key_Minus:
 	case Qt::Key_BracketRight:
+		emit demandDepthChange(-1);
+		break;
+	case Qt::Key_Shift:
+		keyShift=true;
+		break;
+	case Qt::Key_Control:
+		keyCtrl=true;
+		break;
+	case Qt::Key_Alt:
+		keyAlt=true;
+		break;
+	}
+}
+
+void MapView::keyReleaseEvent(QKeyEvent *event)
+{
+	switch (event->key())
+	{
+	case Qt::Key_Shift:
+		keyShift=false;
+		break;
+	case Qt::Key_Control:
+		keyCtrl=false;
+		break;
+	case Qt::Key_Alt:
+		keyAlt=false;
 		break;
 	}
 }

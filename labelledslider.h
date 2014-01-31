@@ -58,7 +58,8 @@ signals:
 	void valueChanged(int);
 
 public slots:
-	void setValue(int);
+	void setValue(int);    // set absolute
+	void changeValue(int); // change relative
 
 private slots:
 	void intValueChange(int);

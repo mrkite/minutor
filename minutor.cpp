@@ -73,10 +73,12 @@ Minutor::Minutor()
 
 	connect(depth,   SIGNAL(valueChanged(int)),
 	        mapview, SLOT(setDepth(int)));
+	connect(mapview, SIGNAL(demandDepthChange(int)),
+	        depth,   SLOT(changeValue(int)));
 	connect(this,    SIGNAL(worldLoaded(bool)),
 	        mapview, SLOT(setEnabled(bool)));
-	connect(this,  SIGNAL(worldLoaded(bool)),
-	        depth, SLOT(setEnabled(bool)));
+	connect(this,    SIGNAL(worldLoaded(bool)),
+	        depth,   SLOT(setEnabled(bool)));
 
 	QHBoxLayout *mainLayout = new QHBoxLayout;
 	mainLayout->addWidget(mapview,1);
@@ -135,10 +137,10 @@ void Minutor::save()
 		progress->setCancelButton(NULL);
 		progress->setMaximum(100);
 		progress->show();
-        connect(ws,   SIGNAL(progress(QString,double)),
-                this, SLOT(saveProgress(QString,double)));
-        connect(ws,   SIGNAL(finished()),
-                this, SLOT(saveFinished()));
+		connect(ws,   SIGNAL(progress(QString,double)),
+		        this, SLOT(saveProgress(QString,double)));
+		connect(ws,   SIGNAL(finished()),
+		        this, SLOT(saveFinished()));
 		QThreadPool::globalInstance()->start(ws);
 	}
 }
@@ -298,7 +300,7 @@ void Minutor::createActions()
 	refreshAct->setShortcut(tr("F2"));
 	refreshAct->setStatusTip(tr("Reloads all chunks, but keeps the same position / dimension"));
 	connect(refreshAct, SIGNAL(triggered()),
-		mapview,    SLOT(clearCache()));
+	        mapview,    SLOT(clearCache()));
 
 	// [Help]
 	aboutAct = new QAction(tr("&About"),this);

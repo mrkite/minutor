@@ -60,6 +60,12 @@ void LabelledSlider::setValue(int v)
 	slider->setValue(v);
 }
 
+// public slot
+void LabelledSlider::changeValue(int v)
+{
+	slider->setValue(slider->value()+v);
+}
+
 // private slot
 void LabelledSlider::intValueChange(int v)
 {

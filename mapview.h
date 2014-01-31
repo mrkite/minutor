@@ -76,6 +76,7 @@ public slots:
 
 signals:
 	void hoverTextChanged(QString text);
+	void demandDepthChange(int value);
 
 protected:
 	void mousePressEvent(QMouseEvent *event);
@@ -83,6 +84,7 @@ protected:
 	void mouseReleaseEvent(QMouseEvent *);
 	void wheelEvent(QWheelEvent *event);
 	void keyPressEvent(QKeyEvent *event);
+	void keyReleaseEvent(QKeyEvent *event);
 	void resizeEvent(QResizeEvent *);
 	void paintEvent(QPaintEvent *);
 
