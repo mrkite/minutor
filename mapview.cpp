@@ -377,7 +377,7 @@ void MapView::renderChunk(Chunk *chunk)
 				ChunkSection *section1 = chunk->sections[(y+1)>>4];
 				if (section1)
 					light = section1->getLight(x,y+1,z);
-				int mlight = light;
+				int light1 = light;
 				if (!(flags & flgLighting))
 					light = 12;
 				if (alpha==0.0)
@@ -401,27 +401,55 @@ void MapView::renderChunk(Chunk *chunk)
 					colg = colg * (256 - (depth - y)) / 256;
 					colb = colb * (256 - (depth - y)) / 256;
 				}
-				if ( (flags & flgMobSpawn) && (mlight<8) &&
-				      block.doesBlockHaveSolidTopSurface(data) &&
-				     !block.name.contains("Bedrock") )
+				if (flags & flgMobSpawn)
 				{
-					// check for 2 air blocks above
-					//  to be correct we would have to test for:
-					//  block1: !isBlockNormalCube && !isLiquid
-					//  block2: !isBlockNormalCube
-					//  and then check the bounding box of the mob...
-					quint16 block1 = 0; // default to air
-					quint16 block2 = 0; // default to air
+					// get block info from 1 and 2 above and 1 below
+					quint16 blid1(0), blid2(0), blidB(0); // default to air
+					int     data1(0), data2(0), dataB(0); // default variant
 					ChunkSection *section2=chunk->sections[(y+2)>>4];
+					ChunkSection *sectionB=chunk->sections[(y-1)>>4];
 					if (section1)
-						block1 = section1->getBlock(x,y+1,z);
+					{
+						blid1 = section1->getBlock(x,y+1,z);
+						data1 = section1->getData(x,y+1,z);
+					}
 					if (section2)
-						block2 = section2->getBlock(x,y+2,z);
-					if ( (block1==0) && (block2==0) )
+					{
+						blid2 = section2->getBlock(x,y+2,z);
+						data2 = section2->getData(x,y+2,z);
+					}
+					if (sectionB)
+					{
+						blidB = sectionB->getBlock(x,y-1,z);
+						dataB = sectionB->getData(x,y-1,z);
+					}
+					BlockInfo &block2=blocks->getBlock(blid2,data2);
+					BlockInfo &block1=blocks->getBlock(blid1,data1);
+					BlockInfo &block0=block;
+					BlockInfo &blockB=blocks->getBlock(blidB,dataB);
+					int light0 = section->getLight(x,y,z);
+
+					// spawn check #1: on top of solid block
+					if ( block0.doesBlockHaveSolidTopSurface(data) &&
+						 !block0.name.contains("Bedrock") &&
+						 (light1<8) &&
+						 !block1.isBlockNormalCube() && block1.spawninside && !block1.isLiquid() &&
+						 !block2.isBlockNormalCube() && block2.spawninside )
 					{
 						colr = (colr+256)/2;
 						colg = (colg+0)/2;
-						colb = (colb+0)/2;
+						colb = (colb+192)/2;
+					}
+					// spawn check #2: current block is transparent, but mob can spawn through (e.g. snow)
+					if ( blockB.doesBlockHaveSolidTopSurface(dataB) &&
+						 !blockB.name.contains("Bedrock") &&
+						 (light0<8) &&
+						 !block0.isBlockNormalCube() && block0.spawninside && !block0.isLiquid() &&
+						 !block1.isBlockNormalCube() && block1.spawninside )
+					{
+						colr = (colr+192)/2;
+						colg = (colg+0)/2;
+						colb = (colb+256)/2;
 					}
 				}
 				if (alpha==0.0)

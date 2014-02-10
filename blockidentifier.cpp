@@ -36,6 +36,7 @@ BlockInfo::BlockInfo()
 , liquid(false)
 , rendernormal(true)
 , providepower(false)
+, spawninside(false)
 {}
 
 bool BlockInfo::isOpaque()
@@ -218,16 +219,21 @@ void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent, int pack
 		block->rendernormal=false; // for most cases except the following
 		if (b->has("rendercube"))
 			block->rendernormal=b->at("rendercube")->asBool();
+		block->spawninside=false; // for most cases except the following
+		if (b->has("spawninside"))
+			block->spawninside=b->at("spawninside")->asBool();
 	}
 	else if (parent!=NULL)
 	{
 		block->transparent=parent->transparent;
 		block->rendernormal=parent->rendernormal;
+		block->spawninside=parent->spawninside;
 	}
 	else
 	{
 		block->transparent=false;
 		block->rendernormal=true;
+		block->spawninside=false;
 	}
 
 	if (b->has("liquid"))
@@ -302,6 +308,7 @@ void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent, int pack
 		block->mask=b->at("mask")->asNumber();
 	else
 		block->mask=0xff;
+
 	if (b->has("variants"))
 	{
 		JSONArray *variants=dynamic_cast<JSONArray *>(b->at("variants"));

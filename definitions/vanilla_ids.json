@@ -6,7 +6,8 @@
     {
       "id": 0,
       "name": "Air",
-      "transparent": true
+      "transparent": true,
+      "spawninside": true
     },
     {
       "id": 1,
@@ -98,6 +99,7 @@
       "color": "1f6519",
       "mask": 7,
       "transparent": true,
+      "spawninside": true,
       "variants": [
         {
           "data": 1,
@@ -294,13 +296,15 @@
       "id": 27,
       "name": "Powered Rail",
       "color": "ab0301",
-      "transparent": true
+      "transparent": true,
+      "spawninside": true
     },
     {
       "id": 28,
       "name": "Detector Rail",
       "color": "7d7171",
       "transparent": true,
+      "spawninside": true,
       "canProvidePower": true
     },
     {
@@ -320,6 +324,7 @@
       "name": "Dead Shrub",
       "color": "946428",
       "transparent": true,
+      "spawninside": true,
       "variants": [
         {
           "data": 1,
@@ -339,6 +344,7 @@
       "name": "Dead Bush",
       "color": "946428",
       "transparent": true,
+      "spawninside": true,
       "alpha": 0.3
     },
     {
@@ -439,6 +445,7 @@
       "name": "Dandelion",
       "color": "f1f902",
       "transparent": true,
+      "spawninside": true,
       "alpha": 0.3
     },
     {
@@ -446,6 +453,7 @@
       "name": "Poppy",
       "color": "ba050b",
       "transparent": true,
+      "spawninside": true,
       "alpha": 0.3,
       "variants": [
         {
@@ -495,6 +503,7 @@
       "name": "Brown Mushroom",
       "color": "916d55",
       "transparent": true,
+      "spawninside": true,
       "alpha": 0.3
     },
     {
@@ -502,6 +511,7 @@
       "name": "Red Mushroom",
       "color": "e21212",
       "transparent": true,
+      "spawninside": true,
       "alpha": 0.3
     },
     {
@@ -727,7 +737,8 @@
       "id": 63,
       "name": "Sign Post",
       "color": "9f844d",
-      "transparent": true
+      "transparent": true,
+      "spawninside": true
     },
     {
       "id": 64,
@@ -739,13 +750,15 @@
       "id": 65,
       "name": "Ladder",
       "color": "8e733c",
-      "transparent": true
+      "transparent": true,
+      "spawninside": true
     },
     {
       "id": 66,
       "name": "Rail",
       "color": "a4a4a4",
-      "transparent": true
+      "transparent": true,
+      "spawninside": true
     },
     {
       "id": 67,
@@ -757,13 +770,15 @@
       "id": 68,
       "name": "Wall Sign",
       "color": "b4905a",
-      "transparent": true
+      "transparent": true,
+      "spawninside": true
     },
     {
       "id": 69,
       "name": "Lever",
       "color": "735e39",
       "transparent": true,
+      "spawninside": true,
       "canProvidePower": true
     },
     {
@@ -771,6 +786,7 @@
       "name": "Stone Pressure Plate",
       "color": "8f8f8f",
       "transparent": true,
+      "spawninside": true,
       "canProvidePower": true
     },
     {
@@ -784,6 +800,7 @@
       "name": "Wooden Pressure Plate",
       "color": "bc9862",
       "transparent": true,
+      "spawninside": true,
       "canProvidePower": true
     },
     {
@@ -815,12 +832,14 @@
       "name": "Stone Button",
       "color": "a8a8a8",
       "transparent": true,
+      "spawninside": true,
       "canProvidePower": true
     },
     {
       "id": 78,
       "name": "Snow",
       "color": "eeffff",
+      "spawninside": true,
       "transparent": true
     },
     {
@@ -851,6 +870,7 @@
       "id": 83,
       "name": "Sugar Cane",
       "color": "aadb74",
+      "spawninside": true,
       "transparent": true
     },
     {
@@ -1162,7 +1182,8 @@
       "id": 106,
       "name": "Vines",
       "color": "6cc44a",
-      "transparent": true
+      "transparent": true,
+      "spawninside": true
     },
     {
       "id": 107,
@@ -1353,6 +1374,8 @@
       "id": 127,
       "name": "Immature Cocoa Pod",
       "color": "929943",
+      "transparent": true,
+      "spawninside": true,
       "mask": 12,
       "variants": [
         {
@@ -1384,6 +1407,7 @@
       "name": "Tripwire Hook",
       "color": "6e6e6e",
       "transparent": true,
+      "spawninside": true,
       "canProvidePower": true
     },
     {
@@ -1525,6 +1549,7 @@
       "name": "Wooden Button",
       "color": "b4905a",
       "transparent": true,
+      "spawninside": true,
       "canProvidePower": true
     },
     {
@@ -1551,6 +1576,7 @@
       "name": "Weighted Pressure Plate (Light)",
       "color": "fdfb4f",
       "transparent": true,
+      "spawninside": true,
       "canProvidePower": true
     },
     {
@@ -1558,6 +1584,7 @@
       "name": "Weighted Pressure Plate (Heavy)",
       "color": "e6e6e6",
       "transparent": true,
+      "spawninside": true,
       "canProvidePower": true
     },
     {
@@ -1636,7 +1663,8 @@
       "id": 157,
       "name": "Activator Rail",
       "color": "ab0301",
-      "transparent": true
+      "transparent": true,
+      "spawninside": true
     },
     {
       "id": 158,
@@ -1855,6 +1883,12 @@
       "color": "608756"
     },
     {
+      "id": 166,
+      "name": "Barrier",
+      "color": "00000000",
+      "alpha": 0.0
+    },
+    {
       "id": 170,
       "name": "Hay Bale",
       "color": "af9711"
@@ -1961,6 +1995,7 @@
       "id": 175,
       "name": "Sunflower",
       "transparent": true,
+      "spawninside": true,
       "variants": [
         {
           "data": 1,
