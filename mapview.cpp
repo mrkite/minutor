@@ -374,7 +374,9 @@ void MapView::renderChunk(Chunk *chunk)
 
 				// get light value from one block above
 				int light = 0;
-				ChunkSection *section1 = chunk->sections[(y+1)>>4];
+				ChunkSection *section1=NULL;
+				if (y<255)
+				    section1 = chunk->sections[(y+1)>>4];
 				if (section1)
 					light = section1->getLight(x,y+1,z);
 				int light1 = light;
@@ -406,8 +408,12 @@ void MapView::renderChunk(Chunk *chunk)
 					// get block info from 1 and 2 above and 1 below
 					quint16 blid1(0), blid2(0), blidB(0); // default to air
 					int     data1(0), data2(0), dataB(0); // default variant
-					ChunkSection *section2=chunk->sections[(y+2)>>4];
-					ChunkSection *sectionB=chunk->sections[(y-1)>>4];
+					ChunkSection *section2=NULL;
+					ChunkSection *sectionB=NULL;
+					if (y<254)
+					    section2 = chunk->sections[(y+2)>>4];
+					if (y>0)
+					    sectionB = chunk->sections[(y-1)>>4];
 					if (section1)
 					{
 						blid1 = section1->getBlock(x,y+1,z);
