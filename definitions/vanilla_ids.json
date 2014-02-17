@@ -1889,6 +1889,12 @@
       "alpha": 0.0
     },
     {
+      "id": 167,
+      "name": "Iron Trapdoor",
+      "color": "9d9d9d",
+      "transparent": true
+    },
+    {
       "id": 170,
       "name": "Hay Bale",
       "color": "af9711"
