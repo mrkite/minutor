@@ -133,9 +133,6 @@ void MapView::clearCache()
 
 static int lastX=-1,lastY=-1;
 static bool dragging=false;
-static bool keyShift=false;
-static bool keyCtrl=false;
-static bool keyAlt=false;
 void MapView::mousePressEvent(QMouseEvent *event)
 {
 	lastX=event->x();
@@ -173,7 +170,7 @@ void MapView::mouseReleaseEvent(QMouseEvent *)
 }
 void MapView::wheelEvent(QWheelEvent *event)
 {
-	if (keyShift) // change depth
+    if ((event->modifiers() & Qt::ShiftModifier) == Qt::ShiftModifier) // change depth
 	{
 		emit demandDepthChange(event->delta()/120);
 	}
@@ -230,31 +227,6 @@ void MapView::keyPressEvent(QKeyEvent *event)
 	case Qt::Key_Minus:
 	case Qt::Key_BracketRight:
 		emit demandDepthChange(-1);
-		break;
-	case Qt::Key_Shift:
-		keyShift=true;
-		break;
-	case Qt::Key_Control:
-		keyCtrl=true;
-		break;
-	case Qt::Key_Alt:
-		keyAlt=true;
-		break;
-	}
-}
-
-void MapView::keyReleaseEvent(QKeyEvent *event)
-{
-	switch (event->key())
-	{
-	case Qt::Key_Shift:
-		keyShift=false;
-		break;
-	case Qt::Key_Control:
-		keyCtrl=false;
-		break;
-	case Qt::Key_Alt:
-		keyAlt=false;
 		break;
 	}
 }
