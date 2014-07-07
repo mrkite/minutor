@@ -54,7 +54,14 @@
     {
       "id": 3,
       "name": "Dirt",
-      "color": "966c4a"
+      "color": "966c4a",
+      "variants": [
+        {
+          "data": 1,
+          "name": "Coarse Dirt",
+          "color": "3e2d1f"
+        }
+      ]
     },
     {
       "id": 4,
@@ -240,7 +247,14 @@
     {
       "id": 19,
       "name": "Sponge",
-      "color": "d3d34b"
+      "color": "555625",
+      "variants": [
+        {
+          "data": 1,
+          "name": "Wet Sponge",
+          "color": "46451c"
+        }
+      ]
     },
     {
       "id": 20,
@@ -1021,7 +1035,7 @@
     },
     {
       "id": 96,
-      "name": "Trapdoor",
+      "name": "Wooden Trapdoor",
       "color": "8f6b35",
       "transparent": true
     },
@@ -1893,6 +1907,28 @@
       "name": "Iron Trapdoor",
       "color": "9d9d9d",
       "transparent": true
+    },
+    {
+      "id": 168,
+      "name": "Prismarine",
+      "color": "2e4141",
+      "variants": [
+        {
+          "data": 1,
+          "name": "Prismarine Bricks",
+          "color": "2c463e"
+        },
+        {
+          "data": 2,
+          "name": "Dark Prismarine",
+          "color": "1a2621"
+        }
+      ]
+    },
+    {
+      "id": 169,
+      "name": "Sea Lantern",
+      "color": "4d5955"
     },
     {
       "id": 170,
