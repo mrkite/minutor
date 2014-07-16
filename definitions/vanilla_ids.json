@@ -17,32 +17,32 @@
         {
           "data": 1,
           "name": "Granite",
-          "color": "684d43"
+          "color": "977061"
         },
         {
           "data": 2,
           "name": "Polished Granite",
-          "color": "6b4d42"
+          "color": "9d7160"
         },
         {
           "data": 3,
           "name": "Diorite",
-          "color": "79797b"
+          "color": "b2b2b5"
         },
         {
           "data": 4,
           "name": "Polished Diorite",
-          "color": "7b7b7d"
+          "color": "b9b9bc"
         },
         {
           "data": 5,
           "name": "Andesite",
-          "color": "585858"
+          "color": "818181"
         },
         {
           "data": 6,
           "name": "Polished Andesite",
-          "color": "59595a"
+          "color": "838385"
         }
       ]
     },
@@ -54,12 +54,17 @@
     {
       "id": 3,
       "name": "Dirt",
-      "color": "966c4a",
+      "color": "835d40",
       "variants": [
         {
           "data": 1,
           "name": "Coarse Dirt",
-          "color": "3e2d1f"
+          "color": "76543a"
+        },
+        {
+          "data": 2,
+          "name": "Podzol",
+          "color": "573c1a"
         }
       ]
     },
@@ -247,12 +252,12 @@
     {
       "id": 19,
       "name": "Sponge",
-      "color": "555625",
+      "color": "c3c455",
       "variants": [
         {
           "data": 1,
           "name": "Wet Sponge",
-          "color": "46451c"
+          "color": "a09f3f"
         }
       ]
     },
@@ -1036,7 +1041,7 @@
     {
       "id": 96,
       "name": "Wooden Trapdoor",
-      "color": "8f6b35",
+      "color": "7c5a2a",
       "transparent": true
     },
     {
@@ -1894,7 +1899,7 @@
     {
       "id": 165,
       "name": "Slime Block",
-      "color": "608756"
+      "color": "59994a"
     },
     {
       "id": 166,
@@ -1905,30 +1910,30 @@
     {
       "id": 167,
       "name": "Iron Trapdoor",
-      "color": "9d9d9d",
+      "color": "c7c7c7",
       "transparent": true
     },
     {
       "id": 168,
       "name": "Prismarine",
-      "color": "2e4141",
+      "color": "6baa97",
       "variants": [
         {
           "data": 1,
           "name": "Prismarine Bricks",
-          "color": "2c463e"
+          "color": "64a08f"
         },
         {
           "data": 2,
           "name": "Dark Prismarine",
-          "color": "1a2621"
+          "color": "3c584b"
         }
       ]
     },
     {
       "id": 169,
       "name": "Sea Lantern",
-      "color": "4d5955"
+      "color": "abc8be"
     },
     {
       "id": 170,
@@ -2036,6 +2041,8 @@
     {
       "id": 175,
       "name": "Sunflower",
+      "color": "f1e424",
+      "mask": 7,
       "transparent": true,
       "spawninside": true,
       "variants": [
@@ -2064,9 +2071,7 @@
           "name": "Peony",
           "color": "e6bff7"
         }
-      ],
-      "color": "f1e424",
-      "mask": 7
+      ]
     }
   ],
   "update": "http://seancode.com/minutor/packs/vanilla_ids.json"
