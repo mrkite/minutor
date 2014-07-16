@@ -104,14 +104,15 @@ BlockIdentifier::~BlockIdentifier()
 // this routine is ridiculously slow
 BlockInfo &BlockIdentifier::getBlock(int id, int data)
 {
-	quint32 bid=id|(data<<12);
+    //first apply the mask
+    if (blocks.contains(id))
+        data&=blocks[id].first()->mask;
+
+    quint32 bid=id|(data<<12);
 	//first check the cache
 	if (cache[bid]!=NULL)
 		return *cache[bid];
 
-	//first get the mask
-	if (blocks.contains(id))
-		data&=blocks[id].first()->mask;
 	//now find the variant
 	if (blocks.contains(bid))
 	{
@@ -307,7 +308,7 @@ void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent, int pack
 	if (b->has("mask"))
 		block->mask=b->at("mask")->asNumber();
 	else
-		block->mask=0xff;
+		block->mask=0x0f;
 
 	if (b->has("variants"))
 	{
