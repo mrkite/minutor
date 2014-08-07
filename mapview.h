@@ -44,8 +44,9 @@ public:
 	enum
 	{
 		flgLighting     = 1,
-		flgCaveMode     = 2,
-		flgDepthShading = 4,
+		flgMobSpawn     = 2,
+		flgCaveMode     = 4,
+		flgDepthShading = 8
 	};
 
 

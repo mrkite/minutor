@@ -47,13 +47,24 @@ class JSONObject;
 class BlockInfo
 {
 public:
-	BlockInfo() {}
-	int id;
+	BlockInfo();
+	bool isOpaque();
+	bool isLiquid();
+	bool doesBlockHaveSolidTopSurface(int data);
+	bool isBlockNormalCube();
+	bool renderAsNormalBlock();
+	bool canProvidePower();
+
+	int     id;
 	QString name;
-	double alpha;
-	quint8 flags;
-	quint8 mask;
-	bool enabled;
+	double  alpha;
+	quint8  mask;
+	bool    enabled;
+	bool    transparent;
+	bool    liquid;
+	bool    rendernormal;
+	bool    providepower;
+	bool    spawninside;
 	quint32 colors[16];
 };
 
@@ -62,11 +73,12 @@ class BlockIdentifier
 public:
 	BlockIdentifier();
 	~BlockIdentifier();
-	int addDefinitions(JSONArray *,int pack=-1);
+	int  addDefinitions(JSONArray *,int pack=-1);
 	void enableDefinitions(int);
 	void disableDefinitions(int);
 	BlockInfo &getBlock(int id,int data);
 private:
+	void clearCache();
 	void parseDefinition(JSONObject *block,BlockInfo *parent,int pack);
 	QMap<quint32,QList<BlockInfo *> > blocks;
 	QList<QList<BlockInfo*> > packs;

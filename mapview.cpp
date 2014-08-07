@@ -354,9 +354,9 @@ void MapView::renderChunk(Chunk *chunk)
 			int top=depth;
 			if (top>chunk->highest)
 				top=chunk->highest;
-            int highest=0;
-            for (int y=top;y>=0;y--)
-            {
+			int highest=0;
+			for (int y=top;y>=0;y--)
+			{
 				int sec=y>>4;
 				ChunkSection *section=chunk->sections[sec];
 				if (!section)
@@ -364,22 +364,24 @@ void MapView::renderChunk(Chunk *chunk)
 					y=(sec<<4)-1; //skip whole section
 					continue;
 				}
-				int yoffset=(y&0xf)<<8;
-				int data=section->data[(offset+yoffset)/2];
-				if (x&1) data>>=4;
-				BlockInfo &block=blocks->getBlock(section->blocks[offset+yoffset],data&0xf);
+
+				// get data value
+				int data = section->getData(x,y,z);
+
+				// get BlockInfo from block value
+				BlockInfo &block=blocks->getBlock(section->getBlock(x,y,z),data);
 				if (block.alpha==0.0) continue;
-				int light=12;
-				if (flags & flgLighting)
-				{
-					// light values are always the block above
-					light=0;
-					ChunkSection *lsec=chunk->sections[(y+1)>>4];
-					if (lsec)
-						light=lsec->light[(offset+(((y+1)&0xf)<<8))/2];
-					if (x&1) light>>=4;
-					light&=15;
-				}
+
+				// get light value from one block above
+				int light = 0;
+				ChunkSection *section1=NULL;
+				if (y<255)
+				    section1 = chunk->sections[(y+1)>>4];
+				if (section1)
+					light = section1->getLight(x,y+1,z);
+				int light1 = light;
+				if (!(flags & flgLighting))
+					light = 12;
 				if (alpha==0.0)
 				{
 					if (lasty!=-1 && lasty<y)
@@ -389,6 +391,8 @@ void MapView::renderChunk(Chunk *chunk)
 				}
 				if (light<0) light=0;
 				if (light>15) light=15;
+
+				// define the color
 				quint32 color=block.colors[light];
 				quint32 colr = color >> 16;
 				quint32 colg = (color >> 8) & 0xff;
@@ -398,6 +402,61 @@ void MapView::renderChunk(Chunk *chunk)
 					colr = colr * (256 - (depth - y)) / 256;
 					colg = colg * (256 - (depth - y)) / 256;
 					colb = colb * (256 - (depth - y)) / 256;
+				}
+				if (flags & flgMobSpawn)
+				{
+					// get block info from 1 and 2 above and 1 below
+					quint16 blid1(0), blid2(0), blidB(0); // default to air
+					int     data1(0), data2(0), dataB(0); // default variant
+					ChunkSection *section2=NULL;
+					ChunkSection *sectionB=NULL;
+					if (y<254)
+					    section2 = chunk->sections[(y+2)>>4];
+					if (y>0)
+					    sectionB = chunk->sections[(y-1)>>4];
+					if (section1)
+					{
+						blid1 = section1->getBlock(x,y+1,z);
+						data1 = section1->getData(x,y+1,z);
+					}
+					if (section2)
+					{
+						blid2 = section2->getBlock(x,y+2,z);
+						data2 = section2->getData(x,y+2,z);
+					}
+					if (sectionB)
+					{
+						blidB = sectionB->getBlock(x,y-1,z);
+						dataB = sectionB->getData(x,y-1,z);
+					}
+					BlockInfo &block2=blocks->getBlock(blid2,data2);
+					BlockInfo &block1=blocks->getBlock(blid1,data1);
+					BlockInfo &block0=block;
+					BlockInfo &blockB=blocks->getBlock(blidB,dataB);
+					int light0 = section->getLight(x,y,z);
+
+					// spawn check #1: on top of solid block
+					if ( block0.doesBlockHaveSolidTopSurface(data) &&
+						 !block0.name.contains("Bedrock") &&
+						 (light1<8) &&
+						 !block1.isBlockNormalCube() && block1.spawninside && !block1.isLiquid() &&
+						 !block2.isBlockNormalCube() && block2.spawninside )
+					{
+						colr = (colr+256)/2;
+						colg = (colg+0)/2;
+						colb = (colb+192)/2;
+					}
+					// spawn check #2: current block is transparent, but mob can spawn through (e.g. snow)
+					if ( blockB.doesBlockHaveSolidTopSurface(dataB) &&
+						 !blockB.name.contains("Bedrock") &&
+						 (light0<8) &&
+						 !block0.isBlockNormalCube() && block0.spawninside && !block0.isLiquid() &&
+						 !block1.isBlockNormalCube() && block1.spawninside )
+					{
+						colr = (colr+192)/2;
+						colg = (colg+0)/2;
+						colb = (colb+256)/2;
+					}
 				}
 				if (alpha==0.0)
 				{
@@ -414,7 +473,8 @@ void MapView::renderChunk(Chunk *chunk)
 					b+=(quint8)((1.0-alpha)*(color&0xff));
 					alpha+=block.alpha*(1.0-alpha);
 				}
-                if (block.alpha==1.0 || alpha>0.9)
+				// finish deepth (Y) scanning when color is saturated enough
+				if (block.alpha==1.0 || alpha>0.9)
 					break;
 			}
 			lasty=highest;

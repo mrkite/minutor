@@ -30,18 +30,70 @@
 #include <QDebug>
 
 static BlockInfo unknownBlock;
+
+BlockInfo::BlockInfo()
+: transparent(false)
+, liquid(false)
+, rendernormal(true)
+, providepower(false)
+, spawninside(false)
+{}
+
+bool BlockInfo::isOpaque()
+{
+	return !(this->transparent);
+}
+
+bool BlockInfo::isLiquid()
+{
+	return this->liquid;
+}
+
+bool BlockInfo::doesBlockHaveSolidTopSurface(int data)
+{
+	if (this->isOpaque() && this->renderAsNormalBlock()) return true;
+	if (this->name.contains("Stairs") && ((data&4)==4)) return true;
+	if (this->name.contains("Slab") && !this->name.contains("Double") && !this->name.contains("Full") &&
+	    ((data&8)==8)) return true;
+	if (this->name.contains("Hopper")) return true;
+	if (this->name.contains("Snow") && ((data&7)==7)) return true;
+	return false;
+}
+
+bool BlockInfo::isBlockNormalCube()
+{
+	return this->isOpaque() &&
+	       this->renderAsNormalBlock() &&
+	       !this->canProvidePower();
+}
+
+bool BlockInfo::renderAsNormalBlock()
+{
+//	if (this->name.contains("Redstone Wire")) && powered return true; else return false;
+	return this->rendernormal;
+}
+
+bool BlockInfo::canProvidePower()
+{
+	return this->providepower;
+}
+
+
+
+
 BlockIdentifier::BlockIdentifier()
 {
+	// clear cache pointers
+	for (int i=0;i<65536;i++)
+		cache[i]=NULL;
 	for (int i=0;i<16;i++)
 		unknownBlock.colors[i]=0xff00ff;
 	unknownBlock.alpha=1.0;
-	unknownBlock.flags=0;
 	unknownBlock.name="Unknown";
 }
 BlockIdentifier::~BlockIdentifier()
 {
-	for (int i=0;i<65536;i++)
-		cache[i]=NULL;
+	clearCache();
 	for (int i=0;i<packs.length();i++)
 	{
 		for (int j=0;j<packs[i].length();j++)
@@ -52,14 +104,15 @@ BlockIdentifier::~BlockIdentifier()
 // this routine is ridiculously slow
 BlockInfo &BlockIdentifier::getBlock(int id, int data)
 {
-	quint32 bid=id|(data<<12);
+    //first apply the mask
+    if (blocks.contains(id))
+        data&=blocks[id].first()->mask;
+
+    quint32 bid=id|(data<<12);
 	//first check the cache
 	if (cache[bid]!=NULL)
 		return *cache[bid];
 
-	//first get the mask
-	if (blocks.contains(id))
-		data&=blocks[id].first()->mask;
 	//now find the variant
 	if (blocks.contains(bid))
 	{
@@ -98,8 +151,7 @@ void BlockIdentifier::enableDefinitions(int pack)
 	for (int i=0;i<len;i++)
 		packs[pack][i]->enabled=true;
 	//clear cache
-	for (int i=0;i<65536;i++)
-		cache[i]=NULL;
+	clearCache();
 }
 
 void BlockIdentifier::disableDefinitions(int pack)
@@ -109,8 +161,7 @@ void BlockIdentifier::disableDefinitions(int pack)
 	for (int i=0;i<len;i++)
 		packs[pack][i]->enabled=false;
 	//clear cache
-	for (int i=0;i<65536;i++)
-		cache[i]=NULL;
+	clearCache();
 }
 
 int BlockIdentifier::addDefinitions(JSONArray *defs,int pack)
@@ -124,14 +175,21 @@ int BlockIdentifier::addDefinitions(JSONArray *defs,int pack)
 	for (int i=0;i<len;i++)
 		parseDefinition(dynamic_cast<JSONObject *>(defs->at(i)),NULL,pack);
 	//clear cache
-	for (int i=0;i<65536;i++)
-		cache[i]=NULL;
+	clearCache();
 	return pack;
 }
 
 static int clamp(int v,int min,int max)
 {
 	return (v<max?(v>min?v:min):max);
+}
+
+void BlockIdentifier::clearCache()
+{
+	for (int i=0;i<65536;i++)
+	{
+        cache[i]=NULL;
+	}
 }
 
 void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent, int pack)
@@ -155,12 +213,44 @@ void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent, int pack
 	else
 		block->name="Unknown";
 	block->enabled=true;
-	if (b->has("flags"))
-		block->flags=b->at("flags")->asNumber();
+
+	if (b->has("transparent"))
+	{
+		block->transparent=b->at("transparent")->asBool();
+		block->rendernormal=false; // for most cases except the following
+		if (b->has("rendercube"))
+			block->rendernormal=b->at("rendercube")->asBool();
+		block->spawninside=false; // for most cases except the following
+		if (b->has("spawninside"))
+			block->spawninside=b->at("spawninside")->asBool();
+	}
 	else if (parent!=NULL)
-		block->flags=parent->flags;
+	{
+		block->transparent=parent->transparent;
+		block->rendernormal=parent->rendernormal;
+		block->spawninside=parent->spawninside;
+	}
 	else
-		block->flags=0;
+	{
+		block->transparent=false;
+		block->rendernormal=true;
+		block->spawninside=false;
+	}
+
+	if (b->has("liquid"))
+		block->liquid=b->at("liquid")->asBool();
+	else if (parent!=NULL)
+		block->liquid=parent->liquid;
+	else
+		block->liquid=false;
+
+	if (b->has("canProvidePower"))
+		block->providepower=b->at("canProvidePower")->asBool();
+	else if (parent!=NULL)
+		block->providepower=parent->providepower;
+	else
+		block->providepower=false;
+
 	if (b->has("color"))
 	{
 		QString color=b->at("color")->asString();
@@ -218,7 +308,8 @@ void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent, int pack
 	if (b->has("mask"))
 		block->mask=b->at("mask")->asNumber();
 	else
-		block->mask=0xff;
+		block->mask=0x0f;
+
 	if (b->has("variants"))
 	{
 		JSONArray *variants=dynamic_cast<JSONArray *>(b->at("variants"));

@@ -36,9 +36,13 @@ class BlockIdentifier;
 class ChunkSection
 {
 public:
+	quint16 getBlock(int x, int y, int z);
+	quint8  getData(int x, int y, int z);
+	quint8  getLight(int x, int y, int z);
+
 	quint16 blocks[4096];
-	quint8 data[2048];
-    quint8 light[2048];
+	quint8  data[2048];
+	quint8  light[2048];
 };
 
 class Chunk
