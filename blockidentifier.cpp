@@ -53,7 +53,7 @@ bool BlockInfo::doesBlockHaveSolidTopSurface(int data)
 {
 	if (this->isOpaque() && this->renderAsNormalBlock()) return true;
 	if (this->name.contains("Stairs") && ((data&4)==4)) return true;
-	if (this->name.contains("Slab") && !this->name.contains("Double") &&
+	if (this->name.contains("Slab") && !this->name.contains("Double") && !this->name.contains("Full") &&
 	    ((data&8)==8)) return true;
 	if (this->name.contains("Hopper")) return true;
 	if (this->name.contains("Snow") && ((data&7)==7)) return true;

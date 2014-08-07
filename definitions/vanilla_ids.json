@@ -179,7 +179,14 @@
     {
       "id": 12,
       "name": "Sand",
-      "color": "d6cf97"
+      "color": "d6cf97",
+      "variants": [
+        {
+          "data": 1,
+          "name": "Red Sand",
+          "color": "a6551e"
+        }
+      ]
     },
     {
       "id": 13,
@@ -565,7 +572,7 @@
         },
         {
           "data": 4,
-          "name": "Double Brick Slab",
+          "name": "Double Bricks Slab",
           "color": "7c4536"
         },
         {
@@ -585,12 +592,13 @@
         },
         {
           "data": 8,
-          "name": "Double Smooth Stone Slab"
+          "name": "Full Stone Slab",
+          "color": "9c9c9c"
         },
         {
           "data": 9,
-          "name": "Double Smooth Sandstone Slab",
-          "color": "ddd4a5"
+          "name": "Full Sandstone Slab",
+          "color": "d7cf9c"
         }
       ]
     },
@@ -2072,7 +2080,73 @@
           "color": "e6bff7"
         }
       ]
+    },
+    {
+      "id": 176,
+      "name": "Standing Banner",
+      "color": "ffffff",
+      "transparent": true
+    },
+    {
+      "id": 177,
+      "name": "Wall Banner",
+      "color": "ffffff",
+      "transparent": true
+    },
+    {
+      "id": 178,
+      "name": "Inverted Daylight Sensor",
+      "color": "d2c1ab",
+      "transparent": true,
+      "canProvidePower": true
+    },
+    {
+      "id": 179,
+      "name": "Red Sandstone",
+      "color": "a6551e",
+      "variants": [
+        {
+          "data": 1,
+          "name": "Chiseled Red Sandstone",
+          "color": "a2531c"
+        },
+        {
+          "data": 2,
+          "name": "Smooth Red Sandstone",
+          "color": "a8561e"
+        }
+      ]
+    },
+    {
+      "id": 180,
+      "name": "Red Sandstone Stairs",
+      "color": "a6551e"
+    },
+    {
+      "id": 181,
+      "name": "Double Red Sandstone Slab",
+      "color": "a6551e",
+      "variants": [
+        {
+          "data": 8,
+          "name": "Full Red Sandstone Slab",
+          "color": "a7551e"
+        }
+      ]
+    },
+    {
+      "id": 182,
+      "name": "Red Sandstone Slab",
+      "color": "a7551e",
+      "variants": [
+        {
+          "data": 8,
+          "name": "Upper Red Sandstone Slab",
+          "color": "a7551e"
+        }
+      ]
     }
+
   ],
   "update": "http://seancode.com/minutor/packs/vanilla_ids.json"
 }
