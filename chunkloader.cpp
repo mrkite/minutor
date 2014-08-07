@@ -62,6 +62,12 @@ void ChunkLoader::run()
 	}
 
 	uchar *raw=f.map(coffset*4096,numSectors*4096);
+	if (raw == NULL)
+	{
+		f.close();
+		emit loaded(x, z);
+		return;
+	}
 	NBT nbt(raw);
 	ChunkID id(x,z);
 	mutex.lock();
