@@ -36,6 +36,7 @@ BlockInfo::BlockInfo()
 , liquid(false)
 , rendernormal(true)
 , providepower(false)
+, spawninside(false)
 {}
 
 bool BlockInfo::isOpaque()
@@ -52,7 +53,7 @@ bool BlockInfo::doesBlockHaveSolidTopSurface(int data)
 {
 	if (this->isOpaque() && this->renderAsNormalBlock()) return true;
 	if (this->name.contains("Stairs") && ((data&4)==4)) return true;
-	if (this->name.contains("Slab") && !this->name.contains("Double") &&
+	if (this->name.contains("Slab") && !this->name.contains("Double") && !this->name.contains("Full") &&
 	    ((data&8)==8)) return true;
 	if (this->name.contains("Hopper")) return true;
 	if (this->name.contains("Snow") && ((data&7)==7)) return true;
@@ -103,14 +104,15 @@ BlockIdentifier::~BlockIdentifier()
 // this routine is ridiculously slow
 BlockInfo &BlockIdentifier::getBlock(int id, int data)
 {
-	quint32 bid=id|(data<<12);
+    //first apply the mask
+    if (blocks.contains(id))
+        data&=blocks[id].first()->mask;
+
+    quint32 bid=id|(data<<12);
 	//first check the cache
 	if (cache[bid]!=NULL)
 		return *cache[bid];
 
-	//first get the mask
-	if (blocks.contains(id))
-		data&=blocks[id].first()->mask;
 	//now find the variant
 	if (blocks.contains(bid))
 	{
@@ -218,16 +220,21 @@ void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent, int pack
 		block->rendernormal=false; // for most cases except the following
 		if (b->has("rendercube"))
 			block->rendernormal=b->at("rendercube")->asBool();
+		block->spawninside=false; // for most cases except the following
+		if (b->has("spawninside"))
+			block->spawninside=b->at("spawninside")->asBool();
 	}
 	else if (parent!=NULL)
 	{
 		block->transparent=parent->transparent;
 		block->rendernormal=parent->rendernormal;
+		block->spawninside=parent->spawninside;
 	}
 	else
 	{
 		block->transparent=false;
 		block->rendernormal=true;
+		block->spawninside=false;
 	}
 
 	if (b->has("liquid"))
@@ -301,7 +308,8 @@ void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent, int pack
 	if (b->has("mask"))
 		block->mask=b->at("mask")->asNumber();
 	else
-		block->mask=0xff;
+		block->mask=0x0f;
+
 	if (b->has("variants"))
 	{
 		JSONArray *variants=dynamic_cast<JSONArray *>(b->at("variants"));

@@ -129,7 +129,9 @@ void Minutor::reload()
 
 void Minutor::save()
 {
-	QString filename = QFileDialog::getSaveFileName(this,tr("Save PNG"),QString(),"*.png");
+	QFileDialog fileDialog(this);
+	fileDialog.setDefaultSuffix("png");
+	QString filename = fileDialog.getSaveFileName(this,tr("Save world as PNG"),QString(),"*.png");
 	if (!filename.isEmpty())
 	{
 		WorldSave *ws=new WorldSave(filename,mapview);

@@ -4,6 +4,11 @@ to the Minecraft source code. The Minecraft Wiki is not correct in all cases.
 In the Minecraft source code some major flags are defined for all blocks:
  isOpaque renderAsNormalBlock isLiquid and canProvidePower
 
+Additionally mobs can spawn inside/through some transparent blocks which is
+checked with hit box collision. As this is not possible to check in Minutor
+a special flag "spawninside" has to be set for that blocks.
+
+
 isLiquid:
  is obvious and true for still and flowing water and lava
 
@@ -25,19 +30,30 @@ isOpaque and renderAsNormalBlock
       "transparent": true,
       "rendercube": true
 
-  all other transparent blocks have to be flagged only with
+  all other transparent blocks have to be tagged only with
       "transparent": true
 
 List of tranparent blocks:
  Anvil, PressurePlate(s), Beacon, Bed, Ice, BrewingStand, Button(s), Cactus,
- Cake, Carpet(s), Cauldron, Chest(s), Cocoa, DaylightDetector, Door(s), DragonEgg,
- EnchantmentTable, EnderChest, EndPortal, EndPortalFrame, Farmland, Fence,
- FenceGate, Fire, Flower(s), FlowerPot, Fluid = Water/Lava, Glass, HalfSlab(s),
- Hopper, Ladder, Leave(s), Lever, MobSpawner, Pane(s), PistonBase, PistonExtension,
- PistonMoving, Portal, Rail(s), Repeater, Comperator, RedstoneWire, Reed, Sign,
- Skull, Snow, Stair(s), Torch, TrapDoor, TripWire, TripWireSource, Vine, Wall, Web
+ Cake, Carpet(s), Cauldron, Chest(s), Cocoa, DaylightDetector, Door(s),
+ DragonEgg, EnchantmentTable, EnderChest, EndPortal, EndPortalFrame, Farmland,
+ Fence, FenceGate, Fire, Flower(s), FlowerPot, Fluid = Water/Lava, Glass,
+ HalfSlab(s), Hopper, Ladder, Leave(s), Lever, MobSpawner, Pane(s), PistonBase,
+ PistonExtension, PistonMoving, Portal, Rail(s), Repeater, Comperator,
+ RedstoneWire, Reed, Sign, Skull, Snow, Stair(s), Torch, TrapDoor, TripWire,
+ TripWireSource, Vine, Wall, Web
 
-All this information is gathered from the 1.6.4 source code.
-As at the moment no deobfuscated 1.7.x code is available.
+
+List of blocks that mobs can spawn inside:
+ PressurePlate(s), Button(s), Cocoa, (single block) Flower(s), Ladder, Lever,
+ Rail(s), Reed, Sign, Snow, Vine
+to be flagged with
+  "spawninside": true
+
+
+All this information is gathered directly from the 1.6.4 source code or special
+test setup per block in 1.8 snapshots. As at the moment deobfuscated 1.7.x or
+1.8.x code is not available.
+
 
 [EtlamGit]

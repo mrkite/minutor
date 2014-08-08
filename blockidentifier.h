@@ -64,6 +64,7 @@ public:
 	bool    liquid;
 	bool    rendernormal;
 	bool    providepower;
+	bool    spawninside;
 	quint32 colors[16];
 };
 
