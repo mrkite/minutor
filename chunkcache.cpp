@@ -33,12 +33,11 @@ ChunkID::ChunkID(int x,int z) : x(x),z(z)
 }
 bool ChunkID::operator==(const ChunkID &other) const
 {
-	return other.x==x && other.z==z;
+	return (other.x==x) && (other.z==z);
 }
 uint qHash(const ChunkID &c)
 {
-//	return c.x^c.z;	//quick way to hash a pair of integers
-	return qHash(c.x) ^ qHash(c.z); //safe way to hash a pair of integers
+	return (c.x<<16)^(c.z&0xffff); // safe way to hash a pair of integers
 }
 
 ChunkCache::ChunkCache()
