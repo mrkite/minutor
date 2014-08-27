@@ -769,7 +769,7 @@
     },
     {
       "id": 64,
-      "name": "Wooden Door",
+      "name": "Oak Door",
       "color": "b0572a",
       "transparent": true
     },
@@ -907,8 +907,9 @@
     },
     {
       "id": 85,
-      "name": "Fence",
-      "color": "735e39",
+      "name": "Oak Fence",
+      "color": "b4905a",
+      "alpha": 0.75,
       "transparent": true
     },
     {
@@ -1214,8 +1215,9 @@
     },
     {
       "id": 107,
-      "name": "Fence Gate",
-      "color": "9f844d",
+      "name": "Oak Fence Gate",
+      "color": "b4905a",
+      "alpha": 0.75,
       "transparent": true
     },
     {
@@ -1581,7 +1583,7 @@
     },
     {
       "id": 144,
-      "name": "Head",
+      "name": "Mob Head",
       "color": "1a1a1a",
       "transparent": true
     },
@@ -2145,6 +2147,106 @@
           "color": "a7551e"
         }
       ]
+    },
+    {
+      "id": 183,
+      "name": "Spruce Fence Gate",
+      "color": "805e36",
+      "alpha": 0.75,
+      "transparent": true
+    },
+    {
+      "id": 184,
+      "name": "Birch Fence Gate",
+      "color": "c8b77a",
+      "alpha": 0.75,
+      "transparent": true
+    },
+    {
+      "id": 185,
+      "name": "Jungle Fence Gate",
+      "color": "b1805c",
+      "alpha": 0.75,
+      "transparent": true
+    },
+    {
+      "id": 186,
+      "name": "Dark Oak Fence Gate",
+      "color": "462d15",
+      "alpha": 0.75,
+      "transparent": true
+    },
+    {
+      "id": 187,
+      "name": "Acacia Fence Gate",
+      "color": "ba6337",
+      "alpha": 0.75,
+      "transparent": true
+    },
+    {
+      "id": 188,
+      "name": "Spruce Fence",
+      "color": "805e36",
+      "alpha": 0.75,
+      "transparent": true
+    },
+    {
+      "id": 189,
+      "name": "Birch Fence",
+      "color": "c8b77a",
+      "alpha": 0.75,
+      "transparent": true
+    },
+    {
+      "id": 190,
+      "name": "Jungle Fence",
+      "color": "b1805c",
+      "alpha": 0.75,
+      "transparent": true
+    },
+    {
+      "id": 191,
+      "name": "Dark Oak Fence",
+      "color": "462d15",
+      "alpha": 0.75,
+      "transparent": true
+    },
+    {
+      "id": 192,
+      "name": "Acacia Fence",
+      "color": "ba6337",
+      "alpha": 0.75,
+      "transparent": true
+    },
+    {
+      "id": 193,
+      "name": "Spruce Door",
+      "color": "6e563b",
+      "transparent": true
+    },
+    {
+      "id": 193,
+      "name": "Birch Door",
+      "color": "d2caa3",
+      "transparent": true
+    },
+    {
+      "id": 193,
+      "name": "Jungle Door",
+      "color": "ac7da3",
+      "transparent": true
+    },
+    {
+      "id": 193,
+      "name": "Acacia Door",
+      "color": "a5615b",
+      "transparent": true
+    },
+    {
+      "id": 193,
+      "name": "Dark Oak Door",
+      "color": "4a3118",
+      "transparent": true
     }
 
   ],
