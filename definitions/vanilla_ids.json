@@ -109,6 +109,7 @@
       "id": 6,
       "name": "Oak Sapling",
       "color": "1f6519",
+      "alpha": 0.3,
       "mask": 7,
       "transparent": true,
       "spawninside": true,
@@ -138,8 +139,7 @@
           "name": "Dark Oak Sapling",
           "color": "105210"
         }
-      ],
-      "alpha": 0.3
+      ]
     },
     {
       "id": 7,
@@ -349,6 +349,7 @@
       "id": 31,
       "name": "Dead Shrub",
       "color": "946428",
+      "alpha": 0.3,
       "transparent": true,
       "spawninside": true,
       "variants": [
@@ -362,8 +363,7 @@
           "name": "Fern",
           "color": "8fbb64"
         }
-      ],
-      "alpha": 0.3
+      ]
     },
     {
       "id": 32,
