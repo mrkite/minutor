@@ -43,6 +43,9 @@ void Chunk::load(NBT &nbt)
 	highest=0;
 
 	Tag *level=nbt.at("Level");
+    chunkX = level->at("xPos")->toInt();
+    chunkZ = level->at("zPos")->toInt();
+
 	Tag *biomes=level->at("Biomes");
 	memcpy(this->biomes,biomes->toByteArray(),biomes->length());
 	Tag *sections=level->at("Sections");
@@ -69,6 +72,18 @@ void Chunk::load(NBT &nbt)
 		this->sections[idx]=cs;
 	}
 	loaded=true;
+
+
+    Tag* entitylist = level->at("Entities");
+    int numEntities = entitylist->length();
+    for (int i = 0; i < numEntities; ++i)
+    {
+        Entity e;
+        e.load(entitylist->at(i));
+        entities.insertMulti("Entity", e);
+    }
+
+
 	for (int i=15;i>=0;i--) //check for the highest block in this chunk
 	{
 		if (this->sections[i])
@@ -78,7 +93,7 @@ void Chunk::load(NBT &nbt)
 					highest=i*16+(j>>8);
 					return;
 				}
-	}
+	}    
 }
 Chunk::~Chunk()
 {

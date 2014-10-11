@@ -23,7 +23,9 @@ HEADERS += mapview.h minutor.h nbt.h zlib.h zconf.h \
     settings.h \
     chunkloader.h \
     definitionupdater.h \
-    worldsave.h
+    worldsave.h \
+    entity.h \
+    properties.h
 SOURCES += mapview.cpp main.cpp minutor.cpp nbt.cpp \
 	labelledslider.cpp \
     chunk.cpp \
@@ -37,7 +39,9 @@ SOURCES += mapview.cpp main.cpp minutor.cpp nbt.cpp \
     settings.cpp \
     chunkloader.cpp \
     definitionupdater.cpp \
-    worldsave.cpp
+    worldsave.cpp \
+    entity.cpp \
+    properties.cpp
 RESOURCES = minutor.qrc
 
 desktopfile.path = /usr/share/applications
@@ -46,3 +50,6 @@ pixmapfile.path = /usr/share/pixmaps
 pixmapfile.files = minutor.png minutor.xpm
 target.path = /usr/bin
 INSTALLS += desktopfile pixmapfile target
+
+FORMS += \
+    properties.ui
