@@ -65,7 +65,7 @@ public:
 	virtual double toDouble();
 	virtual const quint8 *toByteArray();
 	virtual const qint32 *toIntArray();
-    virtual QVariant getData();
+	virtual QVariant getData();
 };
 
 class NBT
@@ -88,8 +88,8 @@ class Tag_Byte : public Tag
 public:
 	Tag_Byte(TagDataStream &s);
 	int toInt();
-    virtual QString toString();
-    virtual QVariant getData();
+	virtual QString toString();
+	virtual QVariant getData();
 private:
 	quint8 data;
 };
@@ -98,9 +98,9 @@ class Tag_Short : public Tag
 {
 public:
 	Tag_Short(TagDataStream &s);
-    int toInt();
-    virtual QString toString();
-    virtual QVariant getData();
+	int toInt();
+	virtual QString toString();
+	virtual QVariant getData();
 private:
 	qint16 data;
 };
@@ -111,8 +111,8 @@ public:
 	Tag_Int(TagDataStream &s);
 	qint32 toInt();
 	double toDouble();
-    virtual QString toString();
-    virtual QVariant getData();
+	virtual QString toString();
+	virtual QVariant getData();
 private:
 	qint32 data;
 };
@@ -121,10 +121,10 @@ class Tag_Long : public Tag
 {
 public:
 	Tag_Long(TagDataStream &s);
-    qint32 toInt();
-    double toDouble();
-    virtual QString toString();
-    virtual QVariant getData();
+	qint32 toInt();
+	double toDouble();
+	virtual QString toString();
+	virtual QVariant getData();
 private:
 	qint64 data;
 };
@@ -132,11 +132,11 @@ private:
 class Tag_Float : public Tag
 {
 public:
-    Tag_Float(TagDataStream &s);
+	Tag_Float(TagDataStream &s);
 
-    virtual double toDouble();
-    virtual QString toString();
-    virtual QVariant getData();
+	virtual double toDouble();
+	virtual QString toString();
+	virtual QVariant getData();
 
 private:
 	float data;
@@ -147,8 +147,8 @@ class Tag_Double : public Tag
 public:
 	Tag_Double(TagDataStream &s);
 	double toDouble();
-    virtual QString toString();
-    virtual QVariant getData();
+	virtual QString toString();
+	virtual QVariant getData();
 private:
 	double data;
 };
@@ -160,8 +160,8 @@ public:
 	~Tag_Byte_Array();
 	int length();
 	const quint8 *toByteArray();
-    virtual QString toString();
-    virtual QVariant getData();
+	virtual QString toString();
+	virtual QVariant getData();
 private:
 	const quint8 *data;
 	int len;
@@ -172,7 +172,7 @@ class Tag_String : public Tag
 public:
 	Tag_String(TagDataStream &s);
 	QString toString();
-    virtual QVariant getData();
+	virtual QVariant getData();
 private:
 	QString data;
 };
@@ -184,8 +184,8 @@ public:
 	~Tag_List();
 	Tag *at(int index);
 	int length();
-    virtual QString toString();
-    virtual QVariant getData();
+	virtual QString toString();
+	virtual QVariant getData();
 private:
 	QList<Tag *> data;
 };
@@ -197,8 +197,8 @@ public:
 	~Tag_Compound();
 	bool has(const QString key);
 	Tag *at(const QString key);
-    virtual QString toString();
-    virtual QVariant getData();
+	virtual QString toString();
+	virtual QVariant getData();
 private:
 	QHash<QString, Tag *> children;
 };
@@ -210,8 +210,8 @@ public:
 	~Tag_Int_Array();
 	int length();
 	const qint32 *toIntArray();
-    virtual QString toString();
-    virtual QVariant getData();
+	virtual QString toString();
+	virtual QVariant getData();
 private:
 	int len;
 	qint32 *data;

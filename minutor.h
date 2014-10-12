@@ -83,8 +83,8 @@ private slots:
 	void rescanWorlds();
 	void saveProgress(QString status,double value);
 	void saveFinished();
-    void specialBlock(int x, int y, int z, QString type, QString display, QVariant properties);
-    void showProperties(int x, int y, int z);
+	void specialBlock(int x, int y, int z, QString type, QString display, QVariant properties);
+	void showProperties(int x, int y, int z);
 
 signals:
 	void worldLoaded(bool isLoaded);
@@ -104,7 +104,7 @@ private:
 	QMenu *fileMenu, *worldMenu;
 	QMenu *viewMenu, *jumpMenu, *dimMenu;
 	QMenu *helpMenu;
-    QMenu *entitiesMenu;
+	QMenu *entitiesMenu;
 
 	QList<QAction *>worlds;
 	QAction *openAct, *reloadAct, *saveAct, *exitAct;
@@ -116,7 +116,7 @@ private:
 	QAction *aboutAct;
 	QAction *settingsAct;
 	QAction *updatesAct;
-    QList<QAction*> entityActions;
+	QList<QAction*> entityActions;
 
 	//loaded world data
 	QList<Location> locations;
@@ -125,18 +125,18 @@ private:
 	Dimensions *dimensions;
 	QDir currentWorld;
 
-    //special entities and objects with properties
-    struct Entity
-    {
-        int x, y, z;
-        QString type;
-        QString display;
-        QVariant properties;
-    };
-    //           type                 x     z
-    typedef QMap<QString, QHash<QPair<int, int>, Entity> > EntityMap;
-    EntityMap entities;
-    Properties * propView;
+	//special entities and objects with properties
+	struct Entity
+	{
+		int x, y, z;
+		QString type;
+		QString display;
+		QVariant properties;
+	};
+	//           type                 x    z
+	typedef QMap<QString, QHash<QPair<int, int>, Entity> > EntityMap;
+	EntityMap entities;
+	Properties * propView;
 };
 
 #endif
