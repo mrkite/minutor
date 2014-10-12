@@ -56,7 +56,7 @@ Minutor::Minutor()
 	connect(mapview,     SIGNAL(foundSpecialBlock(int,int,int,QString,QString,QVariant)),
 	        this,        SLOT(specialBlock(int,int,int,QString,QString,QVariant)));
 	connect(mapview,     SIGNAL(showProperties(int,int,int)),
-	        this,        SLOT(showProperties(int,int,int)));
+			this,        SLOT(showProperties(int,int,int)));
 	dm=new DefinitionManager(this);
 	mapview->attach(dm);
 	connect(dm,   SIGNAL(packsChanged()),
@@ -214,7 +214,6 @@ void Minutor::toggleFlags()
 	if (mobSpawnAct->isChecked())     flags |= MapView::flgMobSpawn;
 	if (caveModeAct->isChecked())     flags |= MapView::flgCaveMode;
 	if (depthShadingAct->isChecked()) flags |= MapView::flgDepthShading;
-	//if (entitiesAct->isChecked())     flags |= MapView::flgShowEntities;
 	mapview->setFlags(flags);
 	mapview->clearSpecialBlockTypes();
 
@@ -491,7 +490,7 @@ void Minutor::loadWorld(QDir path)
 				p->setData(locations.count());
 				locations.append(Location(posX, posZ));
 				connect(p, SIGNAL(triggered()),
-						this, SLOT(jumpToLocation()));
+				        this, SLOT(jumpToLocation()));
 				players.append(p);
 				if (player.has("SpawnX")) //player has a bed
 				{
@@ -551,8 +550,6 @@ void Minutor::specialBlock(int x, int y, int z, QString type, QString display, Q
 
 void Minutor::showProperties(int x, int y, int z)
 {
-	//qDebug("and here is where we would show the properties");
-
 	QMap<QString, QVariant> values;
 	EntityMap::iterator it, itEnd = entities.end();
 	for (it = entities.begin(); it != itEnd; ++it)
