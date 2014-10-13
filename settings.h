@@ -28,18 +28,19 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
-#include <QtWidgets/QWidget>
+#include <QDialog>
 
-class Settings : public QWidget
+#include "ui_settings.h"
+
+
+class Settings : public QDialog
 {
 	Q_OBJECT
 public:
 	explicit Settings(QWidget *parent = 0);
 
-	QSize minimumSizeHint() const;
-	QSize sizeHint() const;
-
-	bool update;
+	bool autoUpdate;
+	bool verticalDepth;
 	QString mcpath;
 
 signals:
@@ -49,10 +50,15 @@ signals:
 	void locationChanged(const QString &);
 
 private slots:
-	void autoUpdate(bool);
-	void chooseLocation(bool);
-	void chooseDefault(bool);
+	void toggleAutoUpdate(bool);
+	void browseLocation(bool);
+	void toggleDefaultLocation(bool);
 	void pathChanged(const QString &);
+	void toggleVerticalDepth(bool);
+
+private:
+	Ui::Settings m_ui;
+
 };
 
 #endif // SETTINGS_H

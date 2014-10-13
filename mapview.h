@@ -80,6 +80,7 @@ public slots:
 
 signals:
 	void hoverTextChanged(QString text);
+	void demandDepthChange(int value);
     void foundSpecialBlock(int x, int y, int z, QString type, QString display, QVariant properties);
     void showProperties(int x, int y, int z);
 

@@ -52,4 +52,5 @@ target.path = /usr/bin
 INSTALLS += desktopfile pixmapfile target
 
 FORMS += \
-    properties.ui
+    properties.ui \
+    settings.ui

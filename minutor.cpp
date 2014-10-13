@@ -53,11 +53,11 @@ Minutor::Minutor()
 	mapview = new MapView;
 	connect(mapview,     SIGNAL(hoverTextChanged(QString)),
 	        statusBar(), SLOT(showMessage(QString)));
-    connect(mapview,     SIGNAL(foundSpecialBlock(int,int,int,QString,QString,QVariant)),
-            this,        SLOT(specialBlock(int,int,int,QString,QString,QVariant)));
-    connect(mapview,     SIGNAL(showProperties(int,int,int)),
-            this,        SLOT(showProperties(int,int,int)));
-    dm=new DefinitionManager(this);
+	connect(mapview,     SIGNAL(foundSpecialBlock(int,int,int,QString,QString,QVariant)),
+	        this,        SLOT(specialBlock(int,int,int,QString,QString,QVariant)));
+	connect(mapview,     SIGNAL(showProperties(int,int,int)),
+	        this,        SLOT(showProperties(int,int,int)));
+	dm=new DefinitionManager(this);
 	mapview->attach(dm);
 	connect(dm,   SIGNAL(packsChanged()),
 	        this, SLOT(updateDimensions()));
@@ -69,28 +69,38 @@ Minutor::Minutor()
 	        this,     SLOT(rescanWorlds()));
 
 
-	if (settings->update)
+	if (settings->autoUpdate)
 		dm->autoUpdate();
 
 	createActions();
 	createMenus();
 	createStatusBar();
 
-	depth = new LabelledSlider;
+	QBoxLayout *mainLayout;
+	if (settings->verticalDepth)
+	{
+		mainLayout = new QHBoxLayout;
+		depth = new LabelledSlider(Qt::Vertical);
+		mainLayout->addWidget(mapview,1);
+		mainLayout->addWidget(depth);
+	} else {
+		mainLayout = new QVBoxLayout;
+		depth = new LabelledSlider(Qt::Horizontal);
+		mainLayout->addWidget(depth);
+		mainLayout->addWidget(mapview,1);
+	}
 	depth->setValue(255);
+	mainLayout->setSpacing(0);
+	mainLayout->setContentsMargins(0,0,0,0);
 
 	connect(depth,   SIGNAL(valueChanged(int)),
 	        mapview, SLOT(setDepth(int)));
+	connect(mapview, SIGNAL(demandDepthChange(int)),
+	        depth,   SLOT(changeValue(int)));
 	connect(this,    SIGNAL(worldLoaded(bool)),
 	        mapview, SLOT(setEnabled(bool)));
-	connect(this,  SIGNAL(worldLoaded(bool)),
-	        depth, SLOT(setEnabled(bool)));
-
-	QVBoxLayout *mainLayout = new QVBoxLayout;
-	mainLayout->addWidget(depth);
-	mainLayout->addWidget(mapview,1);
-	mainLayout->setSpacing(0);
-	mainLayout->setContentsMargins(0,0,0,0);
+	connect(this,    SIGNAL(worldLoaded(bool)),
+	        depth,   SLOT(setEnabled(bool)));
 
 	QWidget *central=new QWidget;
 	central->setLayout(mainLayout);
@@ -100,7 +110,7 @@ Minutor::Minutor()
 
 	setWindowTitle(qApp->applicationName());
 
-    propView = new Properties(this);
+	propView = new Properties(this);
 
 	emit worldLoaded(false);
 }
@@ -147,10 +157,10 @@ void Minutor::save()
 		progress->setCancelButton(NULL);
 		progress->setMaximum(100);
 		progress->show();
-        connect(ws,   SIGNAL(progress(QString,double)),
-                this, SLOT(saveProgress(QString,double)));
-        connect(ws,   SIGNAL(finished()),
-                this, SLOT(saveFinished()));
+		connect(ws,   SIGNAL(progress(QString,double)),
+		        this, SLOT(saveProgress(QString,double)));
+		connect(ws,   SIGNAL(finished()),
+		        this, SLOT(saveFinished()));
 		QThreadPool::globalInstance()->start(ws);
 	}
 }
@@ -204,19 +214,19 @@ void Minutor::toggleFlags()
 	if (mobSpawnAct->isChecked())     flags |= MapView::flgMobSpawn;
 	if (caveModeAct->isChecked())     flags |= MapView::flgCaveMode;
 	if (depthShadingAct->isChecked()) flags |= MapView::flgDepthShading;
-    //if (entitiesAct->isChecked())     flags |= MapView::flgShowEntities;
-    mapview->setFlags(flags);
-    mapview->clearSpecialBlockTypes();
+	//if (entitiesAct->isChecked())     flags |= MapView::flgShowEntities;
+	mapview->setFlags(flags);
+	mapview->clearSpecialBlockTypes();
 
-    QList<QAction*>::iterator it, itEnd = entityActions.end();
-    for (it = entityActions.begin(); it != itEnd; ++it)
-    {
-        if ((*it)->isChecked())
-        {
-            mapview->addSpecialBlockType((*it)->data().toString());
-        }
-    }
-    mapview->redraw();
+	QList<QAction*>::iterator it, itEnd = entityActions.end();
+	for (it = entityActions.begin(); it != itEnd; ++it)
+	{
+		if ((*it)->isChecked())
+		{
+			mapview->addSpecialBlockType((*it)->data().toString());
+		}
+	}
+	mapview->redraw();
 }
 
 void Minutor::viewDimension(Dimension &dim)
@@ -311,7 +321,7 @@ void Minutor::createActions()
 	        this,        SLOT(toggleFlags()));
 	caveModeAct->setEnabled(false);
 
-    manageDefsAct = new QAction(tr("Manage &Definitions..."),this);
+	manageDefsAct = new QAction(tr("Manage &Definitions..."),this);
 	manageDefsAct->setStatusTip(tr("Manage block and biome definitions"));
 	connect(manageDefsAct, SIGNAL(triggered()),
 	        dm,            SLOT(show()));
@@ -320,7 +330,7 @@ void Minutor::createActions()
 	refreshAct->setShortcut(tr("F2"));
 	refreshAct->setStatusTip(tr("Reloads all chunks, but keeps the same position / dimension"));
 	connect(refreshAct, SIGNAL(triggered()),
-		mapview,    SLOT(clearCache()));
+	        mapview,    SLOT(clearCache()));
 
 	// [Help]
 	aboutAct = new QAction(tr("&About"),this);
@@ -368,9 +378,9 @@ void Minutor::createMenus()
 	viewMenu->addAction(mobSpawnAct);
 	viewMenu->addAction(caveModeAct);
 	viewMenu->addAction(depthShadingAct);
-    // [View->Special]
-    entitiesMenu = viewMenu->addMenu(tr("S&pecial"));
-    entitiesMenu->setEnabled(false);
+	// [View->Special]
+	entitiesMenu = viewMenu->addMenu(tr("S&pecial"));
+	entitiesMenu->setEnabled(false);
 
 	viewMenu->addSeparator();
 	viewMenu->addAction(refreshAct);
@@ -449,8 +459,8 @@ void Minutor::loadWorld(QDir path)
 	locations.append(Location(data->at("SpawnX")->toDouble(),
 							  data->at("SpawnZ")->toDouble()));
 	//show saved players
-    if (path.cd("playerdata") || path.cd("players"))
-    {
+	if (path.cd("playerdata") || path.cd("players"))
+	{
 		QDirIterator it(path);
 		bool hasPlayers=false;
 		while (it.hasNext())
@@ -469,15 +479,15 @@ void Minutor::loadWorld(QDir path)
 					posX *= 8;
 					posZ *= 8;
 				}
-                QString playerName = it.fileInfo().completeBaseName();
-                QRegExp id("[0-9a-z]{8,8}\\-[0-9a-z]{4,4}\\-[0-9a-z]{4,4}\\-[0-9a-z]{4,4}\\-[0-9a-z]{12,12}");
-                if (id.exactMatch(playerName))
-                {
-                    playerName = QString("Player %1").arg(players.length());
-                }
+				QString playerName = it.fileInfo().completeBaseName();
+				QRegExp id("[0-9a-z]{8,8}\\-[0-9a-z]{4,4}\\-[0-9a-z]{4,4}\\-[0-9a-z]{4,4}\\-[0-9a-z]{12,12}");
+				if (id.exactMatch(playerName))
+				{
+					playerName = QString("Player %1").arg(players.length());
+				}
 
 				QAction *p=new QAction(this);
-                p->setText(playerName);
+				p->setText(playerName);
 				p->setData(locations.count());
 				locations.append(Location(posX, posZ));
 				connect(p, SIGNAL(triggered()),
@@ -488,7 +498,7 @@ void Minutor::loadWorld(QDir path)
 					p=new QAction(this);
 
 
-                    p->setText(playerName+"'s Bed");
+					p->setText(playerName+"'s Bed");
 					p->setData(locations.count());
 					locations.append(Location(player.at("SpawnX")->toDouble(),
 											  player.at("SpawnZ")->toDouble()));
@@ -523,44 +533,44 @@ void Minutor::rescanWorlds()
 
 void Minutor::specialBlock(int x, int y, int z, QString type, QString display, QVariant properties)
 {
-    Entity e = {x, y, z, type, display, properties};
-    if (!entities.contains(type))
-    {
-        entitiesMenu->setEnabled(true);
-        entityActions.push_back(new QAction("&" + type, this));
-        entityActions.last()->setShortcut(QKeySequence("Ctrl+" + type.mid(0, 1)));
-        entityActions.last()->setStatusTip(QString(tr("Toggle viewing of %1").arg(type)));
-        entityActions.last()->setEnabled(true);
-        entityActions.last()->setData(type);
-        entityActions.last()->setCheckable(true);
-        entitiesMenu->addAction(entityActions.last());
-        connect(entityActions.last(), SIGNAL(triggered()), this, SLOT(toggleFlags()));
-    }
-    entities[type].insertMulti(qMakePair(x, z), e);
+	Entity e = {x, y, z, type, display, properties};
+	if (!entities.contains(type))
+	{
+		entitiesMenu->setEnabled(true);
+		entityActions.push_back(new QAction("&" + type, this));
+		entityActions.last()->setShortcut(QKeySequence("Ctrl+" + type.mid(0, 1)));
+		entityActions.last()->setStatusTip(QString(tr("Toggle viewing of %1").arg(type)));
+		entityActions.last()->setEnabled(true);
+		entityActions.last()->setData(type);
+		entityActions.last()->setCheckable(true);
+		entitiesMenu->addAction(entityActions.last());
+		connect(entityActions.last(), SIGNAL(triggered()), this, SLOT(toggleFlags()));
+	}
+	entities[type].insertMulti(qMakePair(x, z), e);
 }
 
 void Minutor::showProperties(int x, int y, int z)
 {
-    //qDebug("and here is where we would show the properties");
+	//qDebug("and here is where we would show the properties");
 
-    QMap<QString, QVariant> values;
-    EntityMap::iterator it, itEnd = entities.end();
-    for (it = entities.begin(); it != itEnd; ++it)
-    {
-        QList<Entity> entities = it->values(qMakePair(x, z));
-        if (entities.size() > 0)
-        {
-            QList<QVariant> list;
-            foreach(const Entity& e, entities)
-            {
-                list.push_back(e.properties);
-            }
-            values.insert(it.key(), list);
-        }
-    }
-    if (!values.empty())
-    {
-        propView->DisplayProperties(values);
-        propView->show();
-    }
+	QMap<QString, QVariant> values;
+	EntityMap::iterator it, itEnd = entities.end();
+	for (it = entities.begin(); it != itEnd; ++it)
+	{
+		QList<Entity> entities = it->values(qMakePair(x, z));
+		if (entities.size() > 0)
+		{
+			QList<QVariant> list;
+			foreach(const Entity& e, entities)
+			{
+				list.push_back(e.properties);
+			}
+			values.insert(it.key(), list);
+		}
+	}
+	if (!values.empty())
+	{
+		propView->DisplayProperties(values);
+		propView->show();
+	}
 }

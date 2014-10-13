@@ -203,10 +203,17 @@ void MapView::mouseDoubleClickEvent(QMouseEvent*event)
 
 void MapView::wheelEvent(QWheelEvent *event)
 {
-	zoom+=floor(event->delta()/90.0);
-	if (zoom<1.0) zoom=1.0;
-	if (zoom>20.0) zoom=20.0;
-	redraw();
+    if ((event->modifiers() & Qt::ShiftModifier) == Qt::ShiftModifier) // change depth
+	{
+		emit demandDepthChange(event->delta()/120);
+	}
+	else          // change zoom
+	{
+		zoom+=floor(event->delta()/90.0);
+		if (zoom<1.0) zoom=1.0;
+		if (zoom>20.0) zoom=20.0;
+		redraw();
+	}
 }
 void MapView::keyPressEvent(QKeyEvent *event)
 {
@@ -245,10 +252,14 @@ void MapView::keyPressEvent(QKeyEvent *event)
 		redraw();
 		break;
 	case Qt::Key_Home:
+	case Qt::Key_Plus:
 	case Qt::Key_BracketLeft:
+		emit demandDepthChange(+1);
 		break;
 	case Qt::Key_End:
+	case Qt::Key_Minus:
 	case Qt::Key_BracketRight:
+		emit demandDepthChange(-1);
 		break;
 	}
 }

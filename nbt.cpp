@@ -29,6 +29,7 @@
 #include <QFile>
 #include <QByteArray>
 #include <QDebug>
+#include <QStringList>
 
 #include "nbt.h"
 #include <zlib.h>
