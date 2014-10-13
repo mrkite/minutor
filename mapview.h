@@ -46,7 +46,8 @@ public:
 		flgLighting     = 1,
 		flgMobSpawn     = 2,
 		flgCaveMode     = 4,
-		flgDepthShading = 8
+        flgDepthShading = 8,
+        flgShowEntities = 16
 	};
 
 
@@ -60,6 +61,8 @@ public:
 	void setLocation(double x,double z);
 	void setDimension(QString path,int scale);
 	void setFlags(int flags);
+    void addSpecialBlockType(QString type);
+    void clearSpecialBlockTypes();
 
 	// public for saving the png
 	void renderChunk(Chunk *chunk);
@@ -70,6 +73,7 @@ public slots:
 	void setDepth(int depth);
 	void chunkUpdated(int x,int z);
 	void redraw();
+    void markBlock(int x, int y, int z, QString type, QString message);
 
 	/// Clears the cache and redraws, causing all chunks to be re-loaded; but keeps the viewport
 	void clearCache();
@@ -77,11 +81,14 @@ public slots:
 signals:
 	void hoverTextChanged(QString text);
 	void demandDepthChange(int value);
+    void foundSpecialBlock(int x, int y, int z, QString type, QString display, QVariant properties);
+    void showProperties(int x, int y, int z);
 
 protected:
 	void mousePressEvent(QMouseEvent *event);
 	void mouseMoveEvent(QMouseEvent *event);
 	void mouseReleaseEvent(QMouseEvent *);
+    void mouseDoubleClickEvent(QMouseEvent*event);
 	void wheelEvent(QWheelEvent *event);
 	void keyPressEvent(QKeyEvent *event);
 	void resizeEvent(QResizeEvent *);
@@ -91,6 +98,7 @@ private:
 
 	void drawChunk(int x,int z);
 	void getToolTip(int x,int z);
+    int getY(int x, int z);
 
 	int depth;
 	double x,z;
@@ -103,6 +111,7 @@ private:
 	BlockIdentifier *blocks;
 	BiomeIdentifier *biomes;
 	uchar placeholder[16*16*4]; // no chunk found placeholder
+    QSet<QString> specialBlockTypes;
 };
 
 #endif

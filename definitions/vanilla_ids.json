@@ -75,32 +75,32 @@
     },
     {
       "id": 5,
-      "name": "Oak Plank",
+      "name": "Oak Wood Plank",
       "color": "b4905a",
       "variants": [
         {
           "data": 1,
-          "name": "Spruce Plank",
+          "name": "Spruce Wood Plank",
           "color": "805e36"
         },
         {
           "data": 2,
-          "name": "Birch Plank",
+          "name": "Birch Wood Plank",
           "color": "c8b77a"
         },
         {
           "data": 3,
-          "name": "Jungle Plank",
+          "name": "Jungle Wood Plank",
           "color": "b1805c"
         },
         {
           "data": 4,
-          "name": "Acacia Plank",
+          "name": "Acacia Wood Plank",
           "color": "ba6337"
         },
         {
           "data": 5,
-          "name": "Dark Oak Plank",
+          "name": "Dark Oak Wood Plank",
           "color": "462d15"
         }
       ]
@@ -542,12 +542,12 @@
     },
     {
       "id": 41,
-      "name": "Gold Block",
+      "name": "Block of Gold",
       "color": "fdfb4f"
     },
     {
       "id": 42,
-      "name": "Iron Block",
+      "name": "Block of Iron",
       "color": "e6e6e6"
     },
     {
@@ -716,7 +716,7 @@
     },
     {
       "id": 57,
-      "name": "Diamond Block",
+      "name": "Block of Diamond",
       "color": "91e8e4"
     },
     {
@@ -769,7 +769,7 @@
     },
     {
       "id": 64,
-      "name": "Wooden Door",
+      "name": "Oak Door",
       "color": "b0572a",
       "transparent": true
     },
@@ -907,8 +907,9 @@
     },
     {
       "id": 85,
-      "name": "Fence",
-      "color": "735e39",
+      "name": "Oak Fence",
+      "color": "b4905a",
+      "alpha": 0.75,
       "transparent": true
     },
     {
@@ -939,12 +940,12 @@
     },
     {
       "id": 91,
-      "name": "Jack o' Lantern",
+      "name": "Jack o'Lantern",
       "color": "e9b416"
     },
     {
       "id": 92,
-      "name": "Cake Block",
+      "name": "Cake",
       "color": "eae9eb",
       "transparent": true
     },
@@ -1054,16 +1055,33 @@
     },
     {
       "id": 97,
-      "name": "Monster Egg",
-      "color": "767676",
+      "name": "Stone Monster Egg",
+      "color": "7a7a7a",
       "variants": [
         {
           "data": 1,
-          "color": "919191"
+          "name": "Cobblestone Monster Egg",
+          "color": "787878"
         },
         {
           "data": 2,
-          "color": "7b7b7b"
+          "name": "Stone Brick Monster Egg",
+          "color": "777777"
+        },
+        {
+          "data": 3,
+          "name": "Mossy Stone Brick Monster Egg",
+          "color": "707467"
+        },
+        {
+          "data": 4,
+          "name": "Cracked Stone Brick Monster Egg",
+          "color": "747474"
+        },
+        {
+          "data": 5,
+          "name": "Chiseled Stone Brick Monster Egg",
+          "color": "747474"
         }
       ]
     },
@@ -1129,6 +1147,18 @@
         {
           "data": 9,
           "color": "8f6b53"
+        },
+        {
+          "data": 10,
+          "color": "d2b17d"
+        },
+        {
+          "data": 14,
+          "color": "8f6b53"
+        },
+        {
+          "data": 15,
+          "color": "cdc9bf"
         }
       ]
     },
@@ -1172,6 +1202,18 @@
         {
           "data": 9,
           "color": "b51d1b"
+        },
+        {
+          "data": 10,
+          "color": "d2b17d"
+        },
+        {
+          "data": 14,
+          "color": "b51d1b"
+        },
+        {
+          "data": 15,
+          "color": "cdc9bf"
         }
       ]
     },
@@ -1214,8 +1256,9 @@
     },
     {
       "id": 107,
-      "name": "Fence Gate",
-      "color": "9f844d",
+      "name": "Oak Fence Gate",
+      "color": "b4905a",
+      "alpha": 0.75,
       "transparent": true
     },
     {
@@ -1333,66 +1376,66 @@
     },
     {
       "id": 125,
-      "name": "Double Oak Slab",
+      "name": "Double Oak Wood Slab",
       "color": "b4905a",
       "variants": [
         {
           "data": 1,
-          "name": "Double Spruce Slab",
+          "name": "Double Spruce Wood Slab",
           "color": "664f2f"
         },
         {
           "data": 2,
-          "name": "Double Birch Slab",
+          "name": "Double Birch Wood Slab",
           "color": "d7cb8d"
         },
         {
           "data": 3,
-          "name": "Double Jungle Slab",
+          "name": "Double Jungle Wood Slab",
           "color": "b1805c"
         },
         {
           "data": 4,
-          "name": "Double Acacia Slab",
+          "name": "Double Acacia Wood Slab",
           "color": "ad5d32"
         },
         {
           "data": 5,
-          "name": "Double Dark Oak Slab",
+          "name": "Double Dark Oak Wood Slab",
           "color": "462d15"
         }
       ]
     },
     {
       "id": 126,
-      "name": "Oak Slab",
+      "name": "Oak Wood Slab",
       "color": "b4905a",
       "mask": 7,
       "transparent": true,
       "variants": [
         {
           "data": 1,
-          "name": "Spruce Slab",
+          "name": "Spruce Wood Slab",
           "color": "664f2f"
         },
         {
           "data": 2,
-          "name": "Birch Slab",
+          "name": "Birch Wood Slab",
           "color": "d7cb8d"
         },
         {
           "data": 3,
-          "name": "Jungle Slab",
+          "name": "Jungle Wood Slab",
           "color": "b1805c"
         },
         {
           "data": 4,
-          "name": "Acacia Slab",
+          "name": "Acacia Wood Slab",
           "color": "ba6337"
         },
         {
           "data": 5,
-          "name": "Dark Oak Slab",
+          "name": "Dark Oak Wood Slab",
           "color": "462d15"
         }
       ]
@@ -1445,7 +1488,7 @@
     },
     {
       "id": 133,
-      "name": "Emerald Block",
+      "name": "Block of Emerald",
       "color": "64ea8a"
     },
     {
@@ -1542,6 +1585,16 @@
           "data": 11,
           "name": "Flower Pot (fern)",
           "color": "315e05"
+        },
+        {
+          "data": 12,
+          "name": "Flower Pot (acacia)",
+          "color": "946428"
+        },
+        {
+          "data": 13,
+          "name": "Flower Pot (dark oak)",
+          "color": "315e05"
         }
       ]
     },
@@ -1581,7 +1634,7 @@
     },
     {
       "id": 144,
-      "name": "Head",
+      "name": "Mob Head",
       "color": "1a1a1a",
       "transparent": true
     },
@@ -1589,7 +1642,18 @@
       "id": 145,
       "name": "Anvil",
       "color": "474747",
-      "transparent": true
+      "transparent": true,
+      "mask": 12,
+      "variants": [
+        {
+          "data": 4,
+          "name": "Slightly Damaged Anvil"
+        },
+        {
+          "data": 8,
+          "name": "Very Damaged Anvil"
+        }
+      ]
     },
     {
       "id": 146,
@@ -1637,7 +1701,7 @@
     },
     {
       "id": 152,
-      "name": "Redstone Block",
+      "name": "Block of Redstone",
       "color": "bb1c0a",
       "transparent": true,
       "canProvidePower": true
@@ -1655,7 +1719,7 @@
     },
     {
       "id": 155,
-      "name": "Quartz Block",
+      "name": "Block of Quartz",
       "color": "edebe5",
       "variants": [
         {
@@ -2038,7 +2102,7 @@
     },
     {
       "id": 173,
-      "name": "Coal Block",
+      "name": "Block of Coal",
       "color": "2b2b2b"
     },
     {
@@ -2145,6 +2209,106 @@
           "color": "a7551e"
         }
       ]
+    },
+    {
+      "id": 183,
+      "name": "Spruce Fence Gate",
+      "color": "805e36",
+      "alpha": 0.75,
+      "transparent": true
+    },
+    {
+      "id": 184,
+      "name": "Birch Fence Gate",
+      "color": "c8b77a",
+      "alpha": 0.75,
+      "transparent": true
+    },
+    {
+      "id": 185,
+      "name": "Jungle Fence Gate",
+      "color": "b1805c",
+      "alpha": 0.75,
+      "transparent": true
+    },
+    {
+      "id": 186,
+      "name": "Dark Oak Fence Gate",
+      "color": "462d15",
+      "alpha": 0.75,
+      "transparent": true
+    },
+    {
+      "id": 187,
+      "name": "Acacia Fence Gate",
+      "color": "ba6337",
+      "alpha": 0.75,
+      "transparent": true
+    },
+    {
+      "id": 188,
+      "name": "Spruce Fence",
+      "color": "805e36",
+      "alpha": 0.75,
+      "transparent": true
+    },
+    {
+      "id": 189,
+      "name": "Birch Fence",
+      "color": "c8b77a",
+      "alpha": 0.75,
+      "transparent": true
+    },
+    {
+      "id": 190,
+      "name": "Jungle Fence",
+      "color": "b1805c",
+      "alpha": 0.75,
+      "transparent": true
+    },
+    {
+      "id": 191,
+      "name": "Dark Oak Fence",
+      "color": "462d15",
+      "alpha": 0.75,
+      "transparent": true
+    },
+    {
+      "id": 192,
+      "name": "Acacia Fence",
+      "color": "ba6337",
+      "alpha": 0.75,
+      "transparent": true
+    },
+    {
+      "id": 193,
+      "name": "Spruce Door",
+      "color": "6e563b",
+      "transparent": true
+    },
+    {
+      "id": 193,
+      "name": "Birch Door",
+      "color": "d2caa3",
+      "transparent": true
+    },
+    {
+      "id": 193,
+      "name": "Jungle Door",
+      "color": "ac7da3",
+      "transparent": true
+    },
+    {
+      "id": 193,
+      "name": "Acacia Door",
+      "color": "a5615b",
+      "transparent": true
+    },
+    {
+      "id": 193,
+      "name": "Dark Oak Door",
+      "color": "4a3118",
+      "transparent": true
     }
 
   ],

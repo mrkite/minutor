@@ -33,8 +33,10 @@
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QStatusBar>
+#include <QtWidgets/QTreeWidget>
 #include <QProgressDialog>
 #include <QDir>
+#include <QRegExp>
 #include "minutor.h"
 #include "mapview.h"
 #include "labelledslider.h"
@@ -44,13 +46,18 @@
 #include "settings.h"
 #include "dimensions.h"
 #include "worldsave.h"
+#include "properties.h"
 
 Minutor::Minutor()
 {
 	mapview = new MapView;
 	connect(mapview,     SIGNAL(hoverTextChanged(QString)),
 	        statusBar(), SLOT(showMessage(QString)));
-	dm=new DefinitionManager(this);
+    connect(mapview,     SIGNAL(foundSpecialBlock(int,int,int,QString,QString,QVariant)),
+            this,        SLOT(specialBlock(int,int,int,QString,QString,QVariant)));
+    connect(mapview,     SIGNAL(showProperties(int,int,int)),
+            this,        SLOT(showProperties(int,int,int)));
+    dm=new DefinitionManager(this);
 	mapview->attach(dm);
 	connect(dm,   SIGNAL(packsChanged()),
 	        this, SLOT(updateDimensions()));
@@ -60,6 +67,7 @@ Minutor::Minutor()
 	settings = new Settings(this);
 	connect(settings, SIGNAL(settingsUpdated()),
 	        this,     SLOT(rescanWorlds()));
+
 
 	if (settings->update)
 		dm->autoUpdate();
@@ -93,6 +101,8 @@ Minutor::Minutor()
 	layout()->setContentsMargins(0,0,0,0);
 
 	setWindowTitle(qApp->applicationName());
+
+    propView = new Properties(this);
 
 	emit worldLoaded(false);
 }
@@ -196,8 +206,19 @@ void Minutor::toggleFlags()
 	if (mobSpawnAct->isChecked())     flags |= MapView::flgMobSpawn;
 	if (caveModeAct->isChecked())     flags |= MapView::flgCaveMode;
 	if (depthShadingAct->isChecked()) flags |= MapView::flgDepthShading;
+    //if (entitiesAct->isChecked())     flags |= MapView::flgShowEntities;
+    mapview->setFlags(flags);
+    mapview->clearSpecialBlockTypes();
 
-	mapview->setFlags(flags);
+    QList<QAction*>::iterator it, itEnd = entityActions.end();
+    for (it = entityActions.begin(); it != itEnd; ++it)
+    {
+        if ((*it)->isChecked())
+        {
+            mapview->addSpecialBlockType((*it)->data().toString());
+        }
+    }
+    mapview->redraw();
 }
 
 void Minutor::viewDimension(Dimension &dim)
@@ -292,8 +313,7 @@ void Minutor::createActions()
 	        this,        SLOT(toggleFlags()));
 	caveModeAct->setEnabled(false);
 
-
-	manageDefsAct = new QAction(tr("Manage &Definitions..."),this);
+    manageDefsAct = new QAction(tr("Manage &Definitions..."),this);
 	manageDefsAct->setStatusTip(tr("Manage block and biome definitions"));
 	connect(manageDefsAct, SIGNAL(triggered()),
 	        dm,            SLOT(show()));
@@ -350,6 +370,10 @@ void Minutor::createMenus()
 	viewMenu->addAction(mobSpawnAct);
 	viewMenu->addAction(caveModeAct);
 	viewMenu->addAction(depthShadingAct);
+    // [View->Special]
+    entitiesMenu = viewMenu->addMenu(tr("S&pecial"));
+    entitiesMenu->setEnabled(false);
+
 	viewMenu->addSeparator();
 	viewMenu->addAction(refreshAct);
 	viewMenu->addSeparator();
@@ -427,9 +451,8 @@ void Minutor::loadWorld(QDir path)
 	locations.append(Location(data->at("SpawnX")->toDouble(),
 							  data->at("SpawnZ")->toDouble()));
 	//show saved players
-	if (path.exists("players"))
-	{
-		path.cd("players");
+    if (path.cd("playerdata") || path.cd("players"))
+    {
 		QDirIterator it(path);
 		bool hasPlayers=false;
 		while (it.hasNext())
@@ -448,8 +471,15 @@ void Minutor::loadWorld(QDir path)
 					posX *= 8;
 					posZ *= 8;
 				}
+                QString playerName = it.fileInfo().completeBaseName();
+                QRegExp id("[0-9a-z]{8,8}\\-[0-9a-z]{4,4}\\-[0-9a-z]{4,4}\\-[0-9a-z]{4,4}\\-[0-9a-z]{12,12}");
+                if (id.exactMatch(playerName))
+                {
+                    playerName = QString("Player %1").arg(players.length());
+                }
+
 				QAction *p=new QAction(this);
-				p->setText(it.fileInfo().completeBaseName());
+                p->setText(playerName);
 				p->setData(locations.count());
 				locations.append(Location(posX, posZ));
 				connect(p, SIGNAL(triggered()),
@@ -458,7 +488,9 @@ void Minutor::loadWorld(QDir path)
 				if (player.has("SpawnX")) //player has a bed
 				{
 					p=new QAction(this);
-					p->setText(it.fileInfo().completeBaseName()+"'s Bed");
+
+
+                    p->setText(playerName+"'s Bed");
 					p->setData(locations.count());
 					locations.append(Location(player.at("SpawnX")->toDouble(),
 											  player.at("SpawnZ")->toDouble()));
@@ -489,4 +521,48 @@ void Minutor::rescanWorlds()
 	worldMenu->setEnabled(worlds.count()!=0);
 	//we don't care about the auto-update toggle, since that only happens
 	//on startup anyway.
+}
+
+void Minutor::specialBlock(int x, int y, int z, QString type, QString display, QVariant properties)
+{
+    Entity e = {x, y, z, type, display, properties};
+    if (!entities.contains(type))
+    {
+        entitiesMenu->setEnabled(true);
+        entityActions.push_back(new QAction("&" + type, this));
+        entityActions.last()->setShortcut(QKeySequence("Ctrl+" + type.mid(0, 1)));
+        entityActions.last()->setStatusTip(QString(tr("Toggle viewing of %1").arg(type)));
+        entityActions.last()->setEnabled(true);
+        entityActions.last()->setData(type);
+        entityActions.last()->setCheckable(true);
+        entitiesMenu->addAction(entityActions.last());
+        connect(entityActions.last(), SIGNAL(triggered()), this, SLOT(toggleFlags()));
+    }
+    entities[type].insertMulti(qMakePair(x, z), e);
+}
+
+void Minutor::showProperties(int x, int y, int z)
+{
+    //qDebug("and here is where we would show the properties");
+
+    QMap<QString, QVariant> values;
+    EntityMap::iterator it, itEnd = entities.end();
+    for (it = entities.begin(); it != itEnd; ++it)
+    {
+        QList<Entity> entities = it->values(qMakePair(x, z));
+        if (entities.size() > 0)
+        {
+            QList<QVariant> list;
+            foreach(const Entity& e, entities)
+            {
+                list.push_back(e.properties);
+            }
+            values.insert(it.key(), list);
+        }
+    }
+    if (!values.empty())
+    {
+        propView->DisplayProperties(values);
+        propView->show();
+    }
 }
