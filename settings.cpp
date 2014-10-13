@@ -26,92 +26,61 @@
  */
 
 #include "settings.h"
-#include <QDebug>
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QFormLayout>
-#include <QtWidgets/QGroupBox>
-#include <QtWidgets/QVBoxLayout>
-#include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QLineEdit>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QCheckBox>
+
 #include <QtWidgets/QFileDialog>
 #include <QSettings>
 #include <QDir>
 
-Settings::Settings(QWidget *parent) : QWidget(parent)
+Settings::Settings(QWidget *parent) : QDialog(parent)
 {
-	setWindowFlags(Qt::Window);
+	m_ui.setupUi(this);
+
 	setWindowTitle(tr("%1 Settings").arg(qApp->applicationName()));
 
-	QVBoxLayout *layout=new QVBoxLayout;
+	connect(m_ui.checkBox_DefaultLocation, SIGNAL(toggled(bool)),
+			this,                          SLOT(toggleDefaultLocation(bool)));
+	connect(m_ui.checkBox_DefaultLocation, SIGNAL(toggled(bool)),
+			m_ui.lineEdit_Location,        SLOT(setDisabled(bool)));
 
-	QGroupBox *paths=new QGroupBox("Minecraft Location");
-	QVBoxLayout *pathlayout=new QVBoxLayout;
-	QCheckBox *def=new QCheckBox("Use Default Location");
-	connect(def,SIGNAL(toggled(bool)),
-			this,SLOT(chooseDefault(bool)));
-	pathlayout->addWidget(def);
+	connect(this,                          SIGNAL(locationChanged(QString)),
+			m_ui.lineEdit_Location,        SLOT(setText(const QString &)));
 
+	connect(m_ui.lineEdit_Location,        SIGNAL(textChanged(const QString &)),
+			this,                          SLOT(pathChanged(const QString &)));
+
+	connect(m_ui.pushButton_Browse,        SIGNAL(clicked(bool)),
+			this,                          SLOT(browseLocation(bool)));
+
+	connect(m_ui.checkBox_VerticalDepth,   SIGNAL(toggled(bool)),
+			this,                          SLOT(toggleVerticalDepth(bool)));
+
+	connect(m_ui.checkBox_AutoUpdate,      SIGNAL(toggled(bool)),
+			this,                          SLOT(toggleAutoUpdate(bool)));
+
+	//set stored settings
 	QSettings info;
-
-	QHBoxLayout *custlayout=new QHBoxLayout;
-	QLineEdit *le=new QLineEdit();
-	connect(this,SIGNAL(locationChanged(QString)),
-			le,SLOT(setText(const QString &)));
-	connect(le,SIGNAL(textChanged(const QString &)),
-			this,SLOT(pathChanged(const QString &)));
-	//after the connection to set defaults
-	le->setText(info.value("mcdir","").toString());
-	custlayout->addWidget(le);
-	QPushButton *browse=new QPushButton("Browse");
-	connect(browse,SIGNAL(clicked(bool)),
-			this,SLOT(chooseLocation(bool)));
-	custlayout->addWidget(browse);
-	QWidget *custom=new QWidget;
-	custom->setLayout(custlayout);
-	pathlayout->addWidget(custom);
-
-	connect(def,SIGNAL(toggled(bool)),
-			custom,SLOT(setDisabled(bool)));
-	//after connection to set defaults
-	def->setChecked(info.value("usedefault",true).toBool());
-
-	paths->setLayout(pathlayout);
-	layout->addWidget(paths);
-
-	QCheckBox *update=new QCheckBox("Auto-check for updates");
-	connect(update,SIGNAL(toggled(bool)),
-			this,SLOT(autoUpdate(bool)));
-	//after connection to set defaults
-	update->setChecked(info.value("autoupdate",true).toBool());
-	layout->addWidget(update);
-
-	setLayout(layout);
+	m_ui.checkBox_AutoUpdate     ->setChecked(info.value("autoupdate",true).toBool());
+	m_ui.lineEdit_Location       ->setText   (info.value("mcdir","").toString());
+	m_ui.lineEdit_Location       ->setDisabled(m_ui.checkBox_DefaultLocation->isChecked());
+	m_ui.checkBox_DefaultLocation->setChecked(info.value("usedefault",true).toBool());
+	m_ui.checkBox_VerticalDepth  ->setChecked(info.value("verticaldepth",true).toBool());
 }
 
-QSize Settings::minimumSizeHint() const
+void Settings::toggleAutoUpdate(bool up)
 {
-	return QSize(400,150);
-}
-QSize Settings::sizeHint() const
-{
-	return QSize(400,150);
-}
-
-void Settings::autoUpdate(bool up)
-{
-	update=up;
+	autoUpdate=up;
 	QSettings info;
 	info.setValue("autoupdate",up);
 	emit settingsUpdated();
 }
-void Settings::chooseLocation(bool)
+
+void Settings::browseLocation(bool)
 {
 	QString dirName=QFileDialog::getExistingDirectory(this,tr("Find Minecraft"));
 	if (!dirName.isEmpty())
 		emit locationChanged(dirName);
 }
+
 void Settings::pathChanged(const QString &path)
 {
 	mcpath=path;
@@ -120,7 +89,8 @@ void Settings::pathChanged(const QString &path)
 	//save settings
 	emit settingsUpdated();
 }
-void Settings::chooseDefault(bool def)
+
+void Settings::toggleDefaultLocation(bool def)
 {
 	QSettings info;
 	info.setValue("usedefault",def);
@@ -140,4 +110,12 @@ void Settings::chooseDefault(bool def)
 #endif
 
 	emit locationChanged(mc);
+}
+
+void Settings::toggleVerticalDepth(bool value)
+{
+	verticalDepth=value;
+	QSettings info;
+	info.setValue("verticaldepth",value);
+	emit settingsUpdated();
 }

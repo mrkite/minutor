@@ -29,9 +29,9 @@
 #include "labelledslider.h"
 #include <QVBoxLayout>
 
-LabelledSlider::LabelledSlider(QWidget *parent) : QWidget(parent)
+LabelledSlider::LabelledSlider(Qt::Orientation orientation, QWidget *parent) : QWidget(parent)
 {
-	slider = new MSlider(Qt::Vertical);
+	slider = new MSlider(orientation);
 	slider->setRange(0,255);
 
 	label = new QLabel();
@@ -42,9 +42,16 @@ LabelledSlider::LabelledSlider(QWidget *parent) : QWidget(parent)
 	connect(slider, SIGNAL(valueChanged(int)),
 	        this,   SLOT(intValueChange(int)));
 
-	QVBoxLayout *myLayout = new QVBoxLayout;
-	myLayout->addWidget(label);
-	myLayout->addWidget(slider);
+	QBoxLayout *myLayout;
+	if (orientation==Qt::Vertical){
+		myLayout = new QVBoxLayout;
+		myLayout->addWidget(label);
+		myLayout->addWidget(slider);
+	} else {
+		myLayout = new QHBoxLayout;
+		myLayout->addWidget(slider);
+		myLayout->addWidget(label);
+	}
 	setLayout(myLayout);
 	setFocusProxy(slider);
 }

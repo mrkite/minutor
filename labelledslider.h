@@ -51,7 +51,7 @@ class LabelledSlider : public QWidget
 {
 	Q_OBJECT
 public:
-	explicit LabelledSlider(QWidget *parent = 0);
+	explicit LabelledSlider(Qt::Orientation orientation, QWidget *parent = 0);
 	int value() const;
 
 signals:
