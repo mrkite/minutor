@@ -381,7 +381,7 @@
     },
     {
       "id": 34,
-      "name": "Piston Extension",
+      "name": "Piston Head",
       "color": "b4905a"
     },
     {
@@ -465,6 +465,11 @@
           "color": "1d1b1b"
         }
       ]
+    },
+    {
+      "id": 36,
+      "name": "Piston Extension",
+      "color": "b4905a"
     },
     {
       "id": 37,
