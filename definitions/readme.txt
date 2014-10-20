@@ -51,9 +51,22 @@ to be flagged with
   "spawninside": true
 
 
-All this information is gathered directly from the 1.6.4 source code or special
-test setup per block in 1.8 snapshots. As at the moment deobfuscated 1.7.x or
-1.8.x code is not available.
+All this information is gathered directly from the 1.6.4 - 1.7.10 source code
+or special test setup per block in development snapshots. As at the moment
+deobfuscated 1.8.x code is not available.
+
+
+
+Other special attribute value pairs in this file:
+
+"mask": number
+
+In case a block has variants a mask can be given to blend out bits in the data
+field that are not used to define the block itself. These bits are mostely used
+to define block orientation.
+ if a block has no variants defined,   "mask":  0 is predefined
+ if a block has some variants defined, "mask": 15 is predefined
+
 
 
 [EtlamGit]

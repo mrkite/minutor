@@ -305,10 +305,13 @@ void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent, int pack
 	}
 	else
 		block->alpha=0.0;
+
 	if (b->has("mask"))
 		block->mask=b->at("mask")->asNumber();
-	else
+	else if (b->has("variants"))
 		block->mask=0x0f;
+	else
+		block->mask=0x00;
 
 	if (b->has("variants"))
 	{

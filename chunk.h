@@ -30,7 +30,10 @@
 #define __CHUNK_H__
 
 #include <QtCore>
+#include <QVector>
+
 #include "nbt.h"
+#include "entity.h"
 class BlockIdentifier;
 
 class ChunkSection
@@ -57,8 +60,12 @@ protected:
 	ChunkSection *sections[16];
 	int renderedAt;
 	int renderedFlags;
+    QSet<QString> renderedSpecialBlockTypes;
 	bool loaded;
 	uchar image[16*16*4];	//cached render
+    QMap<QString, Entity> entities;
+    int chunkX;
+    int chunkZ;
 	friend class MapView;
 	friend class ChunkCache;
 	friend class WorldSave;
