@@ -295,10 +295,10 @@ void MapView::redraw()
 	double chunksize=16*zoom;
 
 	//first find the center block position
-    int centerchunkx=floor(x/16);
+	int centerchunkx=floor(x/16);
 	int centerchunkz=floor(z/16);
 	// and the center of the screen
-    int centerx=image.width()/2;
+	int centerx=image.width()/2;
 	int centery=image.height()/2;
 	// and align for panning
 	centerx-=(x-centerchunkx*16)*zoom;
@@ -310,36 +310,36 @@ void MapView::redraw()
 	int blockswide=image.width()/chunksize+3;
 	int blockstall=image.height()/chunksize+3;
 
-    for (int cz=startz;cz<startz+blockstall;cz++)
-        for (int cx=startx;cx<startx+blockswide;cx++)
-            drawChunk(cx,cz);
+	for (int cz=startz;cz<startz+blockstall;cz++)
+		for (int cx=startx;cx<startx+blockswide;cx++)
+			drawChunk(cx,cz);
 
-    //add on the entity layer
-    //TODO: handle height?
-    QPainter canvas(&image);
-    double halfviewwidth = image.width()/2/zoom;
-    double halvviewheight = image.height()/2/zoom;
-    double x1 = x - halfviewwidth;
-    double z1 = z - halvviewheight;
-    double x2 = x + halfviewwidth;
-    double z2 = z + halvviewheight;
+	//add on the entity layer
+	//TODO: handle height?
+	QPainter canvas(&image);
+	double halfviewwidth = image.width()/2/zoom;
+	double halvviewheight = image.height()/2/zoom;
+	double x1 = x - halfviewwidth;
+	double z1 = z - halvviewheight;
+	double x2 = x + halfviewwidth;
+	double z2 = z + halvviewheight;
 
-    foreach(const QString& type, specialBlockTypes)
-    {
-        foreach(const SpecialBlock& block, specialBlocks[type])
-        {
-            //for Entitites, restrict the depth we see them
-            int mindepth = 0;
-            if (type == "Entity")
-            {
-                mindepth = getY(block.getX1(), block.getZ1()) - 4;
-            }
-            if (block.intersects(x1, mindepth, z1, x2+1, depth, z2+1))
-            {
-                block.draw(x1, z1, zoom, canvas);
-            }
-        }
-    }
+	foreach(const QString& type, specialBlockTypes)
+	{
+		foreach(const SpecialBlock& block, specialBlocks[type])
+		{
+			//for Entitites, restrict the depth we see them
+			int mindepth = 0;
+			if (type == "Entity")
+			{
+				mindepth = getY(block.getX1(), block.getZ1()) - 4;
+			}
+			if (block.intersects(x1, mindepth, z1, x2+1, depth, z2+1))
+			{
+				block.draw(x1, z1, zoom, canvas);
+			}
+		}
+	}
 
 	update();
 }
@@ -352,7 +352,7 @@ void MapView::drawChunk(int x, int z)
 	//fetch the chunk
 	Chunk *chunk=cache.fetch(x,z);
 
-    if (chunk && (chunk->renderedAt!=depth || chunk->renderedFlags!=flags))
+	if (chunk && (chunk->renderedAt!=depth || chunk->renderedFlags!=flags))
 	{
 		if (chunk->renderedAt == -1)
 		{
@@ -620,57 +620,57 @@ void MapView::getToolTip(int x, int z)
 		BiomeInfo &bi=biomes->getBiome(chunk->biomes[(x&0xf)+(z&0xf)*16]);
 		biome=bi.name;
 
-        foreach (const QString& type, specialBlockTypes)
+		foreach (const QString& type, specialBlockTypes)
 		{
-            foreach (const SpecialBlock& block, specialBlocks[type])
+			foreach (const SpecialBlock& block, specialBlocks[type])
 			{
-                double ymin = 0;
-                double ymax = depth;
-                if (type == "Entity")
-                {
-                    ymin = y - 4;
-                    ymax = y + 4;
-                }
-                if (block.intersects(x, ymin, z, x, ymax, z))
+				double ymin = 0;
+				double ymax = depth;
+				if (type == "Entity")
 				{
-                    entityIds[block.getDisplay()]++;
+					ymin = y - 4;
+					ymax = y + 4;
+				}
+				if (block.intersects(x, ymin, z, x, ymax, z))
+				{
+					entityIds[block.getDisplay()]++;
 				}
 			}
 		}
-    }
+	}
 
-    QString entityStr;
-    if (!entityIds.empty())
-    {
-        QStringList entities;
-        QMap<QString, int>::iterator it, itEnd = entityIds.end();
-        for (it = entityIds.begin(); it != itEnd; ++it)
-        {
-            if (it.value() > 1)
-            {
-                entities << it.key() + ":" + QString::number(it.value());
-            }
-            else
-            {
-                entities << it.key();
-            }
-        }
-        entityStr = entities.join(", ");
-    }
+	QString entityStr;
+	if (!entityIds.empty())
+	{
+		QStringList entities;
+		QMap<QString, int>::iterator it, itEnd = entityIds.end();
+		for (it = entityIds.begin(); it != itEnd; ++it)
+		{
+			if (it.value() > 1)
+			{
+				entities << it.key() + ":" + QString::number(it.value());
+			}
+			else
+			{
+				entities << it.key();
+			}
+		}
+		entityStr = entities.join(", ");
+	}
 
-    emit hoverTextChanged(tr("X:%1 Z:%2 - %3 - %4 (%5:%6) %7")
+	emit hoverTextChanged(tr("X:%1 Z:%2 - %3 - %4 (%5:%6) %7")
 						  .arg(x)
 						  .arg(z)
 						  .arg(biome)
 						  .arg(name)
 						  .arg(id)
-                          .arg(bd)
-                          .arg(entityStr));
+						  .arg(bd)
+						  .arg(entityStr));
 }
 
 void MapView::markBlock(QString type, double x1, double y1, double z1, double x2, double y2, double z2, QColor color, QString display)
 {
-    specialBlocks[type].push_back(SpecialBlock(x1, y1, z1, x2, y2, z2, color, display));
+	specialBlocks[type].push_back(SpecialBlock(x1, y1, z1, x2, y2, z2, color, display));
 }
 
 
@@ -708,51 +708,51 @@ int MapView::getY(int x, int z)
 }
 
 MapView::SpecialBlock::SpecialBlock(double x1, double y1, double z1,
-                                    double x2, double y2, double z2, QColor color, const QString &display):
-    x1(x1), y1(y1), z1(z1), x2(x2), y2(y2), z2(z2), color(color), display(display)
+									double x2, double y2, double z2, QColor color, const QString &display):
+	x1(x1), y1(y1), z1(z1), x2(x2), y2(y2), z2(z2), color(color), display(display)
 {
-    assert(x2 >= x1);
-    assert(y2 >= y1);
-    assert(z2 >= z1);
+	assert(x2 >= x1);
+	assert(y2 >= y1);
+	assert(z2 >= z1);
 }
 
 void MapView::SpecialBlock::draw(double offsetX, double offsetZ, double scale, QPainter& canvas) const
 {    
-    int left = (int)((x1 - offsetX) * scale) + MIN_SIZE/4;
-    int top = (int)((z1 - offsetZ) * scale) + MIN_SIZE/4;
-    int w = (int)((x2 - x1 + 1) * scale) - MIN_SIZE/2;
-    int h = (int)((z2 - z1 + 1) * scale) - MIN_SIZE/2;
-    if (w < MIN_SIZE)
-    {
-        left = (left + w / 2) - MIN_SIZE / 2;
-        w = MIN_SIZE;
-    }
-    if (h < MIN_SIZE)
-    {
-        top = (top + h / 2) - MIN_SIZE / 2;
-        h = MIN_SIZE;
-    }
-    QPen pen = canvas.pen();
-    pen.setColor(color);
-    //pen.setWidth(MIN_SIZE/2);
-    canvas.setPen(QColor(0, 0, 0, 0));
-    canvas.setBrush(QBrush(color));
-    canvas.drawRoundedRect(left, top, w, h, MIN_SIZE, MIN_SIZE);
-    QSize labelsize = canvas.fontMetrics().size(0, display);
-    canvas.setPen(Qt::black);
-    if (labelsize.height() < h && labelsize.width() < w)
-    {
-        canvas.drawText(left, top, w, h, Qt::AlignCenter, display);
-    }
+	int left = (int)((x1 - offsetX) * scale) + MIN_SIZE/4;
+	int top = (int)((z1 - offsetZ) * scale) + MIN_SIZE/4;
+	int w = (int)((x2 - x1 + 1) * scale) - MIN_SIZE/2;
+	int h = (int)((z2 - z1 + 1) * scale) - MIN_SIZE/2;
+	if (w < MIN_SIZE)
+	{
+		left = (left + w / 2) - MIN_SIZE / 2;
+		w = MIN_SIZE;
+	}
+	if (h < MIN_SIZE)
+	{
+		top = (top + h / 2) - MIN_SIZE / 2;
+		h = MIN_SIZE;
+	}
+	QPen pen = canvas.pen();
+	pen.setColor(color);
+	//pen.setWidth(MIN_SIZE/2);
+	canvas.setPen(QColor(0, 0, 0, 0));
+	canvas.setBrush(QBrush(color));
+	canvas.drawRoundedRect(left, top, w, h, MIN_SIZE, MIN_SIZE);
+	QSize labelsize = canvas.fontMetrics().size(0, display);
+	canvas.setPen(Qt::black);
+	if (labelsize.height() < h && labelsize.width() < w)
+	{
+		canvas.drawText(left, top, w, h, Qt::AlignCenter, display);
+	}
 }
 
 bool MapView::SpecialBlock::intersects(double x1, double y1, double z1,
-                                       double x2, double y2, double z2) const
+									   double x2, double y2, double z2) const
 {
-    return      x1 <= this->x2 &&
-          this->x1 <= x2 &&
-                y1 <= this->y2 &&
-          this->y1 <= y2 &&
-                z1 <= this->z2 &&
-          this->z1 <= z2;
+	return x1 <= this->x2 &&
+	 this->x1 <= x2 &&
+		   y1 <= this->y2 &&
+	 this->y1 <= y2 &&
+		   z1 <= this->z2 &&
+	 this->z1 <= z2;
 }

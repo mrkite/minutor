@@ -36,11 +36,11 @@
 class ChunkID
 {
 public:
-    ChunkID(int x,int z);
+	ChunkID(int x,int z);
 	bool operator==(const ChunkID &) const;
 	friend uint qHash(const ChunkID &);
 protected:
-    int x,z;
+	int x,z;
 };
 
 class ChunkCache : public QObject

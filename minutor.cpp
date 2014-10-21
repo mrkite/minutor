@@ -49,25 +49,25 @@
 #include "properties.h"
 
 Minutor::Minutor():
-    maxentitydistance(0)
+	maxentitydistance(0)
 {
 	mapview = new MapView;
 	connect(mapview,     SIGNAL(hoverTextChanged(QString)),
-	        statusBar(), SLOT(showMessage(QString)));
+			statusBar(), SLOT(showMessage(QString)));
 	connect(mapview,     SIGNAL(foundSpecialBlock(int,int,int,QString,QString,QVariant)),
-	        this,        SLOT(specialBlock(int,int,int,QString,QString,QVariant)));
+			this,        SLOT(specialBlock(int,int,int,QString,QString,QVariant)));
 	connect(mapview,     SIGNAL(showProperties(int,int,int)),
 			this,        SLOT(showProperties(int,int,int)));
 	dm=new DefinitionManager(this);
 	mapview->attach(dm);
 	connect(dm,   SIGNAL(packsChanged()),
-	        this, SLOT(updateDimensions()));
+			this, SLOT(updateDimensions()));
 	dimensions=dm->dimensions();
 	connect(dimensions, SIGNAL(dimensionChanged(Dimension &)),
-	        this,       SLOT(viewDimension(Dimension &)));
+			this,       SLOT(viewDimension(Dimension &)));
 	settings = new Settings(this);
 	connect(settings, SIGNAL(settingsUpdated()),
-	        this,     SLOT(rescanWorlds()));
+			this,     SLOT(rescanWorlds()));
 
 
 	if (settings->autoUpdate)
@@ -101,7 +101,7 @@ Minutor::Minutor():
 	connect(this,    SIGNAL(worldLoaded(bool)),
 	        mapview, SLOT(setEnabled(bool)));
 	connect(this,    SIGNAL(worldLoaded(bool)),
-	        depth,   SLOT(setEnabled(bool)));
+			depth,   SLOT(setEnabled(bool)));
 
 	QWidget *central=new QWidget;
 	central->setLayout(mainLayout);
@@ -159,9 +159,9 @@ void Minutor::save()
 		progress->setMaximum(100);
 		progress->show();
 		connect(ws,   SIGNAL(progress(QString,double)),
-		        this, SLOT(saveProgress(QString,double)));
+				this, SLOT(saveProgress(QString,double)));
 		connect(ws,   SIGNAL(finished()),
-		        this, SLOT(saveFinished()));
+				this, SLOT(saveFinished()));
 		QThreadPool::globalInstance()->start(ws);
 	}
 }
@@ -258,13 +258,13 @@ void Minutor::createActions()
 	openAct->setShortcut(tr("Ctrl+O"));
 	openAct->setStatusTip(tr("Open a world"));
 	connect(openAct, SIGNAL(triggered()),
-	        this,    SLOT(open()));
+			this,    SLOT(open()));
 
 	reloadAct = new QAction(tr("&Reload"),this);
 	reloadAct->setShortcut(tr("F5"));
 	reloadAct->setStatusTip(tr("Reload current world"));
 	connect(reloadAct, SIGNAL(triggered()),
-	        this,      SLOT(reload()));
+			this,      SLOT(reload()));
 	connect(this,      SIGNAL(worldLoaded(bool)),
 			reloadAct, SLOT(setEnabled(bool)));
 
@@ -272,24 +272,24 @@ void Minutor::createActions()
 	saveAct->setShortcut(tr("Ctrl+S"));
 	saveAct->setStatusTip(tr("Save as PNG"));
 	connect(saveAct, SIGNAL(triggered()),
-	        this,    SLOT(save()));
+			this,    SLOT(save()));
 	connect(this,    SIGNAL(worldLoaded(bool)),
-	        saveAct, SLOT(setEnabled(bool)));
+			saveAct, SLOT(setEnabled(bool)));
 
 	exitAct = new QAction(tr("E&xit"),this);
 	exitAct->setShortcut(tr("Ctrl+Q"));
 	exitAct->setStatusTip(tr("Exit %1").arg(qApp->applicationName()));
 	connect(exitAct, SIGNAL(triggered()),
-	        this,    SLOT(close()));
+			this,    SLOT(close()));
 
 	// [View]
 	jumpSpawnAct = new QAction(tr("Jump to &Spawn"),this);
 	jumpSpawnAct->setShortcut(tr("F1"));
 	jumpSpawnAct->setStatusTip(tr("Jump to world spawn"));
 	connect(jumpSpawnAct, SIGNAL(triggered()),
-	        this,         SLOT(jumpToLocation()));
+			this,         SLOT(jumpToLocation()));
 	connect(this,         SIGNAL(worldLoaded(bool)),
-	        jumpSpawnAct, SLOT(setEnabled(bool)));
+			jumpSpawnAct, SLOT(setEnabled(bool)));
 
 
 	lightingAct = new QAction(tr("&Lighting"),this);
@@ -297,56 +297,56 @@ void Minutor::createActions()
 	lightingAct->setShortcut(tr("Ctrl+L"));
 	lightingAct->setStatusTip(tr("Toggle lighting on/off"));
 	connect(lightingAct, SIGNAL(triggered()),
-	        this,        SLOT(toggleFlags()));
+			this,        SLOT(toggleFlags()));
 
 	depthShadingAct = new QAction(tr("&Depth shading"), this);
 	depthShadingAct->setCheckable(true);
 	depthShadingAct->setShortcut(tr("Ctrl+D"));
 	depthShadingAct->setStatusTip(tr("Toggle shading based on relative depth"));
 	connect(depthShadingAct, SIGNAL(triggered()),
-	        this,            SLOT(toggleFlags()));
+			this,            SLOT(toggleFlags()));
 
 	mobSpawnAct = new QAction(tr("&Mob spawning"),this);
 	mobSpawnAct->setCheckable(true);
 	mobSpawnAct->setShortcut(tr("Ctrl+M"));
 	mobSpawnAct->setStatusTip(tr("Toggle show mob spawning on/off"));
 	connect(mobSpawnAct, SIGNAL(triggered()),
-	        this,        SLOT(toggleFlags()));
+			this,        SLOT(toggleFlags()));
 
 	caveModeAct = new QAction(tr("&Cave Mode"),this);
 	caveModeAct->setCheckable(true);
 	caveModeAct->setShortcut(tr("Ctrl+C"));
 	caveModeAct->setStatusTip(tr("Toggle cave mode on/off"));
 	connect(caveModeAct, SIGNAL(triggered()),
-	        this,        SLOT(toggleFlags()));
+			this,        SLOT(toggleFlags()));
 	caveModeAct->setEnabled(false);
 
 	manageDefsAct = new QAction(tr("Manage &Definitions..."),this);
 	manageDefsAct->setStatusTip(tr("Manage block and biome definitions"));
 	connect(manageDefsAct, SIGNAL(triggered()),
-	        dm,            SLOT(show()));
+			dm,            SLOT(show()));
 
 	refreshAct = new QAction(tr("Refresh"), this);
 	refreshAct->setShortcut(tr("F2"));
 	refreshAct->setStatusTip(tr("Reloads all chunks, but keeps the same position / dimension"));
 	connect(refreshAct, SIGNAL(triggered()),
-	        mapview,    SLOT(clearCache()));
+			mapview,    SLOT(clearCache()));
 
 	// [Help]
 	aboutAct = new QAction(tr("&About"),this);
 	aboutAct->setStatusTip(tr("About %1").arg(qApp->applicationName()));
 	connect(aboutAct, SIGNAL(triggered()),
-	        this,     SLOT(about()));
+			this,     SLOT(about()));
 
 	settingsAct = new QAction(tr("Settings..."),this);
 	settingsAct->setStatusTip(tr("Change %1 Settings").arg(qApp->applicationName()));
 	connect(settingsAct, SIGNAL(triggered()),
-	        settings,    SLOT(show()));
+			settings,    SLOT(show()));
 
 	updatesAct = new QAction(tr("Check for updates..."),this);
 	updatesAct->setStatusTip(tr("Check for updated packs"));
 	connect(updatesAct, SIGNAL(triggered()),
-	        dm,         SLOT(checkForUpdates()));
+			dm,         SLOT(checkForUpdates()));
 }
 
 void Minutor::createMenus()
@@ -491,7 +491,7 @@ void Minutor::loadWorld(QDir path)
 				p->setData(locations.count());
 				locations.append(Location(posX, posZ));
 				connect(p, SIGNAL(triggered()),
-				        this, SLOT(jumpToLocation()));
+						this, SLOT(jumpToLocation()));
 				players.append(p);
 				if (player.has("SpawnX")) //player has a bed
 				{
@@ -513,11 +513,11 @@ void Minutor::loadWorld(QDir path)
 		path.cdUp();
 	}
 
-    if (path.cd("data"))
-    {
-        loadStructures(path);
-        path.cdUp();
-    }
+	if (path.cd("data"))
+	{
+		loadStructures(path);
+		path.cdUp();
+	}
 
 	//show dimensions
 	dimensions->getDimensions(path,dimMenu,this);
@@ -539,99 +539,99 @@ void Minutor::rescanWorlds()
 
 void Minutor::specialBlock(int x, int y, int z, QString type, QString display, QVariant properties)
 {
-    specialArea(x, y, z, x, y, z, type, display, properties);
+	specialArea(x, y, z, x, y, z, type, display, properties);
 }
 
 void Minutor::specialArea(double x1, double y1, double z1,
-                          double x2, double y2, double z2,
-                          QString type, QString display, QVariant properties)
+						  double x2, double y2, double z2,
+						  QString type, QString display, QVariant properties)
 {
-    Entity e = {x1, y1, z1, x2, y2, z2, type, display, properties};
-    if (!entities.contains(type))
-    {
-        //generate a unique keyboard shortcut
-        QKeySequence sequence;
-        QString actionName;
-        int ampPos = 0;
-        foreach (const QChar& c, type)
-        {
-            sequence = QKeySequence(QString("Ctrl+")+c);
-            actionName = type.mid(0, ampPos) + "&" + type.mid(ampPos);
-            foreach(QMenu* m, menuBar()->findChildren<QMenu*>())
-            {
-                foreach (const QAction* a, m->actions())
-                {
-                    if (a->shortcut() == sequence)
-                    {
-                        sequence = QKeySequence();
-                        actionName = "";
-                        break;
-                    }
-                }
-                if (actionName.isEmpty())
-                    break; //already eliminated this as a possbility
-            }
-            if (!actionName.isEmpty())
-                break; //not eliminated, this one is ok
-            ++ampPos;
-        }
+	Entity e = {x1, y1, z1, x2, y2, z2, type, display, properties};
+	if (!entities.contains(type))
+	{
+		//generate a unique keyboard shortcut
+		QKeySequence sequence;
+		QString actionName;
+		int ampPos = 0;
+		foreach (const QChar& c, type)
+		{
+			sequence = QKeySequence(QString("Ctrl+")+c);
+			actionName = type.mid(0, ampPos) + "&" + type.mid(ampPos);
+			foreach(QMenu* m, menuBar()->findChildren<QMenu*>())
+			{
+				foreach (const QAction* a, m->actions())
+				{
+					if (a->shortcut() == sequence)
+					{
+						sequence = QKeySequence();
+						actionName = "";
+						break;
+					}
+				}
+				if (actionName.isEmpty())
+					break; //already eliminated this as a possbility
+			}
+			if (!actionName.isEmpty())
+				break; //not eliminated, this one is ok
+			++ampPos;
+		}
 
 
-        entitiesMenu->setEnabled(true);
-        entityActions.push_back(new QAction(actionName, this));
-        entityActions.last()->setShortcut(sequence);
-        entityActions.last()->setStatusTip(QString(tr("Toggle viewing of %1").arg(type)));
-        entityActions.last()->setEnabled(true);
-        entityActions.last()->setData(type);
-        entityActions.last()->setCheckable(true);
-        entitiesMenu->addAction(entityActions.last());
-        connect(entityActions.last(), SIGNAL(triggered()), this, SLOT(toggleFlags()));
-    }
+		entitiesMenu->setEnabled(true);
+		entityActions.push_back(new QAction(actionName, this));
+		entityActions.last()->setShortcut(sequence);
+		entityActions.last()->setStatusTip(QString(tr("Toggle viewing of %1").arg(type)));
+		entityActions.last()->setEnabled(true);
+		entityActions.last()->setData(type);
+		entityActions.last()->setCheckable(true);
+		entitiesMenu->addAction(entityActions.last());
+		connect(entityActions.last(), SIGNAL(triggered()), this, SLOT(toggleFlags()));
+	}
 
-    //pick a color
-    //TODO: configurable?
-    QColor color;
-    if (type == "Entity" && (QMetaType::Type)properties.type() == QMetaType::QVariantMap)
-    {
-        //this odd logic should be replaced by a list, but i don't have one,
-        //and it may continue working after future updates.
-        QMap<QString, QVariant> propmap = properties.toMap();
-        if (propmap.contains("InLove")  ||  //if its breedable, then its not an enemy?
-            propmap.contains("Willing") ||
-            propmap["id"].toString().contains("Golem") ||
-            propmap["id"] == "SnowMan" ||
-            propmap["id"] == "Squid" ||
-            propmap["id"] == "Bat"
-                )
-        {
-            color = Qt::white;
-        }
-        else if (propmap.size() < 20)
-        {
-            //simple objects are usually items
-            color = Qt::blue;
-        }
-        else
-        {
-            //otherwise, it will probably hurt you if you go near it
-            color = Qt::red;
-        }
-        color.setAlpha(128);
-    }
-    else
-    {
-        //an area of some kind... just make a color up
-        quint32 hue = qHash(type);
+	//pick a color
+	//TODO: configurable?
+	QColor color;
+	if (type == "Entity" && (QMetaType::Type)properties.type() == QMetaType::QVariantMap)
+	{
+		//this odd logic should be replaced by a list, but i don't have one,
+		//and it may continue working after future updates.
+		QMap<QString, QVariant> propmap = properties.toMap();
+		if (propmap.contains("InLove")  ||  //if its breedable, then its not an enemy?
+				propmap.contains("Willing") ||
+				propmap["id"].toString().contains("Golem") ||
+				propmap["id"] == "SnowMan" ||
+				propmap["id"] == "Squid" ||
+				propmap["id"] == "Bat"
+				)
+		{
+			color = Qt::white;
+		}
+		else if (propmap.size() < 20)
+		{
+			//simple objects are usually items
+			color = Qt::blue;
+		}
+		else
+		{
+			//otherwise, it will probably hurt you if you go near it
+			color = Qt::red;
+		}
+		color.setAlpha(128);
+	}
+	else
+	{
+		//an area of some kind... just make a color up
+		quint32 hue = qHash(type);
 
-        color.setHsv(hue % 360, 255, 255, 64);
+		color.setHsv(hue % 360, 255, 255, 64);
 
-    }
-    if (maxentitydistance < (x2 - x1) / 2)
-        maxentitydistance = (x2 - x1) / 2;
-    if (maxentitydistance < (z2 - z1) / 2)
-        maxentitydistance = (z2 - z1) / 2;
-    entities[type].insertMulti(qMakePair(floor((x1 + x2)/2), floor((z1 + z2)/2)), e);
-    mapview->markBlock(type, x1, y1, z1, x2, y2, z2, color, display);
+	}
+	if (maxentitydistance < (x2 - x1) / 2)
+		maxentitydistance = (x2 - x1) / 2;
+	if (maxentitydistance < (z2 - z1) / 2)
+		maxentitydistance = (z2 - z1) / 2;
+	entities[type].insertMulti(qMakePair(floor((x1 + x2)/2), floor((z1 + z2)/2)), e);
+	mapview->markBlock(type, x1, y1, z1, x2, y2, z2, color, display);
 }
 
 void Minutor::showProperties(int x, int y, int z)
@@ -640,28 +640,28 @@ void Minutor::showProperties(int x, int y, int z)
 	EntityMap::iterator it, itEnd = entities.end();
 	for (it = entities.begin(); it != itEnd; ++it)
 	{
-        //search near the given coordinates for areas
-        //TODO: alternative? bigger bins? kd tree?
-        for (int ix = x - maxentitydistance; ix < x + maxentitydistance; ++ix)
-        {
-            for (int iz = z - maxentitydistance; iz < z + maxentitydistance; ++iz)
-            {
-                QList<Entity> entities = it->values(qMakePair(ix, iz));
-                if (entities.size() > 0)
-                {
-                    QList<QVariant> list;
-                    foreach(const Entity& e, entities)
-                    {
-                        if (e.intersects(x, 0, z, x, y, z))
-                        {
-                            list.push_back(e.properties);
-                        }
-                    }
-                    if (!list.empty())
-                        values.insertMulti(it.key(), list);
-                }
-            }
-        }
+		//search near the given coordinates for areas
+		//TODO: alternative? bigger bins? kd tree?
+		for (int ix = x - maxentitydistance; ix < x + maxentitydistance; ++ix)
+		{
+			for (int iz = z - maxentitydistance; iz < z + maxentitydistance; ++iz)
+			{
+				QList<Entity> entities = it->values(qMakePair(ix, iz));
+				if (entities.size() > 0)
+				{
+					QList<QVariant> list;
+					foreach(const Entity& e, entities)
+					{
+						if (e.intersects(x, 0, z, x, y, z))
+						{
+							list.push_back(e.properties);
+						}
+					}
+					if (!list.empty())
+						values.insertMulti(it.key(), list);
+				}
+			}
+		}
 	}
 	if (!values.empty())
 	{
@@ -672,74 +672,74 @@ void Minutor::showProperties(int x, int y, int z)
 
 void Minutor::loadStructures(const QDir& dataPath)
 {
-    //attempt to parse all of the files in the data directory, looking for
-    //generated structures
-    foreach(const QString& fileName, dataPath.entryList(QStringList() << "*.dat"))
-    {
-        NBT file(dataPath.filePath(fileName));
-        //no guarantee that this file contains what we expect. be careful.
-        Tag* data = file.at("data");
-        if (data && data != &NBT::Null)
-        {
-            Tag* features = data->at("Features");
-            if (features && data != &NBT::Null)
-            {
-                //convert the features to a qvariant here
-                QVariant maybeFeatureMap = features->getData();
-                if ((QMetaType::Type)maybeFeatureMap.type() == QMetaType::QVariantMap)
-                {
-                    QMap<QString, QVariant> featureMap = maybeFeatureMap.toMap();
-                    foreach(const QVariant& feature, featureMap)
-                    {
-                        if ((QMetaType::Type)feature.type() == QMetaType::QVariantMap)
-                        {
-                            QMap<QString, QVariant> featureProperties = feature.toMap();
-                            //check for required properties
-                            if (featureProperties.contains("BB") //bounding box... gives us the position
-                             && (QMetaType::Type)featureProperties["BB"].type() == QMetaType::QVariantList
-                             && featureProperties.contains("id") //name of the feature type
+	//attempt to parse all of the files in the data directory, looking for
+	//generated structures
+	foreach(const QString& fileName, dataPath.entryList(QStringList() << "*.dat"))
+	{
+		NBT file(dataPath.filePath(fileName));
+		//no guarantee that this file contains what we expect. be careful.
+		Tag* data = file.at("data");
+		if (data && data != &NBT::Null)
+		{
+			Tag* features = data->at("Features");
+			if (features && data != &NBT::Null)
+			{
+				//convert the features to a qvariant here
+				QVariant maybeFeatureMap = features->getData();
+				if ((QMetaType::Type)maybeFeatureMap.type() == QMetaType::QVariantMap)
+				{
+					QMap<QString, QVariant> featureMap = maybeFeatureMap.toMap();
+					foreach(const QVariant& feature, featureMap)
+					{
+						if ((QMetaType::Type)feature.type() == QMetaType::QVariantMap)
+						{
+							QMap<QString, QVariant> featureProperties = feature.toMap();
+							//check for required properties
+							if (featureProperties.contains("BB") //bounding box... gives us the position
+									&& (QMetaType::Type)featureProperties["BB"].type() == QMetaType::QVariantList
+									&& featureProperties.contains("id") //name of the feature type
 
-                               )
-                            {
-                                //TODO: bb is a bounding box. Should allow
-                                //for displaying an area rather than a point
-                                QList<QVariant> bb = featureProperties["BB"].toList();
-                                if (bb.size() == 6)
-                                {
-                                    specialArea(bb[0].toInt(), bb[1].toInt(), bb[2].toInt(),
-                                                bb[3].toInt(), bb[4].toInt(), bb[5].toInt(),
-                                                featureProperties["id"].toString(),
-                                                featureProperties["id"].toString(),
-                                                featureProperties);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+									)
+							{
+								//TODO: bb is a bounding box. Should allow
+								//for displaying an area rather than a point
+								QList<QVariant> bb = featureProperties["BB"].toList();
+								if (bb.size() == 6)
+								{
+									specialArea(bb[0].toInt(), bb[1].toInt(), bb[2].toInt(),
+											bb[3].toInt(), bb[4].toInt(), bb[5].toInt(),
+											featureProperties["id"].toString(),
+											featureProperties["id"].toString(),
+											featureProperties);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 
-    //parse villages.dat. it will contain information about the villages themselves
-    NBT villagefile(dataPath.filePath("villages.dat"));
-    Tag* data = villagefile.at("data");
-    if (data && data != &NBT::Null)
-    {
-        Tag* villages = data->at("Villages");
-        if (villages && villages != &NBT::Null)
-        {
-            for (int i = 0; i < villages->length(); ++i)
-            {
-                Tag* village = villages->at(i);
-                int radius = village->at("Radius")->toInt();
-                int cx = village->at("CX")->toInt();
-                int cy = village->at("CY")->toInt();
-                int cz = village->at("CZ")->toInt();
-                specialArea(cx - radius, cy - radius, cz - radius,
-                            cx + radius, cy + radius, cz + radius,
-                            "Village", "Village", village->getData());
+	//parse villages.dat. it will contain information about the villages themselves
+	NBT villagefile(dataPath.filePath("villages.dat"));
+	Tag* data = villagefile.at("data");
+	if (data && data != &NBT::Null)
+	{
+		Tag* villages = data->at("Villages");
+		if (villages && villages != &NBT::Null)
+		{
+			for (int i = 0; i < villages->length(); ++i)
+			{
+				Tag* village = villages->at(i);
+				int radius = village->at("Radius")->toInt();
+				int cx = village->at("CX")->toInt();
+				int cy = village->at("CY")->toInt();
+				int cz = village->at("CZ")->toInt();
+				specialArea(cx - radius, cy - radius, cz - radius,
+							cx + radius, cy + radius, cz + radius,
+							"Village", "Village", village->getData());
 
-            }
-        }
-    }
+			}
+		}
+	}
 }
