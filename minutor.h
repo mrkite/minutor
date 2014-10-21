@@ -84,6 +84,9 @@ private slots:
 	void saveProgress(QString status,double value);
 	void saveFinished();
 	void specialBlock(int x, int y, int z, QString type, QString display, QVariant properties);
+    void specialArea(double x1, double y1, double z1,
+                     double x2, double y2, double z2,
+                     QString type, QString display, QVariant properties);
 	void showProperties(int x, int y, int z);
 
 signals:
@@ -93,6 +96,7 @@ private:
 	void createActions();
 	void createMenus();
 	void createStatusBar();
+    void loadStructures(const QDir &dataPath);
 
 	QString getWorldName(QDir path);
 	void getWorldList();
@@ -128,14 +132,26 @@ private:
 	//special entities and objects with properties
 	struct Entity
 	{
-		int x, y, z;
+        double x1, y1, z1, x2, y2, z2 ;
 		QString type;
 		QString display;
 		QVariant properties;
-	};
-	//           type                 x    z
-	typedef QMap<QString, QHash<QPair<int, int>, Entity> > EntityMap;
-	EntityMap entities;
+
+        bool intersects(double x1, double y1, double z1,
+                        double x2, double y2, double z2) const
+        {
+            return  x1 <= this->x2 &&
+              this->x1 <= x2 &&
+                    y1 <= this->y2 &&
+              this->y1 <= y2 &&
+                    z1 <= this->z2 &&
+              this->z1 <= z2;
+        }
+    };
+    //           type                 x    z
+    typedef QMap<QString, QHash<QPair<int, int>, Entity> > EntityMap;
+    EntityMap entities;
+    int maxentitydistance;
 	Properties * propView;
 };
 

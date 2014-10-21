@@ -42,7 +42,7 @@ public:
 
 	/// Values for the individual flags
 	enum
-	{
+    {
 		flgLighting     = 1,
 		flgMobSpawn     = 2,
 		flgCaveMode     = 4,
@@ -73,7 +73,10 @@ public slots:
 	void setDepth(int depth);
 	void chunkUpdated(int x,int z);
 	void redraw();
-	void markBlock(int x, int y, int z, QString type, QString message);
+    void markBlock(QString type,
+                   double x1, double y1, double z1,
+                   double x2, double y2, double z2,
+                   QColor color, QString display);
 
 	/// Clears the cache and redraws, causing all chunks to be re-loaded; but keeps the viewport
 	void clearCache();
@@ -96,6 +99,35 @@ protected:
 
 private:
 
+    class SpecialBlock
+    {
+    public:
+        SpecialBlock(double x1, double y1, double z1,
+                     double x2, double y2, double z2,
+                     QColor color, const QString& display);
+        void draw(double offsetX, double offsetZ, double scale, QPainter& canvas) const;
+
+        bool intersects(double x1, double y1, double z1,
+                        double x2, double y2, double z2) const;
+
+        double getX1() const { return x1; }
+        double getY1() const { return y1; }
+        double getZ1() const { return z1; }
+        double getX2() const { return x2; }
+        double getY2() const { return y2; }
+        double getZ2() const { return z2; }
+        const QString& getDisplay() const { return display; }
+
+        static const int MIN_SIZE = 10;
+    private:
+        void clampSize(int& left, int& right);
+
+        double x1, y1, z1;
+        double x2, y2, z2;
+        QColor color;
+        QString display;
+    };
+
 	void drawChunk(int x,int z);
 	void getToolTip(int x,int z);
 	int getY(int x, int z);
@@ -112,6 +144,7 @@ private:
 	BiomeIdentifier *biomes;
 	uchar placeholder[16*16*4]; // no chunk found placeholder
 	QSet<QString> specialBlockTypes;
+    QMap<QString, QList<SpecialBlock> > specialBlocks;
 };
 
 #endif

@@ -1,6 +1,7 @@
 #include "entity.h"
 
 #include "nbt.h"
+#include "math.h"
 
 Entity::Entity(qint64 nx, qint64 ny, qint64 nz, QString nid):
 	id(nid),
@@ -14,9 +15,9 @@ Entity::Entity(qint64 nx, qint64 ny, qint64 nz, QString nid):
 void Entity::load(Tag *nbt)
 {
 	Tag* pos = nbt->at("Pos");
-	x = (qint64)pos->at(0)->toDouble();
-	y = (qint64)pos->at(1)->toDouble();
-	z = (qint64)pos->at(2)->toDouble();
+	x = (qint64)floor(pos->at(0)->toDouble());
+	y = (qint64)floor(pos->at(1)->toDouble());
+	z = (qint64)floor(pos->at(2)->toDouble());
 	Tag* id = nbt->at("id");
 	if (id)
 	{
