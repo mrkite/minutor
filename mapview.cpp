@@ -34,6 +34,8 @@
 #include <QResizeEvent>
 #include <QMessageBox>
 
+#include <assert.h>
+
 MapView::MapView(QWidget *parent) : QWidget(parent)
 {
 	depth=255;
@@ -111,17 +113,17 @@ void MapView::setDepth(int depth)
 
 void MapView::setFlags(int flags)
 {
-    this->flags=flags;
+	this->flags=flags;
 }
 
 void MapView::addSpecialBlockType(QString type)
 {
-    specialBlockTypes.insert(type);
+	specialBlockTypes.insert(type);
 }
 
 void MapView::clearSpecialBlockTypes()
 {
-    specialBlockTypes.clear();
+	specialBlockTypes.clear();
 }
 
 
@@ -146,9 +148,9 @@ static int lastX=-1,lastY=-1;
 static bool dragging=false;
 void MapView::mousePressEvent(QMouseEvent *event)
 {
-    lastX=event->x();
-    lastY=event->y();
-    dragging=true;
+	lastX=event->x();
+	lastY=event->y();
+	dragging=true;
 }
 
 void MapView::mouseMoveEvent(QMouseEvent *event)
@@ -183,22 +185,22 @@ void MapView::mouseReleaseEvent(QMouseEvent *)
 
 void MapView::mouseDoubleClickEvent(QMouseEvent*event)
 {
-    int centerblockx=floor(this->x);
-    int centerblockz=floor(this->z);
+	int centerblockx=floor(this->x);
+	int centerblockz=floor(this->z);
 
-    int centerx=image.width()/2;
-    int centery=image.height()/2;
+	int centerx=image.width()/2;
+	int centery=image.height()/2;
 
-    centerx-=(this->x-centerblockx)*zoom;
-    centery-=(this->z-centerblockz)*zoom;
+	centerx-=(this->x-centerblockx)*zoom;
+	centery-=(this->z-centerblockz)*zoom;
 
-    int mx=floor(centerblockx-(centerx-event->x())/zoom);
-    int mz=floor(centerblockz-(centery-event->y())/zoom);
+	int mx=floor(centerblockx-(centerx-event->x())/zoom);
+	int mz=floor(centerblockz-(centery-event->y())/zoom);
 
-    //get the y coordinate
-    int my = getY(mx, mz);
+	//get the y coordinate
+	int my = getY(mx, mz);
 
-    emit showProperties(mx, my, mz);
+	emit showProperties(mx, my, mz);
 }
 
 void MapView::wheelEvent(QWheelEvent *event)
@@ -308,9 +310,37 @@ void MapView::redraw()
 	int blockswide=image.width()/chunksize+3;
 	int blockstall=image.height()/chunksize+3;
 
-	for (int z=startz;z<startz+blockstall;z++)
-		for (int x=startx;x<startx+blockswide;x++)
-			drawChunk(x,z);
+	for (int cz=startz;cz<startz+blockstall;cz++)
+		for (int cx=startx;cx<startx+blockswide;cx++)
+			drawChunk(cx,cz);
+
+	//add on the entity layer
+	//TODO: handle height?
+	QPainter canvas(&image);
+	double halfviewwidth = image.width()/2/zoom;
+	double halvviewheight = image.height()/2/zoom;
+	double x1 = x - halfviewwidth;
+	double z1 = z - halvviewheight;
+	double x2 = x + halfviewwidth;
+	double z2 = z + halvviewheight;
+
+	foreach(const QString& type, specialBlockTypes)
+	{
+		foreach(const SpecialBlock& block, specialBlocks[type])
+		{
+			//for Entitites, restrict the depth we see them
+			int mindepth = 0;
+			if (type == "Entity")
+			{
+				mindepth = getY(block.getX1(), block.getZ1()) - 4;
+			}
+			if (block.intersects(x1, mindepth, z1, x2+1, depth, z2+1))
+			{
+				block.draw(x1, z1, zoom, canvas);
+			}
+		}
+	}
+
 	update();
 }
 void MapView::drawChunk(int x, int z)
@@ -322,24 +352,24 @@ void MapView::drawChunk(int x, int z)
 	//fetch the chunk
 	Chunk *chunk=cache.fetch(x,z);
 
-    if (chunk && (chunk->renderedAt!=depth || chunk->renderedFlags!=flags || chunk->renderedSpecialBlockTypes != specialBlockTypes))
-    {
-        if (chunk->renderedAt == -1)
-        {
-            //this should probably not be in the drawing code?
-            QPair<QMap<QString, Entity>::iterator, QMap<QString, Entity>::iterator> range = chunk->entities.equal_range("Entity");
-            for (QMap<QString, Entity>::iterator it = range.first; it != range.second; ++it)
-            {
-                emit foundSpecialBlock(it->getX(),
-                                       it->getY(),
-                                       it->getZ(),
-                                       tr("Entity"),
-                                       it->getId(),
-                                       it->getProperties());
-            }
-        }
-        renderChunk(chunk);
-    }
+	if (chunk && (chunk->renderedAt!=depth || chunk->renderedFlags!=flags))
+	{
+		if (chunk->renderedAt == -1)
+		{
+			//this should probably not be in the drawing code?
+			QPair<QMap<QString, Entity>::iterator, QMap<QString, Entity>::iterator> range = chunk->entities.equal_range("Entity");
+			for (QMap<QString, Entity>::iterator it = range.first; it != range.second; ++it)
+			{
+				emit foundSpecialBlock(it->getX(),
+									   it->getY(),
+									   it->getZ(),
+									   tr("Entity"),
+									   it->getId(),
+									   it->getProperties());
+			}
+		}
+		renderChunk(chunk);
+	}
 
 	//this figures out where on the screen this chunk should be drawn
 
@@ -428,15 +458,15 @@ void MapView::renderChunk(Chunk *chunk)
 				// get data value
 				int data = section->getData(x,y,z);
 
-                // get BlockInfo from block value
+				// get BlockInfo from block value
 				BlockInfo &block=blocks->getBlock(section->getBlock(x,y,z),data);
-                if (block.alpha==0.0) continue;
+				if (block.alpha==0.0) continue;
 
 				// get light value from one block above
 				int light = 0;
 				ChunkSection *section1=NULL;
 				if (y<255)
-				    section1 = chunk->sections[(y+1)>>4];
+					section1 = chunk->sections[(y+1)>>4];
 				if (section1)
 					light = section1->getLight(x,y+1,z);
 				int light1 = light;
@@ -467,13 +497,13 @@ void MapView::renderChunk(Chunk *chunk)
 				{
 					// get block info from 1 and 2 above and 1 below
 					quint16 blid1(0), blid2(0), blidB(0); // default to air
-					int     data1(0), data2(0), dataB(0); // default variant
+					int	 data1(0), data2(0), dataB(0); // default variant
 					ChunkSection *section2=NULL;
 					ChunkSection *sectionB=NULL;
 					if (y<254)
-					    section2 = chunk->sections[(y+2)>>4];
+						section2 = chunk->sections[(y+2)>>4];
 					if (y>0)
-					    sectionB = chunk->sections[(y-1)>>4];
+						sectionB = chunk->sections[(y-1)>>4];
 					if (section1)
 					{
 						blid1 = section1->getBlock(x,y+1,z);
@@ -534,29 +564,6 @@ void MapView::renderChunk(Chunk *chunk)
 					alpha+=block.alpha*(1.0-alpha);
 				}
 
-                QSet<QString>::iterator itType, itEndType = specialBlockTypes.end();
-                for (itType = specialBlockTypes.begin(); itType != itEndType; ++itType)
-                {
-                    int xPos = chunk->chunkX << 4;
-                    int zPos = chunk->chunkZ << 4;
-
-                    QPair<QMap<QString, Entity>::iterator, QMap<QString, Entity>::iterator> range = chunk->entities.equal_range(*itType);
-                    for (QMap<QString, Entity>::iterator it = range.first; it != range.second; ++it)
-                    {
-                        if (it->getX() == x + xPos &&
-                            it->getZ() == z + zPos &&
-                            it->getY() > y - 1 &&       //since we skip transparent blocks, we want to
-                            it->getY() < y + 3          //allow entities in the air as well
-                                )
-                        {
-                            //blend it with a bright purple
-                            r = r / 3 + 170;
-                            b = b / 3 + 170;
-
-                        }
-                    }
-                }
-
 				// finish deepth (Y) scanning when color is saturated enough
 				if (block.alpha==1.0 || alpha>0.9)
 					break;
@@ -566,16 +573,15 @@ void MapView::renderChunk(Chunk *chunk)
 			*bits++=g;
 			*bits++=r;
 			*bits++=0xff;
-        }
+		}
 	}
 	chunk->renderedAt=depth;
 	chunk->renderedFlags=flags;
-    chunk->renderedSpecialBlockTypes=specialBlockTypes;
 }
 
 void MapView::getToolTip(int x, int z)
 {
-    int cx=floor(x/16.0);
+	int cx=floor(x/16.0);
 	int cz=floor(z/16.0);
 	Chunk *chunk=cache.fetch(cx,cz);
 	int offset=(x&0xf)+(z&0xf)*16;
@@ -583,15 +589,15 @@ void MapView::getToolTip(int x, int z)
 
 	QString name="Unknown";
 	QString biome="Unknown Biome";
-    QMap<QString, int> entityIds;
+	QMap<QString, int> entityIds;
 
 	if (chunk)
 	{
 		int top=depth;
 		if (top>chunk->highest)
 			top=chunk->highest;
-        int y = 0;
-        for (y=top;y>=0;y--)
+		int y = 0;
+		for (y=top;y>=0;y--)
 		{
 			int sec=y>>4;
 			ChunkSection *section=chunk->sections[sec];
@@ -608,101 +614,145 @@ void MapView::getToolTip(int x, int z)
 			//found block
 			name=block.name;
 			id=section->blocks[offset+yoffset];
-            bd=data&0xf;
+			bd=data&0xf;
 			break;
 		}
 		BiomeInfo &bi=biomes->getBiome(chunk->biomes[(x&0xf)+(z&0xf)*16]);
-        biome=bi.name;
+		biome=bi.name;
 
-        QSet<QString>::iterator itType, itEndType = specialBlockTypes.end();
-        for (itType = specialBlockTypes.begin(); itType != itEndType; ++itType)
-        {
-
-            QPair<QMap<QString, Entity>::iterator, QMap<QString, Entity>::iterator> range = chunk->entities.equal_range(*itType);
-            for (QMap<QString, Entity>::iterator it = range.first; it != range.second; ++it)
-            {
-                if (it->getX() == x &&
-                    it->getZ() == z &&
-                    it->getY() > y - 1 &&       //since we skip transparent blocks, we want to
-                    it->getY() < y + 3          //allow entities in the air as well
-                        )
-                {
-                    entityIds[it->getId()]++;
-                }
-            }
-        }
+		foreach (const QString& type, specialBlockTypes)
+		{
+			foreach (const SpecialBlock& block, specialBlocks[type])
+			{
+				double ymin = 0;
+				double ymax = depth;
+				if (type == "Entity")
+				{
+					ymin = y - 4;
+					ymax = y + 4;
+				}
+				if (block.intersects(x, ymin, z, x, ymax, z))
+				{
+					entityIds[block.getDisplay()]++;
+				}
+			}
+		}
 	}
 
-    QString entityStr;
-    if (!entityIds.empty())
-    {
-        QStringList entities;
-        QMap<QString, int>::iterator it, itEnd = entityIds.end();
-        for (it = entityIds.begin(); it != itEnd; ++it)
-        {
-            if (it.value() > 1)
-            {
-                entities << it.key() + ":" + QString::number(it.value());
-            }
-            else
-            {
-                entities << it.key();
-            }
-        }
-        entityStr = entities.join(", ");
-    }
+	QString entityStr;
+	if (!entityIds.empty())
+	{
+		QStringList entities;
+		QMap<QString, int>::iterator it, itEnd = entityIds.end();
+		for (it = entityIds.begin(); it != itEnd; ++it)
+		{
+			if (it.value() > 1)
+			{
+				entities << it.key() + ":" + QString::number(it.value());
+			}
+			else
+			{
+				entities << it.key();
+			}
+		}
+		entityStr = entities.join(", ");
+	}
 
-    emit hoverTextChanged(tr("X:%1 Z:%2 - %3 - %4 (%5:%6) %7")
+	emit hoverTextChanged(tr("X:%1 Z:%2 - %3 - %4 (%5:%6) %7")
 						  .arg(x)
 						  .arg(z)
 						  .arg(biome)
 						  .arg(name)
 						  .arg(id)
-                          .arg(bd)
-                          .arg(entityStr));
+						  .arg(bd)
+						  .arg(entityStr));
 }
 
-void MapView::markBlock(int x, int y, int z, QString type, QString message)
+void MapView::markBlock(QString type, double x1, double y1, double z1, double x2, double y2, double z2, QColor color, QString display)
 {
-    int cx=floor(x/16.0);
-    int cz=floor(z/16.0);
-    Chunk *chunk=cache.fetch(cx,cz);
-    if (chunk)
-    {
-        chunk->entities.insertMulti(type, Entity(x, y, z, message));
-    }
+	specialBlocks[type].push_back(SpecialBlock(x1, y1, z1, x2, y2, z2, color, display));
 }
 
 
 int MapView::getY(int x, int z)
 {
-    int cx=floor(x/16.0);
-    int cz=floor(z/16.0);
-    Chunk *chunk=cache.fetch(cx,cz);
-    int offset=(x&0xf)+(z&0xf)*16;
-    int y = 0;
-    if (chunk)
-    {
-        int top=depth;
-        if (top>chunk->highest)
-            top=chunk->highest;
+	int cx=floor(x/16.0);
+	int cz=floor(z/16.0);
+	Chunk *chunk=cache.fetch(cx,cz);
+	int offset=(x&0xf)+(z&0xf)*16;
+	int y = 0;
+	if (chunk)
+	{
+		int top=depth;
+		if (top>chunk->highest)
+			top=chunk->highest;
 
-        for (y=top;y>=0;y--)
-        {
-            int sec=y>>4;
-            ChunkSection *section=chunk->sections[sec];
-            if (!section)
-            {
-                y=(sec<<4)-1; //skip entire section
-                continue;
-            }
-            int yoffset=(y&0xf)<<8;
-            int data=section->data[(offset+yoffset)/2];
-            if (x&1) data>>=4;
-            BlockInfo &block=blocks->getBlock(section->blocks[offset+yoffset],data&0xf);
-            if (block.alpha==0.0) continue;
-            break;
-        }
-    }
-    return y;
+		for (y=top;y>=0;y--)
+		{
+			int sec=y>>4;
+			ChunkSection *section=chunk->sections[sec];
+			if (!section)
+			{
+				y=(sec<<4)-1; //skip entire section
+				continue;
+			}
+			int yoffset=(y&0xf)<<8;
+			int data=section->data[(offset+yoffset)/2];
+			if (x&1) data>>=4;
+			BlockInfo &block=blocks->getBlock(section->blocks[offset+yoffset],data&0xf);
+			if (block.alpha==0.0) continue;
+			break;
+		}
+	}
+	return y;
+}
+
+MapView::SpecialBlock::SpecialBlock(double x1, double y1, double z1,
+									double x2, double y2, double z2, QColor color, const QString &display):
+	x1(x1), y1(y1), z1(z1), x2(x2), y2(y2), z2(z2), color(color), display(display)
+{
+	assert(x2 >= x1);
+	assert(y2 >= y1);
+	assert(z2 >= z1);
+}
+
+void MapView::SpecialBlock::draw(double offsetX, double offsetZ, double scale, QPainter& canvas) const
+{    
+	int left = (int)((x1 - offsetX) * scale) + MIN_SIZE/4;
+	int top = (int)((z1 - offsetZ) * scale) + MIN_SIZE/4;
+	int w = (int)((x2 - x1 + 1) * scale) - MIN_SIZE/2;
+	int h = (int)((z2 - z1 + 1) * scale) - MIN_SIZE/2;
+	if (w < MIN_SIZE)
+	{
+		left = (left + w / 2) - MIN_SIZE / 2;
+		w = MIN_SIZE;
+	}
+	if (h < MIN_SIZE)
+	{
+		top = (top + h / 2) - MIN_SIZE / 2;
+		h = MIN_SIZE;
+	}
+	QPen pen = canvas.pen();
+	pen.setColor(color);
+	//pen.setWidth(MIN_SIZE/2);
+	canvas.setPen(QColor(0, 0, 0, 0));
+	canvas.setBrush(QBrush(color));
+	canvas.drawRoundedRect(left, top, w, h, MIN_SIZE, MIN_SIZE);
+	QSize labelsize = canvas.fontMetrics().size(0, display);
+	canvas.setPen(Qt::black);
+	if (labelsize.height() < h && labelsize.width() < w)
+	{
+		canvas.drawText(left, top, w, h, Qt::AlignCenter, display);
+	}
+}
+
+bool MapView::SpecialBlock::intersects(double x1, double y1, double z1,
+									   double x2, double y2, double z2) const
+{
+	return x1 <= this->x2 &&
+	 this->x1 <= x2 &&
+		   y1 <= this->y2 &&
+	 this->y1 <= y2 &&
+		   z1 <= this->z2 &&
+	 this->z1 <= z2;
 }

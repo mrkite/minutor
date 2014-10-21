@@ -1,9 +1,9 @@
 /*
-   Copyright (c) 2013, Sean Kasun
-   All rights reserved.
+	Copyright (c) 2013, Sean Kasun
+	All rights reserved.
 
-   Redistribution and use in source and binary forms, with or without
-   modification, are permitted provided that the following conditions are met:
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
 
  * Redistributions of source code must retain the above copyright notice, this
  list of conditions and the following disclaimer.
@@ -43,8 +43,8 @@ void Chunk::load(NBT &nbt)
 	highest=0;
 
 	Tag *level=nbt.at("Level");
-    chunkX = level->at("xPos")->toInt();
-    chunkZ = level->at("zPos")->toInt();
+	chunkX = level->at("xPos")->toInt();
+	chunkZ = level->at("zPos")->toInt();
 
 	Tag *biomes=level->at("Biomes");
 	memcpy(this->biomes,biomes->toByteArray(),biomes->length());
@@ -74,14 +74,14 @@ void Chunk::load(NBT &nbt)
 	loaded=true;
 
 
-    Tag* entitylist = level->at("Entities");
-    int numEntities = entitylist->length();
-    for (int i = 0; i < numEntities; ++i)
-    {
-        Entity e;
-        e.load(entitylist->at(i));
-        entities.insertMulti("Entity", e);
-    }
+	Tag* entitylist = level->at("Entities");
+	int numEntities = entitylist->length();
+	for (int i = 0; i < numEntities; ++i)
+	{
+		Entity e;
+		e.load(entitylist->at(i));
+		entities.insertMulti("Entity", e);
+	}
 
 
 	for (int i=15;i>=0;i--) //check for the highest block in this chunk
@@ -93,7 +93,7 @@ void Chunk::load(NBT &nbt)
 					highest=i*16+(j>>8);
 					return;
 				}
-	}    
+	}	
 }
 Chunk::~Chunk()
 {
@@ -109,28 +109,28 @@ Chunk::~Chunk()
 
 quint16 ChunkSection::getBlock(int x, int y, int z)
 {
-    int xoffset = x;
-    int yoffset = (y&0x0f)<<8;
-    int zoffset = z<<4;
-    return blocks[xoffset+yoffset+zoffset];
+	int xoffset = x;
+	int yoffset = (y&0x0f)<<8;
+	int zoffset = z<<4;
+	return blocks[xoffset+yoffset+zoffset];
 }
 
 quint8 ChunkSection::getData(int x, int y, int z)
 {
-    int xoffset = x;
-    int yoffset = (y&0x0f)<<8;
-    int zoffset = z<<4;
-    int value = data[(xoffset+yoffset+zoffset)/2];
-    if (x&1) value>>=4;
-    return value&0x0f;
+	int xoffset = x;
+	int yoffset = (y&0x0f)<<8;
+	int zoffset = z<<4;
+	int value = data[(xoffset+yoffset+zoffset)/2];
+	if (x&1) value>>=4;
+	return value&0x0f;
 }
 
 quint8 ChunkSection::getLight(int x, int y, int z)
 {
-    int xoffset = x;
-    int yoffset = (y&0x0f)<<8;
-    int zoffset = z<<4;
-    int value = light[(xoffset+yoffset+zoffset)/2];
-    if (x&1) value>>=4;
-    return value&0x0f;
+	int xoffset = x;
+	int yoffset = (y&0x0f)<<8;
+	int zoffset = z<<4;
+	int value = light[(xoffset+yoffset+zoffset)/2];
+	if (x&1) value>>=4;
+	return value&0x0f;
 }
