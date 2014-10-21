@@ -65,7 +65,7 @@ public:
 	virtual double toDouble();
 	virtual const quint8 *toByteArray();
 	virtual const qint32 *toIntArray();
-	virtual QVariant getData();
+    virtual QVariant getData();
 };
 
 class NBT

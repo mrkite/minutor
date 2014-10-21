@@ -1,9 +1,9 @@
 /*
-   Copyright (c) 2013, Sean Kasun
-   All rights reserved.
+	Copyright (c) 2013, Sean Kasun
+	All rights reserved.
 
-   Redistribution and use in source and binary forms, with or without
-   modification, are permitted provided that the following conditions are met:
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
 
  * Redistributions of source code must retain the above copyright notice, this
  list of conditions and the following disclaimer.
@@ -43,8 +43,8 @@ void Chunk::load(NBT &nbt)
 	highest=0;
 
 	Tag *level=nbt.at("Level");
-   chunkX = level->at("xPos")->toInt();
-   chunkZ = level->at("zPos")->toInt();
+	chunkX = level->at("xPos")->toInt();
+	chunkZ = level->at("zPos")->toInt();
 
 	Tag *biomes=level->at("Biomes");
 	memcpy(this->biomes,biomes->toByteArray(),biomes->length());
@@ -78,8 +78,8 @@ void Chunk::load(NBT &nbt)
 	int numEntities = entitylist->length();
 	for (int i = 0; i < numEntities; ++i)
 	{
-	   Entity e;
-	   e.load(entitylist->at(i));
+		Entity e;
+		e.load(entitylist->at(i));
 		entities.insertMulti("Entity", e);
 	}
 

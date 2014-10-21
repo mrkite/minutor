@@ -182,8 +182,8 @@ const qint32 *Tag::toIntArray()
 }
 QVariant Tag::getData()
 {
-	qWarning()<<"Unhandled getData";
-	return QVariant();
+    qWarning()<<"Unhandled getData";
+    return QVariant();
 }
 
 Tag_Byte::Tag_Byte(TagDataStream &s)
@@ -543,7 +543,13 @@ QString Tag_Int_Array::toString()
 
 QVariant Tag_Int_Array::getData()
 {
-	return toString();
+    QList<QVariant> ret;
+    for (int i = 0; i < len; ++i)
+    {
+        ret.push_back(data[i]);
+    }
+
+    return ret;
 }
 
 TagDataStream::TagDataStream(const char *data,int len)
