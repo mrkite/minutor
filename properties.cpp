@@ -43,12 +43,12 @@ void Properties::ParseList(QTreeWidgetItem* node, const IterableT& seq)
 	typename IterableT::const_iterator it, itEnd = seq.end();
 	int i = 0;
 	//skip 1 sized arrays
-    if (seq.size() == 0)
-    {
-        //empty
-        node->setData(1, Qt::DisplayRole, "<empty>");
-    }
-    else if (seq.size() == 1)
+	if (seq.size() == 0)
+	{
+		//empty
+		node->setData(1, Qt::DisplayRole, "<empty>");
+	}
+	else if (seq.size() == 1)
 	{
 		CreateTree(node, seq.first());
 		node->setData(1, Qt::DisplayRole, GetSummary("[0]", seq.first()));

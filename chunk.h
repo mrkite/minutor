@@ -59,7 +59,7 @@ protected:
 	int highest;
 	ChunkSection *sections[16];
 	int renderedAt;
-    int renderedFlags;
+	int renderedFlags;
 	bool loaded;
 	uchar image[16*16*4];	//cached render
 	QMap<QString, Entity> entities;
