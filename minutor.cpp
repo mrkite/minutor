@@ -652,7 +652,7 @@ void Minutor::showProperties(int x, int y, int z)
 					QList<QVariant> list;
 					foreach(const Entity& e, entities)
 					{
-						if (e.intersects(x, 0, z, x, y, z))
+						if (e.intersects(x, 0, z, x, y+4, z))
 						{
 							list.push_back(e.properties);
 						}
