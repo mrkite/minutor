@@ -441,10 +441,10 @@ void MapView::renderChunk(Chunk *chunk)
 					light = section1->getLight(x,y+1,z);
 				int light1 = light;
 				if (!(flags & flgLighting))
-					light = 12;
-				if (alpha==0.0)
+					light = 13;
+                if ((alpha==0.0)&&(lasty!=-1))
 				{
-					if (lasty!=-1 && lasty<y)
+					if (lasty<y)
 						light+=2;
 					else if (lasty>y)
 						light-=2;
@@ -528,9 +528,9 @@ void MapView::renderChunk(Chunk *chunk)
 				}
 				else
 				{
-					r+=(quint8)((1.0-alpha)*(color>>16));
-					g+=(quint8)((1.0-alpha)*((color>>8)&0xff));
-					b+=(quint8)((1.0-alpha)*(color&0xff));
+					r =(quint8)(alpha*r + (1.0-alpha)*(colr));
+					g =(quint8)(alpha*g + (1.0-alpha)*(colg));
+					b =(quint8)(alpha*b + (1.0-alpha)*(colb));
 					alpha+=block.alpha*(1.0-alpha);
 				}
 

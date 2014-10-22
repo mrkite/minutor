@@ -109,6 +109,7 @@
       "id": 6,
       "name": "Oak Sapling",
       "color": "1f6519",
+      "alpha": 0.3,
       "mask": 7,
       "transparent": true,
       "spawninside": true,
@@ -138,8 +139,7 @@
           "name": "Dark Oak Sapling",
           "color": "105210"
         }
-      ],
-      "alpha": 0.3
+      ]
     },
     {
       "id": 7,
@@ -349,6 +349,7 @@
       "id": 31,
       "name": "Dead Shrub",
       "color": "946428",
+      "alpha": 0.3,
       "transparent": true,
       "spawninside": true,
       "variants": [
@@ -362,8 +363,7 @@
           "name": "Fern",
           "color": "8fbb64"
         }
-      ],
-      "alpha": 0.3
+      ]
     },
     {
       "id": 32,
@@ -381,7 +381,7 @@
     },
     {
       "id": 34,
-      "name": "Piston Extension",
+      "name": "Piston Head",
       "color": "b4905a"
     },
     {
@@ -465,6 +465,11 @@
           "color": "1d1b1b"
         }
       ]
+    },
+    {
+      "id": 36,
+      "name": "Piston Extension",
+      "color": "b4905a"
     },
     {
       "id": 37,
@@ -2114,7 +2119,6 @@
       "id": 175,
       "name": "Sunflower",
       "color": "f1e424",
-      "mask": 7,
       "transparent": true,
       "spawninside": true,
       "variants": [
@@ -2142,6 +2146,12 @@
           "data": 5,
           "name": "Peony",
           "color": "e6bff7"
+        },
+        {
+          "data": 8,
+          "name": "Large Flower (top part)",
+          "color": "ffffff",
+          "alpha": 0.0
         }
       ]
     },
@@ -2287,25 +2297,25 @@
       "transparent": true
     },
     {
-      "id": 193,
+      "id": 194,
       "name": "Birch Door",
       "color": "d2caa3",
       "transparent": true
     },
     {
-      "id": 193,
+      "id": 195,
       "name": "Jungle Door",
       "color": "ac7da3",
       "transparent": true
     },
     {
-      "id": 193,
+      "id": 196,
       "name": "Acacia Door",
       "color": "a5615b",
       "transparent": true
     },
     {
-      "id": 193,
+      "id": 197,
       "name": "Dark Oak Door",
       "color": "4a3118",
       "transparent": true
