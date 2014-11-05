@@ -46,12 +46,14 @@ void Properties::ParseList(QTreeWidgetItem* node, const IterableT& seq)
 	if (seq.size() == 0)
 	{
 		//empty
-		node->setData(1, Qt::DisplayRole, "<empty>");
+		if (node)
+			node->setData(1, Qt::DisplayRole, "<empty>");
 	}
 	else if (seq.size() == 1)
 	{
 		CreateTree(node, seq.first());
-		node->setData(1, Qt::DisplayRole, GetSummary("[0]", seq.first()));
+		if (node)
+			node->setData(1, Qt::DisplayRole, GetSummary("[0]", seq.first()));
 	}
 	else
 	{
@@ -128,7 +130,8 @@ void Properties::CreateTree(QTreeWidgetItem* node, const QVariant& v)
 		ParseList(node, v.toList());
 		break;
 	default:
-		node->setData(1, Qt::DisplayRole, v.toString());
+		if(node)
+			node->setData(1, Qt::DisplayRole, v.toString());
 		break;
 	}
 }

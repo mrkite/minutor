@@ -103,6 +103,13 @@ void MapView::setDimension(QString path, int scale)
 	cache.clear();
 	cache.setPath(path);
 	redraw();
+
+	//we should eventually detect these instead of pre-loading them
+	//for now, keep these in sync witht the entities created in Entity.cpp,
+	//or else we won't be able to select them.
+	emit addOverlayItemType("Entity.Hostile", Qt::red);
+	emit addOverlayItemType("Entity.Passive", Qt::white);
+	emit addOverlayItemType("Entity.Neutral", Qt::blue);
 }
 
 void MapView::setDepth(int depth)
@@ -115,17 +122,6 @@ void MapView::setFlags(int flags)
 {
 	this->flags=flags;
 }
-
-void MapView::addSpecialBlockType(QString type)
-{
-	specialBlockTypes.insert(type);
-}
-
-void MapView::clearSpecialBlockTypes()
-{
-	specialBlockTypes.clear();
-}
-
 
 void MapView::chunkUpdated(int x, int z)
 {
@@ -141,6 +137,7 @@ QString MapView::getWorldPath()
 void MapView::clearCache()
 {
 	cache.clear();
+	//TODO: clear overlay items?
 	redraw();
 }
 
@@ -200,7 +197,16 @@ void MapView::mouseDoubleClickEvent(QMouseEvent*event)
 	//get the y coordinate
 	int my = getY(mx, mz);
 
-	emit showProperties(mx, my, mz);
+	QList<QVariant> properties;
+	foreach(const QSharedPointer<OverlayItem>& item, getItems(mx, my, mz))
+	{
+		properties.append(item->properties());
+	}
+
+	if (!properties.isEmpty())
+	{
+		emit showProperties(properties);
+	}
 }
 
 void MapView::wheelEvent(QWheelEvent *event)
@@ -315,7 +321,6 @@ void MapView::redraw()
 			drawChunk(cx,cz);
 
 	//add on the entity layer
-	//TODO: handle height?
 	QPainter canvas(&image);
 	double halfviewwidth = image.width()/2/zoom;
 	double halvviewheight = image.height()/2/zoom;
@@ -324,19 +329,40 @@ void MapView::redraw()
 	double x2 = x + halfviewwidth;
 	double z2 = z + halvviewheight;
 
-	foreach(const QString& type, specialBlockTypes)
+	//draw the entities
+	for (int cz=startz;cz<startz+blockstall;cz++)
 	{
-		foreach(const SpecialBlock& block, specialBlocks[type])
+		for (int cx=startx;cx<startx+blockswide;cx++)
 		{
-			//for Entitites, restrict the depth we see them
-			int mindepth = 0;
-			if (type == "Entity")
+			foreach(const QString& type, overlayItemTypes)
 			{
-				mindepth = getY(block.getX1(), block.getZ1()) - 4;
+				Chunk *chunk=cache.fetch(cx,cz);
+				if (chunk)
+				{
+					QPair<Chunk::EntityMap::const_iterator, Chunk::EntityMap::const_iterator> range = chunk->entities.equal_range(type);
+					for (Chunk::EntityMap::const_iterator it = range.first; it != range.second; ++it)
+					{
+						//don't show entities above our depth
+						if ((*it)->midpoint().y < depth)
+
+						(*it)->draw(x1, z1, zoom, canvas);
+					}
+				}
 			}
-			if (block.intersects(x1, mindepth, z1, x2+1, depth, z2+1))
+		}
+	}
+
+
+	//draw the generated structures
+	foreach(const QString& type, overlayItemTypes)
+	{
+		foreach(const QSharedPointer<OverlayItem>& item, overlayItems[type])
+		{
+			if (item->intersects(
+				OverlayItem::Point(x1-1, 0, z1-1),
+				OverlayItem::Point(x2+1, depth, z2+1)))
 			{
-				block.draw(x1, z1, zoom, canvas);
+				item->draw(x1, z1, zoom, canvas);
 			}
 		}
 	}
@@ -354,20 +380,6 @@ void MapView::drawChunk(int x, int z)
 
 	if (chunk && (chunk->renderedAt!=depth || chunk->renderedFlags!=flags))
 	{
-		if (chunk->renderedAt == -1)
-		{
-			//this should probably not be in the drawing code?
-			QPair<QMap<QString, Entity>::iterator, QMap<QString, Entity>::iterator> range = chunk->entities.equal_range("Entity");
-			for (QMap<QString, Entity>::iterator it = range.first; it != range.second; ++it)
-			{
-				emit foundSpecialBlock(it->getX(),
-									   it->getY(),
-									   it->getZ(),
-									   tr("Entity"),
-									   it->getId(),
-									   it->getProperties());
-			}
-		}
 		renderChunk(chunk);
 	}
 
@@ -434,6 +446,7 @@ void MapView::renderChunk(Chunk *chunk)
 {
 	int offset=0;
 	uchar *bits=chunk->image;
+	uchar *depthbits=chunk->depth;
 	for (int z=0;z<16;z++) //n->s
 	{
 		int lasty=-1;
@@ -472,7 +485,7 @@ void MapView::renderChunk(Chunk *chunk)
 				int light1 = light;
 				if (!(flags & flgLighting))
 					light = 13;
-                if ((alpha==0.0)&&(lasty!=-1))
+				if ((alpha==0.0)&&(lasty!=-1))
 				{
 					if (lasty<y)
 						light+=2;
@@ -568,7 +581,7 @@ void MapView::renderChunk(Chunk *chunk)
 				if (block.alpha==1.0 || alpha>0.9)
 					break;
 			}
-			lasty=highest;
+			*depthbits++=lasty=highest;
 			*bits++=b;
 			*bits++=g;
 			*bits++=r;
@@ -620,22 +633,9 @@ void MapView::getToolTip(int x, int z)
 		BiomeInfo &bi=biomes->getBiome(chunk->biomes[(x&0xf)+(z&0xf)*16]);
 		biome=bi.name;
 
-		foreach (const QString& type, specialBlockTypes)
+		foreach (const QSharedPointer<OverlayItem>& item, getItems(x, y, z))
 		{
-			foreach (const SpecialBlock& block, specialBlocks[type])
-			{
-				double ymin = 0;
-				double ymax = depth;
-				if (type == "Entity")
-				{
-					ymin = y - 4;
-					ymax = y + 4;
-				}
-				if (block.intersects(x, ymin, z, x, ymax, z))
-				{
-					entityIds[block.getDisplay()]++;
-				}
-			}
+			entityIds[item->display()]++;
 		}
 	}
 
@@ -668,91 +668,65 @@ void MapView::getToolTip(int x, int z)
 						  .arg(entityStr));
 }
 
-void MapView::markBlock(QString type, double x1, double y1, double z1, double x2, double y2, double z2, QColor color, QString display)
+void MapView::addOverlayItem(QSharedPointer<OverlayItem> item)
 {
-	specialBlocks[type].push_back(SpecialBlock(x1, y1, z1, x2, y2, z2, color, display));
+	overlayItems[item->type()].push_back(item);
 }
 
+void MapView::showOverlayItemTypes(const QSet<QString>& itemTypes)
+{
+	overlayItemTypes = itemTypes;
+}
 
 int MapView::getY(int x, int z)
 {
 	int cx=floor(x/16.0);
 	int cz=floor(z/16.0);
 	Chunk *chunk=cache.fetch(cx,cz);
-	int offset=(x&0xf)+(z&0xf)*16;
-	int y = 0;
+	return chunk ? chunk->depth[(x&0xf)+(z&0xf)*16] : -1;
+}
+
+QList<QSharedPointer<OverlayItem> > MapView::getItems(int x, int y, int z)
+{
+	QList<QSharedPointer<OverlayItem> > ret;
+	int cx=floor(x/16.0);
+	int cz=floor(z/16.0);
+	Chunk *chunk=cache.fetch(cx,cz);
+
 	if (chunk)
 	{
-		int top=depth;
-		if (top>chunk->highest)
-			top=chunk->highest;
-
-		for (y=top;y>=0;y--)
+		double invzoom = 10.0/zoom;
+		foreach (const QString& type, overlayItemTypes)
 		{
-			int sec=y>>4;
-			ChunkSection *section=chunk->sections[sec];
-			if (!section)
+			//generated structures
+			foreach (const QSharedPointer<OverlayItem>& item, overlayItems[type])
 			{
-				y=(sec<<4)-1; //skip entire section
-				continue;
+				double ymin = 0;
+				double ymax = depth;
+				//TODO: handle depth?
+				if (item->intersects(
+					OverlayItem::Point(x, ymin, z),
+					OverlayItem::Point(x, ymax, z)))
+				{
+					ret.append(item);
+				}
 			}
-			int yoffset=(y&0xf)<<8;
-			int data=section->data[(offset+yoffset)/2];
-			if (x&1) data>>=4;
-			BlockInfo &block=blocks->getBlock(section->blocks[offset+yoffset],data&0xf);
-			if (block.alpha==0.0) continue;
-			break;
+
+			//entities
+			QPair<Chunk::EntityMap::const_iterator, Chunk::EntityMap::const_iterator> itemRange = chunk->entities.equal_range(type);
+			for(Chunk::EntityMap::const_iterator itItem = itemRange.first; itItem != itemRange.second; ++itItem)
+			{
+				double ymin = y - 4;
+				double ymax = depth + 4;
+
+				if ((*itItem)->intersects(
+					OverlayItem::Point(x - invzoom/2, ymin, z - invzoom/2),
+					OverlayItem::Point(x + 1 + invzoom/2, ymax, z + 1 + invzoom/2)))
+				{
+					ret.append(*itItem);
+				}
+			}
 		}
 	}
-	return y;
-}
-
-MapView::SpecialBlock::SpecialBlock(double x1, double y1, double z1,
-									double x2, double y2, double z2, QColor color, const QString &display):
-	x1(x1), y1(y1), z1(z1), x2(x2), y2(y2), z2(z2), color(color), display(display)
-{
-	assert(x2 >= x1);
-	assert(y2 >= y1);
-	assert(z2 >= z1);
-}
-
-void MapView::SpecialBlock::draw(double offsetX, double offsetZ, double scale, QPainter& canvas) const
-{    
-	int left = (int)((x1 - offsetX) * scale) + MIN_SIZE/4;
-	int top = (int)((z1 - offsetZ) * scale) + MIN_SIZE/4;
-	int w = (int)((x2 - x1 + 1) * scale) - MIN_SIZE/2;
-	int h = (int)((z2 - z1 + 1) * scale) - MIN_SIZE/2;
-	if (w < MIN_SIZE)
-	{
-		left = (left + w / 2) - MIN_SIZE / 2;
-		w = MIN_SIZE;
-	}
-	if (h < MIN_SIZE)
-	{
-		top = (top + h / 2) - MIN_SIZE / 2;
-		h = MIN_SIZE;
-	}
-	QPen pen = canvas.pen();
-	pen.setColor(color);
-	//pen.setWidth(MIN_SIZE/2);
-	canvas.setPen(QColor(0, 0, 0, 0));
-	canvas.setBrush(QBrush(color));
-	canvas.drawRoundedRect(left, top, w, h, MIN_SIZE, MIN_SIZE);
-	QSize labelsize = canvas.fontMetrics().size(0, display);
-	canvas.setPen(Qt::black);
-	if (labelsize.height() < h && labelsize.width() < w)
-	{
-		canvas.drawText(left, top, w, h, Qt::AlignCenter, display);
-	}
-}
-
-bool MapView::SpecialBlock::intersects(double x1, double y1, double z1,
-									   double x2, double y2, double z2) const
-{
-	return x1 <= this->x2 &&
-	 this->x1 <= x2 &&
-		   y1 <= this->y2 &&
-	 this->y1 <= y2 &&
-		   z1 <= this->z2 &&
-	 this->z1 <= z2;
+	return ret;
 }

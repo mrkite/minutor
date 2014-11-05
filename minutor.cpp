@@ -47,6 +47,8 @@
 #include "dimensions.h"
 #include "worldsave.h"
 #include "properties.h"
+#include "generatedstructure.h"
+#include "village.h"
 
 Minutor::Minutor():
 	maxentitydistance(0)
@@ -54,10 +56,10 @@ Minutor::Minutor():
 	mapview = new MapView;
 	connect(mapview,     SIGNAL(hoverTextChanged(QString)),
 			statusBar(), SLOT(showMessage(QString)));
-	connect(mapview,     SIGNAL(foundSpecialBlock(int,int,int,QString,QString,QVariant)),
-			this,        SLOT(specialBlock(int,int,int,QString,QString,QVariant)));
-	connect(mapview,     SIGNAL(showProperties(int,int,int)),
-			this,        SLOT(showProperties(int,int,int)));
+	connect(mapview,     SIGNAL(showProperties(QVariant)),
+			this,        SLOT(showProperties(QVariant)));
+	connect(mapview,     SIGNAL(addOverlayItemType(QString,QColor)),
+			this,        SLOT(addOverlayItemType(QString,QColor)));
 	dm=new DefinitionManager(this);
 	mapview->attach(dm);
 	connect(dm,   SIGNAL(packsChanged()),
@@ -216,16 +218,17 @@ void Minutor::toggleFlags()
 	if (caveModeAct->isChecked())     flags |= MapView::flgCaveMode;
 	if (depthShadingAct->isChecked()) flags |= MapView::flgDepthShading;
 	mapview->setFlags(flags);
-	mapview->clearSpecialBlockTypes();
 
+	QSet<QString> overlayTypes;
 	QList<QAction*>::iterator it, itEnd = entityActions.end();
 	for (it = entityActions.begin(); it != itEnd; ++it)
 	{
 		if ((*it)->isChecked())
 		{
-			mapview->addSpecialBlockType((*it)->data().toString());
+			overlayTypes.insert((*it)->data().toString());
 		}
 	}
+	mapview->showOverlayItemTypes(overlayTypes);
 	mapview->redraw();
 }
 
@@ -378,9 +381,9 @@ void Minutor::createMenus()
 	viewMenu->addAction(mobSpawnAct);
 	viewMenu->addAction(caveModeAct);
 	viewMenu->addAction(depthShadingAct);
-	// [View->Special]
-	entitiesMenu = viewMenu->addMenu(tr("S&pecial"));
-	entitiesMenu->setEnabled(false);
+	// [View->Overlay]
+	overlayMenu = viewMenu->addMenu(tr("&Overlay"));
+
 
 	viewMenu->addSeparator();
 	viewMenu->addAction(refreshAct);
@@ -537,26 +540,41 @@ void Minutor::rescanWorlds()
 	//on startup anyway.
 }
 
-void Minutor::specialBlock(int x, int y, int z, QString type, QString display, QVariant properties)
+void Minutor::addOverlayItemType(QString type, QColor color)
 {
-	specialArea(x, y, z, x, y, z, type, display, properties);
-}
-
-void Minutor::specialArea(double x1, double y1, double z1,
-						  double x2, double y2, double z2,
-						  QString type, QString display, QVariant properties)
-{
-	Entity e = {x1, y1, z1, x2, y2, z2, type, display, properties};
-	if (!entities.contains(type))
+	if (!overlayItems.contains(type))
 	{
+		QList<QString> path = type.split('.');
+		QList<QString>::const_iterator pathIt, nextIt, endPathIt = path.end();
+		nextIt = path.begin();
+		pathIt = nextIt++;
+		QMenu* cur = overlayMenu;
+
+		//generate a nested menu structure to match the path
+		while(nextIt != endPathIt)
+		{
+			QList<QMenu*> results = cur->findChildren<QMenu*>(*pathIt, Qt::FindDirectChildrenOnly);
+			if (results.empty())
+			{
+				cur = cur->addMenu("&" + *pathIt);
+				cur->setObjectName(*pathIt);
+			}
+			else
+			{
+				cur = results.front();
+			}
+			pathIt = ++nextIt;
+		}
+
+		const QString& subtype = path.last();
 		//generate a unique keyboard shortcut
 		QKeySequence sequence;
 		QString actionName;
 		int ampPos = 0;
-		foreach (const QChar& c, type)
+		foreach (const QChar& c, subtype)
 		{
 			sequence = QKeySequence(QString("Ctrl+")+c);
-			actionName = type.mid(0, ampPos) + "&" + type.mid(ampPos);
+			actionName = subtype.mid(0, ampPos) + "&" + subtype.mid(ampPos);
 			foreach(QMenu* m, menuBar()->findChildren<QMenu*>())
 			{
 				foreach (const QAction* a, m->actions())
@@ -576,96 +594,40 @@ void Minutor::specialArea(double x1, double y1, double z1,
 			++ampPos;
 		}
 
+		QPixmap pixmap(16,16);
+		QColor solidColor(color);
+		solidColor.setAlpha(255);
+		pixmap.fill(solidColor);
 
-		entitiesMenu->setEnabled(true);
-		entityActions.push_back(new QAction(actionName, this));
+		entityActions.push_back(new QAction(pixmap, actionName, this));
 		entityActions.last()->setShortcut(sequence);
 		entityActions.last()->setStatusTip(QString(tr("Toggle viewing of %1").arg(type)));
 		entityActions.last()->setEnabled(true);
 		entityActions.last()->setData(type);
 		entityActions.last()->setCheckable(true);
-		entitiesMenu->addAction(entityActions.last());
+		cur->addAction(entityActions.last());
 		connect(entityActions.last(), SIGNAL(triggered()), this, SLOT(toggleFlags()));
 	}
-
-	//pick a color
-	//TODO: configurable?
-	QColor color;
-	if (type == "Entity" && (QMetaType::Type)properties.type() == QMetaType::QVariantMap)
-	{
-		//this odd logic should be replaced by a list, but i don't have one,
-		//and it may continue working after future updates.
-		QMap<QString, QVariant> propmap = properties.toMap();
-		if (propmap.contains("InLove")  ||  //if its breedable, then its not an enemy?
-				propmap.contains("Willing") ||
-				propmap["id"].toString().contains("Golem") ||
-				propmap["id"] == "SnowMan" ||
-				propmap["id"] == "Squid" ||
-				propmap["id"] == "Bat"
-				)
-		{
-			color = Qt::white;
-		}
-		else if (propmap.size() < 20)
-		{
-			//simple objects are usually items
-			color = Qt::blue;
-		}
-		else
-		{
-			//otherwise, it will probably hurt you if you go near it
-			color = Qt::red;
-		}
-		color.setAlpha(128);
-	}
-	else
-	{
-		//an area of some kind... just make a color up
-		quint32 hue = qHash(type);
-
-		color.setHsv(hue % 360, 255, 255, 64);
-
-	}
-	if (maxentitydistance < (x2 - x1) / 2)
-		maxentitydistance = (x2 - x1) / 2;
-	if (maxentitydistance < (z2 - z1) / 2)
-		maxentitydistance = (z2 - z1) / 2;
-	entities[type].insertMulti(qMakePair(floor((x1 + x2)/2), floor((z1 + z2)/2)), e);
-	mapview->markBlock(type, x1, y1, z1, x2, y2, z2, color, display);
 }
 
-void Minutor::showProperties(int x, int y, int z)
+void Minutor::addOverlayItem(QSharedPointer<OverlayItem> item)
 {
-	QMap<QString, QVariant> values;
-	EntityMap::iterator it, itEnd = entities.end();
-	for (it = entities.begin(); it != itEnd; ++it)
+	addOverlayItemType(item->type(), item->color());
+
+	//TODO: don't guess this
+	maxentitydistance = 50;
+
+	const OverlayItem::Point& p = item->midpoint();
+	overlayItems[item->type()].insertMulti(qMakePair(p.x, p.z), item);
+
+	mapview->addOverlayItem(item);
+}
+
+void Minutor::showProperties(QVariant props)
+{
+	if (!props.isNull())
 	{
-		//search near the given coordinates for areas
-		//TODO: alternative? bigger bins? kd tree?
-		for (int ix = x - maxentitydistance; ix < x + maxentitydistance; ++ix)
-		{
-			for (int iz = z - maxentitydistance; iz < z + maxentitydistance; ++iz)
-			{
-				QList<Entity> entities = it->values(qMakePair(ix, iz));
-				if (entities.size() > 0)
-				{
-					QList<QVariant> list;
-					foreach(const Entity& e, entities)
-					{
-						if (e.intersects(x, 0, z, x, y+4, z))
-						{
-							list.push_back(e.properties);
-						}
-					}
-					if (!list.empty())
-						values.insertMulti(it.key(), list);
-				}
-			}
-		}
-	}
-	if (!values.empty())
-	{
-		propView->DisplayProperties(values);
+		propView->DisplayProperties(props);
 		propView->show();
 	}
 }
@@ -677,68 +639,31 @@ void Minutor::loadStructures(const QDir& dataPath)
 	foreach(const QString& fileName, dataPath.entryList(QStringList() << "*.dat"))
 	{
 		NBT file(dataPath.filePath(fileName));
-		//no guarantee that this file contains what we expect. be careful.
 		Tag* data = file.at("data");
-		if (data && data != &NBT::Null)
-		{
-			Tag* features = data->at("Features");
-			if (features && data != &NBT::Null)
-			{
-				//convert the features to a qvariant here
-				QVariant maybeFeatureMap = features->getData();
-				if ((QMetaType::Type)maybeFeatureMap.type() == QMetaType::QVariantMap)
-				{
-					QMap<QString, QVariant> featureMap = maybeFeatureMap.toMap();
-					foreach(const QVariant& feature, featureMap)
-					{
-						if ((QMetaType::Type)feature.type() == QMetaType::QVariantMap)
-						{
-							QMap<QString, QVariant> featureProperties = feature.toMap();
-							//check for required properties
-							if (featureProperties.contains("BB") //bounding box... gives us the position
-									&& (QMetaType::Type)featureProperties["BB"].type() == QMetaType::QVariantList
-									&& featureProperties.contains("id") //name of the feature type
 
-									)
-							{
-								//TODO: bb is a bounding box. Should allow
-								//for displaying an area rather than a point
-								QList<QVariant> bb = featureProperties["BB"].toList();
-								if (bb.size() == 6)
-								{
-									specialArea(bb[0].toInt(), bb[1].toInt(), bb[2].toInt(),
-											bb[3].toInt(), bb[4].toInt(), bb[5].toInt(),
-											featureProperties["id"].toString(),
-											featureProperties["id"].toString(),
-											featureProperties);
-								}
-							}
-						}
-					}
-				}
-			}
+		//TODO: factory?
+		QList<QSharedPointer<GeneratedStructure> > items = GeneratedStructure::tryParse(data);
+
+		foreach (const QSharedPointer<GeneratedStructure>& item, items)
+		{
+			addOverlayItem(item);
 		}
-	}
 
-	//parse villages.dat. it will contain information about the villages themselves
-	NBT villagefile(dataPath.filePath("villages.dat"));
-	Tag* data = villagefile.at("data");
-	if (data && data != &NBT::Null)
-	{
-		Tag* villages = data->at("Villages");
-		if (villages && villages != &NBT::Null)
+		if (items.isEmpty())
 		{
-			for (int i = 0; i < villages->length(); ++i)
+			//try parsing it as a village.dat file
+			int underidx = fileName.lastIndexOf('_');
+			int dotidx = fileName.lastIndexOf('.');
+			QString dimension = "overworld";
+			if (underidx > 0)
 			{
-				Tag* village = villages->at(i);
-				int radius = village->at("Radius")->toInt();
-				int cx = village->at("CX")->toInt();
-				int cy = village->at("CY")->toInt();
-				int cz = village->at("CZ")->toInt();
-				specialArea(cx - radius, cy - radius, cz - radius,
-							cx + radius, cy + radius, cz + radius,
-							"Village", "Village", village->getData());
+				dimension = fileName.mid(underidx + 1, dotidx - underidx - 1);
+			}
+			items = Village::tryParse(data, dimension);
 
+			foreach (const QSharedPointer<GeneratedStructure>& item, items)
+			{
+				addOverlayItem(item);
 			}
 		}
 	}

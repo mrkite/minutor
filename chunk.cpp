@@ -78,9 +78,9 @@ void Chunk::load(NBT &nbt)
 	int numEntities = entitylist->length();
 	for (int i = 0; i < numEntities; ++i)
 	{
-		Entity e;
-		e.load(entitylist->at(i));
-		entities.insertMulti("Entity", e);
+		QSharedPointer<OverlayItem> e = Entity::TryParse(entitylist->at(i));
+		if (e)
+			entities.insertMulti(e->type(), e);
 	}
 
 

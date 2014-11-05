@@ -1,30 +1,31 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
-#include <QMap>
-#include <QString>
-#include <QVariant>
+#include "overlayitem.h"
+
+#include <QSharedPointer>
+
 class Tag;
 
-class Entity
+class Entity: public OverlayItem
 {
 public:
-	Entity(qint64 nx = 0, qint64 ny = 0, qint64 nz = 0, QString nid = "");
+	static QSharedPointer<OverlayItem> TryParse(Tag* tag);
 
-	void load(Tag *t);
+	virtual bool intersects(const Point& min, const Point& max) const;
+	virtual void draw(double offsetX, double offsetZ, double scale, QPainter& canvas) const;
+	virtual Point midpoint() const;
 
-	const QString& getId() const { return id; }
-	const QVariant& getProperties() const { return properties; }
-	qint64 getX() const { return x; }
-	qint64 getY() const { return y; }
-	qint64 getZ() const { return z; }
+	static const int RADIUS = 10;
+
+protected:
+	Entity() {}
 
 private:
-	QString id;
-	QVariant properties;
-	qint64 x;
-	qint64 y;
-	qint64 z;
+
+
+	Point pos;
+	QString display;
 };
 
 #endif // ENTITY_H
