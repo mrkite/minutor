@@ -9,6 +9,12 @@ win32:LIBS+= $$PWD/zlibstat.lib
 win32:RC_FILE += winicon.rc
 macx:ICON=icon.icns
 
+#for profiling
+#*-g++* {
+#	QMAKE_CXXFLAGS += -pg
+#	QMAKE_LFLAGS += -pg
+#}
+
 # Input
 HEADERS += mapview.h minutor.h nbt.h zlib.h zconf.h \
 	labelledslider.h \
@@ -25,7 +31,10 @@ HEADERS += mapview.h minutor.h nbt.h zlib.h zconf.h \
     definitionupdater.h \
     worldsave.h \
     entity.h \
-    properties.h
+    properties.h \
+    generatedstructure.h \
+    overlayitem.h \
+    village.h
 SOURCES += mapview.cpp main.cpp minutor.cpp nbt.cpp \
 	labelledslider.cpp \
     chunk.cpp \
@@ -41,7 +50,9 @@ SOURCES += mapview.cpp main.cpp minutor.cpp nbt.cpp \
     definitionupdater.cpp \
     worldsave.cpp \
     entity.cpp \
-    properties.cpp
+    properties.cpp \
+    generatedstructure.cpp \
+    village.cpp
 RESOURCES = minutor.qrc
 
 desktopfile.path = /usr/share/applications

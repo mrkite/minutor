@@ -47,26 +47,29 @@
 #include "dimensions.h"
 #include "worldsave.h"
 #include "properties.h"
+#include "generatedstructure.h"
+#include "village.h"
 
-Minutor::Minutor()
+Minutor::Minutor():
+	maxentitydistance(0)
 {
 	mapview = new MapView;
 	connect(mapview,     SIGNAL(hoverTextChanged(QString)),
-	        statusBar(), SLOT(showMessage(QString)));
-	connect(mapview,     SIGNAL(foundSpecialBlock(int,int,int,QString,QString,QVariant)),
-	        this,        SLOT(specialBlock(int,int,int,QString,QString,QVariant)));
-	connect(mapview,     SIGNAL(showProperties(int,int,int)),
-	        this,        SLOT(showProperties(int,int,int)));
+			statusBar(), SLOT(showMessage(QString)));
+	connect(mapview,     SIGNAL(showProperties(QVariant)),
+			this,        SLOT(showProperties(QVariant)));
+	connect(mapview,     SIGNAL(addOverlayItemType(QString,QColor)),
+			this,        SLOT(addOverlayItemType(QString,QColor)));
 	dm=new DefinitionManager(this);
 	mapview->attach(dm);
 	connect(dm,   SIGNAL(packsChanged()),
-	        this, SLOT(updateDimensions()));
+			this, SLOT(updateDimensions()));
 	dimensions=dm->dimensions();
 	connect(dimensions, SIGNAL(dimensionChanged(Dimension &)),
-	        this,       SLOT(viewDimension(Dimension &)));
+			this,       SLOT(viewDimension(Dimension &)));
 	settings = new Settings(this);
 	connect(settings, SIGNAL(settingsUpdated()),
-	        this,     SLOT(rescanWorlds()));
+			this,     SLOT(rescanWorlds()));
 
 
 	if (settings->autoUpdate)
@@ -100,7 +103,7 @@ Minutor::Minutor()
 	connect(this,    SIGNAL(worldLoaded(bool)),
 	        mapview, SLOT(setEnabled(bool)));
 	connect(this,    SIGNAL(worldLoaded(bool)),
-	        depth,   SLOT(setEnabled(bool)));
+			depth,   SLOT(setEnabled(bool)));
 
 	QWidget *central=new QWidget;
 	central->setLayout(mainLayout);
@@ -158,9 +161,9 @@ void Minutor::save()
 		progress->setMaximum(100);
 		progress->show();
 		connect(ws,   SIGNAL(progress(QString,double)),
-		        this, SLOT(saveProgress(QString,double)));
+				this, SLOT(saveProgress(QString,double)));
 		connect(ws,   SIGNAL(finished()),
-		        this, SLOT(saveFinished()));
+				this, SLOT(saveFinished()));
 		QThreadPool::globalInstance()->start(ws);
 	}
 }
@@ -214,23 +217,36 @@ void Minutor::toggleFlags()
 	if (mobSpawnAct->isChecked())     flags |= MapView::flgMobSpawn;
 	if (caveModeAct->isChecked())     flags |= MapView::flgCaveMode;
 	if (depthShadingAct->isChecked()) flags |= MapView::flgDepthShading;
-	//if (entitiesAct->isChecked())     flags |= MapView::flgShowEntities;
 	mapview->setFlags(flags);
-	mapview->clearSpecialBlockTypes();
 
+	QSet<QString> overlayTypes;
 	QList<QAction*>::iterator it, itEnd = entityActions.end();
 	for (it = entityActions.begin(); it != itEnd; ++it)
 	{
 		if ((*it)->isChecked())
 		{
-			mapview->addSpecialBlockType((*it)->data().toString());
+			overlayTypes.insert((*it)->data().toMap()["type"].toString());
 		}
 	}
+	mapview->showOverlayItemTypes(overlayTypes);
 	mapview->redraw();
 }
 
 void Minutor::viewDimension(Dimension &dim)
 {
+	foreach(QAction*action, entityActions)
+	{
+		QString dimension = action->data().toMap()["dimension"].toString();
+		if (dimension.isEmpty() || !dimension.compare(dim.name, Qt::CaseInsensitive))
+		{
+			action->setVisible(true);
+		}
+		else
+		{
+			action->setVisible(false);
+		}
+	}
+
 	mapview->setDimension(dim.path,dim.scale);
 }
 
@@ -258,13 +274,13 @@ void Minutor::createActions()
 	openAct->setShortcut(tr("Ctrl+O"));
 	openAct->setStatusTip(tr("Open a world"));
 	connect(openAct, SIGNAL(triggered()),
-	        this,    SLOT(open()));
+			this,    SLOT(open()));
 
 	reloadAct = new QAction(tr("&Reload"),this);
 	reloadAct->setShortcut(tr("F5"));
 	reloadAct->setStatusTip(tr("Reload current world"));
 	connect(reloadAct, SIGNAL(triggered()),
-	        this,      SLOT(reload()));
+			this,      SLOT(reload()));
 	connect(this,      SIGNAL(worldLoaded(bool)),
 			reloadAct, SLOT(setEnabled(bool)));
 
@@ -272,24 +288,24 @@ void Minutor::createActions()
 	saveAct->setShortcut(tr("Ctrl+S"));
 	saveAct->setStatusTip(tr("Save as PNG"));
 	connect(saveAct, SIGNAL(triggered()),
-	        this,    SLOT(save()));
+			this,    SLOT(save()));
 	connect(this,    SIGNAL(worldLoaded(bool)),
-	        saveAct, SLOT(setEnabled(bool)));
+			saveAct, SLOT(setEnabled(bool)));
 
 	exitAct = new QAction(tr("E&xit"),this);
 	exitAct->setShortcut(tr("Ctrl+Q"));
 	exitAct->setStatusTip(tr("Exit %1").arg(qApp->applicationName()));
 	connect(exitAct, SIGNAL(triggered()),
-	        this,    SLOT(close()));
+			this,    SLOT(close()));
 
 	// [View]
 	jumpSpawnAct = new QAction(tr("Jump to &Spawn"),this);
 	jumpSpawnAct->setShortcut(tr("F1"));
 	jumpSpawnAct->setStatusTip(tr("Jump to world spawn"));
 	connect(jumpSpawnAct, SIGNAL(triggered()),
-	        this,         SLOT(jumpToLocation()));
+			this,         SLOT(jumpToLocation()));
 	connect(this,         SIGNAL(worldLoaded(bool)),
-	        jumpSpawnAct, SLOT(setEnabled(bool)));
+			jumpSpawnAct, SLOT(setEnabled(bool)));
 
 
 	lightingAct = new QAction(tr("&Lighting"),this);
@@ -297,56 +313,56 @@ void Minutor::createActions()
 	lightingAct->setShortcut(tr("Ctrl+L"));
 	lightingAct->setStatusTip(tr("Toggle lighting on/off"));
 	connect(lightingAct, SIGNAL(triggered()),
-	        this,        SLOT(toggleFlags()));
+			this,        SLOT(toggleFlags()));
 
 	depthShadingAct = new QAction(tr("&Depth shading"), this);
 	depthShadingAct->setCheckable(true);
 	depthShadingAct->setShortcut(tr("Ctrl+D"));
 	depthShadingAct->setStatusTip(tr("Toggle shading based on relative depth"));
 	connect(depthShadingAct, SIGNAL(triggered()),
-	        this,            SLOT(toggleFlags()));
+			this,            SLOT(toggleFlags()));
 
 	mobSpawnAct = new QAction(tr("&Mob spawning"),this);
 	mobSpawnAct->setCheckable(true);
 	mobSpawnAct->setShortcut(tr("Ctrl+M"));
 	mobSpawnAct->setStatusTip(tr("Toggle show mob spawning on/off"));
 	connect(mobSpawnAct, SIGNAL(triggered()),
-	        this,        SLOT(toggleFlags()));
+			this,        SLOT(toggleFlags()));
 
 	caveModeAct = new QAction(tr("&Cave Mode"),this);
 	caveModeAct->setCheckable(true);
 	caveModeAct->setShortcut(tr("Ctrl+C"));
 	caveModeAct->setStatusTip(tr("Toggle cave mode on/off"));
 	connect(caveModeAct, SIGNAL(triggered()),
-	        this,        SLOT(toggleFlags()));
+			this,        SLOT(toggleFlags()));
 	caveModeAct->setEnabled(false);
 
 	manageDefsAct = new QAction(tr("Manage &Definitions..."),this);
 	manageDefsAct->setStatusTip(tr("Manage block and biome definitions"));
 	connect(manageDefsAct, SIGNAL(triggered()),
-	        dm,            SLOT(show()));
+			dm,            SLOT(show()));
 
 	refreshAct = new QAction(tr("Refresh"), this);
 	refreshAct->setShortcut(tr("F2"));
 	refreshAct->setStatusTip(tr("Reloads all chunks, but keeps the same position / dimension"));
 	connect(refreshAct, SIGNAL(triggered()),
-	        mapview,    SLOT(clearCache()));
+			mapview,    SLOT(clearCache()));
 
 	// [Help]
 	aboutAct = new QAction(tr("&About"),this);
 	aboutAct->setStatusTip(tr("About %1").arg(qApp->applicationName()));
 	connect(aboutAct, SIGNAL(triggered()),
-	        this,     SLOT(about()));
+			this,     SLOT(about()));
 
 	settingsAct = new QAction(tr("Settings..."),this);
 	settingsAct->setStatusTip(tr("Change %1 Settings").arg(qApp->applicationName()));
 	connect(settingsAct, SIGNAL(triggered()),
-	        settings,    SLOT(show()));
+			settings,    SLOT(show()));
 
 	updatesAct = new QAction(tr("Check for updates..."),this);
 	updatesAct->setStatusTip(tr("Check for updated packs"));
 	connect(updatesAct, SIGNAL(triggered()),
-	        dm,         SLOT(checkForUpdates()));
+			dm,         SLOT(checkForUpdates()));
 }
 
 void Minutor::createMenus()
@@ -378,9 +394,9 @@ void Minutor::createMenus()
 	viewMenu->addAction(mobSpawnAct);
 	viewMenu->addAction(caveModeAct);
 	viewMenu->addAction(depthShadingAct);
-	// [View->Special]
-	entitiesMenu = viewMenu->addMenu(tr("S&pecial"));
-	entitiesMenu->setEnabled(false);
+	// [View->Overlay]
+	overlayMenu = viewMenu->addMenu(tr("&Overlay"));
+
 
 	viewMenu->addSeparator();
 	viewMenu->addAction(refreshAct);
@@ -513,6 +529,12 @@ void Minutor::loadWorld(QDir path)
 		path.cdUp();
 	}
 
+	if (path.cd("data"))
+	{
+		loadStructures(path);
+		path.cdUp();
+	}
+
 	//show dimensions
 	dimensions->getDimensions(path,dimMenu,this);
 	emit worldLoaded(true);
@@ -531,46 +553,136 @@ void Minutor::rescanWorlds()
 	//on startup anyway.
 }
 
-void Minutor::specialBlock(int x, int y, int z, QString type, QString display, QVariant properties)
+void Minutor::addOverlayItemType(QString type, QColor color, QString dimension)
 {
-	Entity e = {x, y, z, type, display, properties};
-	if (!entities.contains(type))
+	if (!overlayItemTypes.contains(type))
 	{
-		entitiesMenu->setEnabled(true);
-		entityActions.push_back(new QAction("&" + type, this));
-		entityActions.last()->setShortcut(QKeySequence("Ctrl+" + type.mid(0, 1)));
+		overlayItemTypes.insert(type);
+		QList<QString> path = type.split('.');
+		QList<QString>::const_iterator pathIt, nextIt, endPathIt = path.end();
+		nextIt = path.begin();
+		pathIt = nextIt++;
+		QMenu* cur = overlayMenu;
+
+		//generate a nested menu structure to match the path
+		while(nextIt != endPathIt)
+		{
+			QList<QMenu*> results = cur->findChildren<QMenu*>(*pathIt, Qt::FindDirectChildrenOnly);
+			if (results.empty())
+			{
+				cur = cur->addMenu("&" + *pathIt);
+				cur->setObjectName(*pathIt);
+			}
+			else
+			{
+				cur = results.front();
+			}
+			pathIt = ++nextIt;
+		}
+
+		const QString& subtype = path.last();
+		//generate a unique keyboard shortcut
+		QKeySequence sequence;
+		QString actionName;
+		int ampPos = 0;
+		foreach (const QChar& c, subtype)
+		{
+			sequence = QKeySequence(QString("Ctrl+")+c);
+			actionName = subtype.mid(0, ampPos) + "&" + subtype.mid(ampPos);
+			foreach(QMenu* m, menuBar()->findChildren<QMenu*>())
+			{
+				foreach (const QAction* a, m->actions())
+				{
+					if (a->shortcut() == sequence)
+					{
+						sequence = QKeySequence();
+						actionName = "";
+						break;
+					}
+				}
+				if (actionName.isEmpty())
+					break; //already eliminated this as a possbility
+			}
+			if (!actionName.isEmpty())
+				break; //not eliminated, this one is ok
+			++ampPos;
+		}
+
+		QPixmap pixmap(16,16);
+		QColor solidColor(color);
+		solidColor.setAlpha(255);
+		pixmap.fill(solidColor);
+
+		QMap<QString, QVariant> entityData;
+		entityData["type"] = type;
+		entityData["dimension"] = dimension;
+
+		entityActions.push_back(new QAction(pixmap, actionName, this));
+		entityActions.last()->setShortcut(sequence);
 		entityActions.last()->setStatusTip(QString(tr("Toggle viewing of %1").arg(type)));
 		entityActions.last()->setEnabled(true);
-		entityActions.last()->setData(type);
+		entityActions.last()->setData(entityData);
 		entityActions.last()->setCheckable(true);
-		entitiesMenu->addAction(entityActions.last());
+		cur->addAction(entityActions.last());
 		connect(entityActions.last(), SIGNAL(triggered()), this, SLOT(toggleFlags()));
 	}
-	entities[type].insertMulti(qMakePair(x, z), e);
 }
 
-void Minutor::showProperties(int x, int y, int z)
+void Minutor::addOverlayItem(QSharedPointer<OverlayItem> item)
 {
-	//qDebug("and here is where we would show the properties");
+	addOverlayItemType(item->type(), item->color(), item->dimension());
 
-	QMap<QString, QVariant> values;
-	EntityMap::iterator it, itEnd = entities.end();
-	for (it = entities.begin(); it != itEnd; ++it)
+	//TODO: don't guess this
+	maxentitydistance = 50;
+
+	const OverlayItem::Point& p = item->midpoint();
+	overlayItems[item->type()].insertMulti(qMakePair(p.x, p.z), item);
+
+	mapview->addOverlayItem(item);
+}
+
+void Minutor::showProperties(QVariant props)
+{
+	if (!props.isNull())
 	{
-		QList<Entity> entities = it->values(qMakePair(x, z));
-		if (entities.size() > 0)
-		{
-			QList<QVariant> list;
-			foreach(const Entity& e, entities)
-			{
-				list.push_back(e.properties);
-			}
-			values.insert(it.key(), list);
-		}
-	}
-	if (!values.empty())
-	{
-		propView->DisplayProperties(values);
+		propView->DisplayProperties(props);
 		propView->show();
+	}
+}
+
+void Minutor::loadStructures(const QDir& dataPath)
+{
+	//attempt to parse all of the files in the data directory, looking for
+	//generated structures
+	foreach(const QString& fileName, dataPath.entryList(QStringList() << "*.dat"))
+	{
+		NBT file(dataPath.filePath(fileName));
+		Tag* data = file.at("data");
+
+		//TODO: factory?
+		QList<QSharedPointer<GeneratedStructure> > items = GeneratedStructure::tryParse(data);
+
+		foreach (const QSharedPointer<GeneratedStructure>& item, items)
+		{
+			addOverlayItem(item);
+		}
+
+		if (items.isEmpty())
+		{
+			//try parsing it as a village.dat file
+			int underidx = fileName.lastIndexOf('_');
+			int dotidx = fileName.lastIndexOf('.');
+			QString dimension = "overworld";
+			if (underidx > 0)
+			{
+				dimension = fileName.mid(underidx + 1, dotidx - underidx - 1);
+			}
+			items = Village::tryParse(data, dimension);
+
+			foreach (const QSharedPointer<GeneratedStructure>& item, items)
+			{
+				addOverlayItem(item);
+			}
+		}
 	}
 }

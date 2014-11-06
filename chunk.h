@@ -55,17 +55,19 @@ public:
 	void load(NBT &nbt);
 	~Chunk();
 protected:
+	typedef QMap<QString, QSharedPointer<OverlayItem> > EntityMap;
+
 	quint8 biomes[256];
 	int highest;
 	ChunkSection *sections[16];
 	int renderedAt;
 	int renderedFlags;
-    QSet<QString> renderedSpecialBlockTypes;
 	bool loaded;
 	uchar image[16*16*4];	//cached render
-    QMap<QString, Entity> entities;
-    int chunkX;
-    int chunkZ;
+	uchar depth[16*16];
+	EntityMap entities;
+	int chunkX;
+	int chunkZ;
 	friend class MapView;
 	friend class ChunkCache;
 	friend class WorldSave;
