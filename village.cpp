@@ -24,10 +24,10 @@ QList<QSharedPointer<GeneratedStructure> > Village::tryParse(Tag* tag, const QSt
 					Point(cx + radius, cy + radius, cz + radius)
 				);
 				newVillage->setDisplay("Village");
-				newVillage->setType("Village");
+				newVillage->setType("Structure.Village");
 
 				//color is based on the hash
-				quint32 hue = qHash(newVillage->type());
+				quint32 hue = qHash("Village");
 				QColor color;
 				color.setHsv(hue % 360, 255, 255, 64);
 				newVillage->setColor(color);

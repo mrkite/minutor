@@ -36,18 +36,18 @@ QList<QSharedPointer<GeneratedStructure> > GeneratedStructure::tryParse(Tag* dat
 									Point(bb[0].toInt(), bb[1].toInt(), bb[2].toInt()),
 									Point(bb[3].toInt(), bb[4].toInt(), bb[5].toInt())
 								);
-								structure->setType(featureProperties["id"].toString());
+								structure->setType("Structure." + featureProperties["id"].toString());
 								structure->setDisplay(featureProperties["id"].toString());
 								structure->setProperties(featureProperties);
 
 								//base the color on a hash of its type
-								quint32 hue = qHash(structure->type());
+								quint32 hue = qHash(featureProperties["id"].toString());
 								QColor color;
 								color.setHsv(hue % 360, 255, 255, 64);
 								structure->setColor(color);
 
 								//this will have to be maintained if new structures are added
-								if (structure->type() == "Fortress")
+								if (structure->type() == "Structure.Fortress")
 								{
 									structure->setDimension("nether");
 								}

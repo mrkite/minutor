@@ -225,7 +225,7 @@ void Minutor::toggleFlags()
 	{
 		if ((*it)->isChecked())
 		{
-			overlayTypes.insert((*it)->data().toString());
+			overlayTypes.insert((*it)->data().toMap()["type"].toString());
 		}
 	}
 	mapview->showOverlayItemTypes(overlayTypes);
@@ -234,6 +234,19 @@ void Minutor::toggleFlags()
 
 void Minutor::viewDimension(Dimension &dim)
 {
+	foreach(QAction*action, entityActions)
+	{
+		QString dimension = action->data().toMap()["dimension"].toString();
+		if (dimension.isEmpty() || !dimension.compare(dim.name, Qt::CaseInsensitive))
+		{
+			action->setVisible(true);
+		}
+		else
+		{
+			action->setVisible(false);
+		}
+	}
+
 	mapview->setDimension(dim.path,dim.scale);
 }
 
@@ -540,10 +553,11 @@ void Minutor::rescanWorlds()
 	//on startup anyway.
 }
 
-void Minutor::addOverlayItemType(QString type, QColor color)
+void Minutor::addOverlayItemType(QString type, QColor color, QString dimension)
 {
-	if (!overlayItems.contains(type))
+	if (!overlayItemTypes.contains(type))
 	{
+		overlayItemTypes.insert(type);
 		QList<QString> path = type.split('.');
 		QList<QString>::const_iterator pathIt, nextIt, endPathIt = path.end();
 		nextIt = path.begin();
@@ -599,11 +613,15 @@ void Minutor::addOverlayItemType(QString type, QColor color)
 		solidColor.setAlpha(255);
 		pixmap.fill(solidColor);
 
+		QMap<QString, QVariant> entityData;
+		entityData["type"] = type;
+		entityData["dimension"] = dimension;
+
 		entityActions.push_back(new QAction(pixmap, actionName, this));
 		entityActions.last()->setShortcut(sequence);
 		entityActions.last()->setStatusTip(QString(tr("Toggle viewing of %1").arg(type)));
 		entityActions.last()->setEnabled(true);
-		entityActions.last()->setData(type);
+		entityActions.last()->setData(entityData);
 		entityActions.last()->setCheckable(true);
 		cur->addAction(entityActions.last());
 		connect(entityActions.last(), SIGNAL(triggered()), this, SLOT(toggleFlags()));
@@ -612,7 +630,7 @@ void Minutor::addOverlayItemType(QString type, QColor color)
 
 void Minutor::addOverlayItem(QSharedPointer<OverlayItem> item)
 {
-	addOverlayItemType(item->type(), item->color());
+	addOverlayItemType(item->type(), item->color(), item->dimension());
 
 	//TODO: don't guess this
 	maxentitydistance = 50;

@@ -33,6 +33,7 @@
 #include <QDir>
 #include <QVariant>
 #include <QSharedPointer>
+#include <QSet>
 
 class QAction;
 class QActionGroup;
@@ -86,7 +87,7 @@ private slots:
 	void saveProgress(QString status,double value);
 	void saveFinished();
 	void addOverlayItem(QSharedPointer<OverlayItem> item);
-	void addOverlayItemType(QString type, QColor color);
+	void addOverlayItemType(QString type, QColor color, QString dimension = "");
 	void showProperties(QVariant props);
 
 signals:
@@ -132,6 +133,7 @@ private:
 	//           type                 x    z
 	typedef QMap<QString, QHash<QPair<int, int>, QSharedPointer<OverlayItem> > > OverlayMap;
 	OverlayMap overlayItems;
+	QSet<QString> overlayItemTypes;
 	int maxentitydistance;
 	Properties * propView;
 };

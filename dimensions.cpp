@@ -193,7 +193,7 @@ void Dimensions::addDimension(QDir path,QString dir,QString name,int scale,QObje
 		QAction *d=new QAction(parent);
 		d->setText(name);
 		d->setData(dimensions.count());
-		dimensions.append(Dimension(path.absolutePath(),scale));
+		dimensions.append(Dimension(path.absolutePath(),scale, name));
 		d->setCheckable(true);
 		parent->connect(d, SIGNAL(triggered()),
 						this, SLOT(viewDimension()));

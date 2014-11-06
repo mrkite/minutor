@@ -105,7 +105,7 @@ void MapView::setDimension(QString path, int scale)
 	redraw();
 
 	//we should eventually detect these instead of pre-loading them
-	//for now, keep these in sync witht the entities created in Entity.cpp,
+	//for now, keep these in sync with the entities created in Entity.cpp,
 	//or else we won't be able to select them.
 	emit addOverlayItemType("Entity.Hostile", Qt::red);
 	emit addOverlayItemType("Entity.Passive", Qt::white);
