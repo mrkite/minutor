@@ -339,8 +339,8 @@ void MapView::redraw()
 				Chunk *chunk=cache.fetch(cx,cz);
 				if (chunk)
 				{
-					QPair<Chunk::EntityMap::const_iterator, Chunk::EntityMap::const_iterator> range = chunk->entities.equal_range(type);
-					for (Chunk::EntityMap::const_iterator it = range.first; it != range.second; ++it)
+					QPair<Chunk::EntityMap::iterator, Chunk::EntityMap::iterator> range = chunk->entities.equal_range(type);
+					for (Chunk::EntityMap::iterator it = range.first; it != range.second; ++it)
 					{
 						//don't show entities above our depth
 						if ((*it)->midpoint().y < depth)
@@ -713,8 +713,8 @@ QList<QSharedPointer<OverlayItem> > MapView::getItems(int x, int y, int z)
 			}
 
 			//entities
-			QPair<Chunk::EntityMap::const_iterator, Chunk::EntityMap::const_iterator> itemRange = chunk->entities.equal_range(type);
-			for(Chunk::EntityMap::const_iterator itItem = itemRange.first; itItem != itemRange.second; ++itItem)
+			QPair<Chunk::EntityMap::iterator, Chunk::EntityMap::iterator> itemRange = chunk->entities.equal_range(type);
+			for(Chunk::EntityMap::iterator	 itItem = itemRange.first; itItem != itemRange.second; ++itItem)
 			{
 				double ymin = y - 4;
 				double ymax = depth + 4;

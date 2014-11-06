@@ -636,7 +636,7 @@ void Minutor::addOverlayItem(QSharedPointer<OverlayItem> item)
 	maxentitydistance = 50;
 
 	const OverlayItem::Point& p = item->midpoint();
-	overlayItems[item->type()].insertMulti(qMakePair(p.x, p.z), item);
+	overlayItems[item->type()].insertMulti(QPair<int, int>(p.x, p.z), item);
 
 	mapview->addOverlayItem(item);
 }
