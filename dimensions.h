@@ -42,9 +42,10 @@ class JSONArray;
 class Dimension
 {
 public:
-	Dimension(QString path,int scale):path(path),scale(scale) {}
+	Dimension(QString path,int scale, QString name):path(path),scale(scale),name(name) {}
 	QString path;
 	int scale;
+	QString name;
 };
 
 class DimensionDef;

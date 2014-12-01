@@ -32,6 +32,8 @@
 #include <QtWidgets/QMainWindow>
 #include <QDir>
 #include <QVariant>
+#include <QSharedPointer>
+#include <QSet>
 
 class QAction;
 class QActionGroup;
@@ -47,6 +49,7 @@ class Dimensions;
 class Dimension;
 class WorldSave;
 class Properties;
+class OverlayItem;
 
 class Location
 {
@@ -83,8 +86,9 @@ private slots:
 	void rescanWorlds();
 	void saveProgress(QString status,double value);
 	void saveFinished();
-    void specialBlock(int x, int y, int z, QString type, QString display, QVariant properties);
-    void showProperties(int x, int y, int z);
+	void addOverlayItem(QSharedPointer<OverlayItem> item);
+	void addOverlayItemType(QString type, QColor color, QString dimension = "");
+	void showProperties(QVariant props);
 
 signals:
 	void worldLoaded(bool isLoaded);
@@ -93,6 +97,7 @@ private:
 	void createActions();
 	void createMenus();
 	void createStatusBar();
+	void loadStructures(const QDir &dataPath);
 
 	QString getWorldName(QDir path);
 	void getWorldList();
@@ -104,7 +109,7 @@ private:
 	QMenu *fileMenu, *worldMenu;
 	QMenu *viewMenu, *jumpMenu, *dimMenu;
 	QMenu *helpMenu;
-    QMenu *entitiesMenu;
+	QMenu *overlayMenu;
 
 	QList<QAction *>worlds;
 	QAction *openAct, *reloadAct, *saveAct, *exitAct;
@@ -116,7 +121,7 @@ private:
 	QAction *aboutAct;
 	QAction *settingsAct;
 	QAction *updatesAct;
-    QList<QAction*> entityActions;
+	QList<QAction*> entityActions;
 
 	//loaded world data
 	QList<Location> locations;
@@ -125,18 +130,12 @@ private:
 	Dimensions *dimensions;
 	QDir currentWorld;
 
-    //special entities and objects with properties
-    struct Entity
-    {
-        int x, y, z;
-        QString type;
-        QString display;
-        QVariant properties;
-    };
-    //           type                 x     z
-    typedef QMap<QString, QHash<QPair<int, int>, Entity> > EntityMap;
-    EntityMap entities;
-    Properties * propView;
+	//           type                 x    z
+	typedef QMap<QString, QHash<QPair<int, int>, QSharedPointer<OverlayItem> > > OverlayMap;
+	OverlayMap overlayItems;
+	QSet<QString> overlayItemTypes;
+	int maxentitydistance;
+	Properties * propView;
 };
 
 #endif
