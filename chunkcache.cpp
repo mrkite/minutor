@@ -28,6 +28,12 @@
 #include "chunkcache.h"
 #include "chunkloader.h"
 
+#if defined(__unix__) || defined(__unix) || defined(unix)
+ #include <unistd.h>
+#elif defined(_WIN32) || defined(WIN32)
+ #include <windows.h>
+#endif
+
 ChunkID::ChunkID(int x,int z) : x(x),z(z)
 {
 }
@@ -42,7 +48,21 @@ uint qHash(const ChunkID &c)
 
 ChunkCache::ChunkCache()
 {
-	cache.setMaxCost(10000); // 10000 chunks, or a little bit more than 1920x1200 blocks
+	long chunks=10000; // as default 10000 chunks, or 10% more than 1920x1200 blocks
+#if defined(__unix__) || defined(__unix) || defined(unix)
+	long pages = sysconf(_SC_AVPHYS_PAGES);
+	long page_size = sysconf(_SC_PAGE_SIZE);
+	chunks = (pages*page_size) / (sizeof(Chunk) + 16*sizeof(ChunkSection));
+	cache.setMaxCost(chunks);
+#elif defined(_WIN32) || defined(WIN32)
+	MEMORYSTATUSEX status;
+	status.dwLength = sizeof(status);
+	GlobalMemoryStatusEx(&status);
+	DWORDLONG available = std::min(status.ullAvailPhys, status.ullAvailVirtual);
+	chunks = available / (sizeof(Chunk) + 16*sizeof(ChunkSection));
+#endif
+	cache.setMaxCost(chunks);
+	maxcache = 2*chunks; //most chunks are only filled less than half with sections
 }
 
 ChunkCache::~ChunkCache()
@@ -89,7 +109,15 @@ Chunk *ChunkCache::fetch(int x, int z)
 	QThreadPool::globalInstance()->start(loader);
 	return NULL;
 }
+
 void ChunkCache::gotChunk(int x,int z)
 {
 	emit chunkLoaded(x,z);
+}
+
+void ChunkCache::apaptCacheToWindow(int x,int y)
+{
+	int chunks=((x+15)>>4)*((y+15)>>4); // number of chunks visible in window
+	chunks *= 1.10; // add 10%
+	cache.setMaxCost(std::min<int>(chunks,maxcache));
 }
