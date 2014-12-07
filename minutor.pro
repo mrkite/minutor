@@ -5,7 +5,6 @@ INCLUDEPATH += .
 QT += widgets network
 QMAKE_INFO_PLIST = minutor.plist
 unix:LIBS += -lz
-win32:LIBS+= $$PWD/zlibstat.lib
 win32:RC_FILE += winicon.rc
 macx:ICON=icon.icns
 
@@ -54,6 +53,22 @@ SOURCES += mapview.cpp main.cpp minutor.cpp nbt.cpp \
     generatedstructure.cpp \
     village.cpp
 RESOURCES = minutor.qrc
+
+win32:SOURCES += zlib/adler32.c \
+		zlib/compress.c \
+		zlib/crc32.c \
+		zlib/deflate.c \
+		zlib/gzclose.c \
+		zlib/gzlib.c \
+		zlib/gzread.c \
+		zlib/gzwrite.c \
+		zlib/infback.c \
+		zlib/inffast.c \
+		zlib/inflate.c \
+		zlib/inftrees.c \
+		zlib/trees.c \
+		zlib/uncompr.c \
+		zlib/zutil.c
 
 desktopfile.path = /usr/share/applications
 desktopfile.files = minutor.desktop
