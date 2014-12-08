@@ -32,7 +32,7 @@
 #include <QStringList>
 
 #include "nbt.h"
-#include <zlib.h>
+#include "zlib/zlib.h"
 
 // this handles decoding the gzipped level.dat
 NBT::NBT(const QString level)
