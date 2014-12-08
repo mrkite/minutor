@@ -58,6 +58,9 @@ public:
 signals:
 	void chunkLoaded(int x,int z);
 
+public slots:
+    void adaptCacheToWindow(int x,int y);
+
 private slots:
 	void gotChunk(int x,int z);
 
@@ -65,6 +68,7 @@ private:
 	QString path;
 	QCache<ChunkID,Chunk> cache;
 	QMutex mutex;
+	int maxcache;
 };
 
 #endif
