@@ -20,7 +20,7 @@ First you need a static compile of Qt5.  Get the Qt5 source from
 http://qt-project.org/downloads
 
 Unzip it whereever you wish, and then edit qtbase\mkspecs\win32-msvc2012\qmake.conf
-You'll need to find the CONFIG line and remove embed_manifest_dll and 
+You'll need to find the CONFIG line and remove embed_manifest_dll and
 embed_manifest_exe from that line.
 Next find the QMAKE_CFLAGS_* lines and change -MD to -MT, and -MDd to -MTd
 
@@ -28,7 +28,7 @@ Now open up the Developer Command Prompt
 cd into the qtbase folder and run:
 
 configure -prefix %CD% -debug-and-release -opensource -confirm-license
-	-platform win32-msvc2012 -nomake tests -nomake examples 
+	-platform win32-msvc2012 -nomake tests -nomake examples
 	-no-angle -no-opengl -static -qt-zlib
 nmake
 
@@ -46,16 +46,8 @@ Then switch over to Kits and make a new kit that uses the Qt version you just
 created.  Again, there will be a warning flag for the same reasons as before, ignore
 it.
 
-Now we need to make a static zlib.  Download the zlib source code, and create a new
-C++ Library project.  Change the type to Statically Linked Library and call it
-zlibstat.  Use the static Kit we created in the previous step.  Uncheck all
-modules.  Delete the zlibstat source files it creates by default and instead add the
-following files from the zlib source to the project: adler32.c, crc32.c, crc32.h,
-deflate.c, deflate.h, gzguts.h, inffast.c, inffast.h, inffixed.h, inflate.c,
-inflate.h, inftrees.c, inftrees.h, trees.c, trees.h, zconf.h, zlib.h, zutil.c.
-Now edit zutil.c and delete the z_errmsg array (it conflicts with an exported
-array in Qt5).  Compile the library using the static kit you used earlier.
-Copy the resulting zlibstat.lib into the minutor directory.
+If you get errors with conflicting _z_errmsg: Edit zutil.c and delete the
+z_errmsg array (it conflicts with an exported array in Qt5).
 
 Now compile Minutor using the static Kit.  You should end up with a statically
 linked minutor.exe which doesn't require any dlls to run.
@@ -79,7 +71,7 @@ MacOS:
 Make a static compile of Qt by downloading the source code and then
 
 	cd qtbase
-    ./configure -prefix $PWD -opensource -confirm-license -nomake tests -nomake examples -release -static 
+    ./configure -prefix $PWD -opensource -confirm-license -nomake tests -nomake examples -release -static
 	make
 
 Then compile Minutor by:
