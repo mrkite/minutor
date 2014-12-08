@@ -27,7 +27,7 @@
 
 
 #include "zipreader.h"
-#include "zlib.h"
+#include "zlib/zlib.h"
 
 ZipReader::ZipReader(const QString filename) : f(filename)
 {

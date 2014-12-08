@@ -15,43 +15,52 @@ macx:ICON=icon.icns
 #}
 
 # Input
-HEADERS += mapview.h minutor.h nbt.h zlib.h zconf.h \
-	labelledslider.h \
+HEADERS += \
+    zlib/zlib.h \
+    zlib/zconf.h \
+	  labelledslider.h \
+    biomeidentifier.h \
+    blockidentifier.h \
     chunk.h \
     chunkcache.h \
-    json.h \
-    blockidentifier.h \
-    biomeidentifier.h \
-    dimensions.h \
-    definitionmanager.h \
-    zipreader.h \
-    settings.h \
     chunkloader.h \
+    definitionmanager.h \
     definitionupdater.h \
-    worldsave.h \
+    dimensions.h \
     entity.h \
-    properties.h \
     generatedstructure.h \
+    json.h \
+    mapview.h \
+    minutor.h \
+    nbt.h \
     overlayitem.h \
-    village.h
-SOURCES += mapview.cpp main.cpp minutor.cpp nbt.cpp \
-	labelledslider.cpp \
+    properties.h \
+    settings.h \
+    village.h \
+    worldsave.h \
+    zipreader.h
+SOURCES += \
+	  labelledslider.cpp \
+    biomeidentifier.cpp \
+    blockidentifier.cpp \
     chunk.cpp \
     chunkcache.cpp \
-    json.cpp \
-    blockidentifier.cpp \
-    biomeidentifier.cpp \
-    dimensions.cpp \
-    definitionmanager.cpp \
-    zipreader.cpp \
-    settings.cpp \
     chunkloader.cpp \
+    definitionmanager.cpp \
     definitionupdater.cpp \
-    worldsave.cpp \
+    dimensions.cpp \
     entity.cpp \
-    properties.cpp \
     generatedstructure.cpp \
-    village.cpp
+    json.cpp \
+    main.cpp \
+    mapview.cpp \
+    minutor.cpp \
+    nbt.cpp \
+    properties.cpp \
+    settings.cpp \
+    village.cpp \
+    worldsave.cpp \
+    zipreader.cpp
 RESOURCES = minutor.qrc
 
 win32:SOURCES += zlib/adler32.c \

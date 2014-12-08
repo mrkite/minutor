@@ -34,7 +34,7 @@
 
 #include "worldsave.h"
 #include "mapview.h"
-#include <zlib.h>
+#include "zlib/zlib.h"
 
 WorldSave::WorldSave(QString filename,MapView *map)
 {
