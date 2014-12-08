@@ -58,7 +58,7 @@ ChunkCache::ChunkCache()
 	MEMORYSTATUSEX status;
 	status.dwLength = sizeof(status);
 	GlobalMemoryStatusEx(&status);
-	DWORDLONG available = std::min(status.ullAvailPhys, status.ullAvailVirtual);
+    DWORDLONG available = std::min<DWORDLONG>(status.ullAvailPhys, status.ullAvailVirtual);
 	chunks = available / (sizeof(Chunk) + 16*sizeof(ChunkSection));
 #endif
 	cache.setMaxCost(chunks);
@@ -115,7 +115,7 @@ void ChunkCache::gotChunk(int x,int z)
 	emit chunkLoaded(x,z);
 }
 
-void ChunkCache::apaptCacheToWindow(int x,int y)
+void ChunkCache::adaptCacheToWindow(int x,int y)
 {
 	int chunks=((x+15)>>4)*((y+15)>>4); // number of chunks visible in window
 	chunks *= 1.10; // add 10%

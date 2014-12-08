@@ -59,7 +59,7 @@ signals:
 	void chunkLoaded(int x,int z);
 
 public slots:
-	void apaptCacheToWindow(int x,int y);
+    void adaptCacheToWindow(int x,int y);
 
 private slots:
 	void gotChunk(int x,int z);
