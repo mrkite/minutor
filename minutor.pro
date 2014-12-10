@@ -28,6 +28,7 @@ HEADERS += \
     definitionupdater.h \
     dimensions.h \
     entity.h \
+    entityidentifier.h \
     generatedstructure.h \
     json.h \
     mapview.h \
@@ -50,6 +51,7 @@ SOURCES += \
     definitionupdater.cpp \
     dimensions.cpp \
     entity.cpp \
+    entityidentifier.cpp \
     generatedstructure.cpp \
     json.cpp \
     main.cpp \
