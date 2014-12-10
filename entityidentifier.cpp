@@ -67,7 +67,7 @@ void EntityIdentifier::disableDefinitions(int pack)
 }
 
 int EntityIdentifier::addDefinitions(JSONArray *defs,int pack)
-{return pack;
+{
 	if (pack==-1)
 	{
 		pack=packenabled.size();

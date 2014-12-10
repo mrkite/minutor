@@ -42,6 +42,7 @@ class QCheckBox;
 class BiomeIdentifier;
 class BlockIdentifier;
 class Dimensions;
+class EntityIdentifier;
 class MapView;
 class JSONData;
 class DefinitionUpdater;
@@ -52,11 +53,11 @@ struct Definition
 	QString version;
 	QString path;
 	QString update;
-	enum {Block,Biome,Dimension,Pack} type;
+	enum {Block,Biome,Dimension,Entity,Pack} type;
 	int id;
 	bool enabled;
 	// for packs only
-	int blockid,biomeid,dimensionid;
+	int blockid,biomeid,dimensionid,entityid;
 };
 
 class DefinitionManager : public QWidget
@@ -69,9 +70,10 @@ public:
 	QSize minimumSizeHint() const;
 	QSize sizeHint() const;
 
-	BlockIdentifier *blockIdentifier();
-	BiomeIdentifier *biomeIdentifier();
-	Dimensions *dimensions();
+	BlockIdentifier  *blockIdentifier();
+	BiomeIdentifier  *biomeIdentifier();
+	Dimensions       *dimensionIdentifer();
+	EntityIdentifier *entityIdentifier();
 
 	void autoUpdate();
 
@@ -99,9 +101,10 @@ private:
 	void removeDefinition(QString path);
 	void refresh();
 	QHash<QString,Definition> definitions;
-	BiomeIdentifier *biomes;
-	BlockIdentifier *blocks;
-	Dimensions *dimensionList;
+	BiomeIdentifier  *biomes;
+	BlockIdentifier  *blocks;
+	Dimensions       *dimensionList;
+	EntityIdentifier *entities;
 	QString selected;
 	QList<QVariant> sorted;
 

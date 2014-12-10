@@ -44,7 +44,7 @@
 #include "json.h"
 #include "definitionmanager.h"
 #include "settings.h"
-#include "dimensions.h"
+#include "dimensionidentifier.h"
 #include "worldsave.h"
 #include "properties.h"
 #include "generatedstructure.h"
@@ -64,7 +64,7 @@ Minutor::Minutor():
 	mapview->attach(dm);
 	connect(dm,   SIGNAL(packsChanged()),
 			this, SLOT(updateDimensions()));
-	dimensions=dm->dimensions();
+	dimensions=dm->dimensionIdentifer();
 	connect(dimensions, SIGNAL(dimensionChanged(Dimension &)),
 			this,       SLOT(viewDimension(Dimension &)));
 	settings = new Settings(this);
