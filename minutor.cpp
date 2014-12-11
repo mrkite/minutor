@@ -43,6 +43,7 @@
 #include "nbt.h"
 #include "json.h"
 #include "definitionmanager.h"
+#include "entityidentifier.h"
 #include "settings.h"
 #include "dimensionidentifier.h"
 #include "worldsave.h"
@@ -65,8 +66,8 @@ Minutor::Minutor():
 	connect(dm,   SIGNAL(packsChanged()),
 			this, SLOT(updateDimensions()));
 	dimensions=dm->dimensionIdentifer();
-	connect(dimensions, SIGNAL(dimensionChanged(Dimension &)),
-			this,       SLOT(viewDimension(Dimension &)));
+	connect(dimensions, SIGNAL(dimensionChanged(DimensionInfo &)),
+			this,       SLOT(viewDimension(DimensionInfo &)));
 	settings = new Settings(this);
 	connect(settings, SIGNAL(settingsUpdated()),
 			this,     SLOT(rescanWorlds()));
@@ -220,21 +221,27 @@ void Minutor::toggleFlags()
 	mapview->setFlags(flags);
 
 	QSet<QString> overlayTypes;
-	QList<QAction*>::iterator it, itEnd = entityActions.end();
-	for (it = entityActions.begin(); it != itEnd; ++it)
+	foreach(QAction*action, structureActions)
 	{
-		if ((*it)->isChecked())
+		if (action->isChecked())
 		{
-			overlayTypes.insert((*it)->data().toMap()["type"].toString());
+			overlayTypes.insert(action->data().toMap()["type"].toString());
+		}
+	}
+	foreach(QAction*action, entityActions)
+	{
+		if (action->isChecked())
+		{
+			overlayTypes.insert(action->data().toString());
 		}
 	}
 	mapview->showOverlayItemTypes(overlayTypes);
 	mapview->redraw();
 }
 
-void Minutor::viewDimension(Dimension &dim)
+void Minutor::viewDimension(DimensionInfo &dim)
 {
-	foreach(QAction*action, entityActions)
+	foreach(QAction*action, structureActions)
 	{
 		QString dimension = action->data().toMap()["dimension"].toString();
 		if (dimension.isEmpty() || !dimension.compare(dim.name, Qt::CaseInsensitive))
@@ -336,6 +343,8 @@ void Minutor::createActions()
 	connect(caveModeAct, SIGNAL(triggered()),
 			this,        SLOT(toggleFlags()));
 	caveModeAct->setEnabled(false);
+	
+	// [View->Entity Overlay]
 
 	manageDefsAct = new QAction(tr("Manage &Definitions..."),this);
 	manageDefsAct->setStatusTip(tr("Manage block and biome definitions"));
@@ -364,6 +373,60 @@ void Minutor::createActions()
 	connect(updatesAct, SIGNAL(triggered()),
 			dm,         SLOT(checkForUpdates()));
 }
+
+void Minutor::populateEntityOverlayMenu()
+{
+	EntityIdentifier* ei = dm->entityIdentifier();
+	
+	EntityIdentifier::TcatList::const_iterator it = ei->getCategoryList().begin();
+    for (; it != ei->getCategoryList().end(); ++it)
+	{
+		QString category = it->first;
+		QColor  catcolor = it->second;
+
+		//generate a unique keyboard shortcut
+		QKeySequence sequence;
+		QString actionName;
+		int ampPos = 0;
+		foreach (const QChar& c, category)
+		{
+			sequence = QKeySequence(QString("Ctrl+")+c);
+			actionName = category.mid(0, ampPos) + "&" + category.mid(ampPos);
+			foreach(QMenu* m, menuBar()->findChildren<QMenu*>())
+			{
+				foreach (const QAction* a, m->actions())
+				{
+					if (a->shortcut() == sequence)
+					{
+						sequence = QKeySequence();
+						actionName = "";
+						break;
+					}
+				}
+				if (actionName.isEmpty())
+					break; //already eliminated this as a possbility
+			}
+			if (!actionName.isEmpty())
+				break; //not eliminated, this one is ok
+			++ampPos;
+		}
+
+		QPixmap pixmap(16,16);
+		QColor solidColor(catcolor);
+		solidColor.setAlpha(255);
+		pixmap.fill(solidColor);
+
+		entityActions.push_back(new QAction(pixmap, actionName, this));
+		entityActions.last()->setShortcut(sequence);
+		entityActions.last()->setStatusTip(QString(tr("Toggle viewing of %1").arg(category)));
+		entityActions.last()->setEnabled(true);
+		entityActions.last()->setData("Entity."+category);
+		entityActions.last()->setCheckable(true);
+		entityOverlayMenu->addAction(entityActions.last());
+		connect(entityActions.last(), SIGNAL(triggered()), this, SLOT(toggleFlags()));
+	}
+}
+
 
 void Minutor::createMenus()
 {
@@ -395,8 +458,9 @@ void Minutor::createMenus()
 	viewMenu->addAction(caveModeAct);
 	viewMenu->addAction(depthShadingAct);
 	// [View->Overlay]
-	overlayMenu = viewMenu->addMenu(tr("&Overlay"));
-
+	structureOverlayMenu = viewMenu->addMenu(tr("&Structure Overlay"));
+	entityOverlayMenu    = viewMenu->addMenu(tr("&Entity Overlay"));
+	populateEntityOverlayMenu();
 
 	viewMenu->addSeparator();
 	viewMenu->addAction(refreshAct);
@@ -562,7 +626,7 @@ void Minutor::addOverlayItemType(QString type, QColor color, QString dimension)
 		QList<QString>::const_iterator pathIt, nextIt, endPathIt = path.end();
 		nextIt = path.begin();
 		pathIt = nextIt++;
-		QMenu* cur = overlayMenu;
+		QMenu* cur = structureOverlayMenu;
 
 		//generate a nested menu structure to match the path
 		while(nextIt != endPathIt)
@@ -617,14 +681,14 @@ void Minutor::addOverlayItemType(QString type, QColor color, QString dimension)
 		entityData["type"] = type;
 		entityData["dimension"] = dimension;
 
-		entityActions.push_back(new QAction(pixmap, actionName, this));
-		entityActions.last()->setShortcut(sequence);
-		entityActions.last()->setStatusTip(QString(tr("Toggle viewing of %1").arg(type)));
-		entityActions.last()->setEnabled(true);
-		entityActions.last()->setData(entityData);
-		entityActions.last()->setCheckable(true);
-		cur->addAction(entityActions.last());
-		connect(entityActions.last(), SIGNAL(triggered()), this, SLOT(toggleFlags()));
+		structureActions.push_back(new QAction(pixmap, actionName, this));
+		structureActions.last()->setShortcut(sequence);
+		structureActions.last()->setStatusTip(QString(tr("Toggle viewing of %1").arg(type)));
+		structureActions.last()->setEnabled(true);
+		structureActions.last()->setData(entityData);
+		structureActions.last()->setCheckable(true);
+		cur->addAction(structureActions.last());
+		connect(structureActions.last(), SIGNAL(triggered()), this, SLOT(toggleFlags()));
 	}
 }
 

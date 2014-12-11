@@ -88,7 +88,7 @@ DefinitionManager::DefinitionManager(QWidget *parent) : QWidget(parent)
 	emit packSelected(false);
 	setLayout(layout);
 
-	dimensionList = new Dimensions;
+	dimensionList = new DimensionIdentifier;
 	blocks=new BlockIdentifier;
 	biomes=new BiomeIdentifier;
 	entities=new EntityIdentifier;
@@ -135,7 +135,7 @@ BiomeIdentifier *DefinitionManager::biomeIdentifier()
 {
 	return biomes;
 }
-Dimensions *DefinitionManager::dimensionIdentifer()
+DimensionIdentifier *DefinitionManager::dimensionIdentifer()
 {
 	return dimensionList;
 }

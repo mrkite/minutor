@@ -57,9 +57,10 @@ public:
 	void disableDefinitions(int);
 
 	// interface to list of main categories
-	int                          getNumCategories();
-	QMap<QString,QColor> const & getCategoryMap();
-	QColor                       getCategoryColor(QString name);
+	typedef QList<QPair<QString,QColor>> TcatList;
+	int              getNumCategories();
+	TcatList const & getCategoryList();
+	QColor           getCategoryColor(QString name);
 
 	// interface to single EntityInfo objects
 	EntityInfo const & getEntityInfo( QString id );
@@ -68,9 +69,10 @@ public:
 
 private:
 	void parseCategoryDefinition( JSONObject *data, int pack );
-	void parseEntityDefinition  ( JSONObject *entity, QString const & category, int pack );
+	void parseEntityDefinition  ( JSONObject *entity, QString const & category, QColor catcolor, int pack );
 
-	QMap<QString,QColor> categories;  // main categories for entities
+	TcatList categories;  // main categories for entities
+	bool addCategory(QPair<QString,QColor> cat);
 
 	typedef QMap<QString,QMap<QString,EntityInfo>> TentityMap;
 	QMap< int, bool >       packenabled;

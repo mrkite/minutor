@@ -103,13 +103,6 @@ void MapView::setDimension(QString path, int scale)
 	cache.clear();
 	cache.setPath(path);
 	redraw();
-
-	//we should eventually detect these instead of pre-loading them
-	//for now, keep these in sync with the entities created in Entity.cpp,
-	//or else we won't be able to select them.
-	emit addOverlayItemType("Entity.Hostile", Qt::red);
-	emit addOverlayItemType("Entity.Passive", Qt::white);
-	emit addOverlayItemType("Entity.Neutral", Qt::blue);
 }
 
 void MapView::setDepth(int depth)

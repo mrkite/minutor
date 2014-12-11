@@ -41,7 +41,7 @@ class QTableWidgetItem;
 class QCheckBox;
 class BiomeIdentifier;
 class BlockIdentifier;
-class Dimensions;
+class DimensionIdentifier;
 class EntityIdentifier;
 class MapView;
 class JSONData;
@@ -70,10 +70,10 @@ public:
 	QSize minimumSizeHint() const;
 	QSize sizeHint() const;
 
-	BlockIdentifier  *blockIdentifier();
-	BiomeIdentifier  *biomeIdentifier();
-	Dimensions       *dimensionIdentifer();
-	EntityIdentifier *entityIdentifier();
+	BlockIdentifier     *blockIdentifier();
+	BiomeIdentifier     *biomeIdentifier();
+	DimensionIdentifier *dimensionIdentifer();
+	EntityIdentifier    *entityIdentifier();
 
 	void autoUpdate();
 
@@ -101,10 +101,10 @@ private:
 	void removeDefinition(QString path);
 	void refresh();
 	QHash<QString,Definition> definitions;
-	BiomeIdentifier  *biomes;
-	BlockIdentifier  *blocks;
-	Dimensions       *dimensionList;
-	EntityIdentifier *entities;
+	BiomeIdentifier     *biomes;
+	BlockIdentifier     *blocks;
+	DimensionIdentifier *dimensionList;
+	EntityIdentifier    *entities;
 	QString selected;
 	QList<QVariant> sorted;
 

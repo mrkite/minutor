@@ -45,14 +45,7 @@ EntityIdentifier::EntityIdentifier()
 
 EntityIdentifier::~EntityIdentifier()
 {
-	// remove all packs
-//	for (int i=0; i<packs.length(); i++)
-//	{
-//		for (int j=0; j<packs[i].length(); j++)
-//			delete packs[i][j];
-//	}
 }
-
 
 void EntityIdentifier::enableDefinitions(int pack)
 {
@@ -98,18 +91,18 @@ void EntityIdentifier::parseCategoryDefinition( JSONObject *data, int pack )
 		quint32 hue = qHash(category);
 		catcolor.setHsv(hue % 360, 255, 255);
 	}
-	categories[category] = catcolor;
+	addCategory(qMakePair(category,catcolor));
 
 	if (data->has("entity")) {
 		JSONArray *entities=dynamic_cast<JSONArray *>(data->at("entity"));
 		int len=entities->length();
 
 		for (int e=0;e<len;e++)
-			parseEntityDefinition(dynamic_cast<JSONObject *>(entities->at(e)), category, pack);
+			parseEntityDefinition(dynamic_cast<JSONObject *>(entities->at(e)), category, catcolor, pack);
 	}
 }
 
-void EntityIdentifier::parseEntityDefinition( JSONObject *entity, QString const & category, int pack )
+void EntityIdentifier::parseEntityDefinition( JSONObject *entity, QString const & category, QColor catcolor, int pack )
 {
 	QString id;
 	if (entity->has("id"))
@@ -117,7 +110,6 @@ void EntityIdentifier::parseEntityDefinition( JSONObject *entity, QString const 
 	else
 		id = "Unknown";
 
-	QColor catcolor(categories[category]);
 	if (entity->has("catcolor"))
 	{
 		QString colorname = entity->at("catcolor")->asString();
@@ -142,19 +134,34 @@ void EntityIdentifier::parseEntityDefinition( JSONObject *entity, QString const 
 	packs[pack][category].insert( id, EntityInfo(category,catcolor,color) );
 }
 
+bool EntityIdentifier::addCategory(QPair<QString,QColor> cat)
+{
+	TcatList::const_iterator it = categories.begin();
+    for (; it != categories.end(); ++it)
+	{
+		if (it->first == cat.first)
+			return false;
+	}
+	categories.append(cat);
+	return true;
+}
 
 int EntityIdentifier::getNumCategories()
 {
 	return categories.size();
 }
 
-QMap<QString,QColor> const & EntityIdentifier::getCategoryMap()
+EntityIdentifier::TcatList const & EntityIdentifier::getCategoryList()
 {
 	return categories;
 }
 
 QColor EntityIdentifier::getCategoryColor(QString name)
 {
-	return categories[name];
+	for (TcatList::const_iterator it = categories.begin(); it != categories.end() ;++it)
+	{
+		if (it->first==name)
+			return it->second;
+	}
+	return Qt::black; // dummy
 }
-
