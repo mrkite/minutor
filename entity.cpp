@@ -1,4 +1,5 @@
 #include "entity.h"
+#include "entityidentifier.h"
 
 #include "nbt.h"
 
@@ -6,6 +7,8 @@
 
 QSharedPointer<OverlayItem> Entity::TryParse(Tag* tag)
 {
+	EntityIdentifier& ei = EntityIdentifier::Instance();
+
 	QSharedPointer<OverlayItem> ret;
 	Tag* pos = tag->at("Pos");
 	if (pos && pos != &NBT::Null)
@@ -18,51 +21,25 @@ QSharedPointer<OverlayItem> Entity::TryParse(Tag* tag)
 		if (id && id != &NBT::Null)
 		{
 			QString type = id->toString();
+			EntityInfo const & info = ei.getEntityInfo(type);
 
 			QMap<QString, QVariant> props = tag->getData().toMap();
-			QColor color;
+
 			//get something more descriptive if its an item
 			if (type == "Item")
 			{
-
 				Tag* itemId = tag->at("Item")->at("id");
 
 				QString itemtype = itemId->toString();
 				entity->setDisplay(itemtype.mid(itemtype.indexOf(':') + 1));
-
-				entity->setType("Entity.Passive");
-				color = Qt::white;
 			}
 			else
-			{
-				//attempt to automatically categorize this as hostile, neutral, or passive
-				if (props.contains("InLove")  ||  //if its breedable, then its not an enemy?
-					props.contains("Willing") ||
-					props["id"].toString().contains("Golem") ||
-					props["id"] == "SnowMan" ||
-					props["id"] == "Squid" ||
-					props["id"] == "Bat"
-				)
-				{
-					entity->setType("Entity.Neutral");
-					color = Qt::blue;
-				}
-				else if (props.size() < 20)
-				{
-					//simple objects are usually items
-					entity->setType("Entity.Passive");
-					color = Qt::white;
-				}
-				else
-				{
-					//otherwise, it will probably hurt you if you go near it
-					entity->setType("Entity.Hostile");
-					color = Qt::red;
-				}
-				entity->setDisplay(type);
+			{// or just use the Entity's name
+				entity->setDisplay(info.name);
 			}
-			color.setAlpha(128);
-			entity->setColor(color);
+			entity->setType("Entity."+info.category);
+			entity->setColor( info.brushColor );
+			entity->setExtraColor( info.penColor );
 			entity->setProperties(props);
 			ret.reset(entity);
 		}
@@ -80,12 +57,20 @@ bool Entity::intersects(const Point& min, const Point& max) const
 
 void Entity::draw(double offsetX, double offsetZ, double scale, QPainter& canvas) const
 {
-	int left = (int)((pos.x - offsetX) * scale) - RADIUS / 2;
-	int top = (int)((pos.z - offsetZ) * scale) - RADIUS / 2;
+	QPoint center((pos.x - offsetX) * scale,
+				  (pos.z - offsetZ) * scale);
 
-	canvas.setPen(Qt::transparent);
-	canvas.setBrush(QBrush(color()));
-	canvas.drawEllipse(left, top, RADIUS, RADIUS);
+	QColor penColor = extraColor;
+	penColor.setAlpha(192);
+	QPen pen = canvas.pen();
+	pen.setColor(penColor);
+	pen.setWidth(2);
+	canvas.setPen(pen);
+	
+	QColor brushColor = color();
+	brushColor.setAlpha(128);
+	canvas.setBrush(brushColor);
+	canvas.drawEllipse(center, RADIUS, RADIUS);
 }
 
 Entity::Point Entity::midpoint() const

@@ -97,7 +97,8 @@ private:
 	void createStatusBar();
 	void loadStructures(const QDir &dataPath);
     void populateEntityOverlayMenu();
-
+    QKeySequence generateUniqueKeyboardShortcut( QString & actionName );
+	
 	QString getWorldName(QDir path);
 	void getWorldList();
 

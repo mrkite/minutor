@@ -73,7 +73,6 @@ public:
 	BlockIdentifier     *blockIdentifier();
 	BiomeIdentifier     *biomeIdentifier();
 	DimensionIdentifier *dimensionIdentifer();
-	EntityIdentifier    *entityIdentifier();
 
 	void autoUpdate();
 
@@ -104,7 +103,7 @@ private:
 	BiomeIdentifier     *biomes;
 	BlockIdentifier     *blocks;
 	DimensionIdentifier *dimensionList;
-	EntityIdentifier    *entities;
+	EntityIdentifier &   entityManager;
 	QString selected;
 	QList<QVariant> sorted;
 

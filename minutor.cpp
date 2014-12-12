@@ -374,42 +374,50 @@ void Minutor::createActions()
 			dm,         SLOT(checkForUpdates()));
 }
 
+// actionName will be modified, a "&" is added
+QKeySequence Minutor::generateUniqueKeyboardShortcut( QString & actionName )
+{
+	//generate a unique keyboard shortcut
+	QKeySequence sequence;
+	// test all letters in given name
+	QString testName(actionName);
+	for (int ampPos=0; ampPos<testName.length(); ++ampPos)
+	{
+		QChar c = testName[ampPos];
+		sequence = QKeySequence(QString("Ctrl+")+c);
+		foreach(QMenu* m, menuBar()->findChildren<QMenu*>())
+		{
+			foreach (const QAction* a, m->actions())
+			{
+				if (a->shortcut() == sequence)
+				{
+					sequence = QKeySequence();
+					break;
+				}
+			}
+			if (sequence.isEmpty())
+				break; // already eliminated this as a possbility
+		}
+		if (!sequence.isEmpty())
+		{// not eliminated, this one is ok
+			actionName = testName.mid(0, ampPos) + "&" + testName.mid(ampPos);
+			break;
+		}
+	}
+	return sequence;
+}
+
 void Minutor::populateEntityOverlayMenu()
 {
-	EntityIdentifier* ei = dm->entityIdentifier();
-	
-	EntityIdentifier::TcatList::const_iterator it = ei->getCategoryList().begin();
-    for (; it != ei->getCategoryList().end(); ++it)
+	EntityIdentifier& ei = EntityIdentifier::Instance();
+	EntityIdentifier::TcatList::const_iterator it = ei.getCategoryList().begin();
+    for (; it != ei.getCategoryList().end(); ++it)
 	{
 		QString category = it->first;
 		QColor  catcolor = it->second;
 
-		//generate a unique keyboard shortcut
-		QKeySequence sequence;
-		QString actionName;
-		int ampPos = 0;
-		foreach (const QChar& c, category)
-		{
-			sequence = QKeySequence(QString("Ctrl+")+c);
-			actionName = category.mid(0, ampPos) + "&" + category.mid(ampPos);
-			foreach(QMenu* m, menuBar()->findChildren<QMenu*>())
-			{
-				foreach (const QAction* a, m->actions())
-				{
-					if (a->shortcut() == sequence)
-					{
-						sequence = QKeySequence();
-						actionName = "";
-						break;
-					}
-				}
-				if (actionName.isEmpty())
-					break; //already eliminated this as a possbility
-			}
-			if (!actionName.isEmpty())
-				break; //not eliminated, this one is ok
-			++ampPos;
-		}
+		QString actionName = category;
+		QKeySequence sequence = generateUniqueKeyboardShortcut(actionName);
 
 		QPixmap pixmap(16,16);
 		QColor solidColor(catcolor);
@@ -625,6 +633,7 @@ void Minutor::addOverlayItemType(QString type, QColor color, QString dimension)
 		QList<QString> path = type.split('.');
 		QList<QString>::const_iterator pathIt, nextIt, endPathIt = path.end();
 		nextIt = path.begin();
+		nextIt++; // skip first part
 		pathIt = nextIt++;
 		QMenu* cur = structureOverlayMenu;
 
@@ -644,33 +653,9 @@ void Minutor::addOverlayItemType(QString type, QColor color, QString dimension)
 			pathIt = ++nextIt;
 		}
 
-		const QString& subtype = path.last();
 		//generate a unique keyboard shortcut
-		QKeySequence sequence;
-		QString actionName;
-		int ampPos = 0;
-		foreach (const QChar& c, subtype)
-		{
-			sequence = QKeySequence(QString("Ctrl+")+c);
-			actionName = subtype.mid(0, ampPos) + "&" + subtype.mid(ampPos);
-			foreach(QMenu* m, menuBar()->findChildren<QMenu*>())
-			{
-				foreach (const QAction* a, m->actions())
-				{
-					if (a->shortcut() == sequence)
-					{
-						sequence = QKeySequence();
-						actionName = "";
-						break;
-					}
-				}
-				if (actionName.isEmpty())
-					break; //already eliminated this as a possbility
-			}
-			if (!actionName.isEmpty())
-				break; //not eliminated, this one is ok
-			++ampPos;
-		}
+		QString actionName = path.last();
+		QKeySequence sequence = generateUniqueKeyboardShortcut(actionName);
 
 		QPixmap pixmap(16,16);
 		QColor solidColor(color);

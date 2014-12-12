@@ -31,21 +31,19 @@
 #include <assert.h>
 
 
-EntityInfo::EntityInfo(	QString category, QColor brushColor, QColor  penColor )
-: category(category)
-, brushColor(brushColor)
-, penColor(penColor)
+EntityInfo::EntityInfo(	QString name, QString category, QColor brushColor, QColor  penColor )
+	: name(name)
+	, category(category)
+	, brushColor(brushColor)
+	, penColor(penColor)
 {}
 
 
-
 EntityIdentifier::EntityIdentifier()
-{
-}
+{}
 
 EntityIdentifier::~EntityIdentifier()
-{
-}
+{}
 
 void EntityIdentifier::enableDefinitions(int pack)
 {
@@ -131,7 +129,7 @@ void EntityIdentifier::parseEntityDefinition( JSONObject *entity, QString const 
 	}
 
 	// enter entity into manager
-	packs[pack][category].insert( id, EntityInfo(category,catcolor,color) );
+	packs[pack].insert( id, EntityInfo(id,category,catcolor,color) );
 }
 
 bool EntityIdentifier::addCategory(QPair<QString,QColor> cat)
@@ -164,4 +162,35 @@ QColor EntityIdentifier::getCategoryColor(QString name)
 			return it->second;
 	}
 	return Qt::black; // dummy
+}
+
+static EntityInfo entityDummy("Name unknown","Entity.Unknown",Qt::black,Qt::black);
+
+EntityInfo const & EntityIdentifier::getEntityInfo( QString id )
+{
+	QMap<int,bool>::const_iterator pit = packenabled.begin();
+	for (;pit!=packenabled.end();++pit)
+	{
+		if (pit.value())
+		{
+			TentityMap const & entityMap( packs[pit.key()] );
+			TentityMap::const_iterator info = entityMap.find(id);
+			if (info != entityMap.end())
+			{ // found it
+				return info.value();
+			}
+		}
+	}
+		
+	return entityDummy;
+}
+
+QColor EntityIdentifier::getBrushColor( QString id )
+{
+	return getEntityInfo(id).brushColor;
+}
+
+QColor EntityIdentifier::getPenColor( QString id )
+{
+	return getEntityInfo(id).penColor;
 }

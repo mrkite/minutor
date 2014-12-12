@@ -40,7 +40,8 @@ class JSONObject;
 class EntityInfo
 {
 public:
-	EntityInfo(	QString category, QColor brushColor, QColor  penColor );
+	EntityInfo(	QString name, QString category, QColor brushColor, QColor  penColor );
+	QString name;
 	QString category;
 	QColor  brushColor;
 	QColor  penColor;
@@ -51,6 +52,12 @@ class EntityIdentifier
 public:
 	EntityIdentifier();
 	~EntityIdentifier();
+
+	// singleton global usable instance
+	static EntityIdentifier& Instance() {
+		static EntityIdentifier singleton;
+		return singleton;
+	}
 
 	int  addDefinitions(JSONArray *,int pack=-1);
 	void enableDefinitions(int);
@@ -74,7 +81,7 @@ private:
 	TcatList categories;  // main categories for entities
 	bool addCategory(QPair<QString,QColor> cat);
 
-	typedef QMap<QString,QMap<QString,EntityInfo>> TentityMap;
+	typedef QMap<QString,EntityInfo> TentityMap; // key:id_name value:EntityInfo
 	QMap< int, bool >       packenabled;
 	QMap< int, TentityMap > packs;
 };
