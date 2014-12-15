@@ -336,9 +336,17 @@ void MapView::redraw()
 					for (Chunk::EntityMap::iterator it = range.first; it != range.second; ++it)
 					{
 						//don't show entities above our depth
-						if ((*it)->midpoint().y < depth)
-
-						(*it)->draw(x1, z1, zoom, canvas);
+						int entityY = (*it)->midpoint().y;
+						if (entityY < depth)
+						{
+							int entityX = ((int)(*it)->midpoint().x) & 0x0f;
+							int entityZ = ((int)(*it)->midpoint().z) & 0x0f ;
+							int index = entityX + (entityZ<<4);
+							int highY = chunk->depth[index];
+							if ( (entityY+10 >= highY) ||
+								 (entityY+10 >= depth) )
+								(*it)->draw(x1, z1, zoom, canvas);
+						}
 					}
 				}
 			}

@@ -50,40 +50,50 @@ public:
 class EntityIdentifier
 {
 public:
-	EntityIdentifier();
-	~EntityIdentifier();
+	// singleton: access to global usable instance
+	static EntityIdentifier& Instance();
 
-	// singleton global usable instance
-	static EntityIdentifier& Instance() {
-		static EntityIdentifier singleton;
-		return singleton;
-	}
-
-	int  addDefinitions(JSONArray *,int pack=-1);
+	int  addDefinitions(JSONArray *,int packID=-1);
 	void enableDefinitions(int);
 	void disableDefinitions(int);
 
 	// interface to list of main categories
 	typedef QList<QPair<QString,QColor>> TcatList;
-	int              getNumCategories();
-	TcatList const & getCategoryList();
-	QColor           getCategoryColor(QString name);
+	int              getNumCategories() const;
+	TcatList const & getCategoryList() const;
+	QColor           getCategoryColor(QString name) const;
 
 	// interface to single EntityInfo objects
-	EntityInfo const & getEntityInfo( QString id );
-	QColor             getBrushColor( QString id );
-	QColor             getPenColor  ( QString id );
+	EntityInfo const & getEntityInfo( QString id ) const;
+	QColor             getBrushColor( QString id ) const;
+	QColor             getPenColor  ( QString id ) const;
 
 private:
-	void parseCategoryDefinition( JSONObject *data, int pack );
-	void parseEntityDefinition  ( JSONObject *entity, QString const & category, QColor catcolor, int pack );
+	// singleton: prevent access to constructor and copyconstructor
+	EntityIdentifier();
+	~EntityIdentifier();
+	EntityIdentifier( const EntityIdentifier& );
+	EntityIdentifier & operator= (const EntityIdentifier &);
+
+	void parseCategoryDefinition( JSONObject *data, int packID );
+	void parseEntityDefinition  ( JSONObject *entity, QString const & category, QColor catcolor, int packID );
 
 	TcatList categories;  // main categories for entities
 	bool addCategory(QPair<QString,QColor> cat);
 
 	typedef QMap<QString,EntityInfo> TentityMap; // key:id_name value:EntityInfo
-	QMap< int, bool >       packenabled;
-	QMap< int, TentityMap > packs;
+	TentityMap dummyMap;
+
+	class TpackInfo
+	{
+	public:
+		int        packID;
+		bool       enabled;
+		TentityMap map;
+		TpackInfo::TpackInfo(int packID) : packID(packID), enabled(true) {}
+	};
+	QList< TpackInfo > packs;
+	TentityMap& getMapForPackID(int packID);
 };
 
 #endif
