@@ -224,27 +224,39 @@ void WorldSave::findBounds(QString path, int *top, int *left, int *bottom, int *
 	//loop through all region files and find the extremes
 	while (it.hasNext())
 	{
-		QString fn=it.next();
-		int pos=fn.length()-5;
-		ushort c;
-		//figure out the x/z of the region
-		for (int i=0;i<2;i++)
+		it.next();
+		QString fn=it.fileName();
+		int len=fn.length()-4; // length of filename
+
+		//figure out the X of the region
+		int posX=2; // position after "r."
+		int posE=posX;
+		while ( posE<len && 
+				( fn.at(posE)=='+' ||
+				  fn.at(posE)=='-' ||
+				  fn.at(posE).isDigit()
+				)
+		      )
 		{
-			int p=0;
-			int scale=1;
-			while (pos>0 && (c=fn.at(pos).unicode())!='.')
-			{
-				if (c=='-')
-					p=-p;
-				else
-					p+=(c-'0')*scale;
-				pos--;
-				scale*=10;
-			}
-			pos--;
-			if (i==0) cur.z=p;
-			else cur.x=p;
+			posE++;
 		}
+        QStringRef numX(&fn, posX, posE-posX);
+		cur.x = numX.toInt();
+		
+		//figure out the Z of the region
+		int posZ=++posE;
+		while ( posE<len && 
+				( fn.at(posE)=='+' ||
+				  fn.at(posE)=='-' ||
+				  fn.at(posE).isDigit()
+				)
+		      )
+		{
+			posE++;
+		}
+        QStringRef numZ(&fn, posZ, posE-posZ);
+		cur.z = numZ.toInt();
+
 		if (!hasOne)
 		{
 			for (int e=0;e<4;e++)
