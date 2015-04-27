@@ -42,11 +42,9 @@ class QProgressDialog;
 class MapView;
 class LabelledSlider;
 class DefinitionManager;
+class DimensionIdentifier;
 class Settings;
-class BiomeIdentifier;
-class BlockIdentifier;
-class Dimensions;
-class Dimension;
+class DimensionInfo;
 class WorldSave;
 class Properties;
 class OverlayItem;
@@ -77,7 +75,7 @@ private slots:
 	void save();
 
 	void jumpToLocation();
-	void viewDimension(Dimension &dim);
+	void viewDimension(DimensionInfo &dim);
 	void toggleFlags();
 
 	void about();
@@ -98,7 +96,9 @@ private:
 	void createMenus();
 	void createStatusBar();
 	void loadStructures(const QDir &dataPath);
-
+    void populateEntityOverlayMenu();
+    QKeySequence generateUniqueKeyboardShortcut( QString & actionName );
+	
 	QString getWorldName(QDir path);
 	void getWorldList();
 
@@ -109,7 +109,7 @@ private:
 	QMenu *fileMenu, *worldMenu;
 	QMenu *viewMenu, *jumpMenu, *dimMenu;
 	QMenu *helpMenu;
-	QMenu *overlayMenu;
+	QMenu *structureOverlayMenu, *entityOverlayMenu;
 
 	QList<QAction *>worlds;
 	QAction *openAct, *reloadAct, *saveAct, *exitAct;
@@ -121,13 +121,14 @@ private:
 	QAction *aboutAct;
 	QAction *settingsAct;
 	QAction *updatesAct;
+	QList<QAction*> structureActions;
 	QList<QAction*> entityActions;
 
 	//loaded world data
 	QList<Location> locations;
 	DefinitionManager *dm;
 	Settings *settings;
-	Dimensions *dimensions;
+	DimensionIdentifier *dimensions;
 	QDir currentWorld;
 
 	//           type                 x    z

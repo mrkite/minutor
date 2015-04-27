@@ -26,8 +26,9 @@ HEADERS += \
     chunkloader.h \
     definitionmanager.h \
     definitionupdater.h \
-    dimensions.h \
+    dimensionidentifier.h \
     entity.h \
+    entityidentifier.h \
     generatedstructure.h \
     json.h \
     mapview.h \
@@ -48,8 +49,9 @@ SOURCES += \
     chunkloader.cpp \
     definitionmanager.cpp \
     definitionupdater.cpp \
-    dimensions.cpp \
+    dimensionidentifier.cpp \
     entity.cpp \
+    entityidentifier.cpp \
     generatedstructure.cpp \
     json.cpp \
     main.cpp \

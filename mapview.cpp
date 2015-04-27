@@ -103,13 +103,6 @@ void MapView::setDimension(QString path, int scale)
 	cache.clear();
 	cache.setPath(path);
 	redraw();
-
-	//we should eventually detect these instead of pre-loading them
-	//for now, keep these in sync with the entities created in Entity.cpp,
-	//or else we won't be able to select them.
-	emit addOverlayItemType("Entity.Hostile", Qt::red);
-	emit addOverlayItemType("Entity.Passive", Qt::white);
-	emit addOverlayItemType("Entity.Neutral", Qt::blue);
 }
 
 void MapView::setDepth(int depth)
@@ -343,9 +336,17 @@ void MapView::redraw()
 					for (Chunk::EntityMap::iterator it = range.first; it != range.second; ++it)
 					{
 						//don't show entities above our depth
-						if ((*it)->midpoint().y < depth)
-
-						(*it)->draw(x1, z1, zoom, canvas);
+						int entityY = (*it)->midpoint().y;
+						if (entityY < depth)
+						{
+							int entityX = ((int)(*it)->midpoint().x) & 0x0f;
+							int entityZ = ((int)(*it)->midpoint().z) & 0x0f ;
+							int index = entityX + (entityZ<<4);
+							int highY = chunk->depth[index];
+							if ( (entityY+10 >= highY) ||
+								 (entityY+10 >= depth) )
+								(*it)->draw(x1, z1, zoom, canvas);
+						}
 					}
 				}
 			}

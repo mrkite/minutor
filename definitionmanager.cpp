@@ -39,13 +39,16 @@
 #include <QtWidgets/QFileDialog>
 #include "biomeidentifier.h"
 #include "blockidentifier.h"
-#include "dimensions.h"
+#include "dimensionidentifier.h"
+#include "entityidentifier.h"
 #include "mapview.h"
 #include "json.h"
 #include "zipreader.h"
 #include "definitionupdater.h"
 
-DefinitionManager::DefinitionManager(QWidget *parent) : QWidget(parent)
+DefinitionManager::DefinitionManager(QWidget *parent)
+	: QWidget(parent)
+	, entityManager(EntityIdentifier::Instance())
 {
 	setWindowFlags(Qt::Window);
 	setWindowTitle(tr("Definitions"));
@@ -87,7 +90,7 @@ DefinitionManager::DefinitionManager(QWidget *parent) : QWidget(parent)
 	emit packSelected(false);
 	setLayout(layout);
 
-	dimensionList = new Dimensions;
+	dimensionList = new DimensionIdentifier;
 	blocks=new BlockIdentifier;
 	biomes=new BiomeIdentifier;
 
@@ -121,7 +124,7 @@ DefinitionManager::~DefinitionManager()
 {
     delete dimensionList;
     delete blocks;
-    delete biomes;
+	delete biomes;
 }
 
 BlockIdentifier *DefinitionManager::blockIdentifier()
@@ -132,7 +135,7 @@ BiomeIdentifier *DefinitionManager::biomeIdentifier()
 {
 	return biomes;
 }
-Dimensions *DefinitionManager::dimensions()
+DimensionIdentifier *DefinitionManager::dimensionIdentifer()
 {
 	return dimensionList;
 }
@@ -142,7 +145,7 @@ void DefinitionManager::refresh()
 	table->clearContents();
 	table->setRowCount(0);
 	QStringList types;
-	types<<tr("block")<<tr("biome")<<tr("dimension")<<tr("pack");
+	types<<tr("block")<<tr("biome")<<tr("dimension")<<tr("entity")<<tr("pack");
 	for (int i=0;i<sorted.length();i++)
 	{
 		Definition &def=definitions[sorted[i].toString()];
@@ -204,18 +207,26 @@ void DefinitionManager::toggledPack(bool onoff)
 			else
 				dimensionList->disableDefinitions(def.id);
 			break;
+		case Definition::Entity:
+			if (onoff)
+				entityManager.enableDefinitions(def.id);
+			else
+				entityManager.disableDefinitions(def.id);
+			break;
 		case Definition::Pack:
 			if (onoff)
 			{
 				blocks->enableDefinitions(def.blockid);
 				biomes->enableDefinitions(def.biomeid);
 				dimensionList->enableDefinitions(def.dimensionid);
+				entityManager.enableDefinitions(def.entityid);
 			}
 			else
 			{
 				blocks->disableDefinitions(def.blockid);
 				biomes->disableDefinitions(def.biomeid);
 				dimensionList->disableDefinitions(def.dimensionid);
+				entityManager.disableDefinitions(def.entityid);
 			}
 			break;
 		}
@@ -430,6 +441,9 @@ void DefinitionManager::loadDefinition(QString path)
 		} else if (type=="dimension") {
 			d.id=dimensionList->addDefinitions(dynamic_cast<JSONArray*>(def->at("data")));
 			d.type=Definition::Dimension;
+		} else if (type=="entity") {
+			d.id=entityManager.addDefinitions(dynamic_cast<JSONArray*>(def->at("data")));
+			d.type=Definition::Entity;
 		}
 		definitions.insert(path,d);
 		delete def;
@@ -457,6 +471,7 @@ void DefinitionManager::loadDefinition(QString path)
 		d.blockid=-1;
 		d.biomeid=-1;
 		d.dimensionid=-1;
+		d.entityid=-1;
 		QString key=d.name+"pack";
 		for (int i=0;i<info->at("data")->length();i++)
 		{
@@ -473,6 +488,8 @@ void DefinitionManager::loadDefinition(QString path)
 				d.biomeid=biomes->addDefinitions(dynamic_cast<JSONArray*>(def->at("data")),d.biomeid);
 			else if (type=="dimension")
 				d.dimensionid=dimensionList->addDefinitions(dynamic_cast<JSONArray*>(def->at("data")),d.dimensionid);
+			else if (type=="entity")
+				d.entityid=entityManager.addDefinitions(dynamic_cast<JSONArray*>(def->at("data")),d.entityid);
 			delete def;
 		}
 		definitions.insert(path,d);
@@ -498,10 +515,14 @@ void DefinitionManager::removeDefinition(QString path)
 		case Definition::Dimension:
 			dimensionList->disableDefinitions(def.id);
 			break;
+		case Definition::Entity:
+			entityManager.disableDefinitions(def.id);
+			break;
 		case Definition::Pack:
 			blocks->disableDefinitions(def.blockid);
 			biomes->disableDefinitions(def.biomeid);
 			dimensionList->disableDefinitions(def.dimensionid);
+			entityManager.disableDefinitions(def.entityid);
 			break;
 		}
 		definitions.remove(path);

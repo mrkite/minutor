@@ -1,0 +1,215 @@
+{
+  "name": "Vanilla",
+  "type": "entity",
+  "version": "1.8.0",
+  "data": [
+    {
+      "category": "Hostile",
+      "catcolor": "#ff0000",
+      "entity": [
+        {
+          "id": "Blaze",
+          "color": "#ffff00"
+        },
+        {
+          "id": "CaveSpider",
+          "color": "#808000"
+        },
+        {
+          "id": "Creeper",
+          "color": "#00ff00"
+        },
+        {
+          "id": "EnderDragon",
+          "color": "#ff00ff"
+        },
+        {
+          "id": "Enderman",
+          "color": "#800080"
+        },
+        {
+          "id": "Endermite",
+          "color": "#ff00ff"
+        },
+        {
+          "id": "Ghast",
+          "color": "#ffffff"
+        },
+        {
+          "id": "Guardian",
+          "color": "#000080"
+        },
+        {
+          "id": "LavaSlime",
+          "color": "#00ffff"
+        },
+        {
+          "id": "PigZombie",
+          "color": "#008000"
+        },
+        {
+          "id": "Silverfish",
+          "color": "#808080"
+        },
+        {
+          "id": "Skeleton",
+          "color": "#c0c0c0"
+        },
+        {
+          "id": "Slime",
+          "color": "#00ffff"
+        },
+        {
+          "id": "Spider",
+          "color": "#000000"
+        },
+        {
+          "id": "Witch",
+          "color": "#008080"
+        },
+        {
+          "id": "WitherBoss",
+          "color": "#808080"
+        },
+        {
+          "id": "Zombie",
+          "color": "#008000"
+        }
+      ]
+    },
+    {
+      "category": "Passive",
+      "catcolor": "#ffffff",
+      "entity": [
+        {
+          "id": "Bat",
+          "color": "#800000"
+        },
+        {
+          "id": "Chicken",
+          "color": "#ffff00"
+        },
+        {
+          "id": "Cow",
+          "color": "#008080"
+        },
+        {
+          "id": "EntityHorse",
+          "color": "#000080"
+        },
+        {
+          "id": "Pig",
+          "color": "#ff00ff"
+        },
+        {
+          "id": "Mooshroom",
+          "color": "#ff0000"
+        },
+        {
+          "id": "Ozelot",
+          "color": "#808000"
+        },
+        {
+          "id": "Rabbit",
+          "color": "#a0a0a4"
+        },
+        {
+          "id": "Sheep",
+          "color": "#c0c0c0"
+        },
+        {
+          "id": "SnowMan",
+          "color": "#ffffff"
+        },
+        {
+          "id": "Squid",
+          "color": "#000000"
+        },
+        {
+          "id": "Wolf",
+          "color": "#808080"
+        },
+        {
+          "id": "Villager",
+          "color": "#800080"
+        },
+        {
+          "id": "VillagerGolem",
+          "color": "#00ffff"
+        }
+      ]
+    },
+    {
+      "category": "Others",
+      "catcolor": "lightgray",
+      "entity": [
+        {
+          "id": "XPOrb",
+          "catcolor": "GreenYellow",
+          "color": "Gold"
+        },
+        {
+          "id": "Boat",
+          "catcolor": "DarkOrange",
+          "color": "Sienna"
+        },
+        {
+          "id": "Minecart",
+          "catcolor": "DarkOrange",
+          "color": "#a0a0a0"
+        },
+        {
+          "id": "MinecartChest",
+          "catcolor": "DarkOrange",
+          "color": "SaddleBrown"
+        },
+        {
+          "id": "MinecartCommandBlock",
+          "catcolor": "DarkOrange",
+          "color": "HotPink"
+        },
+        {
+          "id": "MinecartFurnace",
+          "catcolor": "DarkOrange",
+          "color": "#202020"
+        },
+        {
+          "id": "MinecartHopper",
+          "catcolor": "DarkOrange",
+          "color": "#808080"
+        },
+        {
+          "id": "MinecartTNT",
+          "catcolor": "DarkOrange",
+          "color": "#ff0000"
+        },
+        {
+          "id": "Painting",
+          "catcolor": "Violet",
+          "color": "OrangeRed"
+        },
+        {
+          "id": "ItemFrame",
+          "catcolor": "Violet",
+          "color": "Seashell"
+        },
+        {
+          "id": "ArmorStand",
+          "catcolor": "Violet",
+          "color": "Aquamarine"
+        }
+      ]
+    },
+    {
+      "category": "Items",
+      "catcolor": "#0000ff",
+      "entity": [
+        {
+          "id": "Item",
+          "color": "#ffffff"
+        }
+      ]
+    }
+  ],
+  "update": "http://seancode.com/minutor/packs/vanilla_entity.json"
+}

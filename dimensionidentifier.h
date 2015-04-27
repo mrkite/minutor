@@ -26,8 +26,8 @@
  */
 
 
-#ifndef __DIMENSIONS_H__
-#define __DIMENSIONS_H__
+#ifndef __DIMENSIONIDENTIFIER_H__
+#define __DIMENSIONIDENTIFIER_H__
 
 #include <QString>
 #include <QList>
@@ -39,10 +39,10 @@ class QAction;
 class QActionGroup;
 class JSONArray;
 
-class Dimension
+class DimensionInfo
 {
 public:
-	Dimension(QString path,int scale, QString name):path(path),scale(scale),name(name) {}
+	DimensionInfo(QString path,int scale, QString name):path(path),scale(scale),name(name) {}
 	QString path;
 	int scale;
 	QString name;
@@ -50,25 +50,25 @@ public:
 
 class DimensionDef;
 
-class Dimensions : public QObject
+class DimensionIdentifier : public QObject
 {
 	Q_OBJECT
 public:
-	Dimensions();
-	~Dimensions();
+	DimensionIdentifier();
+	~DimensionIdentifier();
 	int addDefinitions(JSONArray *,int pack=-1);
 	void enableDefinitions(int);
 	void disableDefinitions(int);
 	void getDimensions(QDir path,QMenu *menu,QObject *parent);
 	void removeDimensions(QMenu *menu);
 signals:
-	void dimensionChanged(Dimension &dim);
+	void dimensionChanged(DimensionInfo &dim);
 private slots:
 	void viewDimension();
 private:
 	void addDimension(QDir path,QString dir,QString name,int scale,QObject *parent);
 	QList<QAction *> items;
-	QList<Dimension> dimensions;
+	QList<DimensionInfo> dimensions;
 	QList<DimensionDef*> definitions;
 	QList<QList<DimensionDef*> > packs;
 	QActionGroup *group;

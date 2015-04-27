@@ -26,7 +26,7 @@
  */
 
 
-#include "dimensions.h"
+#include "dimensionidentifier.h"
 #include <QDirIterator>
 #include <QtWidgets/QMenu>
 #include "json.h"
@@ -42,11 +42,11 @@ public:
 	bool enabled;
 };
 
-Dimensions::Dimensions()
+DimensionIdentifier::DimensionIdentifier()
 {
 	group=NULL;
 }
-Dimensions::~Dimensions()
+DimensionIdentifier::~DimensionIdentifier()
 {
 	for (int i=0;i<packs.length();i++)
 	{
@@ -55,14 +55,14 @@ Dimensions::~Dimensions()
 	}
 }
 
-void Dimensions::enableDefinitions(int pack)
+void DimensionIdentifier::enableDefinitions(int pack)
 {
 	if (pack<0) return;
 	int len=packs[pack].length();
 	for (int i=0;i<len;i++)
 		packs[pack][i]->enabled=true;
 }
-void Dimensions::disableDefinitions(int pack)
+void DimensionIdentifier::disableDefinitions(int pack)
 {
 	if (pack<0) return;
 	int len=packs[pack].length();
@@ -70,7 +70,7 @@ void Dimensions::disableDefinitions(int pack)
 		packs[pack][i]->enabled=false;
 }
 
-int Dimensions::addDefinitions(JSONArray *defs,int pack)
+int DimensionIdentifier::addDefinitions(JSONArray *defs,int pack)
 {
 	if (pack==-1)
 	{
@@ -106,7 +106,7 @@ int Dimensions::addDefinitions(JSONArray *defs,int pack)
 	return pack;
 }
 
-void Dimensions::removeDimensions(QMenu *menu)
+void DimensionIdentifier::removeDimensions(QMenu *menu)
 {
 	for (int i=0;i<items.count();i++)
 	{
@@ -123,7 +123,7 @@ void Dimensions::removeDimensions(QMenu *menu)
 		group=NULL;
 	}
 }
-void Dimensions::getDimensions(QDir path,QMenu *menu,QObject *parent)
+void DimensionIdentifier::getDimensions(QDir path,QMenu *menu,QObject *parent)
 {
 	//first get the currently selected dimension so it doesn't change
 	QString current;
@@ -179,7 +179,7 @@ void Dimensions::getDimensions(QDir path,QMenu *menu,QObject *parent)
 	}
 }
 
-void Dimensions::addDimension(QDir path,QString dir,QString name,int scale,QObject *parent)
+void DimensionIdentifier::addDimension(QDir path,QString dir,QString name,int scale,QObject *parent)
 {
 	if (!path.exists(dir))
 		return;
@@ -193,7 +193,7 @@ void Dimensions::addDimension(QDir path,QString dir,QString name,int scale,QObje
 		QAction *d=new QAction(parent);
 		d->setText(name);
 		d->setData(dimensions.count());
-		dimensions.append(Dimension(path.absolutePath(),scale, name));
+		dimensions.append(DimensionInfo(path.absolutePath(),scale, name));
 		d->setCheckable(true);
 		parent->connect(d, SIGNAL(triggered()),
 						this, SLOT(viewDimension()));
@@ -204,7 +204,7 @@ void Dimensions::addDimension(QDir path,QString dir,QString name,int scale,QObje
 	path.cdUp();
 }
 
-void Dimensions::viewDimension()
+void DimensionIdentifier::viewDimension()
 {
 	QAction *action=qobject_cast<QAction*>(sender());
 	if (action)
