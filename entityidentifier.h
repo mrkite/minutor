@@ -58,7 +58,7 @@ public:
 	void disableDefinitions(int);
 
 	// interface to list of main categories
-	typedef QList<QPair<QString,QColor>> TcatList;
+	typedef QList<QPair<QString,QColor> > TcatList;
 	int              getNumCategories() const;
 	TcatList const & getCategoryList() const;
 	QColor           getCategoryColor(QString name) const;
@@ -90,7 +90,7 @@ private:
 		int        packID;
 		bool       enabled;
 		TentityMap map;
-		TpackInfo::TpackInfo(int packID) : packID(packID), enabled(true) {}
+		TpackInfo(int packID) : packID(packID), enabled(true) {}
 	};
 	QList< TpackInfo > packs;
 	TentityMap& getMapForPackID(int packID);

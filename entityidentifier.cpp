@@ -58,7 +58,7 @@ EntityIdentifier& EntityIdentifier::Instance()
 void EntityIdentifier::enableDefinitions(int packID)
 {
 	if (packID<0) return;
-	for (auto it = packs.begin(); it != packs.end(); ++it)
+	for (QList<TpackInfo>::iterator it = packs.begin(); it != packs.end(); ++it)
 	{
 		if (it->packID == packID)
 		{
@@ -71,7 +71,7 @@ void EntityIdentifier::enableDefinitions(int packID)
 void EntityIdentifier::disableDefinitions(int packID)
 {
 	if (packID<0) return;
-	for (auto it = packs.begin(); it != packs.end(); ++it)
+	for (QList<TpackInfo>::iterator it = packs.begin(); it != packs.end(); ++it)
 	{
 		if (it->packID == packID)
 			it->enabled = false;
@@ -83,7 +83,7 @@ int EntityIdentifier::addDefinitions(JSONArray *defs,int packID)
 	if (packID==-1)
 	{
 		// find largest used packID
-		for (auto it = packs.begin(); it != packs.end(); ++it)
+		for (QList<TpackInfo>::const_iterator it = packs.begin(); it != packs.end(); ++it)
 		{
 			if (it->packID > packID)
 				packID = it->packID;
@@ -99,7 +99,7 @@ int EntityIdentifier::addDefinitions(JSONArray *defs,int packID)
 
 EntityIdentifier::TentityMap& EntityIdentifier::getMapForPackID(int packID)
 {
-	for (auto it = packs.begin(); it != packs.end(); ++it)
+	for (QList<TpackInfo>::iterator it = packs.begin(); it != packs.end(); ++it)
 	{
 		if (it->packID == packID)
 			return it->map;
@@ -203,7 +203,7 @@ QColor EntityIdentifier::getCategoryColor(QString name) const
 
 EntityInfo const & EntityIdentifier::getEntityInfo( QString id ) const
 {
-	for (auto it = packs.begin(); it != packs.end(); ++it)
+	for (QList<TpackInfo>::const_iterator it = packs.begin(); it != packs.end(); ++it)
 	{
 		if (it->enabled)
 		{
