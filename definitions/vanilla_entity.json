@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "entity",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "data": [
     {
       "category": "Hostile",
@@ -102,7 +102,7 @@
           "color": "#ff00ff"
         },
         {
-          "id": "Mooshroom",
+          "id": "MushroomCow",
           "color": "#ff0000"
         },
         {
@@ -149,12 +149,27 @@
           "color": "Gold"
         },
         {
+          "id": "LeashKnot",
+          "catcolor": "GreenYellow",
+          "color": "SandyBrown"
+        },
+        {
+          "id": "EnderCrystal",
+          "catcolor": "Plum",
+          "color": "SkyBlue"
+        },
+        {
           "id": "Boat",
           "catcolor": "DarkOrange",
           "color": "Sienna"
         },
         {
-          "id": "Minecart",
+          "id": "MinecartCommandBlock",
+          "catcolor": "DarkOrange",
+          "color": "HotPink"
+        },
+        {
+          "id": "MinecartRideable",
           "catcolor": "DarkOrange",
           "color": "#a0a0a0"
         },
@@ -164,14 +179,14 @@
           "color": "SaddleBrown"
         },
         {
-          "id": "MinecartCommandBlock",
-          "catcolor": "DarkOrange",
-          "color": "HotPink"
-        },
-        {
           "id": "MinecartFurnace",
           "catcolor": "DarkOrange",
           "color": "#202020"
+        },
+        {
+          "id": "MinecartTNT",
+          "catcolor": "DarkOrange",
+          "color": "#ff0000"
         },
         {
           "id": "MinecartHopper",
@@ -179,9 +194,9 @@
           "color": "#808080"
         },
         {
-          "id": "MinecartTNT",
+          "id": "MinecartSpawner",
           "catcolor": "DarkOrange",
-          "color": "#ff0000"
+          "color": "Plum"
         },
         {
           "id": "Painting",
