@@ -55,12 +55,39 @@ int main(int argc,char *argv[])
 		if (((args[i] == "-w") || (args[i] == "--world")) && (i + 1 < numArgs))
 		{
 			minutor.loadWorld(args[i + 1]);
+			i += 1;
 			continue;
 		}
 		if (((args[i] == "-j") || (args[i] == "--jump")) && (i + 2 < numArgs))
 		{
 			minutor.jumpToXZ(args[i + 1].toInt(), args[i + 2].toInt());
+			i += 2;
+			continue;
 		}
+
+		if ((args[i] == "-L") || (args[i] == "--lighting"))
+		{
+			minutor.setViewLighting(true);
+			continue;
+		}
+		if ((args[i] == "-M") || (args[i] == "--mobspawning"))
+		{
+			minutor.setViewMobspawning(true);
+			continue;
+		}
+		if ((args[i] == "-D") || (args[i] == "--depthshading"))
+		{
+			minutor.setViewDepthshading(true);
+			continue;
+		}
+
+		if (((args[i] == "-S") || (args[i] == "--savepng")) && (i + 1 < numArgs))
+		{
+			minutor.savePNG( args[i + 1], true );
+			i += 1;
+			continue;
+		}
+
 	}  // for itr - args[]
 
 	minutor.show();

@@ -62,10 +62,16 @@ class Minutor : public QMainWindow
 public:
 	Minutor();
 
-	void loadWorld(QDir path);
+	void loadWorld( QDir path );
 
-	/// Jumps to the block coords provided
-	void jumpToXZ(int blockX, int blockZ);
+	void savePNG( QString filename, bool autoclose );
+
+	void jumpToXZ( int blockX, int blockZ );  // Jumps to the block coords provided
+
+	void setViewLighting( bool toggle );      // set View-Ligthing
+	void setViewMobspawning( bool toggle );   // set View-Mob_Spawning
+	void setViewCavemode( bool toggle );      // set View-Cave_Mode
+	void setViewDepthshading( bool toggle );  // set View-Despth_Shading
 
 private slots:
 	void openWorld();
@@ -105,6 +111,7 @@ private:
 	MapView *mapview;
 	LabelledSlider *depth;
 	QProgressDialog *progress;
+	bool progressAutoclose;
 
 	QMenu *fileMenu, *worldMenu;
 	QMenu *viewMenu, *jumpMenu, *dimMenu;
