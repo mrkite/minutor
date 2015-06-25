@@ -221,24 +221,33 @@ void Minutor::jumpToXZ(int blockX, int blockZ)
 	mapview->setLocation(blockX, blockZ);
 }
 
-void Minutor::setViewLighting( bool toggle )
+void Minutor::setViewLighting( bool value )
 {
-	lightingAct->setChecked( toggle );
+	lightingAct->setChecked( value );
+	toggleFlags();
 }
 
-void Minutor::setViewMobspawning( bool toggle )
+void Minutor::setViewMobspawning( bool value )
 {
-	mobSpawnAct->setChecked( toggle );
+	mobSpawnAct->setChecked( value );
+	toggleFlags();
 }
 
-void Minutor::setViewCavemode( bool toggle )
+void Minutor::setViewCavemode( bool value )
 {
-	depthShadingAct->setChecked( toggle );
+	depthShadingAct->setChecked( value );
+	toggleFlags();
 }
 
-void Minutor::setViewDepthshading( bool toggle )
+void Minutor::setViewDepthshading( bool value )
 {
-	lightingAct->setChecked( toggle );
+	lightingAct->setChecked( value );
+	toggleFlags();
+}
+
+void Minutor::setDepth( int value )
+{
+	depth->setValue( value );
 }
 
 void Minutor::toggleFlags()

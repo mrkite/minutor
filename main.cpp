@@ -49,12 +49,18 @@ int main(int argc,char *argv[])
 
 	// Process the cmdline arguments:
 	QStringList args = app.arguments();
-	size_t numArgs = args.size();
-	for (size_t i = 0; i < numArgs; i++)
+	int numArgs = args.size();
+	for (int i = 0; i < numArgs; i++)
 	{
 		if (((args[i] == "-w") || (args[i] == "--world")) && (i + 1 < numArgs))
 		{
 			minutor.loadWorld(args[i + 1]);
+			i += 1;
+			continue;
+		}
+		if (((args[i] == "-s") || (args[i] == "--savepng")) && (i + 1 < numArgs))
+		{
+			minutor.savePNG( args[i + 1], true );
 			i += 1;
 			continue;
 		}
@@ -64,7 +70,14 @@ int main(int argc,char *argv[])
 			i += 2;
 			continue;
 		}
+		if (((args[i] == "-y") || (args[i] == "--depth")) && (i + 1 < numArgs))
+		{
+			minutor.setDepth( args[i + 1].toInt() );
+			i += 1;
+			continue;
+		}
 
+		// menu View->
 		if ((args[i] == "-L") || (args[i] == "--lighting"))
 		{
 			minutor.setViewLighting(true);
@@ -78,13 +91,6 @@ int main(int argc,char *argv[])
 		if ((args[i] == "-D") || (args[i] == "--depthshading"))
 		{
 			minutor.setViewDepthshading(true);
-			continue;
-		}
-
-		if (((args[i] == "-S") || (args[i] == "--savepng")) && (i + 1 < numArgs))
-		{
-			minutor.savePNG( args[i + 1], true );
-			i += 1;
 			continue;
 		}
 
