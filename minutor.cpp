@@ -154,6 +154,13 @@ void Minutor::save()
 	QFileDialog fileDialog(this);
 	fileDialog.setDefaultSuffix("png");
 	QString filename = fileDialog.getSaveFileName(this,tr("Save world as PNG"),QString(),"*.png");
+	
+	savePNG( filename, false );
+}
+
+void Minutor::savePNG( QString filename, bool autoclose )
+{
+	progressAutoclose = autoclose;
 	if (!filename.isEmpty())
 	{
 		WorldSave *ws=new WorldSave(filename,mapview);
@@ -169,15 +176,19 @@ void Minutor::save()
 	}
 }
 
+
 void Minutor::saveProgress(QString status, double value)
 {
 	progress->setValue(value*100);
 	progress->setLabelText(status);
 }
+
 void Minutor::saveFinished()
 {
 	progress->hide();
 	delete progress;
+	if (progressAutoclose)
+		this->close();
 }
 
 void Minutor::closeWorld()
@@ -208,6 +219,35 @@ void Minutor::jumpToLocation()
 void Minutor::jumpToXZ(int blockX, int blockZ)
 {
 	mapview->setLocation(blockX, blockZ);
+}
+
+void Minutor::setViewLighting( bool value )
+{
+	lightingAct->setChecked( value );
+	toggleFlags();
+}
+
+void Minutor::setViewMobspawning( bool value )
+{
+	mobSpawnAct->setChecked( value );
+	toggleFlags();
+}
+
+void Minutor::setViewCavemode( bool value )
+{
+	depthShadingAct->setChecked( value );
+	toggleFlags();
+}
+
+void Minutor::setViewDepthshading( bool value )
+{
+	lightingAct->setChecked( value );
+	toggleFlags();
+}
+
+void Minutor::setDepth( int value )
+{
+	depth->setValue( value );
 }
 
 void Minutor::toggleFlags()
