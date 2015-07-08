@@ -54,9 +54,18 @@ public:
 	bool isBlockNormalCube();
 	bool renderAsNormalBlock();
 	bool canProvidePower();
+	
+	// special blocks used during mob spawning detection
+	bool isBedrock();
+	bool isHopper();
+	bool isStairs();
+	bool isHalfSlab();
+	bool isSnow();
+
+	void            setName( const QString & newname );
+	const QString & getName();
 
 	int     id;
-	QString name;
 	double  alpha;
 	quint8  mask;
 	bool    enabled;
@@ -66,6 +75,14 @@ public:
 	bool    providepower;
 	bool    spawninside;
 	quint32 colors[16];
+private:
+	QString name;
+	// cache special blocks used during mob spawning detection
+	bool    bedrock;
+	bool    hopper;
+	bool    stairs;
+	bool    halfslab;
+	bool    snow;
 };
 
 class BlockIdentifier

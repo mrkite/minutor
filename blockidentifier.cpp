@@ -52,11 +52,10 @@ bool BlockInfo::isLiquid()
 bool BlockInfo::doesBlockHaveSolidTopSurface(int data)
 {
 	if (this->isOpaque() && this->renderAsNormalBlock()) return true;
-	if (this->name.contains("Stairs") && ((data&4)==4)) return true;
-	if (this->name.contains("Slab") && !this->name.contains("Double") && !this->name.contains("Full") &&
-	    ((data&8)==8)) return true;
-	if (this->name.contains("Hopper")) return true;
-	if (this->name.contains("Snow") && ((data&7)==7)) return true;
+	if (this->stairs && ((data&4)==4)) return true;
+	if (this->halfslab && ((data&8)==8)) return true;
+	if (this->hopper) return true;
+	if (this->snow && ((data&7)==7)) return true;
 	return false;
 }
 
@@ -78,6 +77,24 @@ bool BlockInfo::canProvidePower()
 	return this->providepower;
 }
 
+void BlockInfo::setName( const QString & newname )
+{
+	name = newname;
+	bedrock  = this->name.contains("Bedrock");
+	hopper   = this->name.contains("Hopper");
+	stairs   = this->name.contains("Stairs");
+	halfslab = this->name.contains("Slab") && !this->name.contains("Double") && !this->name.contains("Full");
+	snow     = this->name.contains("Snow");
+}
+
+const QString & BlockInfo::getName() { return name; }
+
+
+bool BlockInfo::isBedrock()  { return bedrock; }
+bool BlockInfo::isHopper()   { return hopper; }
+bool BlockInfo::isStairs()   { return stairs; }
+bool BlockInfo::isHalfSlab() { return halfslab; }
+bool BlockInfo::isSnow()     { return snow; }
 
 
 
@@ -89,7 +106,7 @@ BlockIdentifier::BlockIdentifier()
 	for (int i=0;i<16;i++)
 		unknownBlock.colors[i]=0xff00ff;
 	unknownBlock.alpha=1.0;
-	unknownBlock.name="Unknown";
+	unknownBlock.setName("Unknown");
 }
 BlockIdentifier::~BlockIdentifier()
 {
@@ -207,11 +224,11 @@ void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent, int pack
 	block->id=id;
 
 	if (b->has("name"))
-		block->name=b->at("name")->asString();
+		block->setName(b->at("name")->asString());
 	else if (parent!=NULL)
-		block->name=parent->name;
+		block->setName(parent->getName());
 	else
-		block->name="Unknown";
+		block->setName("Unknown");
 	block->enabled=true;
 
 	if (b->has("transparent"))
@@ -320,6 +337,7 @@ void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent, int pack
 		for (int j=0;j<vlen;j++)
 			parseDefinition(dynamic_cast<JSONObject *>(variants->at(j)),block,pack);
 	}
+
 	blocks[id].append(block);
 	packs[pack].append(block);
 }
