@@ -511,7 +511,7 @@ void MapView::renderChunk(Chunk *chunk)
 				{
 					// get block info from 1 and 2 above and 1 below
 					quint16 blid1(0), blid2(0), blidB(0); // default to air
-					int	 data1(0), data2(0), dataB(0); // default variant
+					int	    data1(0), data2(0), dataB(0); // default variant
 					ChunkSection *section2=NULL;
 					ChunkSection *sectionB=NULL;
 					if (y<254)
@@ -541,7 +541,7 @@ void MapView::renderChunk(Chunk *chunk)
 
 					// spawn check #1: on top of solid block
 					if ( block0.doesBlockHaveSolidTopSurface(data) &&
-						 !block0.name.contains("Bedrock") &&
+						 !block0.isBedrock() &&
 						 (light1<8) &&
 						 !block1.isBlockNormalCube() && block1.spawninside && !block1.isLiquid() &&
 						 !block2.isBlockNormalCube() && block2.spawninside )
@@ -552,7 +552,7 @@ void MapView::renderChunk(Chunk *chunk)
 					}
 					// spawn check #2: current block is transparent, but mob can spawn through (e.g. snow)
 					if ( blockB.doesBlockHaveSolidTopSurface(dataB) &&
-						 !blockB.name.contains("Bedrock") &&
+						 !blockB.isBedrock() &&
 						 (light0<8) &&
 						 !block0.isBlockNormalCube() && block0.spawninside && !block0.isLiquid() &&
 						 !block1.isBlockNormalCube() && block1.spawninside )
@@ -626,7 +626,7 @@ void MapView::getToolTip(int x, int z)
 			BlockInfo &block=blocks->getBlock(section->blocks[offset+yoffset],data&0xf);
 			if (block.alpha==0.0) continue;
 			//found block
-			name=block.name;
+			name=block.getName();
 			id=section->blocks[offset+yoffset];
 			bd=data&0xf;
 			break;
