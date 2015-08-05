@@ -2235,6 +2235,13 @@
           "color": "ffffff",
           "alpha": 0.0
         }
+,
+        {
+          "data": 10,
+          "name": "Large Flower (top part)",
+          "color": "ffffff",
+          "alpha": 0.0
+        }
       ]
     },
     {
