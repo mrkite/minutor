@@ -2329,5 +2329,5 @@
     }
 
   ],
-  "update": "http://seancode.com/minutor/packs/vanilla_ids.json"
+  "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_ids.json"
 }
