@@ -248,5 +248,5 @@
       "name": "Mesa Plateau M"
     }
   ],
-  "update": "http://seancode.com/minutor/packs/vanilla_biomes.json"
+  "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_biomes.json"
 }
