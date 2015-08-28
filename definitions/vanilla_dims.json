@@ -19,5 +19,5 @@
       "scale": 0
     }
   ],
-  "update": "http://seancode.com/minutor/packs/vanilla_dims.json"
+  "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_dims.json"
 }
