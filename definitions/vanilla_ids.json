@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "block",
-  "version": "1.8.0",
+  "version": "1.9.15w31",
   "data": [
     {
       "id": 0,
@@ -2153,13 +2153,6 @@
           "color": "ffffff",
           "alpha": 0.0
         }
-,
-        {
-          "data": 10,
-          "name": "Large Flower (top part)",
-          "color": "ffffff",
-          "alpha": 0.0
-        }
       ]
     },
     {
@@ -2326,6 +2319,75 @@
       "name": "Dark Oak Door",
       "color": "4a3118",
       "transparent": true
+    },
+    {
+      "id": 198,
+      "name": "End Rod",
+      "color": "dcc5ce"
+    },
+    {
+      "id": 199,
+      "name": "Chorus Plant",
+      "color": "603c60",
+      "transparent": true
+    },
+    {
+      "id": 200,
+      "name": "Chorus Flower",
+      "color": "866886",
+      "transparent": true,
+      "variants": [
+        {
+          "data": 5,
+          "name": "Chorus Flower (fully grown)",
+          "color": "624060"
+        }
+      ]
+    },
+    {
+      "id": 201,
+      "name": "Purpur Block",
+      "color": "a67aa6"
+    },
+    {
+      "id": 202,
+      "name": "Purpur Pillar",
+      "color": "ab80ab"
+    },
+    {
+      "id": 203,
+      "name": "Purpur Stairs",
+      "color": "a67aa6"
+    },
+    {
+      "id": 204,
+      "name": "Double Purpur Slab",
+      "color": "a67aa6"
+    },
+    {
+      "id": 205,
+      "name": "Purpur Slab",
+      "color": "a67aa6"
+    },
+    {
+      "id": 206,
+      "name": "End Stone Bricks",
+      "color": "e2e7ab"
+    },
+    {
+      "id": 208,
+      "name": "Grass Path",
+      "color": "967d47"
+    },
+    {
+      "id": 209,
+      "name": "End Gateway Block",
+      "color": "000000"
+    },
+    {
+      "id": 255,
+      "name": "Structure Block",
+      "color": "000000"
     }
 
   ],
