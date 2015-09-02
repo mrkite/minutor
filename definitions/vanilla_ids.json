@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "block",
-  "version": "1.9.15w31",
+  "version": "1.9.15w34a",
   "data": [
     {
       "id": 0,
@@ -1585,7 +1585,7 @@
     {
       "id": 137,
       "name": "Command Block",
-      "color": "cfa68b"
+      "color": "b18972"
     },
     {
       "id": 138,
@@ -2469,11 +2469,33 @@
       "color": "000000"
     },
     {
+      "id": 210,
+      "name": "Repeating Command Block",
+      "color": "8170b0"
+    },
+    {
+      "id": 211,
+      "name": "Chain Command Block",
+      "color": "87a398"
+    },
+    {
+      "id": 244,
+      "name": "Immature Beetroot",
+      "color": "02ab10",
+      "transparent": true,
+      "variants": [
+        {
+          "data": 3,
+          "name": "Mature Beetroot",
+          "color": "517136"
+        }
+      ]
+    },
+    {
       "id": 255,
       "name": "Structure Block",
       "color": "000000"
     }
-
   ],
   "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_ids.json"
 }
