@@ -503,9 +503,13 @@ void MapView::renderChunk(Chunk *chunk)
 				quint32 colb = color & 0xff;
 				if (flags & flgDepthShading)
 				{
-					colr = colr * (256 - (depth - y)) / 256;
-					colg = colg * (256 - (depth - y)) / 256;
-					colb = colb * (256 - (depth - y)) / 256;
+					// Use a table to define depth-relative shade:
+					static const quint32 shadeTable[] = {0, 12, 18, 22, 24, 26, 28, 29, 30, 31, 32};
+					size_t idx = std::min(static_cast<size_t>(depth - y), sizeof(shadeTable) / sizeof(*shadeTable) - 1);
+					quint32 shade = shadeTable[idx];
+					colr = colr - std::min(shade, colr);
+					colg = colg - std::min(shade, colg);
+					colb = colb - std::min(shade, colb);
 				}
 				if (flags & flgMobSpawn)
 				{
