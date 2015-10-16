@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "biome",
-  "version": "1.7.2",
+  "version": "1.9.15w37a",
   "data": [
     {
       "id": 0,
@@ -162,6 +162,10 @@
     {
       "id": 39,
       "name": "Mesa Plateau"
+    },
+    {
+      "id": 127,
+      "name": "The Void"
     },
     {
       "id": 129,
