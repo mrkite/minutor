@@ -2459,6 +2459,19 @@
       "color": "e2e7ab"
     },
     {
+      "id": 207,
+      "name": "Immature Beetroot",
+      "color": "02ab10",
+      "transparent": true,
+      "variants": [
+        {
+          "data": 3,
+          "name": "Mature Beetroot",
+          "color": "517136"
+        }
+      ]
+    },
+    {
       "id": 208,
       "name": "Grass Path",
       "color": "967d47"
@@ -2479,17 +2492,12 @@
       "color": "87a398"
     },
     {
-      "id": 244,
-      "name": "Immature Beetroot",
-      "color": "02ab10",
+      "id": 212,
+      "name": "Frosted Ice",
+      "color": "77a9ff",
+      "alpha": 0.62,
       "transparent": true,
-      "variants": [
-        {
-          "data": 3,
-          "name": "Mature Beetroot",
-          "color": "517136"
-        }
-      ]
+      "rendercube": true
     },
     {
       "id": 255,
