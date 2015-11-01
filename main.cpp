@@ -50,17 +50,34 @@ int main(int argc,char *argv[])
 	// Process the cmdline arguments:
 	QStringList args = app.arguments();
 	int numArgs = args.size();
+	bool regionChecker=false;
+	bool chunkChecker=false;
 	for (int i = 0; i < numArgs; i++)
 	{
+        if (args[i].length()>2)
+        {
+            // convert long variants to lower case
+            args[i]=args[i].toLower();
+        }
 		if (((args[i] == "-w") || (args[i] == "--world")) && (i + 1 < numArgs))
 		{
 			minutor.loadWorld(args[i + 1]);
 			i += 1;
 			continue;
 		}
+		if (args[i] == "--regionchecker")
+		{
+			regionChecker=true;
+			continue;
+		}
+		if (args[i] == "--chunkchecker")
+		{
+			chunkChecker=true;
+			continue;
+		}
 		if (((args[i] == "-s") || (args[i] == "--savepng")) && (i + 1 < numArgs))
 		{
-			minutor.savePNG( args[i + 1], true );
+			minutor.savePNG( args[i + 1], true, regionChecker, chunkChecker );
 			i += 1;
 			continue;
 		}

@@ -155,15 +155,15 @@ void Minutor::save()
 	fileDialog.setDefaultSuffix("png");
 	QString filename = fileDialog.getSaveFileName(this,tr("Save world as PNG"),QString(),"*.png");
 	
-	savePNG( filename, false );
+	savePNG( filename, false, false, false );
 }
 
-void Minutor::savePNG( QString filename, bool autoclose )
+void Minutor::savePNG( QString filename, bool autoclose, bool regionChecker, bool chunkChecker )
 {
 	progressAutoclose = autoclose;
 	if (!filename.isEmpty())
 	{
-		WorldSave *ws=new WorldSave(filename,mapview);
+		WorldSave *ws=new WorldSave(filename,mapview,regionChecker,chunkChecker);
 		progress=new QProgressDialog();
 		progress->setCancelButton(NULL);
 		progress->setMaximum(100);
