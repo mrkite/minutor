@@ -38,7 +38,7 @@ class WorldSave : public QObject, public QRunnable
 {
 	Q_OBJECT
 public:
-	WorldSave(QString filename,MapView *map);
+	WorldSave(QString filename,MapView *map, bool regionChecker=false, bool chunkChecker=false);
 	~WorldSave();
 signals:
 	void progress(QString status,double amount);
@@ -52,6 +52,8 @@ private:
 
 	QString filename;
 	MapView *map;
+	bool regionChecker;
+	bool chunkChecker;
 };
 
 #endif

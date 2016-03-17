@@ -36,11 +36,14 @@
 #include "mapview.h"
 #include "zlib/zlib.h"
 
-WorldSave::WorldSave(QString filename,MapView *map)
+WorldSave::WorldSave(QString filename, MapView *map, bool regionChecker, bool chunkChecker)
+	: filename(filename) 
+	, map(map)
+	, regionChecker(regionChecker)
+	, chunkChecker(chunkChecker)
 {
-	this->filename=filename;
-	this->map=map;
 }
+
 WorldSave::~WorldSave()
 {
 }
@@ -323,8 +326,16 @@ void WorldSave::blankChunk(uchar *scanlines, int stride, int x)
 	for (int y=0;y<16;y++,offset+=stride)
 		memset(scanlines+offset,0,16*4);
 }
+
 void WorldSave::drawChunk(uchar *scanlines, int stride, int x, Chunk *chunk)
 {
+	// calculate attenuation
+	float attenuation=1.0f;
+	if ((this->regionChecker) && 0!=(int(floor(chunk->chunkX/32.0f)+floor(chunk->chunkZ/32.0f))%2))
+		attenuation *= 0.9f;
+	if ((this->chunkChecker) && 0!=((chunk->chunkX+chunk->chunkZ)%2))
+		attenuation *= 0.9f;
+	
 	//render chunk with current settings
 	map->renderChunk(chunk);
 	//we can't memcpy each scanline because it's in BGRA format.
@@ -335,10 +346,10 @@ void WorldSave::drawChunk(uchar *scanlines, int stride, int x, Chunk *chunk)
 		int xofs=offset;
 		for (int x=0;x<16;x++,xofs+=4)
 		{
-			scanlines[xofs+2]=chunk->image[ioffset++];
-			scanlines[xofs+1]=chunk->image[ioffset++];
-			scanlines[xofs+0]=chunk->image[ioffset++];
-			scanlines[xofs+3]=chunk->image[ioffset++];
+			scanlines[xofs+2]=attenuation*chunk->image[ioffset++];
+			scanlines[xofs+1]=attenuation*chunk->image[ioffset++];
+			scanlines[xofs+0]=attenuation*chunk->image[ioffset++];
+			scanlines[xofs+3]=attenuation*chunk->image[ioffset++];
 		}
 	}
 }

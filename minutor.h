@@ -64,7 +64,7 @@ public:
 
 	void loadWorld( QDir path );
 
-	void savePNG( QString filename, bool autoclose );
+	void savePNG( QString filename, bool autoclose=false, bool regionChecker=false, bool chunkChecker=false );
 
 	void jumpToXZ( int blockX, int blockZ );  // jumps to the block coords provided
 
