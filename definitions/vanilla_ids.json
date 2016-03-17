@@ -611,7 +611,6 @@
       "id": 44,
       "name": "Stone Slab",
       "color": "a3a3a3",
-      "mask": 7,
       "transparent": true,
       "variants": [
         {
@@ -647,6 +646,46 @@
         {
           "data": 7,
           "name": "Quartz Slab",
+          "color": "f0eee8"
+        },
+        {
+          "data": 8,
+          "name": "Upper Stone Slab",
+          "color": "a3a3a3"
+        },
+        {
+          "data": 9,
+          "name": "Upper Sandstone Slab",
+          "color": "d7ce95"
+        },
+        {
+          "data": 10,
+          "name": "Upper Wooden Slab",
+          "color": "b4905a"
+        },
+        {
+          "data": 11,
+          "name": "Upper Cobblestone Slab",
+          "color": "8f8f8f"
+        },
+        {
+          "data": 12,
+          "name": "Upper Brick Slab",
+          "color": "7c4536"
+        },
+        {
+          "data": 13,
+          "name": "Upper Stone Brick Slab",
+          "color": "797979"
+        },
+        {
+          "data": 14,
+          "name": "Upper Nether Brick Slab",
+          "color": "30181c"
+        },
+        {
+          "data": 15,
+          "name": "Upper Quartz Slab",
           "color": "f0eee8"
         }
       ]
@@ -1415,7 +1454,6 @@
       "id": 126,
       "name": "Oak Wood Slab",
       "color": "b4905a",
-      "mask": 7,
       "transparent": true,
       "variants": [
         {
@@ -1441,6 +1479,36 @@
         {
           "data": 5,
           "name": "Dark Oak Wood Slab",
+          "color": "462d15"
+        },
+        {
+          "data": 8,
+          "name": "Upper Oak Wood Slab",
+          "color": "b4905a"
+        },
+        {
+          "data": 9,
+          "name": "Upper Spruce Wood Slab",
+          "color": "664f2f"
+        },
+        {
+          "data": 10,
+          "name": "Upper Birch Wood Slab",
+          "color": "d7cb8d"
+        },
+        {
+          "data": 11,
+          "name": "Upper Jungle Wood Slab",
+          "color": "b1805c"
+        },
+        {
+          "data": 12,
+          "name": "Upper Acacia Wood Slab",
+          "color": "ba6337"
+        },
+        {
+          "data": 13,
+          "name": "Upper Dark Oak Wood Slab",
           "color": "462d15"
         }
       ]
@@ -2201,7 +2269,8 @@
     {
       "id": 180,
       "name": "Red Sandstone Stairs",
-      "color": "a6551e"
+      "color": "a6551e",
+      "transparent": true
     },
     {
       "id": 181,
@@ -2219,6 +2288,7 @@
       "id": 182,
       "name": "Red Sandstone Slab",
       "color": "a7551e",
+      "transparent": true,
       "variants": [
         {
           "data": 8,
