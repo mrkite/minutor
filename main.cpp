@@ -54,11 +54,11 @@ int main(int argc,char *argv[])
 	bool chunkChecker=false;
 	for (int i = 0; i < numArgs; i++)
 	{
-        if (args[i].length()>2)
-        {
-            // convert long variants to lower case
-            args[i]=args[i].toLower();
-        }
+		if (args[i].length()>2)
+		{
+			// convert long variants to lower case
+			args[i]=args[i].toLower();
+		}
 		if (((args[i] == "-w") || (args[i] == "--world")) && (i + 1 < numArgs))
 		{
 			minutor.loadWorld(args[i + 1]);
