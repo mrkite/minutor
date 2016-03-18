@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "entity",
-  "version": "1.8.1",
+  "version": "1.9.15w31",
   "data": [
     {
       "category": "Hostile",
@@ -46,6 +46,10 @@
         {
           "id": "PigZombie",
           "color": "#008000"
+        },
+        {
+          "id": "Shulker",
+          "color": "#795479"
         },
         {
           "id": "Silverfish",
@@ -226,5 +230,5 @@
       ]
     }
   ],
-  "update": "http://seancode.com/minutor/packs/vanilla_entity.json"
+  "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_entity.json"
 }
