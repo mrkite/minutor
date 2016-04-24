@@ -72,6 +72,7 @@ public:
 	void setViewMobspawning( bool value );    // set View->Mob_Spawning
 	void setViewCavemode( bool value );       // set View->Cave_Mode
 	void setViewDepthshading( bool value );   // set View->Depth_Shading
+	void setSingleLayer( bool value );        // set View->Single_Layer
 
 	void setDepth( int value );               // set Depth-Slider
 
@@ -124,7 +125,7 @@ private:
 	QAction *openAct, *reloadAct, *saveAct, *exitAct;
 	QAction *jumpSpawnAct;
 	QList<QAction *>players;
-	QAction *lightingAct, *mobSpawnAct, *caveModeAct, *depthShadingAct;
+	QAction *lightingAct, *mobSpawnAct, *caveModeAct, *depthShadingAct, *singleLayerAct;
 	QAction *manageDefsAct;
 	QAction *refreshAct;
 	QAction *aboutAct;

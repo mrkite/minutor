@@ -110,6 +110,11 @@ int main(int argc,char *argv[])
 			minutor.setViewDepthshading(true);
 			continue;
 		}
+		if ((args[i] == "-1") || (args[i] == "--singlelayer"))
+		{
+			minutor.setSingleLayer(true);
+			continue;
+		}
 
 	}  // for itr - args[]
 

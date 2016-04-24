@@ -245,6 +245,12 @@ void Minutor::setViewDepthshading( bool value )
 	toggleFlags();
 }
 
+void Minutor::setSingleLayer( bool value )
+{
+	singleLayerAct->setChecked( value );
+	toggleFlags();
+}
+
 void Minutor::setDepth( int value )
 {
 	depth->setValue( value );
@@ -258,6 +264,7 @@ void Minutor::toggleFlags()
 	if (mobSpawnAct->isChecked())     flags |= MapView::flgMobSpawn;
 	if (caveModeAct->isChecked())     flags |= MapView::flgCaveMode;
 	if (depthShadingAct->isChecked()) flags |= MapView::flgDepthShading;
+	if (singleLayerAct->isChecked())     flags |= MapView::flgSingleLayer;
 	mapview->setFlags(flags);
 
 	QSet<QString> overlayTypes;
@@ -360,6 +367,13 @@ void Minutor::createActions()
 	lightingAct->setShortcut(tr("Ctrl+L"));
 	lightingAct->setStatusTip(tr("Toggle lighting on/off"));
 	connect(lightingAct, SIGNAL(triggered()),
+			this,        SLOT(toggleFlags()));
+
+	singleLayerAct = new QAction(tr("&singleLayer"),this);
+	singleLayerAct->setCheckable(true);
+	//singleLayerAct->setShortcut(tr("Ctrl+L"));
+	singleLayerAct->setStatusTip(tr("Toggle single layer on/off"));
+	connect(singleLayerAct, SIGNAL(triggered()),
 			this,        SLOT(toggleFlags()));
 
 	depthShadingAct = new QAction(tr("&Depth shading"), this);
@@ -505,6 +519,7 @@ void Minutor::createMenus()
 	viewMenu->addAction(mobSpawnAct);
 	viewMenu->addAction(caveModeAct);
 	viewMenu->addAction(depthShadingAct);
+	viewMenu->addAction(singleLayerAct);
 	// [View->Overlay]
 	structureOverlayMenu = viewMenu->addMenu(tr("&Structure Overlay"));
 	entityOverlayMenu    = viewMenu->addMenu(tr("&Entity Overlay"));
