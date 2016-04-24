@@ -49,7 +49,8 @@ public:
 		flgMobSpawn     = 2,
 		flgCaveMode     = 4,
 		flgDepthShading = 8,
-		flgShowEntities = 16
+		flgShowEntities = 16,
+		flgSingleLayer  = 32
 	};
 
 
