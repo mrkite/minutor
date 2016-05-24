@@ -51,14 +51,14 @@ QSharedPointer<OverlayItem> Entity::TryParse(Tag* tag)
 bool Entity::intersects(const Point& min, const Point& max) const
 {
 	return min.x <= pos.x && max.x >= pos.x &&
-		   min.y <= pos.y && max.y >= pos.y &&
-		   min.z <= pos.z && max.z >= pos.z;
+	       min.y <= pos.y && max.y >= pos.y &&
+	       min.z <= pos.z && max.z >= pos.z;
 }
 
 void Entity::draw(double offsetX, double offsetZ, double scale, QPainter& canvas) const
 {
 	QPoint center((pos.x - offsetX) * scale,
-				  (pos.z - offsetZ) * scale);
+	              (pos.z - offsetZ) * scale);
 
 	QColor penColor = extraColor;
 	penColor.setAlpha(192);
@@ -66,7 +66,7 @@ void Entity::draw(double offsetX, double offsetZ, double scale, QPainter& canvas
 	pen.setColor(penColor);
 	pen.setWidth(2);
 	canvas.setPen(pen);
-	
+
 	QColor brushColor = color();
 	brushColor.setAlpha(128);
 	canvas.setBrush(brushColor);

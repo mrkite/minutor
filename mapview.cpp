@@ -337,14 +337,14 @@ void MapView::redraw()
 					{
 						//don't show entities above our depth
 						int entityY = (*it)->midpoint().y;
-						if (entityY < depth)
+						if (entityY < depth+1) // everything below the current block, but also inside the current block
 						{
 							int entityX = ((int)(*it)->midpoint().x) & 0x0f;
 							int entityZ = ((int)(*it)->midpoint().z) & 0x0f ;
 							int index = entityX + (entityZ<<4);
 							int highY = chunk->depth[index];
 							if ( (entityY+10 >= highY) ||
-								 (entityY+10 >= depth) )
+							     (entityY+10 >= depth) )
 								(*it)->draw(x1, z1, zoom, canvas);
 						}
 					}
