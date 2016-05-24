@@ -51,6 +51,10 @@ QList<QSharedPointer<GeneratedStructure> > GeneratedStructure::tryParse(Tag* dat
 								{
 									structure->setDimension("nether");
 								}
+								else if (structure->type() == "Structure.EndCity")
+								{
+									structure->setDimension("end");
+								}
 								else
 								{
 									structure->setDimension("overworld");
