@@ -1,120 +1,90 @@
-/*
-   Copyright (c) 2013, Sean Kasun
-   All rights reserved.
-
-   Redistribution and use in source and binary forms, with or without
-   modification, are permitted provided that the following conditions are met:
-
- * Redistributions of source code must retain the above copyright notice, this
- list of conditions and the following disclaimer.
-
- * Redistributions in binary form must reproduce the above copyright notice,
- this list of conditions and the following disclaimer in the documentation
- and/or other materials provided with the distribution.
-
- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
- LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
- THE POSSIBILITY OF SUCH DAMAGE.
- */
-
-
-#ifndef __MAPVIEW_H__
-#define __MAPVIEW_H__
+/** Copyright (c) 2013, Sean Kasun */
+#ifndef MAPVIEW_H_
+#define MAPVIEW_H_
 
 #include <QtWidgets/QWidget>
 #include <QSharedPointer>
-#include "chunkcache.h"
+#include "./chunkcache.h"
 class DefinitionManager;
 class BiomeIdentifier;
 class BlockIdentifier;
 class OverlayItem;
 
-class MapView : public QWidget
-{
-	Q_OBJECT
-public:
+class MapView : public QWidget {
+  Q_OBJECT
 
-	/// Values for the individual flags
-	enum
-	{
-		flgLighting     = 1,
-		flgMobSpawn     = 2,
-		flgCaveMode     = 4,
-		flgDepthShading = 8,
-		flgShowEntities = 16
-	};
+ public:
+  /// Values for the individual flags
+  enum {
+    flgLighting     = 1,
+    flgMobSpawn     = 2,
+    flgCaveMode     = 4,
+    flgDepthShading = 8,
+    flgShowEntities = 16
+  };
 
+  explicit MapView(QWidget *parent = 0);
 
-	MapView(QWidget *parent=0);
+  QSize minimumSizeHint() const;
+  QSize sizeHint() const;
 
-	QSize minimumSizeHint() const;
-	QSize sizeHint() const;
+  void attach(DefinitionManager *dm);
 
-	void attach(DefinitionManager *);
+  void setLocation(double x, double z);
+  void setDimension(QString path, int scale);
+  void setFlags(int flags);
+  void addOverlayItem(QSharedPointer<OverlayItem> item);
+  void showOverlayItemTypes(const QSet<QString>& itemTypes);
 
-	void setLocation(double x,double z);
-	void setDimension(QString path,int scale);
-	void setFlags(int flags);
-	void addOverlayItem(QSharedPointer<OverlayItem> item);
-	void showOverlayItemTypes(const QSet<QString>& itemTypes);
-
-	// public for saving the png
-	void renderChunk(Chunk *chunk);
-	QString getWorldPath();
+  // public for saving the png
+  void renderChunk(Chunk *chunk);
+  QString getWorldPath();
 
 
-public slots:
-	void setDepth(int depth);
-	void chunkUpdated(int x,int z);
-	void redraw();
+ public slots:
+  void setDepth(int depth);
+  void chunkUpdated(int x, int z);
+  void redraw();
 
-	/// Clears the cache and redraws, causing all chunks to be re-loaded; but keeps the viewport
-	void clearCache();
+  // Clears the cache and redraws, causing all chunks to be re-loaded;
+  // but keeps the viewport
+  void clearCache();
 
-signals:
-	void hoverTextChanged(QString text);
-	void demandDepthChange(int value);
-	void showProperties(QVariant properties);
-	void addOverlayItemType(QString type, QColor color);
+ signals:
+  void hoverTextChanged(QString text);
+  void demandDepthChange(int value);
+  void showProperties(QVariant properties);
+  void addOverlayItemType(QString type, QColor color);
 
-protected:
-	void mousePressEvent(QMouseEvent *event);
-	void mouseMoveEvent(QMouseEvent *event);
-	void mouseReleaseEvent(QMouseEvent *);
-	void mouseDoubleClickEvent(QMouseEvent*event);
-	void wheelEvent(QWheelEvent *event);
-	void keyPressEvent(QKeyEvent *event);
-	void resizeEvent(QResizeEvent *);
-	void paintEvent(QPaintEvent *);
+ protected:
+  void mousePressEvent(QMouseEvent *event);
+  void mouseMoveEvent(QMouseEvent *event);
+  void mouseReleaseEvent(QMouseEvent *event);
+  void mouseDoubleClickEvent(QMouseEvent *event);
+  void wheelEvent(QWheelEvent *event);
+  void keyPressEvent(QKeyEvent *event);
+  void resizeEvent(QResizeEvent *event);
+  void paintEvent(QPaintEvent *event);
 
-private:
+ private:
+  void drawChunk(int x, int z);
+  void getToolTip(int x, int z);
+  int getY(int x, int z);
+  QList<QSharedPointer<OverlayItem>> getItems(int x, int y, int z);
 
-	void drawChunk(int x,int z);
-	void getToolTip(int x,int z);
-	int getY(int x, int z);
-	QList<QSharedPointer<OverlayItem> > getItems(int x, int y, int z);
-
-	int depth;
-	double x,z;
-	int scale;
-	double zoom;
-	int flags;
-	ChunkCache cache;
-	QImage image;
-	DefinitionManager *dm;
-	BlockIdentifier *blocks;
-	BiomeIdentifier *biomes;
-	uchar placeholder[16*16*4]; // no chunk found placeholder
-	QSet<QString> overlayItemTypes;
-	QMap<QString, QList<QSharedPointer<OverlayItem> > > overlayItems;
+  int depth;
+  double x, z;
+  int scale;
+  double zoom;
+  int flags;
+  ChunkCache cache;
+  QImage image;
+  DefinitionManager *dm;
+  BlockIdentifier *blocks;
+  BiomeIdentifier *biomes;
+  uchar placeholder[16 * 16 * 4];  // no chunk found placeholder
+  QSet<QString> overlayItemTypes;
+  QMap<QString, QList<QSharedPointer<OverlayItem>>> overlayItems;
 };
 
-#endif
+#endif  // MAPVIEW_H_

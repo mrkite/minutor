@@ -1,33 +1,6 @@
-/*
-   Copyright (c) 2013, Sean Kasun
-   All rights reserved.
-
-   Redistribution and use in source and binary forms, with or without
-   modification, are permitted provided that the following conditions are met:
-
- * Redistributions of source code must retain the above copyright notice, this
- list of conditions and the following disclaimer.
-
- * Redistributions in binary form must reproduce the above copyright notice,
- this list of conditions and the following disclaimer in the documentation
- and/or other materials provided with the distribution.
-
- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
- LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
- THE POSSIBILITY OF SUCH DAMAGE.
- */
-
-
-#ifndef __LABELLEDSLIDER_H__
-#define __LABELLEDSLIDER_H__
+/** Copyright (c) 2013, Sean Kasun */
+#ifndef LABELLEDSLIDER_H_
+#define LABELLEDSLIDER_H_
 
 #include <QWidget>
 #include <QSlider>
@@ -35,41 +8,40 @@
 #include <QWheelEvent>
 #include <QKeyEvent>
 
-class MSlider : public QSlider
-{
-	Q_OBJECT
+class MSlider : public QSlider {
+  Q_OBJECT
 
-public:
-	MSlider(Qt::Orientation orientation, QWidget * parent = 0);
+ public:
+  explicit MSlider(Qt::Orientation orientation, QWidget *parent = 0);
 
-public slots:
-	void wheelEvent( QWheelEvent* event );
+ public slots:
+  void wheelEvent(QWheelEvent *event);
 };
 
 
-class LabelledSlider : public QWidget
-{
-	Q_OBJECT
-public:
-	explicit LabelledSlider(Qt::Orientation orientation, QWidget *parent = 0);
-	int value() const;
+class LabelledSlider : public QWidget {
+  Q_OBJECT
 
-signals:
-	void valueChanged(int);
+ public:
+  explicit LabelledSlider(Qt::Orientation orientation, QWidget *parent = 0);
+  int value() const;
 
-public slots:
-	void setValue(int);    // set absolute
-	void changeValue(int); // change relative
+ signals:
+  void valueChanged(int val);
 
-private slots:
-	void intValueChange(int);
+ public slots:
+  void setValue(int val);  // set absolute
+  void changeValue(int val);  // change relative
 
-protected:
-	void wheelEvent( QWheelEvent* event );
+ private slots:
+  void intValueChange(int val);
 
-private:
-	MSlider *slider;
-	QLabel *label;
+ protected:
+  void wheelEvent(QWheelEvent *event);
+
+ private:
+  MSlider *slider;
+  QLabel *label;
 };
 
-#endif
+#endif  // LABELLEDSLIDER_H_

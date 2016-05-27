@@ -1,3 +1,9 @@
+minutor (2.1.0) vivid; urgency=medium
+
+  * So many changes...
+
+ -- Sean Kasun <sean@seancode.com>  Fri, 27 May 2016 15:33:01 -0700
+
 minutor (2.0.1) raring; urgency=low
 
   * Fixes for 1.7.2

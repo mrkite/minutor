@@ -1,5 +1,6 @@
-#ifndef PROPERTIES_H
-#define PROPERTIES_H
+/** Copyright 2014 Rian Shelley */
+#ifndef PROPERTIES_H_
+#define PROPERTIES_H_
 
 #include <QDialog>
 #include <QMap>
@@ -10,28 +11,27 @@ class Properties;
 
 class QTreeWidgetItem;
 
-class Properties : public QDialog
-{
-	Q_OBJECT
+class Properties : public QDialog {
+  Q_OBJECT
 
-public:
-	explicit Properties(QWidget *parent = 0);
-	~Properties();
+ public:
+  explicit Properties(QWidget *parent = 0);
+  ~Properties();
 
-	void DisplayProperties(QVariant p);
-	
-protected:
-	void CreateTree(QTreeWidgetItem *node, const QVariant& v);
-	QString GetSummary(const QString& key, const QVariant& v);
+  void DisplayProperties(QVariant p);
 
-	template <class IterableT>
-	void ParseIterable(QTreeWidgetItem* node, const IterableT& seq);
-	template <class IterableT>
-	void ParseList(QTreeWidgetItem* node, const IterableT& seq);
+ protected:
+  void CreateTree(QTreeWidgetItem *node, const QVariant& v);
+  QString GetSummary(const QString& key, const QVariant& v);
 
-private:
-	Ui::Properties *ui;
-	QMap<QString, QString> summary;
+  template <class IterableT>
+      void ParseIterable(QTreeWidgetItem* node, const IterableT& seq);
+  template <class IterableT>
+      void ParseList(QTreeWidgetItem* node, const IterableT& seq);
+
+ private:
+  Ui::Properties *ui;
+  QMap<QString, QString> summary;
 };
 
-#endif // PROPERTIES_H
+#endif  // PROPERTIES_H_

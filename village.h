@@ -1,15 +1,16 @@
-#ifndef VILLAGE_H
-#define VILLAGE_H
+/** Copyright 2014 Rian Shelley */
+#ifndef VILLAGE_H_
+#define VILLAGE_H_
 
-#include "generatedstructure.h"
+#include "./generatedstructure.h"
 
-class Village : public GeneratedStructure
-{
-public:
-	static QList<QSharedPointer<GeneratedStructure> > tryParse(Tag* tag, const QString &dimension);
+class Village : public GeneratedStructure {
+ public:
+  static QList<QSharedPointer<GeneratedStructure>>
+      tryParse(const Tag* tag, const QString &dimension);
 
-protected:
-	Village() {}
+ protected:
+  Village() {}
 };
 
-#endif // VILLAGE_H
+#endif  // VILLAGE_H_
