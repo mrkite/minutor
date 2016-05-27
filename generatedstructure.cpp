@@ -40,6 +40,8 @@ GeneratedStructure::tryParse(const Tag* data) {
                 // this will have to be maintained if new structures are added
                 if (structure->type() == "Structure.Fortress") {
                   structure->setDimension("nether");
+                } else if (structure->type() == "Structure.EndCity") {
+                  structure->setDimension("end");
                 } else {
                   structure->setDimension("overworld");
                 }
