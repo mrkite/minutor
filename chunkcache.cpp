@@ -19,7 +19,7 @@ uint qHash(const ChunkID &c) {
 }
 
 ChunkCache::ChunkCache() {
-  size_t chunks = 10000;  // 10% more than 1920x1200 blocks
+  int chunks = 10000;  // 10% more than 1920x1200 blocks
 #if defined(__unix__) || defined(__unix) || defined(unix)
   auto pages = sysconf(_SC_AVPHYS_PAGES);
   auto page_size = sysconf(_SC_PAGE_SIZE);
@@ -29,7 +29,7 @@ ChunkCache::ChunkCache() {
   MEMORYSTATUSEX status;
   status.dwLength = sizeof(status);
   GlobalMemoryStatusEx(&status);
-  DWORDLONG available = qmin(status.ullAvailPhys, status.ullAvailVirtual);
+  DWORDLONG available = qMin(status.ullAvailPhys, status.ullAvailVirtual);
   chunks = available / (sizeof(Chunk) + 16 * sizeof(ChunkSection));
 #endif
   cache.setMaxCost(chunks);

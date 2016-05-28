@@ -31,7 +31,7 @@
 		
 		<DirectoryRef Id="INSTALLDIR">
 			<Component Id="minutor.exe" Guid="670f74ff-eb96-4003-828a-2f24e5a42539">
-				<File Id="minutor.exe" Source="Release\Minutor.exe" KeyPath="yes" Checksum="yes">
+				<File Id="minutor.exe" Source="minutor.exe" KeyPath="yes" Checksum="yes">
 					<Shortcut Id="ApplicationShortcut" Directory="ApplicationProgramsFolder" Advertise="yes" Name="Minutor"
 					WorkingDirectory="INSTALLDIR"  Icon="icon.exe">
 						<Icon Id="icon.exe" SourceFile="icon.ico" />
