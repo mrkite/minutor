@@ -116,11 +116,24 @@ void Minutor::reload() {
 }
 
 void Minutor::save() {
+  // get filname to save to
   QFileDialog fileDialog(this);
   fileDialog.setDefaultSuffix("png");
   QString filename = fileDialog.getSaveFileName(this, tr("Save world as PNG"),
-                                                QString(), "*.png");
+                                                QString(), "PNG Images (*.png)");
 
+  // check if filename was given
+  if (filename.isEmpty())
+    return;
+
+  // add .png suffix if not present
+  QFile file(filename);
+  QFileInfo fileinfo(file);
+  if (fileinfo.suffix().isEmpty()) {
+    filename.append(".png");
+  }
+
+  // save world to PNG image
   savePNG(filename, false, false, false);
 }
 
