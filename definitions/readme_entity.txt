@@ -22,13 +22,13 @@ color is calculated based on the hashed category name.
 The Entities belonging to that category are listed in the "entity" tag:
 
 Each Entity definition follows this scheme:
-  { "id": "ArmorStand", "catcolor": "Violet", "color": "Aquamarine" }
+  { "id": "ArmorStand", "catcolor": "Violet", "color": "Aquamarine", "name": "Individual Name" }
 
 The SaveGameID used by Minecraft has to be used as "id" and is used to identify
 the Entity. The base color can be given by "catcolor" but will be inherited from
 the category if omitted. The highlight color (unique for each entity) is given
 by "color". If omitted a pseudo random color is calculated based on the hashed id.
-
+The "name" is automatically copied from the "id", but can also be set individually.
 
 
 All colors can be defined in a syntax readable by Qt::QColor::setNamedColor( QString )
