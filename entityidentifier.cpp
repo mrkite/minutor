@@ -8,8 +8,9 @@ EntityInfo::EntityInfo(QString name, QString category, QColor brushColor,
                        QColor penColor) : name(name), category(category),
   brushColor(brushColor), penColor(penColor) {}
 
-static EntityInfo entityDummy("Name unknown", "Entity.Unknown", Qt::black,
-                              Qt::black);
+// dummy for entities not found in *_entity.json
+static EntityInfo entityDummy("Name unknown", "Others",  // Name Category
+                              Qt::black, Qt::black);     // Black circle with Black border
 
 EntityIdentifier::EntityIdentifier() {}
 EntityIdentifier::~EntityIdentifier() {}

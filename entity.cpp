@@ -28,7 +28,10 @@ QSharedPointer<OverlayItem> Entity::TryParse(const Tag* tag) {
         QString itemtype = itemId->toString();
         entity->setDisplay(itemtype.mid(itemtype.indexOf(':') + 1));
       } else {  // or just use the Entity's name
-        entity->setDisplay(info.name);
+        if (info.name == "Name unknown")
+          entity->setDisplay(type);       // use Minecraft internal name if not found
+        else
+          entity->setDisplay(info.name);  // use name as defined in JSON
       }
       entity->setType("Entity." + info.category);
       entity->setColor(info.brushColor);
