@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "entity",
-  "version": "1.9.15w31",
+  "version": "1.10.16w20a",
   "data": [
     {
       "category": "Hostile",
@@ -45,6 +45,7 @@
         },
         {
           "id": "PigZombie",
+          "name": "Zombie Pigman",
           "color": "#008000"
         },
         {
@@ -73,6 +74,7 @@
         },
         {
           "id": "WitherBoss",
+          "name": "Wither",
           "color": "#808080"
         },
         {
@@ -99,6 +101,7 @@
         },
         {
           "id": "EntityHorse",
+          "name": "Horse",
           "color": "#000080"
         },
         {
@@ -112,6 +115,10 @@
         {
           "id": "Ozelot",
           "color": "#808000"
+        },
+        {
+          "id": "PolarBear",
+          "color": "#404040"
         },
         {
           "id": "Rabbit",
@@ -139,6 +146,7 @@
         },
         {
           "id": "VillagerGolem",
+          "name": "Iron Golem",
           "color": "#00ffff"
         }
       ]
