@@ -8,7 +8,7 @@ GeneratedStructure::tryParse(const Tag* data) {
   QList<QSharedPointer<GeneratedStructure>> ret;
   if (data && data != &NBT::Null) {
     auto features = data->at("Features");
-    if (features && data != &NBT::Null) {
+    if (features && features != &NBT::Null) {
       // convert the features to a qvariant here
       QVariant maybeFeatureMap = features->getData();
       if ((QMetaType::Type)maybeFeatureMap.type() == QMetaType::QVariantMap) {
