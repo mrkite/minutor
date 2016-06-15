@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "block",
-  "version": "1.9.15w34a",
+  "version": "1.10.16w20a",
   "data": [
     {
       "id": 0,
@@ -2490,6 +2490,26 @@
       "alpha": 0.62,
       "transparent": true,
       "rendercube": true
+    },
+    {
+      "id": 213,
+      "name": "Magma Block",
+      "color": "87421a"
+    },
+    {
+      "id": 214,
+      "name": "Nether Wart Block",
+      "color": "750607"
+    },
+    {
+      "id": 215,
+      "name": "Red Nether Brick",
+      "color": "440407"
+    },
+    {
+      "id": 216,
+      "name": "Bone Block",
+      "color": "cec9b2"
     },
     {
       "id": 255,

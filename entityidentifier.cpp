@@ -115,9 +115,14 @@ void EntityIdentifier::parseEntityDefinition(JSONObject *entity,
     color.setHsv(hue % 360, 255, 255);
   }
 
+  QString name = id;
+  if (entity->has("name")) {
+    name = entity->at("name")->asString();
+  }
+
   // enter entity into manager
   TentityMap& map = getMapForPackID(packID);
-  map.insert(id, EntityInfo(id, category, catcolor, color));
+  map.insert(id, EntityInfo(name, category, catcolor, color));
 }
 
 bool EntityIdentifier::addCategory(QPair<QString, QColor> cat) {
