@@ -72,6 +72,10 @@ int main(int argc, char *argv[]) {
       minutor.setViewDepthshading(true);
       continue;
     }
+    if (args[i] == "-B" || args[i] == "--biomecolors") {
+      minutor.setViewBiomeColors(true);
+      continue;
+    }
   }
 
   minutor.show();

@@ -20,7 +20,8 @@ class MapView : public QWidget {
     flgMobSpawn     = 2,
     flgCaveMode     = 4,
     flgDepthShading = 8,
-    flgShowEntities = 16
+    flgShowEntities = 16,
+    flgBiomeColors  = 64
   };
 
   explicit MapView(QWidget *parent = 0);

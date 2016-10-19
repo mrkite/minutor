@@ -213,6 +213,11 @@ void Minutor::setViewDepthshading(bool value) {
   toggleFlags();
 }
 
+void Minutor::setViewBiomeColors(bool value) {
+  biomeColorsAct->setChecked(value);
+  toggleFlags();
+}
+
 void Minutor::setDepth(int value) {
   depth->setValue(value);
 }
@@ -224,6 +229,7 @@ void Minutor::toggleFlags() {
   if (mobSpawnAct->isChecked())     flags |= MapView::flgMobSpawn;
   if (caveModeAct->isChecked())     flags |= MapView::flgCaveMode;
   if (depthShadingAct->isChecked()) flags |= MapView::flgDepthShading;
+  if (biomeColorsAct->isChecked())  flags |= MapView::flgBiomeColors;
   mapview->setFlags(flags);
 
   QSet<QString> overlayTypes;
@@ -330,6 +336,13 @@ void Minutor::createActions() {
   mobSpawnAct->setStatusTip(tr("Toggle show mob spawning on/off"));
   connect(mobSpawnAct, SIGNAL(triggered()),
           this,        SLOT(toggleFlags()));
+
+  biomeColorsAct = new QAction(tr("&Biome Colors"), this);
+  biomeColorsAct->setCheckable(true);
+  biomeColorsAct->setShortcut(tr("Ctrl+B"));
+  biomeColorsAct->setStatusTip(tr("Toggle draw biome colors or block colors"));
+  connect(biomeColorsAct, SIGNAL(triggered()),
+          this,           SLOT(toggleFlags()));
 
   caveModeAct = new QAction(tr("&Cave Mode"), this);
   caveModeAct->setCheckable(true);
@@ -455,6 +468,7 @@ void Minutor::createMenus() {
   viewMenu->addAction(mobSpawnAct);
   viewMenu->addAction(caveModeAct);
   viewMenu->addAction(depthShadingAct);
+  viewMenu->addAction(biomeColorsAct);
   // [View->Overlay]
   structureOverlayMenu = viewMenu->addMenu(tr("&Structure Overlay"));
   entityOverlayMenu    = viewMenu->addMenu(tr("&Entity Overlay"));
