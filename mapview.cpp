@@ -487,14 +487,12 @@ void MapView::renderChunk(Chunk *chunk) {
           }
         }
         if (flags & flgBiomeColors) {
-          
-          auto &bi = biomes->getBiome(chunk->biomes[(x & 0xf) + (z & 0xf) * 16]);
-          color = bi.colors[15];
+          auto &b = biomes->getBiome(chunk->biomes[(x & 0xf) + (z & 0xf) * 16]);
+          color = b.colors[light];
           colr = color >> 16;
           colg = (color >> 8) & 0xff;
           colb = color & 0xff;
           alpha = 0;
-          
         }
         if (alpha == 0.0) {
           alpha = block.alpha;
