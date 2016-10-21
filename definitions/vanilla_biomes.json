@@ -5,252 +5,313 @@
   "data": [
     {
       "id": 0,
-      "name": "Ocean"
+      "name": "Ocean",
+      "color": "000070"
     },
     {
       "id": 1,
-      "name": "Plains"
+      "name": "Plains",
+      "color": "8db360"
     },
     {
       "id": 2,
-      "name": "Desert"
+      "name": "Desert",
+      "color": "fa9418"
     },
     {
       "id": 3,
-      "name": "Extreme Hills"
+      "name": "Extreme Hills",
+      "color": "606060"
     },
     {
       "id": 4,
-      "name": "Forest"
+      "name": "Forest",
+      "color": "056621"
     },
     {
       "id": 5,
-      "name": "Taiga"
+      "name": "Taiga",
+      "color": "0b6659"
     },
     {
       "id": 6,
-      "name": "Swampland"
+      "name": "Swampland",
+      "color": "07f9b2"
     },
     {
       "id": 7,
-      "name": "River"
+      "name": "River",
+      "color": "0000ff"
     },
     {
       "id": 8,
-      "name": "Hell"
+      "name": "Hell",
+      "color": "ff0000"
     },
     {
       "id": 9,
-      "name": "Sky"
+      "name": "Sky",
+      "color": "8080ff"
     },
     {
       "id": 10,
-      "name": "Frozen Ocean"
+      "name": "Frozen Ocean",
+      "color": "9090a0"
     },
     {
       "id": 11,
-      "name": "Frozen River"
+      "name": "Frozen River",
+      "color": "a0a0ff"
     },
     {
       "id": 12,
-      "name": "Ice Plains"
+      "name": "Ice Plains",
+      "color": "ffffff"
     },
     {
       "id": 13,
-      "name": "Ice Mountains"
+      "name": "Ice Mountains",
+      "color": "a0a0a0"
     },
     {
       "id": 14,
-      "name": "Mushroom Island"
+      "name": "Mushroom Island",
+      "color": "ff00ff"
     },
     {
       "id": 15,
-      "name": "Mushroom Island Shore"
+      "name": "Mushroom Island Shore",
+      "color": "a000ff"
     },
     {
       "id": 16,
-      "name": "Beach"
+      "name": "Beach",
+      "color": "fade55"
     },
     {
       "id": 17,
-      "name": "Desert Hills"
+      "name": "Desert Hills",
+      "color": "d25f12"
     },
     {
       "id": 18,
-      "name": "Forest Hills"
+      "name": "Forest Hills",
+      "color": "22551c"
     },
     {
       "id": 19,
-      "name": "Taiga Hills"
+      "name": "Taiga Hills",
+      "color": "163933"
     },
     {
       "id": 20,
-      "name": "Extreme Hills Edge"
+      "name": "Extreme Hills Edge",
+      "color": "72789a"
     },
     {
       "id": 21,
-      "name": "Jungle"
+      "name": "Jungle",
+      "color": "537b09"
     },
     {
       "id": 22,
-      "name": "Jungle Hills"
+      "name": "Jungle Hills",
+      "color": "2c4205"
     },
     {
       "id": 23,
-      "name": "Jungle Edge"
+      "name": "Jungle Edge",
+      "color": "628b17"
     },
     {
       "id": 24,
-      "name": "Deep Ocean"
+      "name": "Deep Ocean",
+      "color": "000030"
     },
     {
       "id": 25,
-      "name": "Stone Beach"
+      "name": "Stone Beach",
+      "color": "a2a284"
     },
     {
       "id": 26,
-      "name": "Cold Beach"
+      "name": "Cold Beach",
+      "color": "faf0c0"
     },
     {
       "id": 27,
-      "name": "Birch Forest"
+      "name": "Birch Forest",
+      "color": "307444"
     },
     {
       "id": 28,
-      "name": "Birch Forest Hills"
+      "name": "Birch Forest Hills",
+      "color": "1f5f32"
     },
     {
       "id": 29,
-      "name": "Roofed Forest"
+      "name": "Roofed Forest",
+      "color": "40511a"
     },
     {
       "id": 30,
-      "name": "Cold Taiga"
+      "name": "Cold Taiga",
+      "color": "31554a"
     },
     {
       "id": 31,
-      "name": "Cold Taiga Hills"
+      "name": "Cold Taiga Hills",
+      "color": "243f36"
     },
     {
       "id": 32,
-      "name": "Mega Taiga"
+      "name": "Mega Taiga",
+      "color": "596651"
     },
     {
       "id": 33,
-      "name": "Mega Taiga Hills"
+      "name": "Mega Taiga Hills",
+      "color": "454f3e"
     },
     {
       "id": 34,
-      "name": "Extreme Hills+"
+      "name": "Extreme Hills+",
+      "color": "507050"
     },
     {
       "id": 35,
-      "name": "Savanna"
+      "name": "Savanna",
+      "color": "bdb25f"
     },
     {
       "id": 36,
-      "name": "Savanna Plateau"
+      "name": "Savanna Plateau",
+      "color": "a79d64"
     },
     {
       "id": 37,
-      "name": "Mesa"
+      "name": "Mesa",
+      "color": "d94515"
     },
     {
       "id": 38,
-      "name": "Mesa Plateau F"
+      "name": "Mesa Plateau F",
+      "color": "b09765"
     },
     {
       "id": 39,
-      "name": "Mesa Plateau"
+      "name": "Mesa Plateau",
+      "color": "ca8c65"
     },
     {
       "id": 127,
-      "name": "The Void"
+      "name": "The Void",
+      "color": "282898"
     },
     {
       "id": 129,
-      "name": "Sunflower Plains"
+      "name": "Sunflower Plains",
+      "color": "b5db88"
     },
     {
       "id": 130,
-      "name": "Desert M"
+      "name": "Desert M",
+      "color": "ffbc40"
     },
     {
       "id": 131,
-      "name": "Extreme Hills M"
+      "name": "Extreme Hills M",
+      "color": "888888"
     },
     {
       "id": 132,
-      "name": "Flower Forest"
+      "name": "Flower Forest",
+      "color": "2d8e49"
     },
     {
       "id": 133,
-      "name": "Taiga M"
+      "name": "Taiga M",
+      "color": "338e81"
     },
     {
       "id": 134,
-      "name": "Swampland M"
+      "name": "Swampland M",
+      "color": "2fffda"
     },
     {
       "id": 140,
-      "name": "Ice Plains Spikes"
+      "name": "Ice Plains Spikes",
+      "color": "b4dcdc"
     },
     {
       "id": 149,
-      "name": "Jungle M"
+      "name": "Jungle M",
+      "color": "7ba331"
     },
     {
       "id": 151,
-      "name": "Jungle Edge M"
+      "name": "Jungle Edge M",
+      "color": "8ab33f"
     },
     {
       "id": 155,
-      "name": "Birch Forest M"
+      "name": "Birch Forest M",
+      "color": "589c6c"
     },
     {
       "id": 156,
-      "name": "Birch Forest Hills M"
+      "name": "Birch Forest Hills M",
+      "color": "47875a"
     },
     {
       "id": 157,
-      "name": "Roofed Forest M"
+      "name": "Roofed Forest M",
+      "color": "687942"
     },
     {
       "id": 158,
-      "name": "Cold Taiga M"
+      "name": "Cold Taiga M",
+      "color": "597d72"
     },
     {
       "id": 160,
-      "name": "Mega Spruce Taiga"
+      "name": "Mega Spruce Taiga",
+      "color": "818e79"
     },
     {
       "id": 161,
-      "name": "Mega Spruce Taiga Hills"
+      "name": "Mega Spruce Taiga Hills",
+      "color": "6d7766"
     },
     {
       "id": 162,
-      "name": "Extreme Hills+ M"
+      "name": "Extreme Hills+ M",
+      "color": "789878"
     },
     {
       "id": 163,
-      "name": "Savanna M"
+      "name": "Savanna M",
+      "color": "e5da87"
     },
     {
       "id": 164,
-      "name": "Savanna Plateau M"
+      "name": "Savanna Plateau M",
+      "color": "cfc58c"
     },
     {
       "id": 165,
-      "name": "Mesa (Bryce)"
+      "name": "Mesa (Bryce)",
+      "color": "ff6d3d"
     },
     {
       "id": 166,
-      "name": "Mesa Plateau F M"
+      "name": "Mesa Plateau F M",
+      "color": "d8bf8d"
     },
     {
       "id": 167,
-      "name": "Mesa Plateau M"
+      "name": "Mesa Plateau M",
+      "color": "f2b48d"
     }
-  ],
-  "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_biomes.json"
+  ]
 }

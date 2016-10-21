@@ -12,6 +12,8 @@ class BiomeInfo {
   BiomeInfo() {}
   QString name;
   bool enabled;
+  quint32 colors[16];
+  double alpha;
 };
 
 class BiomeIdentifier {

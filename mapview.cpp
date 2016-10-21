@@ -486,6 +486,14 @@ void MapView::renderChunk(Chunk *chunk) {
             colb = (colb + 256) / 2;
           }
         }
+        if (flags & flgBiomeColors) {
+          auto &b = biomes->getBiome(chunk->biomes[(x & 0xf) + (z & 0xf) * 16]);
+          color = b.colors[light];
+          colr = color >> 16;
+          colg = (color >> 8) & 0xff;
+          colb = color & 0xff;
+          alpha = 0;
+        }
         if (alpha == 0.0) {
           alpha = block.alpha;
           r = colr;
@@ -499,7 +507,7 @@ void MapView::renderChunk(Chunk *chunk) {
           alpha+=block.alpha * (1.0 - alpha);
         }
 
-        // finish deepth (Y) scanning when color is saturated enough
+        // finish depth (Y) scanning when color is saturated enough
         if (block.alpha == 1.0 || alpha > 0.9)
           break;
       }
