@@ -147,6 +147,10 @@
           "color": "#000080"
         },
         {
+          "id": "llama",
+          "color": "Khaki"
+        },
+        {
           "id": "Pig",
           "color": "#ff00ff"
         },
@@ -188,6 +192,20 @@
         },
         {
           "id": "Villager",
+          "color": "#800080"
+        },
+        {
+          "id": "vindication_illager",
+          "name": "Vindicator",
+          "color": "#800080"
+        },
+        {
+          "id": "evocation_illager",
+          "name": "Evoker",
+          "color": "#800080"
+        },
+        {
+          "id": "vex",
           "color": "#800080"
         },
         {

@@ -2512,6 +2512,91 @@
       "color": "cec9b2"
     },
     {
+      "id": 218,
+      "name": "Observer",
+      "color": "535353"
+    },
+    {
+      "id": 219,
+      "name": "White Shulker Box",
+      "color": "dedbdb"
+    },
+    {
+      "id": 220,
+      "name": "Orange Shulker Box",
+      "color": "ce7438"
+    },
+    {
+      "id": 221,
+      "name": "Magenta Shulker Box",
+      "color": "ba64c2"
+    },
+    {
+      "id": 222,
+      "name": "Light Blue Shulker Box",
+      "color": "658ecb"
+    },
+    {
+      "id": 223,
+      "name": "Yellow Shulker Box",
+      "color": "c1b73d"
+    },
+    {
+      "id": 224,
+      "name": "Lime Shulker Box",
+      "color": "47b73b"
+    },
+    {
+      "id": 225,
+      "name": "Pink Shulker Box",
+      "color": "d08ca1"
+    },
+    {
+      "id": 226,
+      "name": "Gray Shulker Box",
+      "color": "535151"
+    },
+    {
+      "id": 227,
+      "name": "Light Gray Shulker Box",
+      "color": "a4a2a2"
+    },
+    {
+      "id": 228,
+      "name": "Cyan Shulker Box",
+      "color": "4488a4"
+    },
+    {
+      "id": 229,
+      "name": "Purple Shulker Box",
+      "color": "976797"
+    },
+    {
+      "id": 230,
+      "name": "Blue Shulker Box",
+      "color": "6571c9"
+    },
+    {
+      "id": 231,
+      "name": "Brown Shulker Box",
+      "color": "8d705d"
+    },
+    {
+      "id": 232,
+      "name": "Green Shulker Box",
+      "color": "6f8254"
+    },
+    {
+      "id": 233,
+      "name": "Red Shulker Box",
+      "color": "c25855"
+    },
+    {
+      "id": 234,
+      "name": "Black Shulker Box",
+      "color": "383737"
+    },
+    {
       "id": 255,
       "name": "Structure Block",
       "color": "000000"
