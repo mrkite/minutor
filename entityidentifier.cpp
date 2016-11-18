@@ -95,9 +95,9 @@ void EntityIdentifier::parseEntityDefinition(JSONObject *entity,
                                              QColor catcolor, int packID) {
   QString id;
   if (entity->has("id"))
-    id = entity->at("id")->asString();
+    id = entity->at("id")->asString().toLower();
   else
-    id = "Unknown";
+    id = "unknown";
 
   if (entity->has("catcolor")) {
     QString colorname = entity->at("catcolor")->asString();
@@ -115,7 +115,17 @@ void EntityIdentifier::parseEntityDefinition(JSONObject *entity,
     color.setHsv(hue % 360, 255, 255);
   }
 
-  QString name = id;
+  // try to build name automatically
+  QStringList tokens = id.toLower().replace('_',' ').split(" ");
+  if (entity->has("id1")) {
+    QString id1 = entity->at("id1")->asString().toLower();
+    tokens = id1.toLower().replace('_',' ').split(" ");
+  }
+  for (QList<QString>::iterator tokItr = tokens.begin(); tokItr != tokens.end(); ++tokItr) {
+    (*tokItr) = (*tokItr).at(0).toUpper() + (*tokItr).mid(1);
+  }
+  QString name = tokens.join(" ");
+  // or use given name
   if (entity->has("name")) {
     name = entity->at("name")->asString();
   }
@@ -123,6 +133,12 @@ void EntityIdentifier::parseEntityDefinition(JSONObject *entity,
   // enter entity into manager
   TentityMap& map = getMapForPackID(packID);
   map.insert(id, EntityInfo(name, category, catcolor, color));
+
+  // add duplicate, when legacy and new 1.11+ id definitions are available
+  if (entity->has("id1")) {
+    QString id1 = entity->at("id1")->asString().toLower();
+    map.insert(id1, EntityInfo(name, category, catcolor, color));
+  }
 }
 
 bool EntityIdentifier::addCategory(QPair<QString, QColor> cat) {
@@ -151,6 +167,8 @@ QColor EntityIdentifier::getCategoryColor(QString name) const {
 }
 
 EntityInfo const &EntityIdentifier::getEntityInfo(QString id) const {
+  // strip "minecraft:" if exists and convert lower case
+  id = id.replace("minecraft:","").toLower();
   for (auto it = packs.constBegin(); it != packs.constEnd(); ++it) {
     if (it->enabled) {
       TentityMap::const_iterator info = it->map.find(id);

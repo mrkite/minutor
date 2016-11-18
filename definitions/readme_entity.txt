@@ -30,6 +30,10 @@ the category if omitted. The highlight color (unique for each entity) is given
 by "color". If omitted a pseudo random color is calculated based on the hashed id.
 The "name" is automatically copied from the "id", but can also be set individually.
 
+As of version 1.11 the "id" was completely reworked by Mojang. Some code has been
+implemented to detect lower case changes automatically. But in case there is a
+renamed "id" it has to be given as "id1" to maintain backwards compatibility.
+
 
 All colors can be defined in a syntax readable by Qt::QColor::setNamedColor( QString )
  http://qt-project.org/doc/qt-4.8/qcolor.html#setNamedColor
