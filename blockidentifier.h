@@ -6,6 +6,7 @@
 #include <QMap>
 #include <QHash>
 #include <QList>
+#include <QColor>
 
 class JSONArray;
 class JSONObject;
@@ -47,7 +48,7 @@ class BlockInfo {
   bool rendernormal;
   bool providepower;
   bool spawninside;
-  quint32 colors[16];
+  QColor colors[16];
 
  private:
   QString name;
