@@ -238,15 +238,20 @@ void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent,
   }
 
   // pre multiply alphas
-//    rd *= block->alpha;
-//    gn *= block->alpha;
-//    bl *= block->alpha;
+//rd *= block->alpha;
+//gn *= block->alpha;
+//bl *= block->alpha;
+  // ??? why should do we do this ???
+  // a transparent block is "blended" correctly in mapview.cpp
+  // if we change anything to the color here, we just change it...
+  // for this special case: we make all transparent blocks darker
 
   // pre-calculate light spectrum
   for (int i = 0; i < 16; i++) {
     block->colors[i].setHsv( blockcolor.hue(),
                              blockcolor.saturation(),
                              blockcolor.value()*(i/15.0),
+//                           blockcolor.value()*(i/15.0)*block->alpha, // with pre-multiply alpha
                              255*block->alpha );
   }
 
