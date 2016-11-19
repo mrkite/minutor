@@ -219,6 +219,13 @@ void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent,
   QColor blockcolor;
   if (b->has("color")) {
     QString colorname = b->at("color")->asString();
+    if (colorname.length() == 6) {
+      // check if this is an old color definition with missing '#'
+      bool ok;
+      colorname.toInt(&ok,16);
+      if (ok)
+        colorname.push_front('#');
+    }
     blockcolor.setNamedColor(colorname);
     assert(blockcolor.isValid());
   } else if (parent != NULL) {
