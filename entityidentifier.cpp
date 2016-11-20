@@ -158,7 +158,7 @@ EntityIdentifier::TcatList const &EntityIdentifier::getCategoryList() const {
   return categories;
 }
 
-QColor EntityIdentifier::getCategoryColor(QString name) const {
+QColor EntityIdentifier::getCategoryColor(const QString name) const {
   for (auto it = categories.constBegin(); it != categories.constEnd(); ++it) {
     if (it->first == name)
       return it->second;
@@ -166,12 +166,12 @@ QColor EntityIdentifier::getCategoryColor(QString name) const {
   return Qt::black;  // dummy
 }
 
-EntityInfo const &EntityIdentifier::getEntityInfo(QString id) const {
+EntityInfo const &EntityIdentifier::getEntityInfo(const QString id) const {
   // strip "minecraft:" if exists and convert lower case
-  id = id.replace("minecraft:","").toLower();
+  QString id0 = id.toLower().remove("minecraft:");
   for (auto it = packs.constBegin(); it != packs.constEnd(); ++it) {
     if (it->enabled) {
-      TentityMap::const_iterator info = it->map.find(id);
+      TentityMap::const_iterator info = it->map.find(id0);
       if (info != it->map.end()) {  // found it
         return info.value();
       }
@@ -180,10 +180,10 @@ EntityInfo const &EntityIdentifier::getEntityInfo(QString id) const {
   return entityDummy;
 }
 
-QColor EntityIdentifier::getBrushColor(QString id) const {
+QColor EntityIdentifier::getBrushColor(const QString id) const {
   return getEntityInfo(id).brushColor;
 }
 
-QColor EntityIdentifier::getPenColor(QString id) const {
+QColor EntityIdentifier::getPenColor(const QString id) const {
   return getEntityInfo(id).penColor;
 }

@@ -16,13 +16,13 @@ QSharedPointer<OverlayItem> Entity::TryParse(const Tag* tag) {
     entity->pos.z = pos->at(2)->toDouble();
     auto id = tag->at("id");
     if (id && id != &NBT::Null) {
-      QString type = id->toString();
+      QString type = id->toString().toLower().remove("minecraft:");
       EntityInfo const & info = ei.getEntityInfo(type);
 
       QMap<QString, QVariant> props = tag->getData().toMap();
 
       // get something more descriptive if its an item
-      if (type == "Item") {
+      if (type == "item") {
         auto itemId = tag->at("Item")->at("id");
 
         QString itemtype = itemId->toString();

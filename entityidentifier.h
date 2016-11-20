@@ -34,12 +34,12 @@ class EntityIdentifier {
   typedef QList<QPair<QString, QColor>> TcatList;
   int getNumCategories() const;
   TcatList const &getCategoryList() const;
-  QColor getCategoryColor(QString name) const;
+  QColor getCategoryColor(const QString name) const;
 
   // interface to single EntityInfo objects
-  EntityInfo const &getEntityInfo(QString id) const;
-  QColor getBrushColor(QString id) const;
-  QColor getPenColor(QString id) const;
+  EntityInfo const &getEntityInfo(const QString id) const;
+  QColor getBrushColor(const QString id) const;
+  QColor getPenColor(const QString id) const;
 
  private:
   // singleton: prevent access to constructor and copyconstructor
