@@ -167,11 +167,10 @@ QColor EntityIdentifier::getCategoryColor(const QString name) const {
 }
 
 EntityInfo const &EntityIdentifier::getEntityInfo(const QString id) const {
-  // strip "minecraft:" if exists and convert lower case
-  QString id0 = id.toLower().remove("minecraft:");
   for (auto it = packs.constBegin(); it != packs.constEnd(); ++it) {
     if (it->enabled) {
-      TentityMap::const_iterator info = it->map.find(id0);
+      // convert ID to lower case and strip "minecraft:" if exists
+      TentityMap::const_iterator info = it->map.find(id.toLower().remove("minecraft:"));
       if (info != it->map.end()) {  // found it
         return info.value();
       }
