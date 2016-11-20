@@ -248,9 +248,15 @@ void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent,
 
   // pre-calculate light spectrum
   for (int i = 0; i < 16; i++) {
+
+    // calculate light attenuation similar to Minecraft
+    // except base 90% here, were Minecraft is using 80% per level
+    double light_factor = pow(0.90,15-i);
+
     block->colors[i].setHsv( blockcolor.hue(),
                              blockcolor.saturation(),
-                             blockcolor.value()*(i/15.0),
+                             blockcolor.value()*light_factor,
+//                           blockcolor.value()*(i/15.0),
 //                           blockcolor.value()*(i/15.0)*block->alpha, // with pre-multiply alpha
                              255*block->alpha );
   }
