@@ -88,10 +88,13 @@ int BiomeIdentifier::addDefinitions(JSONArray *defs, int pack) {
 
     // pre-calculate light spectrum
     for (int i = 0; i < 16; i++) {
-      biome->colors[i].setHsv( biomecolor.hue(),
-                               biomecolor.saturation(),
-                               biomecolor.value()*(i/16.0),
-                               255*biome->alpha );
+      // calculate light attenuation similar to Minecraft
+      // except base 90% here, were Minecraft is using 80% per level
+      double light_factor = pow(0.90,15-i);
+      biome->colors[i].setRgb(light_factor*biomecolor.red(),
+                              light_factor*biomecolor.green(),
+                              light_factor*biomecolor.blue(),
+                              255*biome->alpha );
     }
 
     biomes[id].append(biome);

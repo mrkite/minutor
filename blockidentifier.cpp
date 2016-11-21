@@ -237,28 +237,15 @@ void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent,
     blockcolor.setHsv(hue % 360, 255, 255);
   }
 
-  // pre multiply alphas
-//rd *= block->alpha;
-//gn *= block->alpha;
-//bl *= block->alpha;
-  // ??? why should do we do this ???
-  // a transparent block is "blended" correctly in mapview.cpp
-  // if we change anything to the color here, we just change it...
-  // for this special case: we make all transparent blocks darker
-
   // pre-calculate light spectrum
   for (int i = 0; i < 16; i++) {
-
     // calculate light attenuation similar to Minecraft
     // except base 90% here, were Minecraft is using 80% per level
     double light_factor = pow(0.90,15-i);
-
-    block->colors[i].setHsv( blockcolor.hue(),
-                             blockcolor.saturation(),
-                             blockcolor.value()*light_factor,
-//                           blockcolor.value()*(i/15.0),
-//                           blockcolor.value()*(i/15.0)*block->alpha, // with pre-multiply alpha
-                             255*block->alpha );
+    block->colors[i].setRgb(light_factor*blockcolor.red(),
+                            light_factor*blockcolor.green(),
+                            light_factor*blockcolor.blue(),
+                            255*block->alpha );
   }
 
   if (b->has("mask"))
