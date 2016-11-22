@@ -421,10 +421,9 @@ void MapView::renderChunk(Chunk *chunk) {
         if (light > 15) light = 15;
 
         // define the color
-        quint32 color = block.colors[light];
-        quint32 colr = color >> 16;
-        quint32 colg = (color >> 8) & 0xff;
-        quint32 colb = color & 0xff;
+        quint32 colr = block.colors[light].red();
+        quint32 colg = block.colors[light].green();
+        quint32 colb = block.colors[light].blue();
         if (flags & flgDepthShading) {
           // Use a table to define depth-relative shade:
           static const quint32 shadeTable[] = {
@@ -487,11 +486,10 @@ void MapView::renderChunk(Chunk *chunk) {
           }
         }
         if (flags & flgBiomeColors) {
-          auto &b = biomes->getBiome(chunk->biomes[(x & 0xf) + (z & 0xf) * 16]);
-          color = b.colors[light];
-          colr = color >> 16;
-          colg = (color >> 8) & 0xff;
-          colb = color & 0xff;
+          auto &bi = biomes->getBiome(chunk->biomes[(x & 0xf) + (z & 0xf) * 16]);
+          colr = bi.colors[light].red();
+          colg = bi.colors[light].green();
+          colb = bi.colors[light].blue();
           alpha = 0;
         }
         if (alpha == 0.0) {

@@ -5,6 +5,7 @@
 #include <QHash>
 #include <QList>
 #include <QString>
+#include <QColor>
 class JSONArray;
 
 class BiomeInfo {
@@ -12,7 +13,7 @@ class BiomeInfo {
   BiomeInfo() {}
   QString name;
   bool enabled;
-  quint32 colors[16];
+  QColor colors[16];
   double alpha;
 };
 

@@ -1,6 +1,8 @@
 /** Copyright (c) 2013, Sean Kasun */
 
 #include <QDebug>
+#include <assert.h>
+
 #include "./blockidentifier.h"
 #include "./json.h"
 
@@ -207,53 +209,43 @@ void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent,
   else
     block->providepower = false;
 
-  if (b->has("color")) {
-    QString color = b->at("color")->asString();
-    quint32 col = 0;
-    for (int h = 0; h < color.length(); h++) {
-      ushort c = color.at(h).unicode();
-      col <<= 4;
-      if (c >= '0' && c <= '9')
-        col |= c - '0';
-      else if (c >= 'A' && c <= 'F')
-        col |= c - 'A' + 10;
-      else if (c >= 'a' && c <= 'f')
-        col |= c - 'a' + 10;
-    }
-    int rd = col >> 16;
-    int gn = (col >> 8) & 0xff;
-    int bl = col & 0xff;
-
-    if (b->has("alpha"))
-      block->alpha = b->at("alpha")->asNumber();
-    else if (parent != NULL)
-      block->alpha = parent->alpha;
-    else
-      block->alpha = 1.0;
-
-    // pre multiply alphas
-    rd *= block->alpha;
-    gn *= block->alpha;
-    bl *= block->alpha;
-
-    // pre-calculate light spectrum
-    double y = 0.299 * rd + 0.587 * gn + 0.114 * bl;
-    double u = (bl - y) * 0.565;
-    double v = (rd - y) * 0.713;
-    double delta = y / 15;
-    for (int i = 0; i < 16; i++) {
-      y = i * delta;
-      rd = (unsigned int)clamp(y + 1.403 * v, 0, 255);
-      gn = (unsigned int)clamp(y - 0.344 * u - 0.714 * v, 0, 255);
-      bl = (unsigned int)clamp(y + 1.770 * u, 0, 255);
-      block->colors[i] = (rd << 16) | (gn << 8) | bl;
-    }
-  } else if (parent != NULL) {
-    for (int i = 0; i < 16; i++)
-      block->colors[i] = parent->colors[i];
+  if (b->has("alpha"))
+    block->alpha = b->at("alpha")->asNumber();
+  else if (parent != NULL)
     block->alpha = parent->alpha;
+  else
+    block->alpha = 1.0;
+
+  QColor blockcolor;
+  if (b->has("color")) {
+    QString colorname = b->at("color")->asString();
+    if (colorname.length() == 6) {
+      // check if this is an old color definition with missing '#'
+      bool ok;
+      colorname.toInt(&ok,16);
+      if (ok)
+        colorname.push_front('#');
+    }
+    blockcolor.setNamedColor(colorname);
+    assert(blockcolor.isValid());
+  } else if (parent != NULL) {
+    // copy brightest color from parent
+    blockcolor = parent->colors[15];
   } else {
-    block->alpha = 0.0;
+    // use hashed by name instead
+    quint32 hue = qHash(block->getName());
+    blockcolor.setHsv(hue % 360, 255, 255);
+  }
+
+  // pre-calculate light spectrum
+  for (int i = 0; i < 16; i++) {
+    // calculate light attenuation similar to Minecraft
+    // except base 90% here, were Minecraft is using 80% per level
+    double light_factor = pow(0.90,15-i);
+    block->colors[i].setRgb(light_factor*blockcolor.red(),
+                            light_factor*blockcolor.green(),
+                            light_factor*blockcolor.blue(),
+                            255*block->alpha );
   }
 
   if (b->has("mask"))
