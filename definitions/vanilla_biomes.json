@@ -313,5 +313,6 @@
       "name": "Mesa Plateau M",
       "color": "#f2b48d"
     }
-  ]
+  ],
+  "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_biomes.json"
 }
