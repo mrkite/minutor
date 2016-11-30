@@ -6,9 +6,21 @@
 #include "./json.h"
 
 static BiomeInfo unknownBiome;
+
+BiomeInfo::BiomeInfo()
+  : name("Unknown Biome")
+  , enabled(false)
+  , watercolor(255,255,255)
+  , alpha(1.0)
+  , temperature(0.5)
+  , rainfall(0.5)
+{}
+
+
 BiomeIdentifier::BiomeIdentifier() {
   unknownBiome.name = "Unknown";
 }
+
 BiomeIdentifier::~BiomeIdentifier() {
   for (int i = 0; i < packs.length(); i++) {
     for (int j = 0; j < packs[i].length(); j++)
@@ -57,15 +69,25 @@ int BiomeIdentifier::addDefinitions(JSONArray *defs, int pack) {
     biome->enabled = true;
     if (b->has("name"))
       biome->name = b->at("name")->asString();
-    else
-      biome->name = "Unknown";
 
     // check for "alpha" (0: transparent / 1: saturated)
     // probably never used
     if (b->has("alpha"))
       biome->alpha = b->at("alpha")->asNumber();
-    else
-      biome->alpha = 1.0;
+
+    // get temperature definition
+    if (b->has("temperature"))
+      biome->temperature = b->at("temperature")->asNumber();
+
+    // get rainfall definition
+    if (b->has("rainfall"))
+      biome->rainfall = b->at("rainfall")->asNumber();
+
+    // get watercolor definition
+    if (b->has("watercolor")) {
+      biome->watercolor.setNamedColor(b->at("watercolor")->asString());
+      assert(biome->watercolor.isValid());
+    }
 
     // get color definition
     QColor biomecolor;
