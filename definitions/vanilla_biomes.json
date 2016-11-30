@@ -11,32 +11,45 @@
     {
       "id": 1,
       "name": "Plains",
-      "color": "#8db360"
+      "color": "#8db360",
+      "temperature": 0.8,
+      "rainfall": 0.4
     },
     {
       "id": 2,
       "name": "Desert",
-      "color": "#fa9418"
+      "color": "#fa9418",
+      "temperature": 2.0,
+      "rainfall": 0.0
     },
     {
       "id": 3,
       "name": "Extreme Hills",
-      "color": "#606060"
+      "color": "#606060",
+      "temperature": 0.2,
+      "rainfall": 0.3
     },
     {
       "id": 4,
       "name": "Forest",
-      "color": "#056621"
+      "color": "#056621",
+      "temperature": 0.7,
+      "rainfall": 0.8
     },
     {
       "id": 5,
       "name": "Taiga",
-      "color": "#0b6659"
+      "color": "#0b6659",
+      "temperature": 0.25,
+      "rainfall": 0.8
     },
     {
       "id": 6,
       "name": "Swampland",
-      "color": "#07f9b2"
+      "color": "#07f9b2",
+      "watercolor" : 14745518,
+      "temperature": 0.8,
+      "rainfall": 0.9
     },
     {
       "id": 7,
@@ -46,7 +59,9 @@
     {
       "id": 8,
       "name": "Hell",
-      "color": "#ff0000"
+      "color": "#ff0000",
+      "temperature": 2.0,
+      "rainfall": 0.0
     },
     {
       "id": 9,
@@ -56,72 +71,100 @@
     {
       "id": 10,
       "name": "Frozen Ocean",
-      "color": "#9090a0"
+      "color": "#9090a0",
+      "temperature": 0.0,
+      "rainfall": 0.5
     },
     {
       "id": 11,
       "name": "Frozen River",
-      "color": "#a0a0ff"
+      "color": "#a0a0ff",
+      "temperature": 0.0,
+      "rainfall": 0.5
     },
     {
       "id": 12,
       "name": "Ice Plains",
-      "color": "#ffffff"
+      "color": "#ffffff",
+      "temperature": 0.0,
+      "rainfall": 0.5
     },
     {
       "id": 13,
       "name": "Ice Mountains",
-      "color": "#a0a0a0"
+      "color": "#a0a0a0",
+      "temperature": 0.0,
+      "rainfall": 0.5
     },
     {
       "id": 14,
       "name": "Mushroom Island",
-      "color": "#ff00ff"
+      "color": "#ff00ff",
+      "temperature": 0.9,
+      "rainfall": 1.0
     },
     {
       "id": 15,
       "name": "Mushroom Island Shore",
-      "color": "#a000ff"
+      "color": "#a000ff",
+      "temperature": 0.9,
+      "rainfall": 1.0
     },
     {
       "id": 16,
       "name": "Beach",
-      "color": "#fade55"
+      "color": "#fade55",
+      "temperature": 0.8,
+      "rainfall": 0.4
     },
     {
       "id": 17,
       "name": "Desert Hills",
-      "color": "#d25f12"
+      "color": "#d25f12",
+      "temperature": 2.0,
+      "rainfall": 0.0
     },
     {
       "id": 18,
       "name": "Forest Hills",
-      "color": "#22551c"
+      "color": "#22551c",
+      "temperature": 0.7,
+      "rainfall": 0.8
     },
     {
       "id": 19,
       "name": "Taiga Hills",
-      "color": "#163933"
+      "color": "#163933",
+      "temperature": 0.25,
+      "rainfall": 0.8
     },
     {
       "id": 20,
       "name": "Extreme Hills Edge",
-      "color": "#72789a"
+      "color": "#72789a",
+      "temperature": 0.2,
+      "rainfall": 0.3
     },
     {
       "id": 21,
       "name": "Jungle",
-      "color": "#537b09"
+      "color": "#537b09",
+      "temperature": 0.95,
+      "rainfall": 0.9
     },
     {
       "id": 22,
       "name": "Jungle Hills",
-      "color": "#2c4205"
+      "color": "#2c4205",
+      "temperature": 0.95,
+      "rainfall": 0.9
     },
     {
       "id": 23,
       "name": "Jungle Edge",
-      "color": "#628b17"
+      "color": "#628b17",
+      "temperature": 0.95,
+      "rainfall": 0.8
     },
     {
       "id": 24,
@@ -131,77 +174,107 @@
     {
       "id": 25,
       "name": "Stone Beach",
-      "color": "#a2a284"
+      "color": "#a2a284",
+      "temperature": 0.2,
+      "rainfall": 0.3
     },
     {
       "id": 26,
       "name": "Cold Beach",
-      "color": "#faf0c0"
+      "color": "#faf0c0",
+      "temperature": 0.05,
+      "rainfall": 0.3
     },
     {
       "id": 27,
       "name": "Birch Forest",
-      "color": "#307444"
+      "color": "#307444",
+      "temperature": 0.6,
+      "rainfall": 0.6
     },
     {
       "id": 28,
       "name": "Birch Forest Hills",
-      "color": "#1f5f32"
+      "color": "#1f5f32",
+      "temperature": 0.6,
+      "rainfall": 0.6
     },
     {
       "id": 29,
       "name": "Roofed Forest",
-      "color": "#40511a"
+      "color": "#40511a",
+      "temperature": 0.7,
+      "rainfall": 0.8
     },
     {
       "id": 30,
       "name": "Cold Taiga",
-      "color": "#31554a"
+      "color": "#31554a",
+      "temperature": -0.5,
+      "rainfall": 0.4
     },
     {
       "id": 31,
       "name": "Cold Taiga Hills",
-      "color": "#243f36"
+      "color": "#243f36",
+      "temperature": -0.5,
+      "rainfall": 0.4
     },
     {
       "id": 32,
       "name": "Mega Taiga",
-      "color": "#596651"
+      "color": "#596651",
+      "temperature": 0.3,
+      "rainfall": 0.8
     },
     {
       "id": 33,
       "name": "Mega Taiga Hills",
-      "color": "#454f3e"
+      "color": "#454f3e",
+      "temperature": 0.3,
+      "rainfall": 0.8
     },
     {
       "id": 34,
       "name": "Extreme Hills+",
-      "color": "#507050"
+      "color": "#507050",
+      "temperature": 0.2,
+      "rainfall": 0.3
     },
     {
       "id": 35,
       "name": "Savanna",
-      "color": "#bdb25f"
+      "color": "#bdb25f",
+      "temperature": 1.2,
+      "rainfall": 0.0
     },
     {
       "id": 36,
       "name": "Savanna Plateau",
-      "color": "#a79d64"
+      "color": "#a79d64",
+      "temperature": 1.0,
+      "rainfall": 0.0
     },
     {
       "id": 37,
       "name": "Mesa",
-      "color": "#d94515"
+      "color": "#d94515",
+      "temperature": 2.0,
+      "rainfall": 0.0
     },
     {
       "id": 38,
       "name": "Mesa Plateau F",
-      "color": "#b09765"
+      "color": "#b09765",
+      "temperature": 2.0,
+      "rainfall": 0.0
     },
     {
       "id": 39,
       "name": "Mesa Plateau",
-      "color": "#ca8c65"
+      "color": "#ca8c65",
+      "temperature": 2.0,
+      "rainfall": 0.0
     },
     {
       "id": 127,
@@ -211,107 +284,150 @@
     {
       "id": 129,
       "name": "Sunflower Plains",
-      "color": "#b5db88"
+      "color": "#b5db88",
+      "temperature": 0.8,
+      "rainfall": 0.4
     },
     {
       "id": 130,
       "name": "Desert M",
-      "color": "#ffbc40"
+      "color": "#ffbc40",
+      "temperature": 2.0,
+      "rainfall": 0.0
     },
     {
       "id": 131,
       "name": "Extreme Hills M",
-      "color": "#888888"
+      "color": "#888888",
+      "temperature": 0.2,
+      "rainfall": 0.3
     },
     {
       "id": 132,
       "name": "Flower Forest",
-      "color": "#2d8e49"
+      "color": "#2d8e49",
+      "temperature": 0.7,
+      "rainfall": 0.8
     },
     {
       "id": 133,
       "name": "Taiga M",
-      "color": "#338e81"
+      "color": "#338e81",
+      "temperature": 0.25,
+      "rainfall": 0.8
     },
     {
       "id": 134,
       "name": "Swampland M",
-      "color": "#2fffda"
+      "color": "#2fffda",
+      "watercolor" : 14745518,
+      "temperature": 0.8,
+      "rainfall": 0.9
     },
     {
       "id": 140,
       "name": "Ice Plains Spikes",
-      "color": "#b4dcdc"
+      "color": "#b4dcdc",
+      "temperature": 0.0,
+      "rainfall": 0.5
     },
     {
       "id": 149,
       "name": "Jungle M",
-      "color": "#7ba331"
+      "color": "#7ba331",
+      "temperature": 0.95,
+      "rainfall": 0.9
     },
     {
       "id": 151,
       "name": "Jungle Edge M",
-      "color": "#8ab33f"
+      "color": "#8ab33f",
+      "temperature": 0.95,
+      "rainfall": 0.8
     },
     {
       "id": 155,
       "name": "Birch Forest M",
-      "color": "#589c6c"
+      "color": "#589c6c",
+      "temperature": 0.6,
+      "rainfall": 0.6
     },
     {
       "id": 156,
       "name": "Birch Forest Hills M",
-      "color": "#47875a"
+      "color": "#47875a",
+      "temperature": 0.6,
+      "rainfall": 0.6
     },
     {
       "id": 157,
       "name": "Roofed Forest M",
-      "color": "#687942"
+      "color": "#687942",
+      "temperature": 0.7,
+      "rainfall": 0.8
     },
     {
       "id": 158,
       "name": "Cold Taiga M",
-      "color": "#597d72"
+      "color": "#597d72",
+      "temperature": -0.5,
+      "rainfall": 0.4
     },
     {
       "id": 160,
       "name": "Mega Spruce Taiga",
-      "color": "#818e79"
+      "color": "#818e79",
+      "temperature": 0.25,
+      "rainfall": 0.8
     },
     {
       "id": 161,
       "name": "Mega Spruce Taiga Hills",
-      "color": "#6d7766"
+      "color": "#6d7766",
+      "temperature": 0.25,
+      "rainfall": 0.8
     },
     {
       "id": 162,
       "name": "Extreme Hills+ M",
-      "color": "#789878"
+      "color": "#789878",
+      "temperature": 0.2,
+      "rainfall": 0.3
     },
     {
       "id": 163,
       "name": "Savanna M",
-      "color": "#e5da87"
+      "color": "#e5da87",
+      "temperature": 1.1,
+      "rainfall": 0.0
     },
     {
       "id": 164,
       "name": "Savanna Plateau M",
-      "color": "#cfc58c"
+      "color": "#cfc58c",
+      "temperature": 1.0,
+      "rainfall": 0.0
     },
     {
       "id": 165,
       "name": "Mesa (Bryce)",
-      "color": "#ff6d3d"
+      "color": "#ff6d3d",
+      "temperature": 2.0,
+      "rainfall": 0.0
     },
     {
       "id": 166,
       "name": "Mesa Plateau F M",
-      "color": "#d8bf8d"
+      "color": "#d8bf8d",
+      "temperature": 2.0,
+      "rainfall": 0.0
     },
     {
       "id": 167,
       "name": "Mesa Plateau M",
-      "color": "#f2b48d"
+      "color": "#f2b48d",
+      "temperature": 2.0,
+      "rainfall": 0.0
     }
   ],
   "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_biomes.json"
