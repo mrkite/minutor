@@ -10,11 +10,14 @@ class JSONArray;
 
 class BiomeInfo {
  public:
-  BiomeInfo() {}
+  BiomeInfo();
   QString name;
   bool enabled;
   QColor colors[16];
+  QColor watercolor;
   double alpha;
+  double temperature;
+  double rainfall;
 };
 
 class BiomeIdentifier {

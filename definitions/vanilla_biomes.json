@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "biome",
-  "version": "1.9.15w37a",
+  "version": "1.10.2",
   "data": [
     {
       "id": 0,
@@ -47,7 +47,7 @@
       "id": 6,
       "name": "Swampland",
       "color": "#07f9b2",
-      "watercolor" : 14745518,
+      "watercolor": "#e0ffae",
       "temperature": 0.8,
       "rainfall": 0.9
     },
@@ -320,7 +320,7 @@
       "id": 134,
       "name": "Swampland M",
       "color": "#2fffda",
-      "watercolor" : 14745518,
+      "watercolor": "#e0ffae",
       "temperature": 0.8,
       "rainfall": 0.9
     },
