@@ -489,15 +489,9 @@ void DefinitionManager::autoUpdate() {
     Definition &def = definitions[name];
     if (!def.update.isEmpty()) {
       isUpdating = true;
-      QDateTime last;
-      last.setMSecsSinceEpoch(0);
-      if (lastUpdated.contains(name))
-        last = lastUpdated[name].toDateTime();
-      auto updater = new DefinitionUpdater(name, def.update, last);
-      connect(updater,
-              SIGNAL(updated(DefinitionUpdater *, QString, QDateTime)),
-              this,
-              SLOT(updatePack(DefinitionUpdater *, QString, QDateTime)));
+      auto updater = new DefinitionUpdater(name, def.update, def.version);
+      connect(updater, SIGNAL(updated   (DefinitionUpdater *, QString, QString)),
+              this,    SLOT  (updatePack(DefinitionUpdater *, QString, QString)));
       updateQueue.append(updater);
       updater->update();
     }
@@ -505,14 +499,17 @@ void DefinitionManager::autoUpdate() {
 }
 
 void DefinitionManager::updatePack(DefinitionUpdater *updater,
-                                   QString filename, QDateTime timestamp) {
+                                   QString filename,
+                                   QString version) {
   updateQueue.removeOne(updater);
   delete updater;
-  if (lastUpdated[filename] != timestamp) {
+/*
+   if (lastUpdated[filename] != timestamp) {
     lastUpdated[filename] = timestamp;
     QSettings settings;
     settings.setValue("packupdates", lastUpdated);
   }
+*/
   if (updateQueue.isEmpty())
     emit updateFinished();
 }

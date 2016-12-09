@@ -13,18 +13,18 @@ class QNetworkReply;
 class DefinitionUpdater : public QObject {
   Q_OBJECT
  public:
-  DefinitionUpdater(QString filename, QString url, QDateTime timestamp);
+  DefinitionUpdater(QString filename, QString url, QString version);
   void update();
  signals:
-  void updated(DefinitionUpdater *, QString filename, QDateTime timestamp);
+  void updated(DefinitionUpdater *, QString filename, QString version);
  private slots:
-  void checkTime();
-  void didUpdate();
-  void saveFile();
+  void checkReply();
+  void checkVersion();
  private:
+  int versionCompare( QString const &version1, QString const &version2 );
   QString filename;
   QUrl url;
-  QDateTime timestamp;
+  QString version;
   QNetworkAccessManager qnam;
   QNetworkReply *reply;
   QFile *save;
