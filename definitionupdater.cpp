@@ -31,6 +31,8 @@ void DefinitionUpdater::checkReply() {
   // final URL found -> get data
   reply->deleteLater();
   reply = qnam.get(QNetworkRequest(url));
+  connect(reply, SIGNAL(finished()),
+          this, SLOT(finishUpdate()));
   connect(reply, SIGNAL(readyRead()),
           this, SLOT(checkVersion()));
 }
@@ -56,6 +58,9 @@ void DefinitionUpdater::checkVersion() {
       save = NULL;
     }
   }
+}
+
+void DefinitionUpdater::finishUpdate() {
   emit updated(this, filename, version);
 }
 

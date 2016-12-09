@@ -496,6 +496,9 @@ void DefinitionManager::autoUpdate() {
       updater->update();
     }
   }
+  QSettings settings;
+  settings.setValue("packupdate", QDateTime::currentDateTime());  // store current time
+  settings.remove("packupdates");  // remove now unused entries from registry
 }
 
 void DefinitionManager::updatePack(DefinitionUpdater *updater,
@@ -503,13 +506,7 @@ void DefinitionManager::updatePack(DefinitionUpdater *updater,
                                    QString version) {
   updateQueue.removeOne(updater);
   delete updater;
-/*
-   if (lastUpdated[filename] != timestamp) {
-    lastUpdated[filename] = timestamp;
-    QSettings settings;
-    settings.setValue("packupdates", lastUpdated);
-  }
-*/
+
   if (updateQueue.isEmpty())
     emit updateFinished();
 }

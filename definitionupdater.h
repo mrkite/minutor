@@ -20,6 +20,7 @@ class DefinitionUpdater : public QObject {
  private slots:
   void checkReply();
   void checkVersion();
+  void finishUpdate();
  private:
   int versionCompare( QString const &version1, QString const &version2 );
   QString filename;
