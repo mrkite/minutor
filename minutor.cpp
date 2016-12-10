@@ -44,8 +44,15 @@ Minutor::Minutor(): maxentitydistance(0) {
           this, SLOT(rescanWorlds()));
 
 
-  if (settings->autoUpdate)
-    dm->autoUpdate();
+  if (settings->autoUpdate) {
+    // get time of last update
+    QSettings settings;
+    QDateTime lastUpdateTime = settings.value("packupdate").toDateTime();
+
+    // auto-update only once a week
+    if (lastUpdateTime.addDays(7) < QDateTime::currentDateTime())
+      dm->autoUpdate();
+  }
 
   createActions();
   createMenus();
