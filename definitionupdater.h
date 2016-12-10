@@ -22,6 +22,7 @@ class DefinitionUpdater : public QObject {
   void checkVersion();
   void finishUpdate();
  private:
+  QString parseVersion(const QByteArray & data);
   int versionCompare( QString const &version1, QString const &version2 );
   QString filename;
   QUrl url;

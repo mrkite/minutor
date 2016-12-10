@@ -39,25 +39,33 @@ void DefinitionUpdater::checkReply() {
 
 void DefinitionUpdater::checkVersion() {
   // parse reply data for version information
-  QString data = reply->readAll();
+  const QByteArray data(reply->readAll());
   reply->deleteLater();
-  int vtag   = data.indexOf("\"version\"");
-  int vstart = data.indexOf("\"", vtag+9) + 1;    // "version" is length 9
-  int vstop  = data.indexOf("\"", vstart) - vstart;
-  QString remoteversion = data.mid(vstart, vstop);
+  QString remoteversion = parseVersion(data);
 
+  // check for newer version
   if (versionCompare(remoteversion,version)>0) {
     version = remoteversion;
     save = new QFile(filename);
     save->open(QIODevice::WriteOnly | QIODevice::Truncate);
     if (save) {
-      save->write(data.toStdString().c_str());
+      save->write(data);
       save->flush();
       save->close();
       delete save;
       save = NULL;
     }
   }
+}
+
+QString DefinitionUpdater::parseVersion(const QByteArray & data) {
+  int vtag   = data.indexOf("\"version\"");
+  int vstart = data.indexOf("\"", vtag+9) + 1;    // "version" is length 9
+  int vlen   = data.indexOf("\"", vstart) - vstart;
+  QString remoteversion = "0.0.0";
+  if ((vtag!=-1)&&(vstart!=-1)&&(vlen>0))
+    remoteversion = data.mid(vstart, vlen);
+  return remoteversion;
 }
 
 void DefinitionUpdater::finishUpdate() {
@@ -84,10 +92,10 @@ int DefinitionUpdater::versionCompare(QString const &version1, QString const &ve
     if (!ok1 && !ok2) { // both are strings
       c = QString::compare(sec1[mm], sec2[mm]);
     }
-    if (ok1 && !ok2) { // 1 is an int 2 is a string
+    if (ok1 && !ok2) { // i1 is an int i2 is a string
       return 1; // int wins
     }
-    if (!ok1 && ok2) { // 1 is a string 2 an int
+    if (!ok1 && ok2) { // i1 is a string i2 an int
       return -1; // int wins
     }
 
