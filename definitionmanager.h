@@ -59,8 +59,9 @@ class DefinitionManager : public QWidget {
   void removePack();
   void exportPack();
   void checkForUpdates();
-  void updatePack(DefinitionUpdater *updater, QString filename,
-                  QDateTime timestamp);
+  void updatePack(DefinitionUpdater *updater,
+                  QString filename,
+                  QString version);
 
  private:
   QTableWidget *table;
@@ -72,16 +73,15 @@ class DefinitionManager : public QWidget {
   void removeDefinition(QString path);
   void refresh();
   QHash<QString, Definition> definitions;
-  BiomeIdentifier *biomes;
-  BlockIdentifier *blocks;
-  DimensionIdentifier *dimensionList;
+  BiomeIdentifier *biomeManager;  // todo: migrate to reference to singleton
+  BlockIdentifier *blockManager;  // todo: migrate to reference to singleton
+  DimensionIdentifier *dimensionManager;  // todo: migrate to reference to singleton
   EntityIdentifier &entityManager;
   QString selected;
   QList<QVariant> sorted;
 
   bool isUpdating;
   QList<DefinitionUpdater *> updateQueue;
-  QHash<QString, QVariant> lastUpdated;
 };
 
 #endif  // DEFINITIONMANAGER_H_
