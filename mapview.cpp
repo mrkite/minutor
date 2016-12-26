@@ -417,13 +417,21 @@ void MapView::renderChunk(Chunk *chunk) {
           else if (lasty > y)
             light -= 2;
         }
-        if (light < 0) light = 0;
-        if (light > 15) light = 15;
+//        if (light < 0) light = 0;
+//        if (light > 15) light = 15;
 
-        // define the color
-        quint32 colr = block.colors[light].red();
-        quint32 colg = block.colors[light].green();
-        quint32 colb = block.colors[light].blue();
+        // get the color from Block definition
+        quint32 colr = block.colors[15].red();
+        quint32 colg = block.colors[15].green();
+        quint32 colb = block.colors[15].blue();
+
+        // shade color based on light value
+        double light_factor = pow(0.90,15-light);
+        colr = light_factor*colr;
+        colg = light_factor*colg;
+        colb = light_factor*colb;
+
+        // process flags
         if (flags & flgDepthShading) {
           // Use a table to define depth-relative shade:
           static const quint32 shadeTable[] = {
@@ -502,7 +510,7 @@ void MapView::renderChunk(Chunk *chunk) {
           r = (quint8)(alpha * r + (1.0 - alpha) * colr);
           g = (quint8)(alpha * g + (1.0 - alpha) * colg);
           b = (quint8)(alpha * b + (1.0 - alpha) * colb);
-          alpha+=block.alpha * (1.0 - alpha);
+          alpha += block.alpha * (1.0 - alpha);
         }
 
         // finish depth (Y) scanning when color is saturated enough
