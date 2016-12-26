@@ -383,6 +383,7 @@ void MapView::renderChunk(Chunk *chunk) {
       uchar r = 0, g = 0, b = 0;
       double alpha = 0.0;
       // get Biome
+      auto &biome = biomes->getBiome(chunk->biomes[offset]);
       int top = depth;
       if (top > chunk->highest)
         top = chunk->highest;
@@ -396,10 +397,10 @@ void MapView::renderChunk(Chunk *chunk) {
         }
 
         // get data value
-        int data = section->getData(x, y, z);
+        int data = section->getData(offset, y);
 
         // get BlockInfo from block value
-        BlockInfo &block = blocks->getBlock(section->getBlock(x, y, z),
+        BlockInfo &block = blocks->getBlock(section->getBlock(offset, y),
                                             data);
         if (block.alpha == 0.0) continue;
 
@@ -407,9 +408,9 @@ void MapView::renderChunk(Chunk *chunk) {
         int light = 0;
         ChunkSection *section1 = NULL;
         if (y < 255)
-          section1 = chunk->sections[(y + 1) >> 4];
+          section1 = chunk->sections[(y+1) >> 4];
         if (section1)
-          light = section1->getLight(x, y + 1, z);
+          light = section1->getLight(offset, y+1);
         int light1 = light;
         if (!(flags & flgLighting))
           light = 13;
@@ -463,26 +464,26 @@ void MapView::renderChunk(Chunk *chunk) {
           ChunkSection *section2 = NULL;
           ChunkSection *sectionB = NULL;
           if (y < 254)
-            section2 = chunk->sections[(y + 2) >> 4];
+            section2 = chunk->sections[(y+2) >> 4];
           if (y > 0)
-            sectionB = chunk->sections[(y - 1) >> 4];
+            sectionB = chunk->sections[(y-1) >> 4];
           if (section1) {
-            blid1 = section1->getBlock(x, y + 1, z);
-            data1 = section1->getData(x, y + 1, z);
+            blid1 = section1->getBlock(offset, y+1);
+            data1 = section1->getData(offset, y+1);
           }
           if (section2) {
-            blid2 = section2->getBlock(x, y + 2, z);
-            data2 = section2->getData(x, y + 2, z);
+            blid2 = section2->getBlock(offset, y+2);
+            data2 = section2->getData(offset, y+2);
           }
           if (sectionB) {
-            blidB = sectionB->getBlock(x, y - 1, z);
-            dataB = sectionB->getData(x, y - 1, z);
+            blidB = sectionB->getBlock(offset, y-1);
+            dataB = sectionB->getData(offset, y-1);
           }
           BlockInfo &block2 = blocks->getBlock(blid2, data2);
           BlockInfo &block1 = blocks->getBlock(blid1, data1);
           BlockInfo &block0 = block;
           BlockInfo &blockB = blocks->getBlock(blidB, dataB);
-          int light0 = section->getLight(x, y, z);
+          int light0 = section->getLight(offset, y);
 
           // spawn check #1: on top of solid block
           if (block0.doesBlockHaveSolidTopSurface(data) &&
