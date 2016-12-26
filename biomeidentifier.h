@@ -17,7 +17,7 @@ class BiomeInfo {
   QColor watercolor;
   double alpha;
   double temperature;
-  double rainfall;
+  double humidity;
 };
 
 class BiomeIdentifier {

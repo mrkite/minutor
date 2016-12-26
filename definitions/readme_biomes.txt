@@ -18,7 +18,7 @@ Inside the "data" tag available biomes are defined:
       "color": "#07f9b2",
       "watercolor" : 14745518,
       "temperature": 0.8,
-      "rainfall": 0.9
+      "humidity": 0.9
     },
     [...]
   ]
@@ -31,7 +31,7 @@ some special values can be derived from the Minecraft source code:
 
 "watercolor"  - special color of water (in swamps)
 "temperature" - default 0.5
-"rainfall"    - default 0.5
+"humidity"    - default 0.5
 
 
 

@@ -13,7 +13,7 @@ BiomeInfo::BiomeInfo()
   , watercolor(255,255,255)
   , alpha(1.0)
   , temperature(0.5)
-  , rainfall(0.5)
+  , humidity(0.5)
 {}
 
 
@@ -79,9 +79,9 @@ int BiomeIdentifier::addDefinitions(JSONArray *defs, int pack) {
     if (b->has("temperature"))
       biome->temperature = b->at("temperature")->asNumber();
 
-    // get rainfall definition
-    if (b->has("rainfall"))
-      biome->rainfall = b->at("rainfall")->asNumber();
+    // get humidity definition
+    if (b->has("humidity"))
+      biome->humidity = b->at("humidity")->asNumber();
 
     // get watercolor definition
     if (b->has("watercolor")) {
