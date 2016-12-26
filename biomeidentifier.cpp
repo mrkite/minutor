@@ -15,7 +15,8 @@ Copyright (c) 2016, EtlamGit
 static BiomeInfo unknownBiome;
 
 BiomeInfo::BiomeInfo()
-  : name("Unknown Biome")
+  : id(-1)
+  , name("Unknown Biome")
   , enabled(false)
   , watermodifier(255,255,255)
   , enabledwatermodifier(false)
@@ -65,9 +66,11 @@ https://github.com/erich666/Mineways/blob/master/Win/biomes.h
 QColor BiomeInfo::getBiomeColor( float temperature, float humidity, int elevation, T_BiomeCorner *corners )
 {
   // check elevation
-  elevation = (elevation < 0) ? 0 : elevation;
+  // todo: probably negative values are allowed with latest Minecraft versions
+//  elevation = (elevation < 0) ? 0 : elevation;
 
   // get local temperature and humidity
+  // perlin noise generator omitted due to performance reasons
   temperature = clamp( temperature - (float)elevation*0.00166667f, 0.0f, 1.0f );
   humidity    = clamp( humidity, 0.0f, 1.0f );
   humidity   *= temperature;  // scale by temperature to stay in triangle
@@ -95,12 +98,46 @@ QColor BiomeInfo::getBiomeColor( float temperature, float humidity, int elevatio
 
 QColor BiomeInfo::getBiomeGrassColor( int elevation )
 {
-  return getBiomeColor( this->temperature, this->humidity, elevation, grassCorners );
+  // remove variants from ID
+  int id = this->id & 0x7f;
+  // swampland
+  if (id == 6) {
+    // perlin noise generator omitted due to performance reasons
+    // otherwise the random temperature distribution selects
+    // (below -0.1°C) ‭4C.76.3C‬ or ‭6A.70.39 (above -0.1°C)
+    return QColor::QColor(0x6a,0x70,0x39);  // hard wired
+  }
+  // roofed forest
+  else if (id == 29) {
+    QColor color = getBiomeColor( this->temperature, this->humidity, elevation, grassCorners );
+    // average with 0x28340A
+    color.setRed  ( (color.red()   + 0x28)>>1 );
+    color.setGreen( (color.green() + 0x34)>>1 );
+    color.setBlue ( (color.blue()  + 0x0A)>>1 );
+    return color;
+  }
+  // mesa
+  else if ((id == 37) || (id == 38) || (id == 39)) {
+    return QColor::QColor(0x90,0x81,0x4d);  // hard wired
+  } else
+    // standard way
+    return getBiomeColor( this->temperature, this->humidity, elevation, grassCorners );
 }
 
 QColor BiomeInfo::getBiomeFoliageColor( int elevation )
 {
-  return getBiomeColor( this->temperature, this->humidity, elevation, foliageCorners );
+  // remove variants from ID
+  int id = this->id & 0x7f;
+  // swampland
+  if (id == 6) {
+    return QColor::QColor(0x6a,0x70,0x39);  // hard wired
+  }
+  // mesa
+  else if ((id == 37) || (id == 38) || (id == 39)) {
+    return QColor::QColor(0x9e,0x81,0x4d);  // hard wired
+  } else
+    // standard way
+    return getBiomeColor( this->temperature, this->humidity, elevation, foliageCorners );
 }
 
 QColor BiomeInfo::getBiomeWaterColor( QColor watercolor )
@@ -111,7 +148,7 @@ QColor BiomeInfo::getBiomeWaterColor( QColor watercolor )
     int g = (int)( watercolor.green() * watermodifier.green() / 255 );
     int b = (int)( watercolor.blue()  * watermodifier.blue()  / 255 );
     // return combined modified color
-    return QColor::QColor(r, g, b );
+    return QColor::QColor(r, g, b);
   } else
     return watercolor;
 }
@@ -171,6 +208,7 @@ int BiomeIdentifier::addDefinitions(JSONArray *defs, int pack) {
 
     BiomeInfo *biome = new BiomeInfo();
     biome->enabled = true;
+    biome->id = id;
     if (b->has("name"))
       biome->name = b->at("name")->asString();
 

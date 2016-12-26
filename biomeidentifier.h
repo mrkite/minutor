@@ -19,6 +19,7 @@ class BiomeInfo {
 
   // public members
  public:
+  int id;
   QString name;
   bool enabled;
   QColor colors[16];
