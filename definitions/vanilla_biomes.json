@@ -47,7 +47,7 @@
       "id": 6,
       "name": "Swampland",
       "color": "#07f9b2",
-      "watercolor": "#e0ffae",
+      "watermodifier": "#e0ffae",
       "temperature": 0.8,
       "humidity": 0.9
     },
@@ -320,7 +320,7 @@
       "id": 134,
       "name": "Swampland M",
       "color": "#2fffda",
-      "watercolor": "#e0ffae",
+      "watermodifier": "#e0ffae",
       "temperature": 0.8,
       "humidity": 0.9
     },

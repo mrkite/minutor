@@ -14,7 +14,7 @@ class BiomeInfo {
   QString name;
   bool enabled;
   QColor colors[16];
-  QColor watercolor;
+  QColor watermodifier;
   double alpha;
   double temperature;
   double humidity;

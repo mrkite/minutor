@@ -10,7 +10,7 @@ static BiomeInfo unknownBiome;
 BiomeInfo::BiomeInfo()
   : name("Unknown Biome")
   , enabled(false)
-  , watercolor(255,255,255)
+  , watermodifier(255,255,255)
   , alpha(1.0)
   , temperature(0.5)
   , humidity(0.5)
@@ -83,10 +83,10 @@ int BiomeIdentifier::addDefinitions(JSONArray *defs, int pack) {
     if (b->has("humidity"))
       biome->humidity = b->at("humidity")->asNumber();
 
-    // get watercolor definition
-    if (b->has("watercolor")) {
-      biome->watercolor.setNamedColor(b->at("watercolor")->asString());
-      assert(biome->watercolor.isValid());
+    // get watermodifier definition
+    if (b->has("watermodifier")) {
+      biome->watermodifier.setNamedColor(b->at("watermodifier")->asString());
+      assert(biome->watermodifier.isValid());
     }
 
     // get color definition
