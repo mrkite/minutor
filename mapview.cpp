@@ -379,13 +379,15 @@ void MapView::renderChunk(Chunk *chunk) {
   for (int z = 0; z < 16; z++) {  // n->s
     int lasty = -1;
     for (int x = 0; x < 16; x++, offset++) {  // e->w
+      // initialize color
       uchar r = 0, g = 0, b = 0;
       double alpha = 0.0;
+      // get Biome
       int top = depth;
       if (top > chunk->highest)
         top = chunk->highest;
       int highest = 0;
-      for (int y = top; y >= 0; y--) {
+      for (int y = top; y >= 0; y--) {  // top->down
         int sec = y >> 4;
         ChunkSection *section = chunk->sections[sec];
         if (!section) {
@@ -420,16 +422,27 @@ void MapView::renderChunk(Chunk *chunk) {
 //        if (light < 0) light = 0;
 //        if (light > 15) light = 15;
 
-        // get the color from Block definition
-        quint32 colr = block.colors[15].red();
-        quint32 colg = block.colors[15].green();
-        quint32 colb = block.colors[15].blue();
+        // get current block color
+        QColor col;
+        if (block.biomeWater()) {
+          col = biome.getBiomeWaterColor(block.colors[15]);
+        }
+        else if (block.biomeGrass()) {
+          col = biome.getBiomeGrassColor(y-64);
+        }
+        else if (block.biomeFoliage()) {
+          col = biome.getBiomeFoliageColor(y-64);
+        }
+        else {
+          // get the color from Block definition
+          col = block.colors[15];
+        }
 
         // shade color based on light value
         double light_factor = pow(0.90,15-light);
-        colr = light_factor*colr;
-        colg = light_factor*colg;
-        colb = light_factor*colb;
+        quint32 colr = light_factor*col.red();
+        quint32 colg = light_factor*col.green();
+        quint32 colb = light_factor*col.blue();
 
         // process flags
         if (flags & flgDepthShading) {
@@ -494,19 +507,22 @@ void MapView::renderChunk(Chunk *chunk) {
           }
         }
         if (flags & flgBiomeColors) {
-          auto &bi = biomes->getBiome(chunk->biomes[(x & 0xf) + (z & 0xf) * 16]);
-          colr = bi.colors[light].red();
-          colg = bi.colors[light].green();
-          colb = bi.colors[light].blue();
+          colr = biome.colors[light].red();
+          colg = biome.colors[light].green();
+          colb = biome.colors[light].blue();
           alpha = 0;
         }
+
+        // combine current block to final color
         if (alpha == 0.0) {
+          // first color sample
           alpha = block.alpha;
           r = colr;
           g = colg;
           b = colb;
           highest = y;
         } else {
+          // combine further color samples with blending
           r = (quint8)(alpha * r + (1.0 - alpha) * colr);
           g = (quint8)(alpha * g + (1.0 - alpha) * colg);
           b = (quint8)(alpha * b + (1.0 - alpha) * colb);
