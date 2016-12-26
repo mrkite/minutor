@@ -36,6 +36,11 @@ class BlockInfo {
   bool isHalfSlab();
   bool isSnow();
 
+  // special blocks with Biome based Grass, Foliage and Water colors
+  bool biomeWater();
+  bool biomeGrass();
+  bool biomeFoliage();
+
   void setName(const QString &newname);
   const QString &getName();
 
@@ -58,6 +63,9 @@ class BlockInfo {
   bool    stairs;
   bool    halfslab;
   bool    snow;
+  bool    water;
+  bool    grass;
+  bool    foliage;
 };
 
 class BlockIdentifier {

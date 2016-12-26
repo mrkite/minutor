@@ -42,13 +42,19 @@ bool BlockInfo::canProvidePower() {
 }
 
 void BlockInfo::setName(const QString & newname) {
+  // set name
   name = newname;
+  // precompute mob spawning conditions
   bedrock = this->name.contains("Bedrock");
   hopper = this->name.contains("Hopper");
   stairs = this->name.contains("Stairs");
   halfslab = this->name.contains("Slab") && !this->name.contains("Double") &&
       !this->name.contains("Full");
   snow = this->name.contains("Snow");
+  // precompute biome based colors
+  water = this->name.contains("Water");
+  grass = this->name.compare("Grass", Qt::CaseInsensitive) == 0;
+  foliage = false;
 }
 
 const QString & BlockInfo::getName() { return name; }
@@ -60,6 +66,9 @@ bool BlockInfo::isStairs()   { return stairs; }
 bool BlockInfo::isHalfSlab() { return halfslab; }
 bool BlockInfo::isSnow()     { return snow; }
 
+bool BlockInfo::biomeWater()   { return water; }
+bool BlockInfo::biomeGrass()   { return grass; }
+bool BlockInfo::biomeFoliage() { return foliage; }
 
 
 BlockIdentifier::BlockIdentifier() {
