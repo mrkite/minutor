@@ -237,25 +237,29 @@
     {
       "id": 18,
       "name": "Oak Leaves",
-      "color": "#3d9b3d",
+      "color": "#8b8b8b",
       "transparent": true,
       "rendercube": true,
+      "biomeFoliage": true,
       "mask": 3,
       "variants": [
         {
           "data": 1,
           "name": "Spruce Leaves",
-          "color": "#519b5a"
+          "color": "#519b5a",
+          "biomeFoliage": false
         },
         {
           "data": 2,
           "name": "Birch Leaves",
-          "color": "#6faa3b"
+          "color": "#6faa3b",
+          "biomeFoliage": false
         },
         {
           "data": 3,
           "name": "Jungle Leaves",
-          "color": "#649642"
+          "color": "#94938e",
+          "biomeFoliage": true
         }
       ]
     },
@@ -1300,9 +1304,10 @@
     {
       "id": 106,
       "name": "Vines",
-      "color": "#6cc44a",
+      "color": "#6f6f6f",
       "transparent": true,
-      "spawninside": true
+      "spawninside": true,
+      "biomeFoliage": true
     },
     {
       "id": 107,
@@ -2010,15 +2015,17 @@
     {
       "id": 161,
       "name": "Acacia Leaves",
-      "color": "#97a636",
+      "color": "#8b8b8b",
       "transparent": true,
       "rendercube": true,
+      "biomeFoliage": true,
       "mask": 1,
       "variants": [
         {
           "data": 1,
           "name": "Dark Oak Leaves",
-          "color": "#45751c"
+          "color": "#8b8b8b",
+          "biomeFoliage": true
         }
       ]
     },
