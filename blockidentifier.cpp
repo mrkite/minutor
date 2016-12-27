@@ -155,10 +155,6 @@ int BlockIdentifier::addDefinitions(JSONArray *defs, int pack) {
   return pack;
 }
 
-static int clamp(int v, int min, int max) {
-  return (v < max ? (v > min ? v : min) : max);
-}
-
 void BlockIdentifier::clearCache() {
   for (int i = 0; i < 65536; i++) {
     cache[i] = NULL;

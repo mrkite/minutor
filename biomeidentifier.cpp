@@ -7,6 +7,7 @@ Copyright (c) 2016, EtlamGit
 
 #include "./biomeidentifier.h"
 #include "./json.h"
+#include "./clamp.h"
 
 // --------- --------- --------- ---------
 // BiomeInfo
@@ -49,12 +50,6 @@ BiomeInfo::T_BiomeCorner BiomeInfo::foliageCorners[3] =
   {  26, 191,   0 }   // upper left  - humidity = 1.0
 };
 
-// will be in STD with C++17
-template <typename T>
-T clamp(const T& n, const T& lower, const T& upper) {
-  return (n<lower)? lower : (n>upper)? upper : n;
-}
-
 /*
 This method is inspired from Mineways, Copyright (c) 2014, Eric Haines
 https://github.com/erich666/Mineways/blob/master/Win/biomes.h
@@ -71,8 +66,8 @@ QColor BiomeInfo::getBiomeColor( float temperature, float humidity, int elevatio
 
   // get local temperature and humidity
   // perlin noise generator omitted due to performance reasons
-  temperature = clamp( temperature - (float)elevation*0.00166667f, 0.0f, 1.0f );
-  humidity    = clamp( humidity, 0.0f, 1.0f );
+  temperature = std::clamp( temperature - (float)elevation*0.00166667f, 0.0f, 1.0f );
+  humidity    = std::clamp( humidity, 0.0f, 1.0f );
   humidity   *= temperature;  // scale by temperature to stay in triangle
 
   // lambda values for barycentric coordinates
@@ -89,9 +84,9 @@ QColor BiomeInfo::getBiomeColor( float temperature, float humidity, int elevatio
     blue  += lambda[i] * corners[i].blue;
   }
 
-  int r = (int)clamp( red,   0.0f, 255.0f );
-  int g = (int)clamp( green, 0.0f, 255.0f );
-  int b = (int)clamp( blue,  0.0f, 255.0f );
+  int r = (int)std::clamp( red,   0.0f, 255.0f );
+  int g = (int)std::clamp( green, 0.0f, 255.0f );
+  int b = (int)std::clamp( blue,  0.0f, 255.0f );
 
   return QColor::QColor(r,g,b);
 }
@@ -169,9 +164,9 @@ QColor BiomeInfo::getBiomeWaterColor( QColor watercolor )
 {
   if (this->enabledwatermodifier) {
     // calculate modified color components
-    int r = (int)( watercolor.red()   * watermodifier.red()   / 255 );
-    int g = (int)( watercolor.green() * watermodifier.green() / 255 );
-    int b = (int)( watercolor.blue()  * watermodifier.blue()  / 255 );
+    int r = (int)( watercolor.red()   * watermodifier.redF() );
+    int g = (int)( watercolor.green() * watermodifier.greenF() );
+    int b = (int)( watercolor.blue()  * watermodifier.blueF() );
     // return combined modified color
     return QColor::QColor(r, g, b);
   } else
@@ -214,10 +209,6 @@ void BiomeIdentifier::disableDefinitions(int pack) {
   int len = packs[pack].length();
   for (int i = 0; i < len; i++)
     packs[pack][i]->enabled = false;
-}
-
-static int clamp(int v, int min, int max) {
-  return (v < max ? (v > min ? v : min) : max);
 }
 
 int BiomeIdentifier::addDefinitions(JSONArray *defs, int pack) {

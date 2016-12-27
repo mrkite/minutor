@@ -40,7 +40,8 @@ HEADERS += \
     settings.h \
     village.h \
     worldsave.h \
-    zipreader.h
+    zipreader.h \
+    clamp.h
 SOURCES += \
 	  labelledslider.cpp \
     biomeidentifier.cpp \
