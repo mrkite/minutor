@@ -9,7 +9,7 @@
 static BlockInfo unknownBlock;
 
 BlockInfo::BlockInfo() : transparent(false), liquid(false), rendernormal(true),
-  providepower(false), spawninside(false) {}
+  providepower(false), spawninside(false), grass(false), foliage(false) {}
 
 bool BlockInfo::isOpaque() {
   return !(this->transparent);
@@ -51,10 +51,8 @@ void BlockInfo::setName(const QString & newname) {
   halfslab = this->name.contains("Slab") && !this->name.contains("Double") &&
       !this->name.contains("Full");
   snow = this->name.contains("Snow");
-  // precompute biome based colors
+  // precompute biome based watercolormodifier
   water = this->name.contains("Water");
-  grass = this->name.compare("Grass", Qt::CaseInsensitive) == 0;
-  foliage = false;
 }
 
 const QString & BlockInfo::getName() { return name; }
@@ -70,6 +68,8 @@ bool BlockInfo::biomeWater()   { return water; }
 bool BlockInfo::biomeGrass()   { return grass; }
 bool BlockInfo::biomeFoliage() { return foliage; }
 
+void BlockInfo::setBiomeGrass(bool value)   { grass = value; }
+void BlockInfo::setBiomeFoliage(bool value) { foliage = value; }
 
 BlockIdentifier::BlockIdentifier() {
   // clear cache pointers
@@ -257,6 +257,13 @@ void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent,
                             255*block->alpha );
   }
 
+  // biome dependant color
+  if (b->has("biomeGrass"))
+    block->setBiomeGrass( b->at("biomeGrass")->asBool() );
+  if (b->has("biomeFoliage"))
+    block->setBiomeFoliage( b->at("biomeFoliage")->asBool() );
+
+  // variant reduction mask
   if (b->has("mask"))
     block->mask = b->at("mask")->asNumber();
   else if (b->has("variants"))

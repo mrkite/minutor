@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "block",
-  "version": "1.11.16w39a",
+  "version": "1.11.16w40a",
   "data": [
     {
       "id": 0,
@@ -51,7 +51,8 @@
     {
       "id": 2,
       "name": "Grass",
-      "color": "#78bf64"
+      "color": "#939393",
+      "biomeGrass": true
     },
     {
       "id": 3,
@@ -358,12 +359,14 @@
         {
           "data": 1,
           "name": "Tall Grass",
-          "color": "#83bf54"
+          "color": "#909090",
+          "biomeGrass": true
         },
         {
           "data": 2,
           "name": "Fern",
-          "color": "#8fbb64"
+          "color": "#828282",
+          "biomeGrass": true
         }
       ]
     },
@@ -942,9 +945,10 @@
     {
       "id": 83,
       "name": "Sugar Cane",
-      "color": "#aadb74",
+      "color": "#97c06b",
       "spawninside": true,
-      "transparent": true
+      "transparent": true,
+      "biomeGrass": true
     },
     {
       "id": 84,
@@ -2200,12 +2204,14 @@
         {
           "data": 2,
           "name": "Double Tallgrass",
-          "color": "#5e8328"
+          "color": "#969696",
+          "biomeGrass": true
         },
         {
           "data": 3,
           "name": "Large Fern",
-          "color": "#617b2d"
+          "color": "#828282",
+          "biomeGrass": true
         },
         {
           "data": 4,

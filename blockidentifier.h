@@ -11,17 +11,12 @@
 class JSONArray;
 class JSONObject;
 
-// bit masks for the flags
-#define BlockTransparent 1
-#define BlockSolid 2
-#define BlockLiquid 4
-
-// mobs can't spawn on transparent, but need 2 blocks of transparent,
-// non solid, non liquid above
 
 class BlockInfo {
  public:
   BlockInfo();
+
+  // special block attribute used during mob spawning detection
   bool isOpaque();
   bool isLiquid();
   bool doesBlockHaveSolidTopSurface(int data);
@@ -29,7 +24,7 @@ class BlockInfo {
   bool renderAsNormalBlock();
   bool canProvidePower();
 
-  // special blocks used during mob spawning detection
+  // special block type used during mob spawning detection
   bool isBedrock();
   bool isHopper();
   bool isStairs();
@@ -42,6 +37,8 @@ class BlockInfo {
   bool biomeFoliage();
 
   void setName(const QString &newname);
+  void setBiomeGrass(bool value);
+  void setBiomeFoliage(bool value);
   const QString &getName();
 
   int id;
