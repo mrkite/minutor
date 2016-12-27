@@ -13,8 +13,8 @@ class BiomeInfo {
   // public methods
  public:
   BiomeInfo();
-  QColor getBiomeGrassColor  ( int elevation );
-  QColor getBiomeFoliageColor( int elevation );
+  QColor getBiomeGrassColor  ( QColor blockcolor, int elevation );
+  QColor getBiomeFoliageColor( QColor blockcolor, int elevation );
   QColor getBiomeWaterColor( QColor watercolor );
 
   // public members

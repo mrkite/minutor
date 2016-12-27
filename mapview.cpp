@@ -91,11 +91,11 @@ void MapView::clearCache() {
   redraw();
 }
 
-static int lastX = -1, lastY = -1;
+static int lastMouseX = -1, lastMouseY = -1;
 static bool dragging = false;
 void MapView::mousePressEvent(QMouseEvent *event) {
-  lastX = event->x();
-  lastY = event->y();
+  lastMouseX = event->x();
+  lastMouseY = event->y();
   dragging = true;
 }
 
@@ -116,12 +116,13 @@ void MapView::mouseMoveEvent(QMouseEvent *event) {
     getToolTip(mx, mz);
     return;
   }
-  x += (lastX-event->x()) / zoom;
-  z += (lastY-event->y()) / zoom;
-  lastX = event->x();
-  lastY = event->y();
+  x += (lastMouseX-event->x()) / zoom;
+  z += (lastMouseY-event->y()) / zoom;
+  lastMouseX = event->x();
+  lastMouseY = event->y();
   redraw();
 }
+
 void MapView::mouseReleaseEvent(QMouseEvent * /* event */) {
   dragging = false;
 }
@@ -163,6 +164,7 @@ void MapView::wheelEvent(QWheelEvent *event) {
     redraw();
   }
 }
+
 void MapView::keyPressEvent(QKeyEvent *event) {
   switch (event->key()) {
     case Qt::Key_Up:
@@ -214,6 +216,7 @@ void MapView::resizeEvent(QResizeEvent *event) {
   image = QImage(event->size(), QImage::Format_RGB32);
   redraw();
 }
+
 void MapView::paintEvent(QPaintEvent * /* event */) {
   QPainter p(this);
   p.drawImage(QPoint(0, 0), image);
@@ -303,6 +306,7 @@ void MapView::redraw() {
 
   update();
 }
+
 void MapView::drawChunk(int x, int z) {
   if (!this->isEnabled())
     return;
@@ -424,26 +428,22 @@ void MapView::renderChunk(Chunk *chunk) {
 //        if (light > 15) light = 15;
 
         // get current block color
-        QColor col;
+        QColor blockcolor = block.colors[15];  // get the color from Block definition
         if (block.biomeWater()) {
-          col = biome.getBiomeWaterColor(block.colors[15]);
+          blockcolor = biome.getBiomeWaterColor(blockcolor);
         }
         else if (block.biomeGrass()) {
-          col = biome.getBiomeGrassColor(y-64);
+          blockcolor = biome.getBiomeGrassColor(blockcolor, y-64);
         }
         else if (block.biomeFoliage()) {
-          col = biome.getBiomeFoliageColor(y-64);
-        }
-        else {
-          // get the color from Block definition
-          col = block.colors[15];
+          blockcolor = biome.getBiomeFoliageColor(blockcolor, y-64);
         }
 
         // shade color based on light value
         double light_factor = pow(0.90,15-light);
-        quint32 colr = light_factor*col.red();
-        quint32 colg = light_factor*col.green();
-        quint32 colb = light_factor*col.blue();
+        quint32 colr = light_factor*blockcolor.red();
+        quint32 colg = light_factor*blockcolor.green();
+        quint32 colb = light_factor*blockcolor.blue();
 
         // process flags
         if (flags & flgDepthShading) {

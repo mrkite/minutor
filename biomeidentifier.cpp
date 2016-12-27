@@ -96,8 +96,9 @@ QColor BiomeInfo::getBiomeColor( float temperature, float humidity, int elevatio
   return QColor::QColor(r,g,b);
 }
 
-QColor BiomeInfo::getBiomeGrassColor( int elevation )
+QColor BiomeInfo::getBiomeGrassColor( QColor blockcolor, int elevation )
 {
+  QColor colorizer;
   // remove variants from ID
   int id = this->id & 0x7f;
   // swampland
@@ -105,39 +106,63 @@ QColor BiomeInfo::getBiomeGrassColor( int elevation )
     // perlin noise generator omitted due to performance reasons
     // otherwise the random temperature distribution selects
     // (below -0.1°C) ‭4C.76.3C‬ or ‭6A.70.39 (above -0.1°C)
-    return QColor::QColor(0x6a,0x70,0x39);  // hard wired
+    colorizer = QColor::QColor(0x6a,0x70,0x39);  // hard wired
   }
   // roofed forest
   else if (id == 29) {
-    QColor color = getBiomeColor( this->temperature, this->humidity, elevation, grassCorners );
+    colorizer = getBiomeColor( this->temperature, this->humidity, elevation, grassCorners );
     // average with 0x28340A
-    color.setRed  ( (color.red()   + 0x28)>>1 );
-    color.setGreen( (color.green() + 0x34)>>1 );
-    color.setBlue ( (color.blue()  + 0x0A)>>1 );
-    return color;
+    colorizer.setRed  ( (colorizer.red()   + 0x28)>>1 );
+    colorizer.setGreen( (colorizer.green() + 0x34)>>1 );
+    colorizer.setBlue ( (colorizer.blue()  + 0x0A)>>1 );
   }
   // mesa
   else if ((id == 37) || (id == 38) || (id == 39)) {
-    return QColor::QColor(0x90,0x81,0x4d);  // hard wired
+    colorizer = QColor::QColor(0x90,0x81,0x4d);  // hard wired
   } else
     // standard way
-    return getBiomeColor( this->temperature, this->humidity, elevation, grassCorners );
+    colorizer = getBiomeColor( this->temperature, this->humidity, elevation, grassCorners );
+
+  QColor color;
+  if (false) {
+    color.setRed  ( colorizer.red()  /255.0f * blockcolor.red()   );
+    color.setGreen( colorizer.green()/255.0f * blockcolor.green() );
+    color.setBlue ( colorizer.blue() /255.0f * blockcolor.blue()  );
+  } else {
+    color.setRed  ( (colorizer.red()   + blockcolor.red()  ) / 2.0 );
+    color.setGreen( (colorizer.green() + blockcolor.green()) / 2.0 );
+    color.setBlue ( (colorizer.blue()  + blockcolor.blue() ) / 2.0 );
+  }
+  return color;
 }
 
-QColor BiomeInfo::getBiomeFoliageColor( int elevation )
+QColor BiomeInfo::getBiomeFoliageColor( QColor blockcolor, int elevation )
 {
+  QColor colorizer;
   // remove variants from ID
   int id = this->id & 0x7f;
   // swampland
   if (id == 6) {
-    return QColor::QColor(0x6a,0x70,0x39);  // hard wired
+    colorizer = QColor::QColor(0x6a,0x70,0x39);  // hard wired
   }
   // mesa
   else if ((id == 37) || (id == 38) || (id == 39)) {
-    return QColor::QColor(0x9e,0x81,0x4d);  // hard wired
+    colorizer = QColor::QColor(0x9e,0x81,0x4d);  // hard wired
   } else
     // standard way
-    return getBiomeColor( this->temperature, this->humidity, elevation, foliageCorners );
+    colorizer = getBiomeColor( this->temperature, this->humidity, elevation, foliageCorners );
+
+  QColor color;
+  if (false) {
+    color.setRed  ( colorizer.red()  /255.0f * blockcolor.red()   );
+    color.setGreen( colorizer.green()/255.0f * blockcolor.green() );
+    color.setBlue ( colorizer.blue() /255.0f * blockcolor.blue()  );
+  } else {
+    color.setRed  ( (colorizer.red()   + blockcolor.red()  ) / 2.0 );
+    color.setGreen( (colorizer.green() + blockcolor.green()) / 2.0 );
+    color.setBlue ( (colorizer.blue()  + blockcolor.blue() ) / 2.0 );
+  }
+  return color;
 }
 
 QColor BiomeInfo::getBiomeWaterColor( QColor watercolor )
