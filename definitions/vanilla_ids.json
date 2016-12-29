@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "block",
-  "version": "1.11.16w40a",
+  "version": "1.11.2",
   "data": [
     {
       "id": 0,
@@ -237,7 +237,7 @@
     {
       "id": 18,
       "name": "Oak Leaves",
-      "color": "#8b8b8b",
+      "color": "#515151",
       "transparent": true,
       "rendercube": true,
       "biomeFoliage": true,
@@ -246,19 +246,19 @@
         {
           "data": 1,
           "name": "Spruce Leaves",
-          "color": "#519b5a",
+          "color": "#619961",
           "biomeFoliage": false
         },
         {
           "data": 2,
           "name": "Birch Leaves",
-          "color": "#6faa3b",
+          "color": "#80a755",
           "biomeFoliage": false
         },
         {
           "data": 3,
           "name": "Jungle Leaves",
-          "color": "#94938e",
+          "color": "#727069",
           "biomeFoliage": true
         }
       ]
@@ -2015,7 +2015,7 @@
     {
       "id": 161,
       "name": "Acacia Leaves",
-      "color": "#8b8b8b",
+      "color": "#515151",
       "transparent": true,
       "rendercube": true,
       "biomeFoliage": true,
@@ -2024,7 +2024,7 @@
         {
           "data": 1,
           "name": "Dark Oak Leaves",
-          "color": "#8b8b8b",
+          "color": "#515151",
           "biomeFoliage": true
         }
       ]

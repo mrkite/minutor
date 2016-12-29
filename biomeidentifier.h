@@ -39,6 +39,7 @@ class BiomeInfo {
   static T_BiomeCorner grassCorners[3];
   static T_BiomeCorner foliageCorners[3];
   static QColor getBiomeColor( float temperature, float humidity, int elevation, T_BiomeCorner *corners );
+  static QColor mixColor( QColor colorizer, QColor blockcolor );
 };
 
 class BiomeIdentifier {

@@ -91,6 +91,32 @@ QColor BiomeInfo::getBiomeColor( float temperature, float humidity, int elevatio
   return QColor::QColor(r,g,b);
 }
 
+QColor BiomeInfo::mixColor( QColor colorizer, QColor blockcolor )
+{
+  // get hue components
+  float hueC = colorizer.hslHueF();
+  float hueB = blockcolor.hslHueF();  // monochrome blocks result in -1
+  // get saturation components
+  float satC = colorizer.hslSaturationF();
+  float satB = blockcolor.hslSaturationF();
+  // get lightness components
+  float ligC = colorizer.lightnessF();
+  float ligB = blockcolor.lightnessF();
+
+  // mix final color
+  float hue = hueC;
+  float sat = satC;
+  if ((satB != 0) && (hueB != -1.0f)) {
+    // when block contains some color component
+    hue = (hueC + hueB ) / 2.0f;
+    sat = (satC + satB ) / 2.0f;
+  }
+//float lig = std::clamp( ligC + ligB - 0.5f, 0.0f, 1.0f );  // more brightness contrast
+  float lig = (ligC + ligB ) / 2.0f;
+  return QColor::QColor().fromHslF( hue, sat, lig );
+}
+
+
 QColor BiomeInfo::getBiomeGrassColor( QColor blockcolor, int elevation )
 {
   QColor colorizer;
@@ -118,17 +144,7 @@ QColor BiomeInfo::getBiomeGrassColor( QColor blockcolor, int elevation )
     // standard way
     colorizer = getBiomeColor( this->temperature, this->humidity, elevation, grassCorners );
 
-  QColor color;
-  if (false) {
-    color.setRed  ( colorizer.red()  /255.0f * blockcolor.red()   );
-    color.setGreen( colorizer.green()/255.0f * blockcolor.green() );
-    color.setBlue ( colorizer.blue() /255.0f * blockcolor.blue()  );
-  } else {
-    color.setRed  ( (colorizer.red()   + blockcolor.red()  ) / 2.0 );
-    color.setGreen( (colorizer.green() + blockcolor.green()) / 2.0 );
-    color.setBlue ( (colorizer.blue()  + blockcolor.blue() ) / 2.0 );
-  }
-  return color;
+  return mixColor( colorizer, blockcolor );
 }
 
 QColor BiomeInfo::getBiomeFoliageColor( QColor blockcolor, int elevation )
@@ -147,17 +163,7 @@ QColor BiomeInfo::getBiomeFoliageColor( QColor blockcolor, int elevation )
     // standard way
     colorizer = getBiomeColor( this->temperature, this->humidity, elevation, foliageCorners );
 
-  QColor color;
-  if (false) {
-    color.setRed  ( colorizer.red()  /255.0f * blockcolor.red()   );
-    color.setGreen( colorizer.green()/255.0f * blockcolor.green() );
-    color.setBlue ( colorizer.blue() /255.0f * blockcolor.blue()  );
-  } else {
-    color.setRed  ( (colorizer.red()   + blockcolor.red()  ) / 2.0 );
-    color.setGreen( (colorizer.green() + blockcolor.green()) / 2.0 );
-    color.setBlue ( (colorizer.blue()  + blockcolor.blue() ) / 2.0 );
-  }
-  return color;
+  return mixColor( colorizer, blockcolor );
 }
 
 QColor BiomeInfo::getBiomeWaterColor( QColor watercolor )
