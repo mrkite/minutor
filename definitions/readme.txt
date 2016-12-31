@@ -57,9 +57,30 @@ deobfuscated 1.8.x code is not available.
 
 
 
-Other special attribute value pairs in this file:
+Other attribute value pairs in this file:
 
-"mask": number
+"id": integer_number
+
+Numerical code used in the savegame for this block
+
+
+"name": "Name of Block"
+
+String representation of this Block, shown in status bar when hovering mouse over
+
+
+"color": "#ffffff"
+
+Color usedd for rendering this block
+
+
+"alpha": float_number
+
+In case the block is transparent (e.g. water) this defines the amount it coveres
+the block below. 0.0 is completely transparent. 1.0 is the default, a opaque block.
+
+
+"mask": integer_number
 
 In case a block has variants a mask can be given to blend out bits in the data
 field that are not used to define the block itself. These bits are mostely used
@@ -67,6 +88,17 @@ to define block orientation.
  if a block has no variants defined,   "mask":  0 is predefined
  if a block has some variants defined, "mask": 15 is predefined
 
+
+"biomeGrass": boolean
+
+When color of block is changing based on Biome and is based on the Grass Colorizer,
+this flag has to be set true. Defaults to false.
+
+
+"biomeFoliage": boolean
+
+When color of block is changing based on Biome and is based on the Foliage Colorizer,
+this flag has to be set true. Defaults to false.
 
 
 [EtlamGit]

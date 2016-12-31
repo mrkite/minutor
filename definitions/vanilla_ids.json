@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "block",
-  "version": "1.11.16w39a",
+  "version": "1.11.2",
   "data": [
     {
       "id": 0,
@@ -51,7 +51,8 @@
     {
       "id": 2,
       "name": "Grass",
-      "color": "#78bf64"
+      "color": "#939393",
+      "biomeGrass": true
     },
     {
       "id": 3,
@@ -236,25 +237,29 @@
     {
       "id": 18,
       "name": "Oak Leaves",
-      "color": "#3d9b3d",
+      "color": "#515151",
       "transparent": true,
       "rendercube": true,
+      "biomeFoliage": true,
       "mask": 3,
       "variants": [
         {
           "data": 1,
           "name": "Spruce Leaves",
-          "color": "#519b5a"
+          "color": "#619961",
+          "biomeFoliage": false
         },
         {
           "data": 2,
           "name": "Birch Leaves",
-          "color": "#6faa3b"
+          "color": "#80a755",
+          "biomeFoliage": false
         },
         {
           "data": 3,
           "name": "Jungle Leaves",
-          "color": "#649642"
+          "color": "#727069",
+          "biomeFoliage": true
         }
       ]
     },
@@ -358,12 +363,14 @@
         {
           "data": 1,
           "name": "Tall Grass",
-          "color": "#83bf54"
+          "color": "#909090",
+          "biomeGrass": true
         },
         {
           "data": 2,
           "name": "Fern",
-          "color": "#8fbb64"
+          "color": "#828282",
+          "biomeGrass": true
         }
       ]
     },
@@ -942,9 +949,10 @@
     {
       "id": 83,
       "name": "Sugar Cane",
-      "color": "#aadb74",
+      "color": "#97c06b",
       "spawninside": true,
-      "transparent": true
+      "transparent": true,
+      "biomeGrass": true
     },
     {
       "id": 84,
@@ -1296,9 +1304,10 @@
     {
       "id": 106,
       "name": "Vines",
-      "color": "#6cc44a",
+      "color": "#6f6f6f",
       "transparent": true,
-      "spawninside": true
+      "spawninside": true,
+      "biomeFoliage": true
     },
     {
       "id": 107,
@@ -2006,15 +2015,17 @@
     {
       "id": 161,
       "name": "Acacia Leaves",
-      "color": "#97a636",
+      "color": "#515151",
       "transparent": true,
       "rendercube": true,
+      "biomeFoliage": true,
       "mask": 1,
       "variants": [
         {
           "data": 1,
           "name": "Dark Oak Leaves",
-          "color": "#45751c"
+          "color": "#515151",
+          "biomeFoliage": true
         }
       ]
     },
@@ -2200,12 +2211,14 @@
         {
           "data": 2,
           "name": "Double Tallgrass",
-          "color": "#5e8328"
+          "color": "#969696",
+          "biomeGrass": true
         },
         {
           "data": 3,
           "name": "Large Fern",
-          "color": "#617b2d"
+          "color": "#828282",
+          "biomeGrass": true
         },
         {
           "data": 4,

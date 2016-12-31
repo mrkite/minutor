@@ -91,11 +91,11 @@ void MapView::clearCache() {
   redraw();
 }
 
-static int lastX = -1, lastY = -1;
+static int lastMouseX = -1, lastMouseY = -1;
 static bool dragging = false;
 void MapView::mousePressEvent(QMouseEvent *event) {
-  lastX = event->x();
-  lastY = event->y();
+  lastMouseX = event->x();
+  lastMouseY = event->y();
   dragging = true;
 }
 
@@ -116,12 +116,13 @@ void MapView::mouseMoveEvent(QMouseEvent *event) {
     getToolTip(mx, mz);
     return;
   }
-  x += (lastX-event->x()) / zoom;
-  z += (lastY-event->y()) / zoom;
-  lastX = event->x();
-  lastY = event->y();
+  x += (lastMouseX-event->x()) / zoom;
+  z += (lastMouseY-event->y()) / zoom;
+  lastMouseX = event->x();
+  lastMouseY = event->y();
   redraw();
 }
+
 void MapView::mouseReleaseEvent(QMouseEvent * /* event */) {
   dragging = false;
 }
@@ -163,6 +164,7 @@ void MapView::wheelEvent(QWheelEvent *event) {
     redraw();
   }
 }
+
 void MapView::keyPressEvent(QKeyEvent *event) {
   switch (event->key()) {
     case Qt::Key_Up:
@@ -214,6 +216,7 @@ void MapView::resizeEvent(QResizeEvent *event) {
   image = QImage(event->size(), QImage::Format_RGB32);
   redraw();
 }
+
 void MapView::paintEvent(QPaintEvent * /* event */) {
   QPainter p(this);
   p.drawImage(QPoint(0, 0), image);
@@ -303,6 +306,7 @@ void MapView::redraw() {
 
   update();
 }
+
 void MapView::drawChunk(int x, int z) {
   if (!this->isEnabled())
     return;
@@ -379,13 +383,16 @@ void MapView::renderChunk(Chunk *chunk) {
   for (int z = 0; z < 16; z++) {  // n->s
     int lasty = -1;
     for (int x = 0; x < 16; x++, offset++) {  // e->w
+      // initialize color
       uchar r = 0, g = 0, b = 0;
       double alpha = 0.0;
+      // get Biome
+      auto &biome = biomes->getBiome(chunk->biomes[offset]);
       int top = depth;
       if (top > chunk->highest)
         top = chunk->highest;
       int highest = 0;
-      for (int y = top; y >= 0; y--) {
+      for (int y = top; y >= 0; y--) {  // top->down
         int sec = y >> 4;
         ChunkSection *section = chunk->sections[sec];
         if (!section) {
@@ -394,10 +401,10 @@ void MapView::renderChunk(Chunk *chunk) {
         }
 
         // get data value
-        int data = section->getData(x, y, z);
+        int data = section->getData(offset, y);
 
         // get BlockInfo from block value
-        BlockInfo &block = blocks->getBlock(section->getBlock(x, y, z),
+        BlockInfo &block = blocks->getBlock(section->getBlock(offset, y),
                                             data);
         if (block.alpha == 0.0) continue;
 
@@ -405,9 +412,9 @@ void MapView::renderChunk(Chunk *chunk) {
         int light = 0;
         ChunkSection *section1 = NULL;
         if (y < 255)
-          section1 = chunk->sections[(y + 1) >> 4];
+          section1 = chunk->sections[(y+1) >> 4];
         if (section1)
-          light = section1->getLight(x, y + 1, z);
+          light = section1->getLight(offset, y+1);
         int light1 = light;
         if (!(flags & flgLighting))
           light = 13;
@@ -417,13 +424,28 @@ void MapView::renderChunk(Chunk *chunk) {
           else if (lasty > y)
             light -= 2;
         }
-        if (light < 0) light = 0;
-        if (light > 15) light = 15;
+//        if (light < 0) light = 0;
+//        if (light > 15) light = 15;
 
-        // define the color
-        quint32 colr = block.colors[light].red();
-        quint32 colg = block.colors[light].green();
-        quint32 colb = block.colors[light].blue();
+        // get current block color
+        QColor blockcolor = block.colors[15];  // get the color from Block definition
+        if (block.biomeWater()) {
+          blockcolor = biome.getBiomeWaterColor(blockcolor);
+        }
+        else if (block.biomeGrass()) {
+          blockcolor = biome.getBiomeGrassColor(blockcolor, y-64);
+        }
+        else if (block.biomeFoliage()) {
+          blockcolor = biome.getBiomeFoliageColor(blockcolor, y-64);
+        }
+
+        // shade color based on light value
+        double light_factor = pow(0.90,15-light);
+        quint32 colr = light_factor*blockcolor.red();
+        quint32 colg = light_factor*blockcolor.green();
+        quint32 colb = light_factor*blockcolor.blue();
+
+        // process flags
         if (flags & flgDepthShading) {
           // Use a table to define depth-relative shade:
           static const quint32 shadeTable[] = {
@@ -442,26 +464,26 @@ void MapView::renderChunk(Chunk *chunk) {
           ChunkSection *section2 = NULL;
           ChunkSection *sectionB = NULL;
           if (y < 254)
-            section2 = chunk->sections[(y + 2) >> 4];
+            section2 = chunk->sections[(y+2) >> 4];
           if (y > 0)
-            sectionB = chunk->sections[(y - 1) >> 4];
+            sectionB = chunk->sections[(y-1) >> 4];
           if (section1) {
-            blid1 = section1->getBlock(x, y + 1, z);
-            data1 = section1->getData(x, y + 1, z);
+            blid1 = section1->getBlock(offset, y+1);
+            data1 = section1->getData(offset, y+1);
           }
           if (section2) {
-            blid2 = section2->getBlock(x, y + 2, z);
-            data2 = section2->getData(x, y + 2, z);
+            blid2 = section2->getBlock(offset, y+2);
+            data2 = section2->getData(offset, y+2);
           }
           if (sectionB) {
-            blidB = sectionB->getBlock(x, y - 1, z);
-            dataB = sectionB->getData(x, y - 1, z);
+            blidB = sectionB->getBlock(offset, y-1);
+            dataB = sectionB->getData(offset, y-1);
           }
           BlockInfo &block2 = blocks->getBlock(blid2, data2);
           BlockInfo &block1 = blocks->getBlock(blid1, data1);
           BlockInfo &block0 = block;
           BlockInfo &blockB = blocks->getBlock(blidB, dataB);
-          int light0 = section->getLight(x, y, z);
+          int light0 = section->getLight(offset, y);
 
           // spawn check #1: on top of solid block
           if (block0.doesBlockHaveSolidTopSurface(data) &&
@@ -486,23 +508,26 @@ void MapView::renderChunk(Chunk *chunk) {
           }
         }
         if (flags & flgBiomeColors) {
-          auto &bi = biomes->getBiome(chunk->biomes[(x & 0xf) + (z & 0xf) * 16]);
-          colr = bi.colors[light].red();
-          colg = bi.colors[light].green();
-          colb = bi.colors[light].blue();
+          colr = biome.colors[light].red();
+          colg = biome.colors[light].green();
+          colb = biome.colors[light].blue();
           alpha = 0;
         }
+
+        // combine current block to final color
         if (alpha == 0.0) {
+          // first color sample
           alpha = block.alpha;
           r = colr;
           g = colg;
           b = colb;
           highest = y;
         } else {
+          // combine further color samples with blending
           r = (quint8)(alpha * r + (1.0 - alpha) * colr);
           g = (quint8)(alpha * g + (1.0 - alpha) * colg);
           b = (quint8)(alpha * b + (1.0 - alpha) * colb);
-          alpha+=block.alpha * (1.0 - alpha);
+          alpha += block.alpha * (1.0 - alpha);
         }
 
         // finish depth (Y) scanning when color is saturated enough

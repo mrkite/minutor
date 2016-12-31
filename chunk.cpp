@@ -62,6 +62,7 @@ void Chunk::load(const NBT &nbt) {
     }
   }
 }
+
 Chunk::~Chunk() {
   if (loaded) {
     for (int i = 0; i < 16; i++)
@@ -80,13 +81,25 @@ quint16 ChunkSection::getBlock(int x, int y, int z) {
   return blocks[xoffset + yoffset + zoffset];
 }
 
+quint16 ChunkSection::getBlock(int offset, int y) {
+  int yoffset = (y & 0x0f) << 8;
+  return blocks[offset + yoffset];
+}
+
 quint8 ChunkSection::getData(int x, int y, int z) {
   int xoffset = x;
   int yoffset = (y & 0x0f) << 8;
   int zoffset = z << 4;
   int value = data[(xoffset + yoffset + zoffset) / 2];
   if (x & 1) value >>= 4;
-  return value&0x0f;
+  return value & 0x0f;
+}
+
+quint8 ChunkSection::getData(int offset, int y) {
+  int yoffset = (y & 0x0f) << 8;
+  int value = data[(offset + yoffset) / 2];
+  if (offset & 1) value >>= 4;
+  return value & 0x0f;
 }
 
 quint8 ChunkSection::getLight(int x, int y, int z) {
@@ -95,5 +108,12 @@ quint8 ChunkSection::getLight(int x, int y, int z) {
   int zoffset = z << 4;
   int value = light[(xoffset + yoffset + zoffset) / 2];
   if (x & 1) value >>= 4;
+  return value & 0x0f;
+}
+
+quint8 ChunkSection::getLight(int offset, int y) {
+  int yoffset = (y & 0x0f) << 8;
+  int value = light[(offset + yoffset) / 2];
+  if (offset & 1) value >>= 4;
   return value & 0x0f;
 }
