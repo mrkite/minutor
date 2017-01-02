@@ -22,6 +22,7 @@
 
 DefinitionManager::DefinitionManager(QWidget *parent) :
     QWidget(parent),
+    isUpdating(false),
     entityManager(EntityIdentifier::Instance()) {
   setWindowFlags(Qt::Window);
   setWindowTitle(tr("Definitions"));

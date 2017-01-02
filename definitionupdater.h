@@ -19,7 +19,7 @@ class DefinitionUpdater : public QObject {
   void updated(DefinitionUpdater *, QString filename, QString version);
  private slots:
   void checkReply();
-  void checkVersion();
+  void checkReadyRead();
   void finishUpdate();
  private:
   QString parseVersion(const QByteArray & data);

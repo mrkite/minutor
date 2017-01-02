@@ -6,11 +6,10 @@
 #include <QtNetwork/QNetworkReply>
 #include "./definitionupdater.h"
 
-DefinitionUpdater::DefinitionUpdater(QString filename, QString url,
+DefinitionUpdater::DefinitionUpdater(QString filename,
+                                     QString url,
                                      QString version) :
-  filename(filename), url(url), version(version) {
-  save = NULL;
-}
+  filename(filename), url(url), version(version), save(NULL) {}
 
 void DefinitionUpdater::update() {
   reply = qnam.head(QNetworkRequest(url));
@@ -34,26 +33,30 @@ void DefinitionUpdater::checkReply() {
   connect(reply, SIGNAL(finished()),
           this, SLOT(finishUpdate()));
   connect(reply, SIGNAL(readyRead()),
-          this, SLOT(checkVersion()));
+          this, SLOT(checkReadyRead()));
 }
 
-void DefinitionUpdater::checkVersion() {
-  // parse reply data for version information
+void DefinitionUpdater::checkReadyRead() {
+  // get all data received at the moment (more may follow)
   const QByteArray data(reply->readAll());
-  reply->deleteLater();
-  QString remoteversion = parseVersion(data);
 
-  // check for newer version
-  if (versionCompare(remoteversion,version)>0) {
-    version = remoteversion;
-    save = new QFile(filename);
-    save->open(QIODevice::WriteOnly | QIODevice::Truncate);
-    if (save) {
-      save->write(data);
-      save->flush();
-      save->close();
-      delete save;
-      save = NULL;
+  if (save) {
+    // consecutive data received
+    // -> append it to current file
+    save->write(data);
+  } else {
+    // no file open -> first data for our request
+    // -> parse reply data for version information
+    QString remoteversion = parseVersion(data);
+
+    // check for newer version
+    if (versionCompare(remoteversion,version)>0) {
+      version = remoteversion;
+      save = new QFile(filename);
+      save->open(QIODevice::WriteOnly | QIODevice::Truncate);
+      if (save) {
+        save->write(data);
+      }
     }
   }
 }
@@ -69,6 +72,14 @@ QString DefinitionUpdater::parseVersion(const QByteArray & data) {
 }
 
 void DefinitionUpdater::finishUpdate() {
+  // close open files
+  if (save) {
+    save->flush();
+    save->close();
+    delete save;
+    save = NULL;
+  }
+  reply->deleteLater();
   emit updated(this, filename, version);
 }
 
