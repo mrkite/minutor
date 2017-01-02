@@ -8,6 +8,7 @@
 #include "./definitionmanager.h"
 #include "./blockidentifier.h"
 #include "./biomeidentifier.h"
+#include "./clamp.h"
 
 MapView::MapView(QWidget *parent) : QWidget(parent) {
   depth = 255;
@@ -441,9 +442,9 @@ void MapView::renderChunk(Chunk *chunk) {
 
         // shade color based on light value
         double light_factor = pow(0.90,15-light);
-        quint32 colr = light_factor*blockcolor.red();
-        quint32 colg = light_factor*blockcolor.green();
-        quint32 colb = light_factor*blockcolor.blue();
+        quint32 colr = std::clamp( int(light_factor*blockcolor.red()),   0, 255 );
+        quint32 colg = std::clamp( int(light_factor*blockcolor.green()), 0, 255 );
+        quint32 colb = std::clamp( int(light_factor*blockcolor.blue()),  0, 255 );
 
         // process flags
         if (flags & flgDepthShading) {
