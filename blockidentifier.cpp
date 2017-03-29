@@ -2,6 +2,7 @@
 
 #include <QDebug>
 #include <assert.h>
+#include <cmath>
 
 #include "./blockidentifier.h"
 #include "./json.h"

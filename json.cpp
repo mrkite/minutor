@@ -35,11 +35,11 @@ class JSONHelper {
       while (pos < len && data.at(pos).isLetter())
         pos++;
       QStringRef ref = data.midRef(start, pos - start);
-      if (ref.compare("null", Qt::CaseInsensitive) == 0)
+      if (ref.compare(QString("null"), Qt::CaseInsensitive) == 0)
         return TokenNULL;
-      if (ref.compare("true", Qt::CaseInsensitive) == 0)
+      if (ref.compare(QString("true"), Qt::CaseInsensitive) == 0)
         return TokenTRUE;
-      if (ref.compare("false", Qt::CaseInsensitive) == 0)
+      if (ref.compare(QString("false"), Qt::CaseInsensitive) == 0)
         return TokenFALSE;
       throw JSONParseException("Unquoted string", location());
     }
