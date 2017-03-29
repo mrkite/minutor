@@ -89,7 +89,7 @@ QColor BiomeInfo::getBiomeColor( float temperature, float humidity, int elevatio
   int g = (int)std::clamp( green, 0.0f, 255.0f );
   int b = (int)std::clamp( blue,  0.0f, 255.0f );
 
-  return QColor(r,g,b);
+  return QColor::fromRgb(r,g,b);
 }
 
 QColor BiomeInfo::mixColor( QColor colorizer, QColor blockcolor )
@@ -114,7 +114,7 @@ QColor BiomeInfo::mixColor( QColor colorizer, QColor blockcolor )
   }
 //float lig = std::clamp( ligC + ligB - 0.5f, 0.0f, 1.0f );  // more brightness contrast
   float lig = (ligC + ligB ) / 2.0f;
-  return QColor().fromHslF( hue, sat, lig );
+  return QColor::fromHslF( hue, sat, lig );
 }
 
 
@@ -128,7 +128,7 @@ QColor BiomeInfo::getBiomeGrassColor( QColor blockcolor, int elevation )
     // perlin noise generator omitted due to performance reasons
     // otherwise the random temperature distribution selects
     // (below -0.1°C) ‭4C.76.3C‬ or ‭6A.70.39 (above -0.1°C)
-    colorizer = QColor(0x6a,0x70,0x39);  // hard wired
+    colorizer = QColor::fromRgb(0x6a,0x70,0x39);  // hard wired
   }
   // roofed forest
   else if (id == 29) {
@@ -140,7 +140,7 @@ QColor BiomeInfo::getBiomeGrassColor( QColor blockcolor, int elevation )
   }
   // mesa
   else if ((id == 37) || (id == 38) || (id == 39)) {
-    colorizer = QColor(0x90,0x81,0x4d);  // hard wired
+    colorizer = QColor::fromRgb(0x90,0x81,0x4d);  // hard wired
   } else
     // standard way
     colorizer = getBiomeColor( this->temperature, this->humidity, elevation, grassCorners );
@@ -155,11 +155,11 @@ QColor BiomeInfo::getBiomeFoliageColor( QColor blockcolor, int elevation )
   int id = this->id & 0x7f;
   // swampland
   if (id == 6) {
-    colorizer = QColor(0x6a,0x70,0x39);  // hard wired
+    colorizer = QColor::fromRgb(0x6a,0x70,0x39);  // hard wired
   }
   // mesa
   else if ((id == 37) || (id == 38) || (id == 39)) {
-    colorizer = QColor(0x9e,0x81,0x4d);  // hard wired
+    colorizer = QColor::fromRgb(0x9e,0x81,0x4d);  // hard wired
   } else
     // standard way
     colorizer = getBiomeColor( this->temperature, this->humidity, elevation, foliageCorners );
@@ -175,7 +175,7 @@ QColor BiomeInfo::getBiomeWaterColor( QColor watercolor )
     int g = (int)( watercolor.green() * watermodifier.greenF() );
     int b = (int)( watercolor.blue()  * watermodifier.blueF() );
     // return combined modified color
-    return QColor(r, g, b);
+    return QColor::fromRgb(r, g, b);
   } else
     return watercolor;
 }
