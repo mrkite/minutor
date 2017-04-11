@@ -21,6 +21,7 @@ class DimensionInfo;
 class WorldSave;
 class Properties;
 class OverlayItem;
+class JumpTo;
 
 class Location {
  public:
@@ -102,6 +103,7 @@ class Minutor : public QMainWindow {
   QAction *aboutAct;
   QAction *settingsAct;
   QAction *updatesAct;
+  QAction *jumpToAct;
   QList<QAction*> structureActions;
   QList<QAction*> entityActions;
 
@@ -109,6 +111,7 @@ class Minutor : public QMainWindow {
   QList<Location> locations;
   DefinitionManager *dm;
   Settings *settings;
+  JumpTo *jumpTo;
   DimensionIdentifier *dimensions;
   QDir currentWorld;
 
