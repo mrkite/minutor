@@ -2,6 +2,7 @@
 #define JUMPTO_H
 
 #include <QDialog>
+#include <QSpinBox>
 
 namespace Ui {
 class JumpTo;
@@ -26,6 +27,7 @@ private slots:
 
 private:
   Ui::JumpTo *ui;
+  void updateSpinBoxValue(QSpinBox *spinBox, int value);
 };
 
 #endif // JUMPTO_H

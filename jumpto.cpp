@@ -16,68 +16,46 @@ JumpTo::~JumpTo()
 
 void JumpTo::on_spinBox_Block_X_valueChanged(int value)
 {
-  bool oldState = ui->spinBox_Chunk_X->blockSignals(true);
-  ui->spinBox_Chunk_X->setValue(value / 16);
-  ui->spinBox_Chunk_X->blockSignals(oldState);
-
-  oldState = ui->spinBox_Region_X->blockSignals(true);
-  ui->spinBox_Region_X->setValue(value / 512);
-  ui->spinBox_Region_X->blockSignals(oldState);
+  updateSpinBoxValue(ui->spinBox_Chunk_X, value / 16);
+  updateSpinBoxValue(ui->spinBox_Region_X, value / 512);
 }
 
 void JumpTo::on_spinBox_Block_Z_valueChanged(int value)
 {
-  bool oldState = ui->spinBox_Chunk_Z->blockSignals(true);
-  ui->spinBox_Chunk_Z->setValue(value / 16);
-  ui->spinBox_Chunk_Z->blockSignals(oldState);
-
-  oldState = ui->spinBox_Region_Z->blockSignals(true);
-  ui->spinBox_Region_Z->setValue(value / 512);
-  ui->spinBox_Region_Z->blockSignals(oldState);
+  updateSpinBoxValue(ui->spinBox_Chunk_Z, value / 16);
+  updateSpinBoxValue(ui->spinBox_Region_Z, value / 512);
 }
 
 void JumpTo::on_spinBox_Chunk_X_valueChanged(int value)
 {
-  bool oldState = ui->spinBox_Block_X->blockSignals(true);
-  ui->spinBox_Block_X->setValue(value * 16);
-  ui->spinBox_Block_X->blockSignals(oldState);
-
-  oldState = ui->spinBox_Region_X->blockSignals(true);
-  ui->spinBox_Region_X->setValue(value / 32);
-  ui->spinBox_Region_X->blockSignals(oldState);
+  updateSpinBoxValue(ui->spinBox_Block_X, value * 16);
+  updateSpinBoxValue(ui->spinBox_Region_X, value / 32);
 }
 
 void JumpTo::on_spinBox_Chunk_Z_valueChanged(int value)
 {
-  bool oldState = ui->spinBox_Block_Z->blockSignals(true);
-  ui->spinBox_Block_Z->setValue(value * 16);
-  ui->spinBox_Block_Z->blockSignals(oldState);
-
-  oldState = ui->spinBox_Region_Z->blockSignals(true);
-  ui->spinBox_Region_Z->setValue(value / 32);
-  ui->spinBox_Region_Z->blockSignals(oldState);
+  updateSpinBoxValue(ui->spinBox_Block_Z, value * 16);
+  updateSpinBoxValue(ui->spinBox_Region_Z, value / 32);
 }
 
 void JumpTo::on_spinBox_Region_X_valueChanged(int value)
 {
-  bool oldState = ui->spinBox_Block_X->blockSignals(true);
-  ui->spinBox_Block_X->setValue(value * 512);
-  ui->spinBox_Block_X->blockSignals(oldState);
-
-  oldState = ui->spinBox_Chunk_X->blockSignals(true);
-  ui->spinBox_Chunk_X->setValue(value * 32);
-  ui->spinBox_Chunk_X->blockSignals(oldState);
+  updateSpinBoxValue(ui->spinBox_Block_X, value * 512);
+  updateSpinBoxValue(ui->spinBox_Chunk_X, value * 32);
 }
 
 void JumpTo::on_spinBox_Region_Z_valueChanged(int value)
 {
-  bool oldState = ui->spinBox_Block_Z->blockSignals(true);
-  ui->spinBox_Block_Z->setValue(value * 512);
-  ui->spinBox_Block_Z->blockSignals(oldState);
+  updateSpinBoxValue(ui->spinBox_Block_Z, value * 512);
+  updateSpinBoxValue(ui->spinBox_Chunk_Z, value * 32);
+}
 
-  oldState = ui->spinBox_Chunk_Z->blockSignals(true);
-  ui->spinBox_Chunk_Z->setValue(value * 32);
-  ui->spinBox_Chunk_Z->blockSignals(oldState);
+void JumpTo::updateSpinBoxValue(QSpinBox *spinBox, int value) {
+  if (spinBox->value() != value) {
+    bool oldState = spinBox->blockSignals(true);
+    spinBox->setValue(value);
+    spinBox->blockSignals(oldState);
+  }
 }
 
 void JumpTo::on_pushButton_Jump_clicked()
