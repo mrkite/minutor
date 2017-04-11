@@ -16,7 +16,13 @@ public:
   ~JumpTo();
 
 private slots:
-  void slotApply();
+  void on_spinBox_Block_X_valueChanged(int value);
+  void on_spinBox_Block_Z_valueChanged(int value);
+  void on_spinBox_Chunk_X_valueChanged(int value);
+  void on_spinBox_Chunk_Z_valueChanged(int value);
+  void on_spinBox_Region_X_valueChanged(int value);
+  void on_spinBox_Region_Z_valueChanged(int value);
+  void on_pushButton_Jump_clicked();
 
 private:
   Ui::JumpTo *ui;
