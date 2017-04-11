@@ -20,6 +20,11 @@ void JumpTo::on_spinBox_Block_X_valueChanged(int value)
   updateSpinBoxValue(ui->spinBox_Region_X, value / 512);
 }
 
+void JumpTo::on_spinBox_Block_Y_valueChanged(int value)
+{
+  updateSpinBoxValue(ui->spinBox_Chunk_Y, value / 16);
+}
+
 void JumpTo::on_spinBox_Block_Z_valueChanged(int value)
 {
   updateSpinBoxValue(ui->spinBox_Chunk_Z, value / 16);
@@ -30,6 +35,11 @@ void JumpTo::on_spinBox_Chunk_X_valueChanged(int value)
 {
   updateSpinBoxValue(ui->spinBox_Block_X, value * 16);
   updateSpinBoxValue(ui->spinBox_Region_X, value / 32);
+}
+
+void JumpTo::on_spinBox_Chunk_Y_valueChanged(int value)
+{
+  updateSpinBoxValue(ui->spinBox_Block_Y, value * 16);
 }
 
 void JumpTo::on_spinBox_Chunk_Z_valueChanged(int value)
@@ -61,4 +71,10 @@ void JumpTo::updateSpinBoxValue(QSpinBox *spinBox, int value) {
 void JumpTo::on_pushButton_Jump_clicked()
 {
   ((Minutor*)parent())->jumpToXZ(ui->spinBox_Block_X->value(), ui->spinBox_Block_Z->value());
+}
+
+void JumpTo::on_pushButton_Get_clicked()
+{
+  ui->spinBox_Block_X->setValue(-803);
+  ui->spinBox_Block_Z->setValue(1975);
 }
