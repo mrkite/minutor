@@ -168,40 +168,40 @@ void MapView::wheelEvent(QWheelEvent *event) {
 
 void MapView::keyPressEvent(QKeyEvent *event) {
   // default: 16 blocks / 1 chunk
-  int stepSize = 16;
+  float stepSize = 16.0;
 
   if ((event->modifiers() & Qt::ShiftModifier) == Qt::ShiftModifier) {
     // 1 block for fine tuning
-    stepSize = 1;
+    stepSize = 1.0;
   }
   else if ((event->modifiers() & Qt::AltModifier) == Qt::AltModifier) {
     // 8 chunks
-    stepSize = 128;
+    stepSize = 128.0;
     if ((event->modifiers() & Qt::ControlModifier) == Qt::ControlModifier) {
       // 32 chunks / 1 Region
-      stepSize = 512;
+      stepSize = 512.0;
     }
   }
 
   switch (event->key()) {
     case Qt::Key_Up:
     case Qt::Key_W:
-      z -= stepSize;
+      z -= stepSize / zoom;
       redraw();
       break;
     case Qt::Key_Down:
     case Qt::Key_S:
-      z += stepSize;
+      z += stepSize / zoom;
       redraw();
       break;
     case Qt::Key_Left:
     case Qt::Key_A:
-      x -= stepSize;
+      x -= stepSize / zoom;
       redraw();
       break;
     case Qt::Key_Right:
     case Qt::Key_D:
-      x += stepSize;
+      x += stepSize / zoom;
       redraw();
       break;
     case Qt::Key_PageUp:
