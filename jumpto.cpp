@@ -16,48 +16,48 @@ JumpTo::~JumpTo()
 
 void JumpTo::on_spinBox_Block_X_valueChanged(int value)
 {
-  updateSpinBoxValue(ui->spinBox_Chunk_X, value / 16);
-  updateSpinBoxValue(ui->spinBox_Region_X, value / 512);
+  updateSpinBoxValue(ui->spinBox_Chunk_X, value >> 4);
+  updateSpinBoxValue(ui->spinBox_Region_X, value >> 9);
 }
 
 void JumpTo::on_spinBox_Block_Y_valueChanged(int value)
 {
-  updateSpinBoxValue(ui->spinBox_Chunk_Y, value / 16);
+  updateSpinBoxValue(ui->spinBox_Chunk_Y, value >> 4);
 }
 
 void JumpTo::on_spinBox_Block_Z_valueChanged(int value)
 {
-  updateSpinBoxValue(ui->spinBox_Chunk_Z, value / 16);
-  updateSpinBoxValue(ui->spinBox_Region_Z, value / 512);
+  updateSpinBoxValue(ui->spinBox_Chunk_Z, value >> 4);
+  updateSpinBoxValue(ui->spinBox_Region_Z, value >> 9);
 }
 
 void JumpTo::on_spinBox_Chunk_X_valueChanged(int value)
 {
-  updateSpinBoxValue(ui->spinBox_Block_X, value * 16);
-  updateSpinBoxValue(ui->spinBox_Region_X, value / 32);
+  updateSpinBoxValue(ui->spinBox_Block_X, value << 4);
+  updateSpinBoxValue(ui->spinBox_Region_X, value >> 5);
 }
 
 void JumpTo::on_spinBox_Chunk_Y_valueChanged(int value)
 {
-  updateSpinBoxValue(ui->spinBox_Block_Y, value * 16);
+  updateSpinBoxValue(ui->spinBox_Block_Y, value << 4);
 }
 
 void JumpTo::on_spinBox_Chunk_Z_valueChanged(int value)
 {
-  updateSpinBoxValue(ui->spinBox_Block_Z, value * 16);
-  updateSpinBoxValue(ui->spinBox_Region_Z, value / 32);
+  updateSpinBoxValue(ui->spinBox_Block_Z, value << 4);
+  updateSpinBoxValue(ui->spinBox_Region_Z, value >> 5);
 }
 
 void JumpTo::on_spinBox_Region_X_valueChanged(int value)
 {
-  updateSpinBoxValue(ui->spinBox_Block_X, value * 512);
-  updateSpinBoxValue(ui->spinBox_Chunk_X, value * 32);
+  updateSpinBoxValue(ui->spinBox_Block_X, value << 9);
+  updateSpinBoxValue(ui->spinBox_Chunk_X, value << 5);
 }
 
 void JumpTo::on_spinBox_Region_Z_valueChanged(int value)
 {
-  updateSpinBoxValue(ui->spinBox_Block_Z, value * 512);
-  updateSpinBoxValue(ui->spinBox_Chunk_Z, value * 32);
+  updateSpinBoxValue(ui->spinBox_Block_Z, value << 9);
+  updateSpinBoxValue(ui->spinBox_Chunk_Z, value << 5);
 }
 
 void JumpTo::updateSpinBoxValue(QSpinBox *spinBox, int value) {
