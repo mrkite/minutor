@@ -47,10 +47,10 @@
         <bool>true</bool>
        </property>
        <property name="minimum">
-        <number>-30000000</number>
+        <number>-30000128</number>
        </property>
        <property name="maximum">
-        <number>30000000</number>
+        <number>30000128</number>
        </property>
       </widget>
       <widget class="QSpinBox" name="spinBox_Block_Y">
@@ -91,10 +91,10 @@
         <bool>true</bool>
        </property>
        <property name="minimum">
-        <number>-30000000</number>
+        <number>-30000128</number>
        </property>
        <property name="maximum">
-        <number>30000000</number>
+        <number>30000128</number>
        </property>
       </widget>
       <widget class="QLabel" name="label_Block_X">
@@ -159,10 +159,10 @@
         <bool>true</bool>
        </property>
        <property name="minimum">
-        <number>-1875000</number>
+        <number>-1875008</number>
        </property>
        <property name="maximum">
-        <number>1875000</number>
+        <number>1875008</number>
        </property>
       </widget>
       <widget class="QLabel" name="label_Chunk_X">
@@ -229,10 +229,10 @@
         <bool>true</bool>
        </property>
        <property name="minimum">
-        <number>-1875000</number>
+        <number>-1875008</number>
        </property>
        <property name="maximum">
-        <number>1875000</number>
+        <number>1875008</number>
        </property>
       </widget>
       <widget class="QLabel" name="label_Chunk_Y">
@@ -271,10 +271,10 @@
         <bool>true</bool>
        </property>
        <property name="minimum">
-        <number>-58593</number>
+        <number>-58594</number>
        </property>
        <property name="maximum">
-        <number>58593</number>
+        <number>58594</number>
        </property>
       </widget>
       <widget class="QLabel" name="label_Region_Z">
@@ -319,10 +319,10 @@
         <bool>true</bool>
        </property>
        <property name="minimum">
-        <number>-58593</number>
+        <number>-58594</number>
        </property>
        <property name="maximum">
-        <number>58593</number>
+        <number>58594</number>
        </property>
       </widget>
      </widget>
