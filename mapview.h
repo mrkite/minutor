@@ -56,6 +56,7 @@ class MapView : public QWidget {
   void demandDepthChange(int value);
   void showProperties(QVariant properties);
   void addOverlayItemType(QString type, QColor color);
+  void coordinatesChanged(int x, int y, int z);
 
  protected:
   void mousePressEvent(QMouseEvent *event);

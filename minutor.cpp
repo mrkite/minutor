@@ -546,6 +546,11 @@ void Minutor::getWorldList() {
   }
 }
 
+MapView *Minutor::getMapview() const
+{
+  return mapview;
+}
+
 void Minutor::loadWorld(QDir path) {
   closeWorld();  // just in case
   currentWorld = path;

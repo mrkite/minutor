@@ -6,6 +6,11 @@ JumpTo::JumpTo(QWidget *parent) : QDialog(parent), ui(new Ui::JumpTo)
 {
   ui->setupUi(this);
 
+  ui->pushButton_Get->setEnabled(!ui->checkBox_Sync->isChecked());
+
+  mv = ((Minutor*)parent)->getMapview();
+  connect(mv, &MapView::coordinatesChanged, this, &JumpTo::updateValues);
+
   setWindowTitle(tr("Jump to location"));
 }
 
@@ -68,6 +73,14 @@ void JumpTo::updateSpinBoxValue(QSpinBox *spinBox, int value) {
   }
 }
 
+void JumpTo::updateValues(int x, int y, int z) {
+  if (ui->checkBox_Sync->isChecked()) {
+    ui->spinBox_Block_X->setValue(x);
+    ui->spinBox_Block_Y->setValue(y);
+    ui->spinBox_Block_Z->setValue(z);
+  }
+}
+
 void JumpTo::on_pushButton_Jump_clicked()
 {
   ((Minutor*)parent())->jumpToXZ(ui->spinBox_Block_X->value(), ui->spinBox_Block_Z->value());
@@ -77,4 +90,10 @@ void JumpTo::on_pushButton_Get_clicked()
 {
   ui->spinBox_Block_X->setValue(-803);
   ui->spinBox_Block_Z->setValue(1975);
+}
+
+void JumpTo::on_checkBox_Sync_stateChanged(int state)
+{
+  Q_UNUSED(state);
+  ui->pushButton_Get->setEnabled(!ui->checkBox_Sync->isChecked());
 }

@@ -48,7 +48,9 @@ class Minutor : public QMainWindow {
   void setViewBiomeColors(bool value);    // set View->Biome_Colors
   void setDepth(int value);               // set Depth-Slider
 
- private slots:
+  MapView *getMapview() const;
+
+private slots:
   void openWorld();
   void open();
   void closeWorld();

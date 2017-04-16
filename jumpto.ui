@@ -35,7 +35,7 @@
        <property name="geometry">
         <rect>
          <x>20</x>
-         <y>20</y>
+         <y>16</y>
          <width>80</width>
          <height>20</height>
         </rect>
@@ -57,7 +57,7 @@
        <property name="geometry">
         <rect>
          <x>120</x>
-         <y>20</y>
+         <y>16</y>
          <width>40</width>
          <height>20</height>
         </rect>
@@ -79,7 +79,7 @@
        <property name="geometry">
         <rect>
          <x>180</x>
-         <y>20</y>
+         <y>16</y>
          <width>80</width>
          <height>20</height>
         </rect>
@@ -101,7 +101,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>20</y>
+         <y>16</y>
          <width>10</width>
          <height>20</height>
         </rect>
@@ -114,7 +114,7 @@
        <property name="geometry">
         <rect>
          <x>110</x>
-         <y>20</y>
+         <y>16</y>
          <width>10</width>
          <height>20</height>
         </rect>
@@ -127,7 +127,7 @@
        <property name="geometry">
         <rect>
          <x>170</x>
-         <y>20</y>
+         <y>16</y>
          <width>10</width>
          <height>20</height>
         </rect>
@@ -147,7 +147,7 @@
        <property name="geometry">
         <rect>
          <x>20</x>
-         <y>20</y>
+         <y>16</y>
          <width>80</width>
          <height>20</height>
         </rect>
@@ -169,7 +169,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>20</y>
+         <y>16</y>
          <width>10</width>
          <height>20</height>
         </rect>
@@ -182,7 +182,7 @@
        <property name="geometry">
         <rect>
          <x>170</x>
-         <y>20</y>
+         <y>16</y>
          <width>10</width>
          <height>20</height>
         </rect>
@@ -195,7 +195,7 @@
        <property name="geometry">
         <rect>
          <x>120</x>
-         <y>20</y>
+         <y>16</y>
          <width>40</width>
          <height>20</height>
         </rect>
@@ -217,7 +217,7 @@
        <property name="geometry">
         <rect>
          <x>180</x>
-         <y>20</y>
+         <y>16</y>
          <width>80</width>
          <height>20</height>
         </rect>
@@ -239,7 +239,7 @@
        <property name="geometry">
         <rect>
          <x>110</x>
-         <y>20</y>
+         <y>16</y>
          <width>10</width>
          <height>20</height>
         </rect>
@@ -259,7 +259,7 @@
        <property name="geometry">
         <rect>
          <x>20</x>
-         <y>20</y>
+         <y>16</y>
          <width>80</width>
          <height>20</height>
         </rect>
@@ -281,7 +281,7 @@
        <property name="geometry">
         <rect>
          <x>170</x>
-         <y>20</y>
+         <y>16</y>
          <width>10</width>
          <height>20</height>
         </rect>
@@ -294,7 +294,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>20</y>
+         <y>16</y>
          <width>10</width>
          <height>20</height>
         </rect>
@@ -307,7 +307,7 @@
        <property name="geometry">
         <rect>
          <x>180</x>
-         <y>20</y>
+         <y>16</y>
          <width>80</width>
          <height>20</height>
         </rect>
@@ -353,6 +353,22 @@
        </property>
        <property name="text">
         <string>Get location</string>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="checkBox_Sync">
+       <property name="geometry">
+        <rect>
+         <x>104</x>
+         <y>7</y>
+         <width>50</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>Update values through map movement</string>
+       </property>
+       <property name="text">
+        <string>Sync</string>
        </property>
       </widget>
      </widget>
