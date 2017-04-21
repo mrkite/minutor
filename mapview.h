@@ -32,7 +32,7 @@ class MapView : public QWidget {
   void attach(DefinitionManager *dm);
 
   void setLocation(double x, double z);
-  void setLocation(double x, double z, bool ignoreScale);
+  void setLocation(double x, int y, double z, bool ignoreScale);
   void setDimension(QString path, int scale);
   void setFlags(int flags);
   void addOverlayItem(QSharedPointer<OverlayItem> item);
@@ -55,6 +55,7 @@ class MapView : public QWidget {
  signals:
   void hoverTextChanged(QString text);
   void demandDepthChange(int value);
+  void demandDepthValue(int value);
   void showProperties(QVariant properties);
   void addOverlayItemType(QString type, QColor color);
   void coordinatesChanged(int x, int y, int z);

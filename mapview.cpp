@@ -46,14 +46,17 @@ void MapView::attach(DefinitionManager *dm) {
 }
 
 void MapView::setLocation(double x, double z) {
-  setLocation(x, z, false);
+  setLocation(x, depth, z, false);
 }
 
-void MapView::setLocation(double x, double z, bool ignoreScale) {
+void MapView::setLocation(double x, int y, double z, bool ignoreScale) {
   this->x = ignoreScale ? x : x / scale;
   this->z = ignoreScale ? z : z / scale;
-
-  redraw();
+  if (depth != y) {
+    emit demandDepthValue(y);
+  } else {
+    redraw();
+  }
 }
 
 void MapView::setDimension(QString path, int scale) {

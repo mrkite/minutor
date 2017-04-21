@@ -79,6 +79,8 @@ Minutor::Minutor(): maxentitydistance(0) {
           mapview, SLOT(setDepth(int)));
   connect(mapview, SIGNAL(demandDepthChange(int)),
           depth, SLOT(changeValue(int)));
+  connect(mapview, SIGNAL(demandDepthValue(int)),
+          depth, SLOT(setValue(int)));
   connect(this, SIGNAL(worldLoaded(bool)),
           mapview, SLOT(setEnabled(bool)));
   connect(this, SIGNAL(worldLoaded(bool)),
