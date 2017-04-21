@@ -8,8 +8,8 @@ JumpTo::JumpTo(QWidget *parent) : QDialog(parent), ui(new Ui::JumpTo)
 
   ui->pushButton_Get->setEnabled(!ui->checkBox_Sync->isChecked());
 
-  mv = ((Minutor*)parent)->getMapview();
-  connect(mv, &MapView::coordinatesChanged, this, &JumpTo::updateValues);
+  mapview = ((Minutor*)parent)->getMapview();
+  connect(mapview, &MapView::coordinatesChanged, this, &JumpTo::updateValues);
 
   setWindowTitle(tr("Jump to location"));
 }
@@ -83,7 +83,7 @@ void JumpTo::updateValues(int x, int y, int z) {
 
 void JumpTo::on_pushButton_Jump_clicked()
 {
-  ((Minutor*)parent())->jumpToXZ(ui->spinBox_Block_X->value(), ui->spinBox_Block_Z->value());
+  mapview->setLocation(ui->spinBox_Block_X->value(), ui->spinBox_Block_Z->value(), true);
 }
 
 void JumpTo::on_pushButton_Get_clicked()

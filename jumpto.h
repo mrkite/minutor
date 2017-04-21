@@ -34,7 +34,7 @@ private slots:
 
 private:
   Ui::JumpTo *ui;
-  MapView *mv;
+  MapView *mapview;
   void updateSpinBoxValue(QSpinBox *spinBox, int value);
 };
 

@@ -32,6 +32,7 @@ class MapView : public QWidget {
   void attach(DefinitionManager *dm);
 
   void setLocation(double x, double z);
+  void setLocation(double x, double z, bool ignoreScale);
   void setDimension(QString path, int scale);
   void setFlags(int flags);
   void addOverlayItem(QSharedPointer<OverlayItem> item);

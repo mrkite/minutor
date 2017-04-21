@@ -46,8 +46,12 @@ void MapView::attach(DefinitionManager *dm) {
 }
 
 void MapView::setLocation(double x, double z) {
-  this->x = x / scale;
-  this->z = z / scale;
+  setLocation(x, z, false);
+}
+
+void MapView::setLocation(double x, double z, bool ignoreScale) {
+  this->x = ignoreScale ? x : x / scale;
+  this->z = ignoreScale ? z : z / scale;
 
   redraw();
 }
