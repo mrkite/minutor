@@ -71,7 +71,6 @@ void MapView::setDimension(QString path, int scale) {
 
 void MapView::setDepth(int depth) {
   this->depth = depth;
-  emit(coordinatesChanged(x, depth, z));
   redraw();
 }
 
@@ -122,10 +121,6 @@ void MapView::mouseMoveEvent(QMouseEvent *event) {
   z += (lastMouseY-event->y()) / zoom;
   lastMouseX = event->x();
   lastMouseY = event->y();
-
-  if (dragging) {
-    emit(coordinatesChanged(x, depth, z));
-  }
 
   redraw();
 }
@@ -233,8 +228,6 @@ void MapView::keyPressEvent(QKeyEvent *event) {
       emit demandDepthChange(-1);
       break;
   }
-
-  emit(coordinatesChanged(x, depth, z));
 }
 
 void MapView::resizeEvent(QResizeEvent *event) {
@@ -328,6 +321,8 @@ void MapView::redraw() {
       }
     }
   }
+
+  emit(coordinatesChanged(x, depth, z));
 
   update();
 }
