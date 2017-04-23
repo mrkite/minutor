@@ -325,6 +325,25 @@
         <number>58594</number>
        </property>
       </widget>
+      <widget class="QCheckBox" name="checkBox_Use_Y">
+       <property name="geometry">
+        <rect>
+         <x>110</x>
+         <y>16</y>
+         <width>50</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>Update values through map movement</string>
+       </property>
+       <property name="text">
+        <string>Height</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
      </widget>
     </item>
     <item>

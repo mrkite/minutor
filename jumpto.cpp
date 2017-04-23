@@ -83,7 +83,7 @@ void JumpTo::updateValues(int x, int y, int z) {
 
 void JumpTo::on_pushButton_Jump_clicked()
 {
-  mapview->setLocation(ui->spinBox_Block_X->value(), ui->spinBox_Block_Y->value(), ui->spinBox_Block_Z->value(), true);
+  mapview->setLocation(ui->spinBox_Block_X->value(), ui->spinBox_Block_Y->value(), ui->spinBox_Block_Z->value(), true, ui->checkBox_Use_Y->isChecked());
 }
 
 void JumpTo::on_pushButton_Get_clicked()
@@ -98,4 +98,11 @@ void JumpTo::on_checkBox_Sync_stateChanged(int state)
 {
   Q_UNUSED(state);
   ui->pushButton_Get->setEnabled(!ui->checkBox_Sync->isChecked());
+}
+
+void JumpTo::on_checkBox_Use_Y_stateChanged(int state)
+{
+  Q_UNUSED(state);
+  ui->spinBox_Block_Y->setEnabled(ui->checkBox_Use_Y->isChecked());
+  ui->spinBox_Chunk_Y->setEnabled(ui->checkBox_Use_Y->isChecked());
 }

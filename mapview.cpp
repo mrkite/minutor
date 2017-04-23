@@ -46,13 +46,13 @@ void MapView::attach(DefinitionManager *dm) {
 }
 
 void MapView::setLocation(double x, double z) {
-  setLocation(x, depth, z, false);
+  setLocation(x, depth, z, false, true);
 }
 
-void MapView::setLocation(double x, int y, double z, bool ignoreScale) {
+void MapView::setLocation(double x, int y, double z, bool ignoreScale, bool useHeight) {
   this->x = ignoreScale ? x : x / scale;
   this->z = ignoreScale ? z : z / scale;
-  if (depth != y) {
+  if (useHeight == true && depth != y) {
     emit demandDepthValue(y);
   } else {
     redraw();
