@@ -24,6 +24,11 @@ class MapView : public QWidget {
     flgBiomeColors  = 64
   };
 
+  typedef struct {
+    float x, y, z;
+    int scale;
+  } BlockLocation;
+
   explicit MapView(QWidget *parent = 0);
 
   QSize minimumSizeHint() const;
@@ -33,6 +38,7 @@ class MapView : public QWidget {
 
   void setLocation(double x, double z);
   void setLocation(double x, int y, double z, bool ignoreScale);
+  BlockLocation *getLocation();
   void setDimension(QString path, int scale);
   void setFlags(int flags);
   void addOverlayItem(QSharedPointer<OverlayItem> item);
@@ -89,6 +95,7 @@ class MapView : public QWidget {
   uchar placeholder[16 * 16 * 4];  // no chunk found placeholder
   QSet<QString> overlayItemTypes;
   QMap<QString, QList<QSharedPointer<OverlayItem>>> overlayItems;
+  BlockLocation currentLocation;
 };
 
 #endif  // MAPVIEW_H_

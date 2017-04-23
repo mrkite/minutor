@@ -59,6 +59,16 @@ void MapView::setLocation(double x, int y, double z, bool ignoreScale) {
   }
 }
 
+MapView::BlockLocation *MapView::getLocation()
+{
+  currentLocation.x = x;
+  currentLocation.y = depth;
+  currentLocation.z = z;
+  currentLocation.scale = scale;
+
+  return &currentLocation;
+}
+
 void MapView::setDimension(QString path, int scale) {
   if (scale > 0) {
     this->x *= this->scale;
