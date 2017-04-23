@@ -186,16 +186,16 @@ void MapView::wheelEvent(QWheelEvent *event) {
 
 void MapView::keyPressEvent(QKeyEvent *event) {
   // default: 16 blocks / 1 chunk
-  int stepSize = 16.0;
+  float stepSize = 16.0;
 
-  if (event->modifiers() & Qt::ShiftModifier) {
+  if ((event->modifiers() & Qt::ShiftModifier) == Qt::ShiftModifier) {
     // 1 block for fine tuning
     stepSize = 1.0;
   }
-  else if (event->modifiers() & Qt::AltModifier) {
+  else if ((event->modifiers() & Qt::AltModifier) == Qt::AltModifier) {
     // 8 chunks
     stepSize = 128.0;
-    if (event->modifiers() & (Qt::ControlModifier)) {
+    if ((event->modifiers() & Qt::ControlModifier) == Qt::ControlModifier) {
       // 32 chunks / 1 Region
       stepSize = 512.0;
     }
