@@ -6,7 +6,9 @@ JumpTo::JumpTo(QWidget *parent) : QDialog(parent), ui(new Ui::JumpTo)
 {
   ui->setupUi(this);
 
-  ui->pushButton_Get->setEnabled(!ui->checkBox_Sync->isChecked());
+  /* set the defaults */
+  ui->checkBox_Sync->setChecked(false);
+  ui->checkBox_Use_Y->setChecked(true);
 
   mapview = ((Minutor*)parent)->getMapview();
   connect(mapview, &MapView::coordinatesChanged, this, &JumpTo::updateValues);
