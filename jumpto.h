@@ -37,6 +37,8 @@ private:
   MapView *mapview;
   MapView::BlockLocation *location;
   void updateSpinBoxValue(QSpinBox *spinBox, int value);
+  void readSettings();
+  void writeSettings();
 };
 
 #endif // JUMPTO_H

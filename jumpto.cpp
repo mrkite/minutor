@@ -6,18 +6,16 @@ JumpTo::JumpTo(QWidget *parent) : QDialog(parent), ui(new Ui::JumpTo)
 {
   ui->setupUi(this);
 
-  /* set the defaults */
-  ui->checkBox_Sync->setChecked(false);
-  ui->checkBox_Use_Y->setChecked(true);
+  setWindowTitle(tr("Location"));
+  readSettings();
 
   mapview = ((Minutor*)parent)->getMapview();
   connect(mapview, &MapView::coordinatesChanged, this, &JumpTo::updateValues);
-
-  setWindowTitle(tr("Jump to location"));
 }
 
 JumpTo::~JumpTo()
 {
+  writeSettings();
   delete ui;
 }
 
@@ -73,6 +71,21 @@ void JumpTo::updateSpinBoxValue(QSpinBox *spinBox, int value) {
     spinBox->setValue(value);
     spinBox->blockSignals(oldState);
   }
+}
+
+void JumpTo::readSettings()
+{
+  QSettings settings;
+  restoreGeometry(settings.value("JumpTo/geometry").toByteArray());
+  ui->checkBox_Sync->setChecked(settings.value("JumpTo/sync", false).toBool());
+  ui->checkBox_Use_Y->setChecked(settings.value("JumpTo/useY", true).toBool());
+}
+
+void JumpTo::writeSettings() {
+  QSettings settings;
+  settings.setValue("JumpTo/geometry", saveGeometry());
+  settings.setValue("JumpTo/sync", ui->checkBox_Sync->isChecked());
+  settings.setValue("JumpTo/useY", ui->checkBox_Use_Y->isChecked());
 }
 
 void JumpTo::updateValues(int x, int y, int z) {

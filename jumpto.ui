@@ -335,7 +335,7 @@
         </rect>
        </property>
        <property name="toolTip">
-        <string>Update values through map movement</string>
+        <string>Respect Y values</string>
        </property>
        <property name="text">
         <string>Height</string>
