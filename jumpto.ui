@@ -338,7 +338,7 @@
         <string>Respect Y values</string>
        </property>
        <property name="text">
-        <string>Height</string>
+        <string>Use Y</string>
        </property>
        <property name="checked">
         <bool>true</bool>
@@ -360,6 +360,9 @@
        <property name="text">
         <string>Jump to location</string>
        </property>
+       <property name="default">
+        <bool>true</bool>
+       </property>
       </widget>
       <widget class="QPushButton" name="pushButton_Get">
        <property name="geometry">
@@ -377,9 +380,9 @@
       <widget class="QCheckBox" name="checkBox_Sync">
        <property name="geometry">
         <rect>
-         <x>104</x>
+         <x>102</x>
          <y>7</y>
-         <width>50</width>
+         <width>70</width>
          <height>20</height>
         </rect>
        </property>
@@ -387,7 +390,7 @@
         <string>Update values through map movement</string>
        </property>
        <property name="text">
-        <string>Sync</string>
+        <string>Sync map</string>
        </property>
       </widget>
      </widget>
@@ -395,6 +398,20 @@
    </layout>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>spinBox_Block_X</tabstop>
+  <tabstop>spinBox_Block_Y</tabstop>
+  <tabstop>spinBox_Block_Z</tabstop>
+  <tabstop>spinBox_Chunk_X</tabstop>
+  <tabstop>spinBox_Chunk_Y</tabstop>
+  <tabstop>spinBox_Chunk_Z</tabstop>
+  <tabstop>spinBox_Region_X</tabstop>
+  <tabstop>checkBox_Use_Y</tabstop>
+  <tabstop>spinBox_Region_Z</tabstop>
+  <tabstop>pushButton_Get</tabstop>
+  <tabstop>checkBox_Sync</tabstop>
+  <tabstop>pushButton_Jump</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
