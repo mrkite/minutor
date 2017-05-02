@@ -23,6 +23,7 @@
 #include "./properties.h"
 #include "./generatedstructure.h"
 #include "./village.h"
+#include "./jumpto.h"
 
 Minutor::Minutor(): maxentitydistance(0) {
   mapview = new MapView;
@@ -42,7 +43,7 @@ Minutor::Minutor(): maxentitydistance(0) {
   settings = new Settings(this);
   connect(settings, SIGNAL(settingsUpdated()),
           this, SLOT(rescanWorlds()));
-
+  jumpTo = new JumpTo(this);
 
   if (settings->autoUpdate) {
     // get time of last update
@@ -78,6 +79,8 @@ Minutor::Minutor(): maxentitydistance(0) {
           mapview, SLOT(setDepth(int)));
   connect(mapview, SIGNAL(demandDepthChange(int)),
           depth, SLOT(changeValue(int)));
+  connect(mapview, SIGNAL(demandDepthValue(int)),
+          depth, SLOT(setValue(int)));
   connect(this, SIGNAL(worldLoaded(bool)),
           mapview, SLOT(setEnabled(bool)));
   connect(this, SIGNAL(worldLoaded(bool)),
@@ -359,6 +362,14 @@ void Minutor::createActions() {
           this,        SLOT(toggleFlags()));
   caveModeAct->setEnabled(false);
 
+  jumpToAct = new QAction(tr("&Jump To"), this);
+  jumpToAct->setShortcut(tr("Ctrl+G"));
+  jumpToAct->setStatusTip(tr("Jump to a location"));
+  connect(jumpToAct, SIGNAL(triggered()),
+          jumpTo,    SLOT(show()));
+  connect(this,      SIGNAL(worldLoaded(bool)),
+          jumpToAct, SLOT(setEnabled(bool)));
+
   // [View->Entity Overlay]
 
   manageDefsAct = new QAction(tr("Manage &Definitions..."), this);
@@ -466,6 +477,7 @@ void Minutor::createMenus() {
   // [View]
   viewMenu = menuBar()->addMenu(tr("&View"));
   viewMenu->addAction(jumpSpawnAct);
+  viewMenu->addAction(jumpToAct);
   jumpMenu = viewMenu->addMenu(tr("&Jump to Player"));
   jumpMenu->setEnabled(false);
   dimMenu = viewMenu->addMenu(tr("&Dimension"));
@@ -534,6 +546,11 @@ void Minutor::getWorldList() {
       }
     }
   }
+}
+
+MapView *Minutor::getMapview() const
+{
+  return mapview;
 }
 
 void Minutor::loadWorld(QDir path) {
