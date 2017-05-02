@@ -21,6 +21,7 @@ class DimensionInfo;
 class WorldSave;
 class Properties;
 class OverlayItem;
+class JumpTo;
 
 class Location {
  public:
@@ -47,7 +48,9 @@ class Minutor : public QMainWindow {
   void setViewBiomeColors(bool value);    // set View->Biome_Colors
   void setDepth(int value);               // set Depth-Slider
 
- private slots:
+  MapView *getMapview() const;
+
+private slots:
   void openWorld();
   void open();
   void closeWorld();
@@ -102,6 +105,7 @@ class Minutor : public QMainWindow {
   QAction *aboutAct;
   QAction *settingsAct;
   QAction *updatesAct;
+  QAction *jumpToAct;
   QList<QAction*> structureActions;
   QList<QAction*> entityActions;
 
@@ -109,6 +113,7 @@ class Minutor : public QMainWindow {
   QList<Location> locations;
   DefinitionManager *dm;
   Settings *settings;
+  JumpTo *jumpTo;
   DimensionIdentifier *dimensions;
   QDir currentWorld;
 

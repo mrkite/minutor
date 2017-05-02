@@ -46,10 +46,27 @@ void MapView::attach(DefinitionManager *dm) {
 }
 
 void MapView::setLocation(double x, double z) {
-  this->x = x / scale;
-  this->z = z / scale;
+  setLocation(x, depth, z, false, true);
+}
 
-  redraw();
+void MapView::setLocation(double x, int y, double z, bool ignoreScale, bool useHeight) {
+  this->x = ignoreScale ? x : x / scale;
+  this->z = ignoreScale ? z : z / scale;
+  if (useHeight == true && depth != y) {
+    emit demandDepthValue(y);
+  } else {
+    redraw();
+  }
+}
+
+MapView::BlockLocation *MapView::getLocation()
+{
+  currentLocation.x = x;
+  currentLocation.y = depth;
+  currentLocation.z = z;
+  currentLocation.scale = scale;
+
+  return &currentLocation;
 }
 
 void MapView::setDimension(QString path, int scale) {
@@ -121,6 +138,7 @@ void MapView::mouseMoveEvent(QMouseEvent *event) {
   z += (lastMouseY-event->y()) / zoom;
   lastMouseX = event->x();
   lastMouseY = event->y();
+
   redraw();
 }
 
@@ -320,6 +338,8 @@ void MapView::redraw() {
       }
     }
   }
+
+  emit(coordinatesChanged(x, depth, z));
 
   update();
 }
