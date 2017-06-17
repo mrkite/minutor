@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "entity",
-  "version": "1.11.16w39a",
+  "version": "1.12.17w13a",
   "data": [
     {
       "category": "Hostile",
@@ -213,6 +213,10 @@
           "id1": "villager_golem",
           "name": "Iron Golem",
           "color": "#00ffff"
+        },
+        {
+          "id": "parrot",
+          "color": "#0000ff"
         }
       ]
     },
