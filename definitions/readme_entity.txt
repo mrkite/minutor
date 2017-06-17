@@ -33,6 +33,8 @@ The "name" is automatically copied from the "id", but can also be set individual
 As of version 1.11 the "id" was completely reworked by Mojang. Some code has been
 implemented to detect lower case changes automatically. But in case there is a
 renamed "id" it has to be given as "id1" to maintain backwards compatibility.
+Therefore old Entity ID have to be given as CamelCase, newer Entity IDs in lower
+case with underscores.
 
 
 All colors can be defined in a syntax readable by Qt::QColor::setNamedColor( QString )

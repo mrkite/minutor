@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "block",
-  "version": "1.11.2",
+  "version": "1.12.17w13a",
   "data": [
     {
       "id": 0,
@@ -1848,82 +1848,82 @@
     },
     {
       "id": 159,
-      "name": "White Stained Clay",
+      "name": "White Stained Terracotta",
       "color": "#d1b1a1",
       "variants": [
         {
           "data": 1,
-          "name": "Orange Stained Clay",
+          "name": "Orange Stained Terracotta",
           "color": "#a55728"
         },
         {
           "data": 2,
-          "name": "Magenta Stained Clay",
+          "name": "Magenta Stained Terracotta",
           "color": "#95586d"
         },
         {
           "data": 3,
-          "name": "Light Blue Stained Clay",
+          "name": "Light Blue Stained Terracotta",
           "color": "#6f6b89"
         },
         {
           "data": 4,
-          "name": "Yellow Stained Clay",
+          "name": "Yellow Stained Terracotta",
           "color": "#b9821f"
         },
         {
           "data": 5,
-          "name": "Lime Stained Clay",
+          "name": "Lime Stained Terracotta",
           "color": "#667330"
         },
         {
           "data": 6,
-          "name": "Pink Stained Clay",
+          "name": "Pink Stained Terracotta",
           "color": "#a04b4e"
         },
         {
           "data": 7,
-          "name": "Gray Stained Clay",
+          "name": "Gray Stained Terracotta",
           "color": "#3a2a24"
         },
         {
           "data": 8,
-          "name": "Silver Stained Clay",
+          "name": "Silver Stained Terracotta",
           "color": "#876b62"
         },
         {
           "data": 9,
-          "name": "Cyan Stained Clay",
+          "name": "Cyan Stained Terracotta",
           "color": "#565a5b"
         },
         {
           "data": 10,
-          "name": "Purple Stained Clay",
+          "name": "Purple Stained Terracotta",
           "color": "#734454"
         },
         {
           "data": 11,
-          "name": "Blue Stained Clay",
+          "name": "Blue Stained Terracotta",
           "color": "#4a3b5b"
         },
         {
           "data": 12,
-          "name": "Brown Stained Clay",
+          "name": "Brown Stained Terracotta",
           "color": "#4d3324"
         },
         {
           "data": 13,
-          "name": "Green Stained Clay",
+          "name": "Green Stained Terracotta",
           "color": "#4e562c"
         },
         {
           "data": 14,
-          "name": "Red Stained Clay",
+          "name": "Red Stained Terracotta",
           "color": "#8e3d2f"
         },
         {
           "data": 15,
-          "name": "Black Stained Clay",
+          "name": "Black Stained Terracotta",
           "color": "#271912"
         }
       ]
@@ -2183,7 +2183,7 @@
     },
     {
       "id": 172,
-      "name": "Hardened Clay",
+      "name": "Terracotta",
       "color": "#945a41"
     },
     {
@@ -2610,6 +2610,250 @@
       "id": 234,
       "name": "Black Shulker Box",
       "color": "#383737"
+    },
+    {
+      "id": 235,
+      "name": "White Glazed Terracotta",
+      "color": "#ede8b2"
+    },
+    {
+      "id": 236,
+      "name": "Orange Glazed Terracotta",
+      "color": "#be984e"
+    },
+    {
+      "id": 237,
+      "name": "Magenta Glazed Terracotta",
+      "color": "#cd61bb"
+    },
+    {
+      "id": 238,
+      "name": "Light Blue Glazed Terracotta",
+      "color": "#458cc4"
+    },
+    {
+      "id": 239,
+      "name": "Yellow Glazed Terracotta",
+      "color": "#fbd972"
+    },
+    {
+      "id": 240,
+      "name": "Lime Glazed Terracotta",
+      "color": "#8ac430"
+    },
+    {
+      "id": 241,
+      "name": "Pink Glazed Terracotta",
+      "color": "#e89bb4"
+    },
+    {
+      "id": 242,
+      "name": "Gray Glazed Terracotta",
+      "color": "#596063"
+    },
+    {
+      "id": 243,
+      "name": "Light Gray Glazed Terracotta",
+      "color": "#a3acaf"
+    },
+    {
+      "id": 244,
+      "name": "Cyan Glazed Terracotta",
+      "color": "#3d8285"
+    },
+    {
+      "id": 245,
+      "name": "Purple Glazed Terracotta",
+      "color": "#7c3fa7"
+    },
+    {
+      "id": 246,
+      "name": "Blue Glazed Terracotta",
+      "color": "#31458f"
+    },
+    {
+      "id": 247,
+      "name": "Brown Glazed Terracotta",
+      "color": "#956741"
+    },
+    {
+      "id": 248,
+      "name": "Green Glazed Terracotta",
+      "color": "#92a278"
+    },
+    {
+      "id": 249,
+      "name": "Red Glazed Terracotta",
+      "color": "#a92f2b"
+    },
+    {
+      "id": 250,
+      "name": "Black Glazed Terracotta",
+      "color": "#582528"
+    },
+    {
+      "id": 251,
+      "name": "White Concrete",
+      "color": "#d0d6d7",
+      "variants": [
+        {
+          "data": 1,
+          "name": "Orange Concrete",
+          "color": "#e16201"
+        },
+        {
+          "data": 2,
+          "name": "Magenta Concrete",
+          "color": "#aa31a0"
+        },
+        {
+          "data": 3,
+          "name": "Light Blue Concrete",
+          "color": "#2489c7"
+        },
+        {
+          "data": 4,
+          "name": "Yellow Concrete",
+          "color": "#f2b016"
+        },
+        {
+          "data": 5,
+          "name": "Lime Concrete",
+          "color": "#5fa919"
+        },
+        {
+          "data": 6,
+          "name": "Pink Concrete",
+          "color": "#d6658f"
+        },
+        {
+          "data": 7,
+          "name": "Gray Concrete",
+          "color": "#373a3e"
+        },
+        {
+          "data": 8,
+          "name": "Light Gray Concrete",
+          "color": "#7d7d73"
+        },
+        {
+          "data": 9,
+          "name": "Cyan Concrete",
+          "color": "#167788"
+        },
+        {
+          "data": 10,
+          "name": "Purple Concrete",
+          "color": "#65209d"
+        },
+        {
+          "data": 11,
+          "name": "Blue Concrete",
+          "color": "#2d2f90"
+        },
+        {
+          "data": 12,
+          "name": "Brown Concrete",
+          "color": "#613c20"
+        },
+        {
+          "data": 13,
+          "name": "Green Concrete",
+          "color": "#4a5c25"
+        },
+        {
+          "data": 14,
+          "name": "Red Concrete",
+          "color": "#8f2121"
+        },
+        {
+          "data": 15,
+          "name": "Black Concrete",
+          "color": "#080a0f"
+        }
+      ]
+    },
+    {
+      "id": 252,
+      "name": "White Concrete Powder",
+      "color": "#e3e5e5",
+      "variants": [
+        {
+          "data": 1,
+          "name": "Orange Concrete Powder",
+          "color": "#e48521"
+        },
+        {
+          "data": 2,
+          "name": "Magenta Concrete Powder",
+          "color": "#c154b8"
+        },
+        {
+          "data": 3,
+          "name": "Light Blue Concrete Powder",
+          "color": "#4bb6d6"
+        },
+        {
+          "data": 4,
+          "name": "Yellow Concrete Powder",
+          "color": "#e9c735"
+        },
+        {
+          "data": 5,
+          "name": "Lime Concrete Powder",
+          "color": "#7dbd2a"
+        },
+        {
+          "data": 6,
+          "name": "Pink Concrete Powder",
+          "color": "#e599b5"
+        },
+        {
+          "data": 7,
+          "name": "Gray Concrete Powder",
+          "color": "#4e5256"
+        },
+        {
+          "data": 8,
+          "name": "Light Gray Concrete Powder",
+          "color": "#9b9b94"
+        },
+        {
+          "data": 9,
+          "name": "Cyan Concrete Powder",
+          "color": "#25929c"
+        },
+        {
+          "data": 10,
+          "name": "Purple Concrete Powder",
+          "color": "#8438b2"
+        },
+        {
+          "data": 11,
+          "name": "Blue Concrete Powder",
+          "color": "#4649a7"
+        },
+        {
+          "data": 12,
+          "name": "Brown Concrete Powder",
+          "color": "#7d5536"
+        },
+        {
+          "data": 13,
+          "name": "Green Concrete Powder",
+          "color": "#61762e"
+        },
+        {
+          "data": 14,
+          "name": "Red Concrete Powder",
+          "color": "#a83633"
+        },
+        {
+          "data": 15,
+          "name": "Black Concrete Powder",
+          "color": "#1a1c21"
+        }
+      ]
     },
     {
       "id": 255,
