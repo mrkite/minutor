@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "entity",
-  "version": "1.12.17w13a",
+  "version": "1.12.17w16a",
   "data": [
     {
       "category": "Hostile",
@@ -77,6 +77,25 @@
         {
           "id": "Spider",
           "color": "#000000"
+        },
+        {
+          "id": "vindication_illager",
+          "name": "Vindicator",
+          "color": "#800080"
+        },
+        {
+          "id": "evocation_illager",
+          "name": "Evoker",
+          "color": "#800080"
+        },
+        {
+          "id": "illusion_illager",
+          "name": "Illusioner",
+          "color": "#800080"
+        },
+        {
+          "id": "vex",
+          "color": "#800080"
         },
         {
           "id": "Witch",
@@ -192,20 +211,6 @@
         },
         {
           "id": "Villager",
-          "color": "#800080"
-        },
-        {
-          "id": "vindication_illager",
-          "name": "Vindicator",
-          "color": "#800080"
-        },
-        {
-          "id": "evocation_illager",
-          "name": "Evoker",
-          "color": "#800080"
-        },
-        {
-          "id": "vex",
           "color": "#800080"
         },
         {
