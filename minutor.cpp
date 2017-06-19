@@ -276,7 +276,7 @@ void Minutor::about() {
                         "&copy; Copyright %3, %4")
                      .arg(qApp->applicationName())
                      .arg(qApp->applicationVersion())
-                     .arg(2016)
+                     .arg(2017)
                      .arg(qApp->organizationName()));
 }
 
