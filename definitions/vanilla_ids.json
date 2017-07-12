@@ -1848,82 +1848,82 @@
     },
     {
       "id": 159,
-      "name": "White Stained Terracotta",
+      "name": "White Terracotta",
       "color": "#d1b1a1",
       "variants": [
         {
           "data": 1,
-          "name": "Orange Stained Terracotta",
+          "name": "Orange Terracotta",
           "color": "#a55728"
         },
         {
           "data": 2,
-          "name": "Magenta Stained Terracotta",
+          "name": "Magenta Terracotta",
           "color": "#95586d"
         },
         {
           "data": 3,
-          "name": "Light Blue Stained Terracotta",
+          "name": "Light Blue Terracotta",
           "color": "#6f6b89"
         },
         {
           "data": 4,
-          "name": "Yellow Stained Terracotta",
+          "name": "Yellow Terracotta",
           "color": "#b9821f"
         },
         {
           "data": 5,
-          "name": "Lime Stained Terracotta",
+          "name": "Lime Terracotta",
           "color": "#667330"
         },
         {
           "data": 6,
-          "name": "Pink Stained Terracotta",
+          "name": "Pink Terracotta",
           "color": "#a04b4e"
         },
         {
           "data": 7,
-          "name": "Gray Stained Terracotta",
+          "name": "Gray Terracotta",
           "color": "#3a2a24"
         },
         {
           "data": 8,
-          "name": "Silver Stained Terracotta",
+          "name": "Silver Terracotta",
           "color": "#876b62"
         },
         {
           "data": 9,
-          "name": "Cyan Stained Terracotta",
+          "name": "Cyan Terracotta",
           "color": "#565a5b"
         },
         {
           "data": 10,
-          "name": "Purple Stained Terracotta",
+          "name": "Purple Terracotta",
           "color": "#734454"
         },
         {
           "data": 11,
-          "name": "Blue Stained Terracotta",
+          "name": "Blue Terracotta",
           "color": "#4a3b5b"
         },
         {
           "data": 12,
-          "name": "Brown Stained Terracotta",
+          "name": "Brown Terracotta",
           "color": "#4d3324"
         },
         {
           "data": 13,
-          "name": "Green Stained Terracotta",
+          "name": "Green Terracotta",
           "color": "#4e562c"
         },
         {
           "data": 14,
-          "name": "Red Stained Terracotta",
+          "name": "Red Terracotta",
           "color": "#8e3d2f"
         },
         {
           "data": 15,
-          "name": "Black Stained Terracotta",
+          "name": "Black Terracotta",
           "color": "#271912"
         }
       ]
@@ -2527,6 +2527,14 @@
       "color": "#cec9b2"
     },
     {
+      "id": 217,
+      "name": "Structure Void",
+      "color": "#ffffff",
+      "alpha": 0.0,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
       "id": 218,
       "name": "Observer",
       "color": "#535353"
@@ -2857,8 +2865,25 @@
     },
     {
       "id": 255,
-      "name": "Structure Block",
-      "color": "#000000"
+      "name": "Structure Block Save",
+      "color": "#564757",
+      "variants": [
+        {
+          "data": 1,
+          "name": "Structure Block Load",
+          "color": "#453946"
+        },
+        {
+          "data": 2,
+          "name": "Structure Block Corner",
+          "color": "#443945"
+        },
+        {
+          "data": 3,
+          "name": "Structure Block Data",
+          "color": "#4f4150"
+        }
+      ]
     }
   ],
   "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_ids.json"
