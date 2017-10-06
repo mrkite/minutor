@@ -23,10 +23,10 @@ int main(int argc, char *argv[]) {
   // Process the cmdline arguments:
   QStringList args = app.arguments();
   int numArgs = args.size();
-  int ex_top    = 0;
-  int ex_left   = 0;
-  int ex_bottom = 0;
-  int ex_right  = 0;
+  int ex_Xmin = 0;
+  int ex_Xmax = 0;
+  int ex_Zmin = 0;
+  int ex_Zmax = 0;
   bool regionChecker = false;
   bool chunkChecker = false;
   for (int i = 0; i < numArgs; i++) {
@@ -48,16 +48,16 @@ int main(int argc, char *argv[]) {
       continue;
     }
     if ((args[i] == "-r" || args[i] == "--exportrange") && i + 4 < numArgs) {
-      ex_top    = args[i + 1].toInt();
-      ex_left   = args[i + 2].toInt();
-      ex_bottom = args[i + 3].toInt();
-      ex_right  = args[i + 4].toInt();
+      ex_Xmin = args[i + 1].toInt();
+      ex_Xmax = args[i + 2].toInt();
+      ex_Zmin = args[i + 3].toInt();
+      ex_Zmax = args[i + 4].toInt();
       i += 4;
       continue;
     }
     if ((args[i] == "-s" || args[i] == "--savepng") && i + 1 < numArgs) {
       minutor.savePNG(args[i + 1], true, regionChecker, chunkChecker,
-                      ex_top, ex_left, ex_bottom, ex_right);
+                      ex_Zmin, ex_Xmin, ex_Zmax, ex_Xmax);
       i += 1;
       continue;
     }
