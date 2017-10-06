@@ -24,6 +24,7 @@
 #include "./generatedstructure.h"
 #include "./village.h"
 #include "./jumpto.h"
+#include "./pngexport.h"
 
 Minutor::Minutor(): maxentitydistance(0) {
   mapview = new MapView;
@@ -126,6 +127,15 @@ void Minutor::reload() {
 }
 
 void Minutor::save() {
+  int w_top, w_left, w_right, w_bottom;
+  WorldSave::findBounds(mapview->getWorldPath(),
+                        &w_top, &w_left, &w_bottom, &w_right);
+  PngExport pngoptions;
+  pngoptions.setBounds(w_top, w_left, w_bottom, w_right);
+  pngoptions.exec();
+  if (pngoptions.result() == QDialog::Rejected)
+    return;
+
   // get filname to save to
   QFileDialog fileDialog(this);
   fileDialog.setDefaultSuffix("png");
@@ -144,15 +154,20 @@ void Minutor::save() {
   }
 
   // save world to PNG image
-  savePNG(filename, false, false, false);
+  savePNG(filename, false,
+          pngoptions.getRegionChecker(), pngoptions.getChunkChecker(),
+          pngoptions.getTop(), pngoptions.getLeft(),
+          pngoptions.getBottom(), pngoptions.getRight());
 }
 
-void Minutor::savePNG(QString filename, bool autoclose, bool regionChecker,
-                      bool chunkChecker) {
+void Minutor::savePNG(QString filename, bool autoclose,
+                      bool regionChecker, bool chunkChecker,
+                      int w_top, int w_lef, int w_bottom, int w_right) {
   progressAutoclose = autoclose;
   if (!filename.isEmpty()) {
-    WorldSave *ws = new WorldSave(filename, mapview, regionChecker,
-                                  chunkChecker);
+    WorldSave *ws = new WorldSave(filename, mapview,
+                                  regionChecker, chunkChecker,
+                                  w_top, w_left, w_bottom, w_right);
     progress = new QProgressDialog();
     progress->setCancelButton(NULL);
     progress->setMaximum(100);

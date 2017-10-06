@@ -78,7 +78,7 @@
         <item>
          <widget class="QCheckBox" name="checkBox_AutoUpdate">
           <property name="text">
-           <string>Auto-check for updates</string>
+           <string>Auto-check for updates (every 7 days)</string>
           </property>
          </widget>
         </item>
