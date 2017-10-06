@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
   app.installTranslator(&translator);
 
   app.setApplicationName("Minutor");
-  app.setApplicationVersion("2.1.2");
+  app.setApplicationVersion("2.1.3");
   app.setOrganizationName("seancode");
 
   Minutor minutor;
@@ -23,6 +23,10 @@ int main(int argc, char *argv[]) {
   // Process the cmdline arguments:
   QStringList args = app.arguments();
   int numArgs = args.size();
+  int ex_Xmin = 0;
+  int ex_Xmax = 0;
+  int ex_Zmin = 0;
+  int ex_Zmax = 0;
   bool regionChecker = false;
   bool chunkChecker = false;
   for (int i = 0; i < numArgs; i++) {
@@ -43,8 +47,17 @@ int main(int argc, char *argv[]) {
       chunkChecker = true;
       continue;
     }
+    if ((args[i] == "-r" || args[i] == "--exportrange") && i + 4 < numArgs) {
+      ex_Xmin = args[i + 1].toInt();
+      ex_Xmax = args[i + 2].toInt();
+      ex_Zmin = args[i + 3].toInt();
+      ex_Zmax = args[i + 4].toInt();
+      i += 4;
+      continue;
+    }
     if ((args[i] == "-s" || args[i] == "--savepng") && i + 1 < numArgs) {
-      minutor.savePNG(args[i + 1], true, regionChecker, chunkChecker);
+      minutor.savePNG(args[i + 1], true, regionChecker, chunkChecker,
+                      ex_Zmin, ex_Xmin, ex_Zmax, ex_Xmax);
       i += 1;
       continue;
     }

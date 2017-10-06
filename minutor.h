@@ -38,7 +38,8 @@ class Minutor : public QMainWindow {
   void loadWorld(QDir path);
 
   void savePNG(QString filename, bool autoclose = false,
-               bool regionChecker = false, bool chunkChecker = false);
+               bool regionChecker = false, bool chunkChecker = false,
+               int w_top = 0, int w_left = 0, int w_bottom = 0, int w_right = 0);
 
   void jumpToXZ(int blockX, int blockZ);  // jumps to the block coords
   void setViewLighting(bool value);       // set View->Ligthing

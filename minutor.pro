@@ -42,7 +42,8 @@ HEADERS += \
     worldsave.h \
     zipreader.h \
     clamp.h \
-    jumpto.h
+    jumpto.h \
+    pngexport.h
 SOURCES += \
 	  labelledslider.cpp \
     biomeidentifier.cpp \
@@ -66,7 +67,8 @@ SOURCES += \
     village.cpp \
     worldsave.cpp \
     zipreader.cpp \
-    jumpto.cpp
+    jumpto.cpp \
+    pngexport.cpp
 RESOURCES = minutor.qrc
 
 win32:SOURCES += zlib/adler32.c \
@@ -95,4 +97,5 @@ INSTALLS += desktopfile pixmapfile target
 FORMS += \
     properties.ui \
     settings.ui \
-    jumpto.ui
+    jumpto.ui \
+    pngexport.ui

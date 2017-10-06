@@ -11,9 +11,17 @@
 #include "./mapview.h"
 #include "zlib/zlib.h"
 
-WorldSave::WorldSave(QString filename, MapView *map, bool regionChecker,
-                     bool chunkChecker) : filename(filename), map(map),
-  regionChecker(regionChecker), chunkChecker(chunkChecker) {
+WorldSave::WorldSave(QString filename, MapView *map,
+                     bool regionChecker, bool chunkChecker,
+                     int top, int left, int bottom, int right) :
+  filename(filename),
+  map(map),
+  top(top),
+  left(left),
+  bottom(bottom),
+  right(right),
+  regionChecker(regionChecker),
+  chunkChecker(chunkChecker) {
 }
 
 WorldSave::~WorldSave() {
@@ -46,10 +54,16 @@ void WorldSave::run() {
   emit progress(tr("Calculating world bounds"), 0.0);
   QString path = map->getWorldPath();
 
-  int top, left, right, bottom;
-  findBounds(path, &top, &left, &bottom, &right);
+  // convert from Blocks to Chunks
+  top    = top/16;
+  left   = left/16;
+  bottom = bottom/16;
+  right  = right/16;
 
-  int width = (right + 1 - left) * 16;
+  if ( top==0 && left==0 && right==0 && bottom==0)
+    findBounds(path, &top, &left, &bottom, &right);
+
+  int width  = (right + 1 - left) * 16;
   int height = (bottom + 1 - top) * 16;
 
   QFile png(filename);
