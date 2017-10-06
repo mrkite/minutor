@@ -16,3 +16,4 @@ Makefile.Release
 
 *.pdb
 *.user
+*.pro.user.*

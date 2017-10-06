@@ -162,7 +162,7 @@ void Minutor::save() {
 
 void Minutor::savePNG(QString filename, bool autoclose,
                       bool regionChecker, bool chunkChecker,
-                      int w_top, int w_lef, int w_bottom, int w_right) {
+                      int w_top, int w_left, int w_bottom, int w_right) {
   progressAutoclose = autoclose;
   if (!filename.isEmpty()) {
     WorldSave *ws = new WorldSave(filename, mapview,
