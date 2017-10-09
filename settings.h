@@ -15,6 +15,10 @@ class Settings : public QDialog {
   bool verticalDepth;
   QString mcpath;
 
+
+  /** Returns the default path to be used for Minecraft location. */
+  static QString getDefaultLocation();
+
  signals:
   void settingsUpdated();
   void locationChanged(const QString &loc);

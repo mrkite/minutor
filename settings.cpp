@@ -30,17 +30,39 @@ Settings::Settings(QWidget *parent) : QDialog(parent) {
   connect(m_ui.checkBox_AutoUpdate, SIGNAL(toggled(bool)),
           this, SLOT(toggleAutoUpdate(bool)));
 
-  // set stored settings
+  // Load the settings:
   QSettings info;
-  m_ui.checkBox_AutoUpdate->setChecked(info.value("autoupdate",
-                                                  true).toBool());
-  m_ui.lineEdit_Location->setText(info.value("mcdir", "").toString());
-  m_ui.lineEdit_Location->setDisabled(
-      m_ui.checkBox_DefaultLocation->isChecked());
-  m_ui.checkBox_DefaultLocation->setChecked(info.value("usedefault",
-                                                       true).toBool());
-  m_ui.checkBox_VerticalDepth->setChecked(info.value("verticaldepth",
-                                                     true).toBool());
+  auto useDefault = info.value("usedefault", true).toBool();
+  if (useDefault) {
+    mcpath = getDefaultLocation();
+  }
+  else {
+    mcpath = info.value("mcdir", "").toString();
+  }
+  autoUpdate = info.value("autoupdate", true).toBool();
+  verticalDepth = info.value("verticaldepth", true).toBool();
+
+  // Set the UI to the current settings' values:
+  m_ui.checkBox_AutoUpdate->setChecked(autoUpdate);
+  m_ui.lineEdit_Location->setText(mcpath);
+  m_ui.lineEdit_Location->setDisabled(useDefault);
+  m_ui.checkBox_DefaultLocation->setChecked(useDefault);
+  m_ui.checkBox_VerticalDepth->setChecked(verticalDepth);
+}
+
+QString Settings::getDefaultLocation()
+{
+#ifdef Q_OS_MAC
+  return QDir::homePath() +
+    QDir::toNativeSeparators("/Library/Application Support/minecraft");
+#elif defined Q_OS_WIN32
+  // pretend to be minecraft
+  QSettings ini(QSettings::IniFormat, QSettings::UserScope,
+        ".minecraft", "minecraft1");
+  return QFileInfo(ini.fileName()).absolutePath();
+#else
+  return QDir::homePath() + QDir::toNativeSeparators("/.minecraft");
+#endif
 }
 
 void Settings::toggleAutoUpdate(bool up) {
@@ -53,8 +75,9 @@ void Settings::toggleAutoUpdate(bool up) {
 void Settings::browseLocation(bool /* on */) {
   QString dirName = QFileDialog::getExistingDirectory(this,
                                                       tr("Find Minecraft"));
-  if (!dirName.isEmpty())
+  if (!dirName.isEmpty()) {
     emit locationChanged(dirName);
+  }
 }
 
 void Settings::pathChanged(const QString &path) {
@@ -68,22 +91,11 @@ void Settings::pathChanged(const QString &path) {
 void Settings::toggleDefaultLocation(bool def) {
   QSettings info;
   info.setValue("usedefault", def);
-  if (!def)  // we unchecked default.. but we're still technically default
+  if (!def) {  // we unchecked default.. but we're still technically default
     return;
+  }
 
-  QString mc;
-#ifdef Q_OS_MAC
-  mc = QDir::homePath() +
-      QDir::toNativeSeparators("/Library/Application Support/minecraft");
-#elif defined Q_OS_WIN32
-  // pretend to be minecraft
-  QSettings ini(QSettings::IniFormat, QSettings::UserScope,
-                ".minecraft", "minecraft1");
-  mc = QFileInfo(ini.fileName()).absolutePath();
-#else
-  mc = QDir::homePath()+QDir::toNativeSeparators("/.minecraft");
-#endif
-  emit locationChanged(mc);
+  emit locationChanged(getDefaultLocation());
 }
 
 void Settings::toggleVerticalDepth(bool value) {
