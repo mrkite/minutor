@@ -82,6 +82,9 @@ class MapView : public QWidget {
   int getY(int x, int z);
   QList<QSharedPointer<OverlayItem>> getItems(int x, int y, int z);
 
+  static const int CAVE_DEPTH = 16;  // maximum depth caves are searched in cave mode
+  float caveshade[CAVE_DEPTH];
+
   int depth;
   double x, z;
   int scale;

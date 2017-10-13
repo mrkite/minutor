@@ -375,7 +375,6 @@ void Minutor::createActions() {
   caveModeAct->setStatusTip(tr("Toggle cave mode on/off"));
   connect(caveModeAct, SIGNAL(triggered()),
           this,        SLOT(toggleFlags()));
-  caveModeAct->setEnabled(false);
 
   jumpToAct = new QAction(tr("&Jump To"), this);
   jumpToAct->setShortcut(tr("Ctrl+G"));
