@@ -28,6 +28,15 @@ MapView::MapView(QWidget *parent) : QWidget(parent) {
       placeholder[offset++] = color;
       placeholder[offset++] = 0xff;
     }
+  // calculate exponential function for cave shade
+  float cavesum = 0.0;
+  for (int i=0; i<CAVE_DEPTH; i++) {
+    caveshade[i] = 1/exp(i/(CAVE_DEPTH/2.0));
+    cavesum += caveshade[i];
+  }
+  for (int i=0; i<CAVE_DEPTH; i++) {
+    caveshade[i] = 1.5 * caveshade[i] / cavesum;
+  }
 }
 
 QSize MapView::minimumSizeHint() const {
@@ -570,6 +579,27 @@ void MapView::renderChunk(Chunk *chunk) {
         // finish depth (Y) scanning when color is saturated enough
         if (block.alpha == 1.0 || alpha > 0.9)
           break;
+      }
+      if (flags & flgCaveMode) {
+        float cave_factor = 1.0;
+        int cave_test = 0;
+        for (int y=highest-1; (y >= 0) && (cave_test < CAVE_DEPTH); y--, cave_test++) {  // top->down
+          // get section
+          ChunkSection *section = chunk->sections[y >> 4];
+          if (!section) continue;
+          // get data value
+          int data = section->getData(offset, y);
+          // get BlockInfo from block value
+          BlockInfo &block = blocks->getBlock(section->getBlock(offset, y), data);
+          if (block.transparent) {
+            cave_factor -= caveshade[cave_test];
+          }
+        }
+        cave_factor = std::max(cave_factor,0.25f);
+        // darken color by blending with cave shade factor
+        r = (quint8)(cave_factor * r);
+        g = (quint8)(cave_factor * g);
+        b = (quint8)(cave_factor * b);
       }
       *depthbits++ = lasty = highest;
       *bits++ = b;

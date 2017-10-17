@@ -89,6 +89,10 @@ int main(int argc, char *argv[]) {
       minutor.setViewBiomeColors(true);
       continue;
     }
+    if (args[i] == "-C" || args[i] == "--cavemode") {
+      minutor.setViewCavemode(true);
+      continue;
+    }
   }
 
   minutor.show();
