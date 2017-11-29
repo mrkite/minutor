@@ -21,10 +21,11 @@ uint qHash(const ChunkID &c) {
 ChunkCache::ChunkCache() {
   int chunks = 10000;  // 10% more than 1920x1200 blocks
 #if defined(__unix__) || defined(__unix) || defined(unix)
+#ifdef _SC_AVPHYS_PAGES
   auto pages = sysconf(_SC_AVPHYS_PAGES);
   auto page_size = sysconf(_SC_PAGE_SIZE);
   chunks = (pages*page_size) / (sizeof(Chunk) + 16*sizeof(ChunkSection));
-  cache.setMaxCost(chunks);
+#endif
 #elif defined(_WIN32) || defined(WIN32)
   MEMORYSTATUSEX status;
   status.dwLength = sizeof(status);
