@@ -9,18 +9,26 @@
 #include "./entity.h"
 class BlockIdentifier;
 
+class BlockData {
+ public:
+  QString name;
+  QMap<QString, QVariant> properties;
+};
+
 class ChunkSection {
  public:
-  quint16 getBlock(int x, int y, int z);
-  quint16 getBlock(int offset, int y);
-  quint8  getData(int x, int y, int z);
-  quint8  getData(int offset, int y);
-  quint8  getLight(int x, int y, int z);
-  quint8  getLight(int offset, int y);
+  QString getBlock(int x, int y, int z);
+  QString getBlock(int offset, int y);
+  quint8  getSkyLight(int x, int y, int z);
+  quint8  getSkyLight(int offset, int y);
+  quint8  getBlockLight(int x, int y, int z);
+  quint8  getBlockLight(int offset, int y);
 
+  BlockData *palette;
+  int paletteLength;
   quint16 blocks[4096];
-  quint8  data[2048];
-  quint8  light[2048];
+  quint8  skyLight[2048];
+  quint8  blockLight[2048];
 };
 
 class Chunk {
@@ -31,7 +39,7 @@ class Chunk {
  protected:
   typedef QMap<QString, QSharedPointer<OverlayItem>> EntityMap;
 
-  quint8 biomes[256];
+  quint32 biomes[256];
   int highest;
   ChunkSection *sections[16];
   int renderedAt;

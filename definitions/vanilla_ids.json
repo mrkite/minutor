@@ -1,157 +1,149 @@
 {
   "name": "Vanilla",
   "type": "block",
-  "version": "1.12.17w13a",
+  "version": "1.13",
   "data": [
     {
       "id": 0,
-      "name": "Air",
+      "name": "minecraft:air",
       "color": "#ffffff",
-      "alpha": 0.0,
+      "alpha": 0,
       "transparent": true,
       "spawninside": true
     },
     {
       "id": 1,
-      "name": "Stone",
-      "color": "#747474",
-      "variants": [
-        {
-          "data": 1,
-          "name": "Granite",
-          "color": "#977061"
-        },
-        {
-          "data": 2,
-          "name": "Polished Granite",
-          "color": "#9d7160"
-        },
-        {
-          "data": 3,
-          "name": "Diorite",
-          "color": "#b2b2b5"
-        },
-        {
-          "data": 4,
-          "name": "Polished Diorite",
-          "color": "#b9b9bc"
-        },
-        {
-          "data": 5,
-          "name": "Andesite",
-          "color": "#818181"
-        },
-        {
-          "data": 6,
-          "name": "Polished Andesite",
-          "color": "#838385"
-        }
-      ]
+      "name": "minecraft:stone",
+      "color": "#747474"
+    },
+    {
+      "id": 1,
+      "name": "minecraft:granite",
+      "color": "#977061"
     },
     {
       "id": 2,
-      "name": "Grass",
-      "color": "#939393",
-      "biomeGrass": true
+      "name": "minecraft:polished_granite",
+      "color": "#9d7160"
     },
     {
       "id": 3,
-      "name": "Dirt",
-      "color": "#835d40",
-      "variants": [
-        {
-          "data": 1,
-          "name": "Coarse Dirt",
-          "color": "#76543a"
-        },
-        {
-          "data": 2,
-          "name": "Podzol",
-          "color": "#573c1a"
-        }
-      ]
+      "name": "minecraft:diorite",
+      "color": "#b2b2b5"
     },
     {
       "id": 4,
-      "name": "Cobblestone",
+      "name": "minecraft:polished_diorite",
+      "color": "#b9b9bc"
+    },
+    {
+      "id": 5,
+      "name": "minecraft:andesite",
+      "color": "#818181"
+    },
+    {
+      "id": 6,
+      "name": "minecraft:polished_andesite",
+      "color": "#838385"
+    },
+    {
+      "id": 2,
+      "name": "minecraft:grass",
+      "color": "#939393",
+      "biomegrass": true
+    },
+    {
+      "id": 3,
+      "name": "minecraft:dirt",
+      "color": "#835d40"
+    },
+    {
+      "id": 1,
+      "name": "minecraft:coarse_dirt",
+      "color": "#76543a"
+    },
+    {
+      "id": 2,
+      "name": "minecraft:podzol",
+      "color": "#573c1a"
+    },
+    {
+      "id": 4,
+      "name": "minecraft:cobblestone",
       "color": "#8f8f8f"
     },
     {
       "id": 5,
-      "name": "Oak Wood Plank",
-      "color": "#b4905a",
-      "variants": [
-        {
-          "data": 1,
-          "name": "Spruce Wood Plank",
-          "color": "#805e36"
-        },
-        {
-          "data": 2,
-          "name": "Birch Wood Plank",
-          "color": "#c8b77a"
-        },
-        {
-          "data": 3,
-          "name": "Jungle Wood Plank",
-          "color": "#b1805c"
-        },
-        {
-          "data": 4,
-          "name": "Acacia Wood Plank",
-          "color": "#ba6337"
-        },
-        {
-          "data": 5,
-          "name": "Dark Oak Wood Plank",
-          "color": "#462d15"
-        }
-      ]
+      "name": "minecraft:oak_wood_plank",
+      "color": "#b4905a"
+    },
+    {
+      "id": 1,
+      "name": "minecraft:spruce_wood_plank",
+      "color": "#805e36"
+    },
+    {
+      "id": 2,
+      "name": "minecraft:birch_wood_plank",
+      "color": "#c8b77a"
+    },
+    {
+      "id": 3,
+      "name": "minecraft:jungle_wood_plank",
+      "color": "#b1805c"
+    },
+    {
+      "id": 4,
+      "name": "minecraft:acacia_wood_plank",
+      "color": "#ba6337"
+    },
+    {
+      "id": 5,
+      "name": "minecraft:dark_oak_wood_plank",
+      "color": "#462d15"
     },
     {
       "id": 6,
-      "name": "Oak Sapling",
+      "name": "minecraft:oak_sapling",
       "color": "#1f6519",
       "alpha": 0.3,
       "mask": 7,
       "transparent": true,
-      "spawninside": true,
-      "variants": [
-        {
-          "data": 1,
-          "name": "Spruce Sapling",
-          "color": "#395a39"
-        },
-        {
-          "data": 2,
-          "name": "Birch Sapling",
-          "color": "#51742d"
-        },
-        {
-          "data": 3,
-          "name": "Jungle Sapling",
-          "color": "#2c6c18"
-        },
-        {
-          "data": 4,
-          "name": "Acacia Sapling",
-          "color": "#677e17"
-        },
-        {
-          "data": 5,
-          "name": "Dark Oak Sapling",
-          "color": "#105210"
-        }
-      ]
+      "spawninside": true
+    },
+    {
+      "id": 1,
+      "name": "minecraft:spruce_sapling",
+      "color": "#395a39"
+    },
+    {
+      "id": 2,
+      "name": "minecraft:birch_sapling",
+      "color": "#51742d"
+    },
+    {
+      "id": 3,
+      "name": "minecraft:jungle_sapling",
+      "color": "#2c6c18"
+    },
+    {
+      "id": 4,
+      "name": "minecraft:acacia_sapling",
+      "color": "#677e17"
+    },
+    {
+      "id": 5,
+      "name": "minecraft:dark_oak_sapling",
+      "color": "#105210"
     },
     {
       "id": 7,
-      "name": "Bedrock",
+      "name": "minecraft:bedrock",
       "color": "#333333"
     },
     {
       "id": 8,
-      "name": "Water (flowing)",
+      "name": "minecraft:water_(flowing)",
       "color": "#1f55ff",
       "alpha": 0.53,
       "transparent": true,
@@ -159,7 +151,7 @@
     },
     {
       "id": 9,
-      "name": "Water",
+      "name": "minecraft:water",
       "color": "#1f55ff",
       "alpha": 0.53,
       "transparent": true,
@@ -167,216 +159,204 @@
     },
     {
       "id": 10,
-      "name": "Lava (flowing)",
+      "name": "minecraft:lava_(flowing)",
       "color": "#fc5700",
       "transparent": true,
       "liquid": true
     },
     {
       "id": 11,
-      "name": "Lava",
+      "name": "minecraft:lava",
       "color": "#fc5700",
       "transparent": true,
       "liquid": true
     },
     {
       "id": 12,
-      "name": "Sand",
-      "color": "#d6cf97",
-      "variants": [
-        {
-          "data": 1,
-          "name": "Red Sand",
-          "color": "#a6551e"
-        }
-      ]
+      "name": "minecraft:sand",
+      "color": "#d6cf97"
+    },
+    {
+      "id": 1,
+      "name": "minecraft:red_sand",
+      "color": "#a6551e"
     },
     {
       "id": 13,
-      "name": "Gravel",
+      "name": "minecraft:gravel",
       "color": "#817f7f"
     },
     {
       "id": 14,
-      "name": "Gold Ore",
+      "name": "minecraft:gold_ore",
       "color": "#fcee4b"
     },
     {
       "id": 15,
-      "name": "Iron Ore",
+      "name": "minecraft:iron_ore",
       "color": "#af8e77"
     },
     {
       "id": 16,
-      "name": "Coal Ore",
+      "name": "minecraft:coal_ore",
       "color": "#454545"
     },
     {
       "id": 17,
-      "name": "Oak Wood",
+      "name": "minecraft:oak_wood",
       "color": "#665130",
-      "mask": 3,
-      "variants": [
-        {
-          "data": 1,
-          "name": "Spruce Wood",
-          "color": "#2e1d0a"
-        },
-        {
-          "data": 2,
-          "name": "Birch Wood",
-          "color": "#d6dad6"
-        },
-        {
-          "data": 3,
-          "name": "Jungle Wood",
-          "color": "#584219"
-        }
-      ]
+      "mask": 3
+    },
+    {
+      "id": 1,
+      "name": "minecraft:spruce_wood",
+      "color": "#2e1d0a"
+    },
+    {
+      "id": 2,
+      "name": "minecraft:birch_wood",
+      "color": "#d6dad6"
+    },
+    {
+      "id": 3,
+      "name": "minecraft:jungle_wood",
+      "color": "#584219"
     },
     {
       "id": 18,
-      "name": "Oak Leaves",
+      "name": "minecraft:oak_leaves",
       "color": "#515151",
       "transparent": true,
       "rendercube": true,
-      "biomeFoliage": true,
-      "mask": 3,
-      "variants": [
-        {
-          "data": 1,
-          "name": "Spruce Leaves",
-          "color": "#619961",
-          "biomeFoliage": false
-        },
-        {
-          "data": 2,
-          "name": "Birch Leaves",
-          "color": "#80a755",
-          "biomeFoliage": false
-        },
-        {
-          "data": 3,
-          "name": "Jungle Leaves",
-          "color": "#727069",
-          "biomeFoliage": true
-        }
-      ]
+      "biomefoliage": true,
+      "mask": 3
+    },
+    {
+      "id": 1,
+      "name": "minecraft:spruce_leaves",
+      "color": "#619961",
+      "biomefoliage": false
+    },
+    {
+      "id": 2,
+      "name": "minecraft:birch_leaves",
+      "color": "#80a755",
+      "biomefoliage": false
+    },
+    {
+      "id": 3,
+      "name": "minecraft:jungle_leaves",
+      "color": "#727069",
+      "biomefoliage": true
     },
     {
       "id": 19,
-      "name": "Sponge",
-      "color": "#c3c455",
-      "variants": [
-        {
-          "data": 1,
-          "name": "Wet Sponge",
-          "color": "#a09f3f"
-        }
-      ]
+      "name": "minecraft:sponge",
+      "color": "#c3c455"
+    },
+    {
+      "id": 1,
+      "name": "minecraft:wet_sponge",
+      "color": "#a09f3f"
     },
     {
       "id": 20,
-      "name": "Glass",
+      "name": "minecraft:glass",
       "color": "#c0f5fe",
       "alpha": 0.5,
       "transparent": true
     },
     {
       "id": 21,
-      "name": "Lapis Lazuli Ore",
+      "name": "minecraft:lapis_lazuli_ore",
       "color": "#1b43ad"
     },
     {
       "id": 22,
-      "name": "Lapis Lazuli Block",
+      "name": "minecraft:lapis_lazuli_block",
       "color": "#0f26b8"
     },
     {
       "id": 23,
-      "name": "Dispenser",
+      "name": "minecraft:dispenser",
       "color": "#848484"
     },
     {
       "id": 24,
-      "name": "Sandstone",
-      "color": "#dfd7a5",
-      "variants": [
-        {
-          "data": 1,
-          "name": "Chiseled Sandstone",
-          "color": "#ddd8ab"
-        },
-        {
-          "data": 2,
-          "name": "Smooth Sandstone",
-          "color": "#d9d29a"
-        }
-      ]
+      "name": "minecraft:sandstone",
+      "color": "#dfd7a5"
+    },
+    {
+      "id": 1,
+      "name": "minecraft:chiseled_sandstone",
+      "color": "#ddd8ab"
+    },
+    {
+      "id": 2,
+      "name": "minecraft:smooth_sandstone",
+      "color": "#d9d29a"
     },
     {
       "id": 25,
-      "name": "Note Block",
+      "name": "minecraft:note_block",
       "color": "#915840"
     },
     {
       "id": 26,
-      "name": "Bed",
+      "name": "minecraft:bed",
       "color": "#8c1616",
       "transparent": true
     },
     {
       "id": 27,
-      "name": "Powered Rail",
+      "name": "minecraft:powered_rail",
       "color": "#ab0301",
       "transparent": true,
       "spawninside": true
     },
     {
       "id": 28,
-      "name": "Detector Rail",
+      "name": "minecraft:detector_rail",
       "color": "#7d7171",
       "transparent": true,
       "spawninside": true,
-      "canProvidePower": true
+      "canprovidepower": true
     },
     {
       "id": 29,
-      "name": "Sticky Piston",
+      "name": "minecraft:sticky_piston",
       "color": "#7bc070",
       "transparent": true
     },
     {
       "id": 30,
-      "name": "Cobweb",
+      "name": "minecraft:cobweb",
       "color": "#ededed",
       "transparent": true
     },
     {
       "id": 31,
-      "name": "Dead Shrub",
+      "name": "minecraft:dead_shrub",
       "color": "#946428",
       "alpha": 0.3,
       "transparent": true,
-      "spawninside": true,
-      "variants": [
-        {
-          "data": 1,
-          "name": "Tall Grass",
-          "color": "#909090",
-          "biomeGrass": true
-        },
-        {
-          "data": 2,
-          "name": "Fern",
-          "color": "#828282",
-          "biomeGrass": true
-        }
-      ]
+      "spawninside": true
+    },
+    {
+      "id": 1,
+      "name": "minecraft:tall_grass",
+      "color": "#909090",
+      "biomegrass": true
+    },
+    {
+      "id": 2,
+      "name": "minecraft:fern",
+      "color": "#828282",
+      "biomegrass": true
     },
     {
       "id": 32,
-      "name": "Dead Bush",
+      "name": "minecraft:dead_bush",
       "color": "#946428",
       "transparent": true,
       "spawninside": true,
@@ -384,105 +364,103 @@
     },
     {
       "id": 33,
-      "name": "Piston",
+      "name": "minecraft:piston",
       "color": "#9f844d",
       "transparent": true
     },
     {
       "id": 34,
-      "name": "Piston Head",
+      "name": "minecraft:piston_head",
       "color": "#b4905a"
     },
     {
       "id": 35,
-      "name": "White Wool",
-      "color": "#eaeaea",
-      "variants": [
-        {
-          "data": 1,
-          "name": "Orange Wool",
-          "color": "#db7b3b"
-        },
-        {
-          "data": 2,
-          "name": "Magenta Wool",
-          "color": "#af44b8"
-        },
-        {
-          "data": 3,
-          "name": "Light Blue Wool",
-          "color": "#7e99d0"
-        },
-        {
-          "data": 4,
-          "name": "Yellow Wool",
-          "color": "#bcb02a"
-        },
-        {
-          "data": 5,
-          "name": "Lime Wool",
-          "color": "#44b93b"
-        },
-        {
-          "data": 6,
-          "name": "Pink Wool",
-          "color": "#d28a9e"
-        },
-        {
-          "data": 7,
-          "name": "Gray Wool",
-          "color": "#454545"
-        },
-        {
-          "data": 8,
-          "name": "Light Gray Wool",
-          "color": "#909898"
-        },
-        {
-          "data": 9,
-          "name": "Cyan Wool",
-          "color": "#30728e"
-        },
-        {
-          "data": 10,
-          "name": "Purple Wool",
-          "color": "#7737ad"
-        },
-        {
-          "data": 11,
-          "name": "Blue Wool",
-          "color": "#2b3585"
-        },
-        {
-          "data": 12,
-          "name": "Brown Wool",
-          "color": "#563822"
-        },
-        {
-          "data": 13,
-          "name": "Green Wool",
-          "color": "#314119"
-        },
-        {
-          "data": 14,
-          "name": "Red Wool",
-          "color": "#91312f"
-        },
-        {
-          "data": 15,
-          "name": "Black Wool",
-          "color": "#1d1b1b"
-        }
-      ]
+      "name": "minecraft:white_wool",
+      "color": "#eaeaea"
+    },
+    {
+      "id": 1,
+      "name": "minecraft:orange_wool",
+      "color": "#db7b3b"
+    },
+    {
+      "id": 2,
+      "name": "minecraft:magenta_wool",
+      "color": "#af44b8"
+    },
+    {
+      "id": 3,
+      "name": "minecraft:light_blue_wool",
+      "color": "#7e99d0"
+    },
+    {
+      "id": 4,
+      "name": "minecraft:yellow_wool",
+      "color": "#bcb02a"
+    },
+    {
+      "id": 5,
+      "name": "minecraft:lime_wool",
+      "color": "#44b93b"
+    },
+    {
+      "id": 6,
+      "name": "minecraft:pink_wool",
+      "color": "#d28a9e"
+    },
+    {
+      "id": 7,
+      "name": "minecraft:gray_wool",
+      "color": "#454545"
+    },
+    {
+      "id": 8,
+      "name": "minecraft:light_gray_wool",
+      "color": "#909898"
+    },
+    {
+      "id": 9,
+      "name": "minecraft:cyan_wool",
+      "color": "#30728e"
+    },
+    {
+      "id": 10,
+      "name": "minecraft:purple_wool",
+      "color": "#7737ad"
+    },
+    {
+      "id": 11,
+      "name": "minecraft:blue_wool",
+      "color": "#2b3585"
+    },
+    {
+      "id": 12,
+      "name": "minecraft:brown_wool",
+      "color": "#563822"
+    },
+    {
+      "id": 13,
+      "name": "minecraft:green_wool",
+      "color": "#314119"
+    },
+    {
+      "id": 14,
+      "name": "minecraft:red_wool",
+      "color": "#91312f"
+    },
+    {
+      "id": 15,
+      "name": "minecraft:black_wool",
+      "color": "#1d1b1b"
     },
     {
       "id": 36,
-      "name": "Piston Extension",
+      "name": "minecraft:piston_extension",
       "color": "#b4905a"
     },
     {
       "id": 37,
-      "name": "Dandelion",
+      "name": "minecraft:dandelion",
       "color": "#f1f902",
       "transparent": true,
       "spawninside": true,
@@ -490,57 +468,55 @@
     },
     {
       "id": 38,
-      "name": "Poppy",
+      "name": "minecraft:poppy",
       "color": "#ba050b",
       "transparent": true,
       "spawninside": true,
-      "alpha": 0.3,
-      "variants": [
-        {
-          "data": 1,
-          "name": "Blue Orchid",
-          "color": "#29aefb"
-        },
-        {
-          "data": 2,
-          "name": "Allium",
-          "color": "#b865fb"
-        },
-        {
-          "data": 3,
-          "name": "Azure Bluet",
-          "color": "#e4eaf2"
-        },
-        {
-          "data": 4,
-          "name": "Red Tulip",
-          "color": "#d33a17"
-        },
-        {
-          "data": 5,
-          "name": "Orange Tulip",
-          "color": "#de731f"
-        },
-        {
-          "data": 6,
-          "name": "White Tulip",
-          "color": "#e7e7e7"
-        },
-        {
-          "data": 7,
-          "name": "Pink Tulip",
-          "color": "#eabeea"
-        },
-        {
-          "data": 8,
-          "name": "Oxeye Daisy",
-          "color": "#eae6ad"
-        }
-      ]
+      "alpha": 0.3
+    },
+    {
+      "id": 1,
+      "name": "minecraft:blue_orchid",
+      "color": "#29aefb"
+    },
+    {
+      "id": 2,
+      "name": "minecraft:allium",
+      "color": "#b865fb"
+    },
+    {
+      "id": 3,
+      "name": "minecraft:azure_bluet",
+      "color": "#e4eaf2"
+    },
+    {
+      "id": 4,
+      "name": "minecraft:red_tulip",
+      "color": "#d33a17"
+    },
+    {
+      "id": 5,
+      "name": "minecraft:orange_tulip",
+      "color": "#de731f"
+    },
+    {
+      "id": 6,
+      "name": "minecraft:white_tulip",
+      "color": "#e7e7e7"
+    },
+    {
+      "id": 7,
+      "name": "minecraft:pink_tulip",
+      "color": "#eabeea"
+    },
+    {
+      "id": 8,
+      "name": "minecraft:oxeye_daisy",
+      "color": "#eae6ad"
     },
     {
       "id": 39,
-      "name": "Brown Mushroom",
+      "name": "minecraft:brown_mushroom",
       "color": "#916d55",
       "transparent": true,
       "spawninside": true,
@@ -548,7 +524,7 @@
     },
     {
       "id": 40,
-      "name": "Red Mushroom",
+      "name": "minecraft:red_mushroom",
       "color": "#e21212",
       "transparent": true,
       "spawninside": true,
@@ -556,375 +532,367 @@
     },
     {
       "id": 41,
-      "name": "Block of Gold",
+      "name": "minecraft:block_of_gold",
       "color": "#fdfb4f"
     },
     {
       "id": 42,
-      "name": "Block of Iron",
+      "name": "minecraft:block_of_iron",
       "color": "#e6e6e6"
     },
     {
       "id": 43,
-      "name": "Double Stone Slab",
-      "color": "#a3a3a3",
-      "variants": [
-        {
-          "data": 1,
-          "name": "Double Sandstone Slab",
-          "color": "#d7ce95"
-        },
-        {
-          "data": 2,
-          "name": "Double Wooden Slab",
-          "color": "#b4905a"
-        },
-        {
-          "data": 3,
-          "name": "Double Cobblestone Slab",
-          "color": "#8f8f8f"
-        },
-        {
-          "data": 4,
-          "name": "Double Bricks Slab",
-          "color": "#7c4536"
-        },
-        {
-          "data": 5,
-          "name": "Double Stone Brick Slab",
-          "color": "#797979"
-        },
-        {
-          "data": 6,
-          "name": "Double Nether Brick Slab",
-          "color": "#30181c"
-        },
-        {
-          "data": 7,
-          "name": "Double Quartz Slab",
-          "color": "#f0eee8"
-        },
-        {
-          "data": 8,
-          "name": "Full Stone Slab",
-          "color": "#9c9c9c"
-        },
-        {
-          "data": 9,
-          "name": "Full Sandstone Slab",
-          "color": "#d7cf9c"
-        }
-      ]
+      "name": "minecraft:double_stone_slab",
+      "color": "#a3a3a3"
+    },
+    {
+      "id": 1,
+      "name": "minecraft:double_sandstone_slab",
+      "color": "#d7ce95"
+    },
+    {
+      "id": 2,
+      "name": "minecraft:double_wooden_slab",
+      "color": "#b4905a"
+    },
+    {
+      "id": 3,
+      "name": "minecraft:double_cobblestone_slab",
+      "color": "#8f8f8f"
+    },
+    {
+      "id": 4,
+      "name": "minecraft:double_bricks_slab",
+      "color": "#7c4536"
+    },
+    {
+      "id": 5,
+      "name": "minecraft:double_stone_brick_slab",
+      "color": "#797979"
+    },
+    {
+      "id": 6,
+      "name": "minecraft:double_nether_brick_slab",
+      "color": "#30181c"
+    },
+    {
+      "id": 7,
+      "name": "minecraft:double_quartz_slab",
+      "color": "#f0eee8"
+    },
+    {
+      "id": 8,
+      "name": "minecraft:full_stone_slab",
+      "color": "#9c9c9c"
+    },
+    {
+      "id": 9,
+      "name": "minecraft:full_sandstone_slab",
+      "color": "#d7cf9c"
     },
     {
       "id": 44,
-      "name": "Stone Slab",
+      "name": "minecraft:stone_slab",
       "color": "#a3a3a3",
-      "transparent": true,
-      "variants": [
-        {
-          "data": 1,
-          "name": "Sandstone Slab",
-          "color": "#d7ce95"
-        },
-        {
-          "data": 2,
-          "name": "Wooden Slab",
-          "color": "#b4905a"
-        },
-        {
-          "data": 3,
-          "name": "Cobblestone Slab",
-          "color": "#8f8f8f"
-        },
-        {
-          "data": 4,
-          "name": "Brick Slab",
-          "color": "#7c4536"
-        },
-        {
-          "data": 5,
-          "name": "Stone Brick Slab",
-          "color": "#797979"
-        },
-        {
-          "data": 6,
-          "name": "Nether Brick Slab",
-          "color": "#30181c"
-        },
-        {
-          "data": 7,
-          "name": "Quartz Slab",
-          "color": "#f0eee8"
-        },
-        {
-          "data": 8,
-          "name": "Upper Stone Slab",
-          "color": "#a3a3a3"
-        },
-        {
-          "data": 9,
-          "name": "Upper Sandstone Slab",
-          "color": "#d7ce95"
-        },
-        {
-          "data": 10,
-          "name": "Upper Wooden Slab",
-          "color": "#b4905a"
-        },
-        {
-          "data": 11,
-          "name": "Upper Cobblestone Slab",
-          "color": "#8f8f8f"
-        },
-        {
-          "data": 12,
-          "name": "Upper Brick Slab",
-          "color": "#7c4536"
-        },
-        {
-          "data": 13,
-          "name": "Upper Stone Brick Slab",
-          "color": "#797979"
-        },
-        {
-          "data": 14,
-          "name": "Upper Nether Brick Slab",
-          "color": "#30181c"
-        },
-        {
-          "data": 15,
-          "name": "Upper Quartz Slab",
-          "color": "#f0eee8"
-        }
-      ]
+      "transparent": true
+    },
+    {
+      "id": 1,
+      "name": "minecraft:sandstone_slab",
+      "color": "#d7ce95"
+    },
+    {
+      "id": 2,
+      "name": "minecraft:wooden_slab",
+      "color": "#b4905a"
+    },
+    {
+      "id": 3,
+      "name": "minecraft:cobblestone_slab",
+      "color": "#8f8f8f"
+    },
+    {
+      "id": 4,
+      "name": "minecraft:brick_slab",
+      "color": "#7c4536"
+    },
+    {
+      "id": 5,
+      "name": "minecraft:stone_brick_slab",
+      "color": "#797979"
+    },
+    {
+      "id": 6,
+      "name": "minecraft:nether_brick_slab",
+      "color": "#30181c"
+    },
+    {
+      "id": 7,
+      "name": "minecraft:quartz_slab",
+      "color": "#f0eee8"
+    },
+    {
+      "id": 8,
+      "name": "minecraft:upper_stone_slab",
+      "color": "#a3a3a3"
+    },
+    {
+      "id": 9,
+      "name": "minecraft:upper_sandstone_slab",
+      "color": "#d7ce95"
+    },
+    {
+      "id": 10,
+      "name": "minecraft:upper_wooden_slab",
+      "color": "#b4905a"
+    },
+    {
+      "id": 11,
+      "name": "minecraft:upper_cobblestone_slab",
+      "color": "#8f8f8f"
+    },
+    {
+      "id": 12,
+      "name": "minecraft:upper_brick_slab",
+      "color": "#7c4536"
+    },
+    {
+      "id": 13,
+      "name": "minecraft:upper_stone_brick_slab",
+      "color": "#797979"
+    },
+    {
+      "id": 14,
+      "name": "minecraft:upper_nether_brick_slab",
+      "color": "#30181c"
+    },
+    {
+      "id": 15,
+      "name": "minecraft:upper_quartz_slab",
+      "color": "#f0eee8"
     },
     {
       "id": 45,
-      "name": "Bricks",
+      "name": "minecraft:bricks",
       "color": "#6a3b2e"
     },
     {
       "id": 46,
-      "name": "TNT",
+      "name": "minecraft:tnt",
       "color": "#a83414",
       "transparent": true
     },
     {
       "id": 47,
-      "name": "Bookshelf",
+      "name": "minecraft:bookshelf",
       "color": "#9f844d"
     },
     {
       "id": 48,
-      "name": "Moss Stone",
+      "name": "minecraft:moss_stone",
       "color": "#3a623a"
     },
     {
       "id": 49,
-      "name": "Obsidian",
+      "name": "minecraft:obsidian",
       "color": "#0e0e16"
     },
     {
       "id": 50,
-      "name": "Torch",
+      "name": "minecraft:torch",
       "color": "#ffd800",
       "transparent": true
     },
     {
       "id": 51,
-      "name": "Fire",
+      "name": "minecraft:fire",
       "color": "#ff8f00",
       "transparent": true
     },
     {
       "id": 52,
-      "name": "Monster Spawner",
+      "name": "minecraft:monster_spawner",
       "color": "#1b2a35",
       "transparent": true,
       "rendercube": true
     },
     {
       "id": 53,
-      "name": "Oak Wood Stairs",
+      "name": "minecraft:oak_wood_stairs",
       "color": "#9f844d",
       "transparent": true
     },
     {
       "id": 54,
-      "name": "Chest",
+      "name": "minecraft:chest",
       "color": "#976b20",
       "transparent": true
     },
     {
       "id": 55,
-      "name": "Redstone Wire",
+      "name": "minecraft:redstone_wire",
       "color": "#d60000",
       "transparent": true
     },
     {
       "id": 56,
-      "name": "Diamond Ore",
+      "name": "minecraft:diamond_ore",
       "color": "#5decf5"
     },
     {
       "id": 57,
-      "name": "Block of Diamond",
+      "name": "minecraft:block_of_diamond",
       "color": "#91e8e4"
     },
     {
       "id": 58,
-      "name": "Crafting Table",
+      "name": "minecraft:crafting_table",
       "color": "#a0693c"
     },
     {
       "id": 59,
-      "name": "Immature Wheat",
+      "name": "minecraft:immature_wheat",
       "color": "#8ba803",
-      "transparent": true,
-      "variants": [
-        {
-          "data": 7,
-          "name": "Grown Wheat",
-          "color": "#8e7c10"
-        }
-      ]
+      "transparent": true
+    },
+    {
+      "id": 7,
+      "name": "minecraft:grown_wheat",
+      "color": "#8e7c10"
     },
     {
       "id": 60,
-      "name": "Wet Farmland",
+      "name": "minecraft:wet_farmland",
       "color": "#43240b",
-      "transparent": true,
-      "variants": [
-        {
-          "data": 0,
-          "name": "Dry Farmland",
-          "color": "#633f24"
-        }
-      ]
+      "transparent": true
+    },
+    {
+      "id": 0,
+      "name": "minecraft:dry_farmland",
+      "color": "#633f24"
     },
     {
       "id": 61,
-      "name": "Furnace",
+      "name": "minecraft:furnace",
       "color": "#535353"
     },
     {
       "id": 62,
-      "name": "Burning Furnace",
+      "name": "minecraft:burning_furnace",
       "color": "#535353"
     },
     {
       "id": 63,
-      "name": "Sign Post",
+      "name": "minecraft:sign_post",
       "color": "#9f844d",
       "transparent": true,
       "spawninside": true
     },
     {
       "id": 64,
-      "name": "Oak Door",
+      "name": "minecraft:oak_door",
       "color": "#b0572a",
       "transparent": true
     },
     {
       "id": 65,
-      "name": "Ladder",
+      "name": "minecraft:ladder",
       "color": "#8e733c",
       "transparent": true,
       "spawninside": true
     },
     {
       "id": 66,
-      "name": "Rail",
+      "name": "minecraft:rail",
       "color": "#a4a4a4",
       "transparent": true,
       "spawninside": true
     },
     {
       "id": 67,
-      "name": "Cobblestone Stairs",
+      "name": "minecraft:cobblestone_stairs",
       "color": "#565656",
       "transparent": true
     },
     {
       "id": 68,
-      "name": "Wall Sign",
+      "name": "minecraft:wall_sign",
       "color": "#b4905a",
       "transparent": true,
       "spawninside": true
     },
     {
       "id": 69,
-      "name": "Lever",
+      "name": "minecraft:lever",
       "color": "#735e39",
       "transparent": true,
       "spawninside": true,
-      "canProvidePower": true
+      "canprovidepower": true
     },
     {
       "id": 70,
-      "name": "Stone Pressure Plate",
+      "name": "minecraft:stone_pressure_plate",
       "color": "#8f8f8f",
       "transparent": true,
       "spawninside": true,
-      "canProvidePower": true
+      "canprovidepower": true
     },
     {
       "id": 71,
-      "name": "Iron Door",
+      "name": "minecraft:iron_door",
       "color": "#b6b6b6",
       "transparent": true
     },
     {
       "id": 72,
-      "name": "Wooden Pressure Plate",
+      "name": "minecraft:wooden_pressure_plate",
       "color": "#bc9862",
       "transparent": true,
       "spawninside": true,
-      "canProvidePower": true
+      "canprovidepower": true
     },
     {
       "id": 73,
-      "name": "Redstone Ore",
+      "name": "minecraft:redstone_ore",
       "color": "#8f0303"
     },
     {
       "id": 74,
-      "name": "Redstone Ore (glowing)",
+      "name": "minecraft:redstone_ore_(glowing)",
       "color": "#8f0303"
     },
     {
       "id": 75,
-      "name": "Redstone Torch (off)",
+      "name": "minecraft:redstone_torch_(off)",
       "color": "#480000",
       "transparent": true,
-      "canProvidePower": true
+      "canprovidepower": true
     },
     {
       "id": 76,
-      "name": "Redstone Torch (on)",
+      "name": "minecraft:redstone_torch_(on)",
       "color": "#fd0000",
       "transparent": true,
-      "canProvidePower": true
+      "canprovidepower": true
     },
     {
       "id": 77,
-      "name": "Stone Button",
+      "name": "minecraft:stone_button",
       "color": "#a8a8a8",
       "transparent": true,
       "spawninside": true,
-      "canProvidePower": true
+      "canprovidepower": true
     },
     {
       "id": 78,
-      "name": "Snow",
+      "name": "minecraft:snow",
       "color": "#eeffff",
       "spawninside": true,
       "transparent": true
     },
     {
       "id": 79,
-      "name": "Ice",
+      "name": "minecraft:ice",
       "color": "#77a9ff",
       "alpha": 0.62,
       "transparent": true,
@@ -932,1575 +900,1521 @@
     },
     {
       "id": 80,
-      "name": "Snow Block",
+      "name": "minecraft:snow_block",
       "color": "#eeffff"
     },
     {
       "id": 81,
-      "name": "Cactus",
+      "name": "minecraft:cactus",
       "color": "#107e1d",
       "transparent": true
     },
     {
       "id": 82,
-      "name": "Clay Block",
+      "name": "minecraft:clay_block",
       "color": "#9da3ae"
     },
     {
       "id": 83,
-      "name": "Sugar Cane",
+      "name": "minecraft:sugar_cane",
       "color": "#97c06b",
       "spawninside": true,
       "transparent": true,
-      "biomeGrass": true
+      "biomegrass": true
     },
     {
       "id": 84,
-      "name": "Jukebox",
+      "name": "minecraft:jukebox",
       "color": "#945f44"
     },
     {
       "id": 85,
-      "name": "Oak Fence",
+      "name": "minecraft:oak_fence",
       "color": "#b4905a",
       "alpha": 0.75,
       "transparent": true
     },
     {
       "id": 86,
-      "name": "Pumpkin",
+      "name": "minecraft:pumpkin",
       "color": "#e3901d"
     },
     {
       "id": 87,
-      "name": "Netherrack",
+      "name": "minecraft:netherrack",
       "color": "#955744"
     },
     {
       "id": 88,
-      "name": "Soul Sand",
+      "name": "minecraft:soul_sand",
       "color": "#554134"
     },
     {
       "id": 89,
-      "name": "Glowstone Block",
+      "name": "minecraft:glowstone_block",
       "color": "#f9d49c"
     },
     {
       "id": 90,
-      "name": "Nether Portal",
+      "name": "minecraft:nether_portal",
       "color": "#d67fff",
       "transparent": true
     },
     {
       "id": 91,
-      "name": "Jack o'Lantern",
+      "name": "minecraft:jack_o'lantern",
       "color": "#e9b416"
     },
     {
       "id": 92,
-      "name": "Cake",
+      "name": "minecraft:cake",
       "color": "#eae9eb",
       "transparent": true
     },
     {
       "id": 93,
-      "name": "Redstone Repeater (off)",
+      "name": "minecraft:redstone_repeater_(off)",
       "color": "#2a0002",
       "transparent": true,
-      "canProvidePower": true
+      "canprovidepower": true
     },
     {
       "id": 94,
-      "name": "Redstone Repeater (on)",
+      "name": "minecraft:redstone_repeater_(on)",
       "color": "#fd0101",
       "transparent": true,
-      "canProvidePower": true
+      "canprovidepower": true
     },
     {
       "id": 95,
-      "name": "White Stained Glass",
+      "name": "minecraft:white_stained_glass",
       "color": "#ffffff",
       "transparent": true,
-      "alpha": 0.5,
-      "variants": [
-        {
-          "data": 1,
-          "name": "Orange Stained Glass",
-          "color": "#d87f33"
-        },
-        {
-          "data": 2,
-          "name": "Magenta Stained Glass",
-          "color": "#b24cd8"
-        },
-        {
-          "data": 3,
-          "name": "Light Blue Stained Glass",
-          "color": "#6699d8"
-        },
-        {
-          "data": 4,
-          "name": "Yellow Stained Glass",
-          "color": "#e5e533"
-        },
-        {
-          "data": 5,
-          "name": "Lime Stained Glass",
-          "color": "#7fcc19"
-        },
-        {
-          "data": 6,
-          "name": "Pink Stained Glass",
-          "color": "#f27fa5"
-        },
-        {
-          "data": 7,
-          "name": "Gray Stained Glass",
-          "color": "#4c4c4c"
-        },
-        {
-          "data": 8,
-          "name": "Silver Stained Glass",
-          "color": "#999999"
-        },
-        {
-          "data": 9,
-          "name": "Cyan Stained Glass",
-          "color": "#4c7f99"
-        },
-        {
-          "data": 10,
-          "name": "Purple Stained Glass",
-          "color": "#7f3fb2"
-        },
-        {
-          "data": 11,
-          "name": "Blue Stained Glass",
-          "color": "#334cb2"
-        },
-        {
-          "data": 12,
-          "name": "Brown Stained Glass",
-          "color": "#664c33"
-        },
-        {
-          "data": 13,
-          "name": "Green Stained Glass",
-          "color": "#667f33"
-        },
-        {
-          "data": 14,
-          "name": "Red Stained Glass",
-          "color": "#993333"
-        },
-        {
-          "data": 15,
-          "name": "Black Stained Glass",
-          "color": "#191919"
-        }
-      ]
+      "alpha": 0.5
+    },
+    {
+      "id": 1,
+      "name": "minecraft:orange_stained_glass",
+      "color": "#d87f33"
+    },
+    {
+      "id": 2,
+      "name": "minecraft:magenta_stained_glass",
+      "color": "#b24cd8"
+    },
+    {
+      "id": 3,
+      "name": "minecraft:light_blue_stained_glass",
+      "color": "#6699d8"
+    },
+    {
+      "id": 4,
+      "name": "minecraft:yellow_stained_glass",
+      "color": "#e5e533"
+    },
+    {
+      "id": 5,
+      "name": "minecraft:lime_stained_glass",
+      "color": "#7fcc19"
+    },
+    {
+      "id": 6,
+      "name": "minecraft:pink_stained_glass",
+      "color": "#f27fa5"
+    },
+    {
+      "id": 7,
+      "name": "minecraft:gray_stained_glass",
+      "color": "#4c4c4c"
+    },
+    {
+      "id": 8,
+      "name": "minecraft:silver_stained_glass",
+      "color": "#999999"
+    },
+    {
+      "id": 9,
+      "name": "minecraft:cyan_stained_glass",
+      "color": "#4c7f99"
+    },
+    {
+      "id": 10,
+      "name": "minecraft:purple_stained_glass",
+      "color": "#7f3fb2"
+    },
+    {
+      "id": 11,
+      "name": "minecraft:blue_stained_glass",
+      "color": "#334cb2"
+    },
+    {
+      "id": 12,
+      "name": "minecraft:brown_stained_glass",
+      "color": "#664c33"
+    },
+    {
+      "id": 13,
+      "name": "minecraft:green_stained_glass",
+      "color": "#667f33"
+    },
+    {
+      "id": 14,
+      "name": "minecraft:red_stained_glass",
+      "color": "#993333"
+    },
+    {
+      "id": 15,
+      "name": "minecraft:black_stained_glass",
+      "color": "#191919"
     },
     {
       "id": 96,
-      "name": "Wooden Trapdoor",
+      "name": "minecraft:wooden_trapdoor",
       "color": "#7c5a2a",
       "transparent": true
     },
     {
       "id": 97,
-      "name": "Stone Monster Egg",
-      "color": "#7a7a7a",
-      "variants": [
-        {
-          "data": 1,
-          "name": "Cobblestone Monster Egg",
-          "color": "#787878"
-        },
-        {
-          "data": 2,
-          "name": "Stone Brick Monster Egg",
-          "color": "#777777"
-        },
-        {
-          "data": 3,
-          "name": "Mossy Stone Brick Monster Egg",
-          "color": "#707467"
-        },
-        {
-          "data": 4,
-          "name": "Cracked Stone Brick Monster Egg",
-          "color": "#747474"
-        },
-        {
-          "data": 5,
-          "name": "Chiseled Stone Brick Monster Egg",
-          "color": "#747474"
-        }
-      ]
+      "name": "minecraft:stone_monster_egg",
+      "color": "#7a7a7a"
+    },
+    {
+      "id": 1,
+      "name": "minecraft:cobblestone_monster_egg",
+      "color": "#787878"
+    },
+    {
+      "id": 2,
+      "name": "minecraft:stone_brick_monster_egg",
+      "color": "#777777"
+    },
+    {
+      "id": 3,
+      "name": "minecraft:mossy_stone_brick_monster_egg",
+      "color": "#707467"
+    },
+    {
+      "id": 4,
+      "name": "minecraft:cracked_stone_brick_monster_egg",
+      "color": "#747474"
+    },
+    {
+      "id": 5,
+      "name": "minecraft:chiseled_stone_brick_monster_egg",
+      "color": "#747474"
     },
     {
       "id": 98,
-      "name": "Stone Brick",
-      "color": "#797979",
-      "variants": [
-        {
-          "data": 1,
-          "name": "Mossy Stone Brick",
-          "color": "#637049"
-        },
-        {
-          "data": 2,
-          "name": "Cracked Stone Brick",
-          "color": "#656565"
-        },
-        {
-          "data": 3,
-          "name": "Chiseled Stone Brick",
-          "color": "#9c9c9c"
-        }
-      ]
+      "name": "minecraft:stone_brick",
+      "color": "#797979"
+    },
+    {
+      "id": 1,
+      "name": "minecraft:mossy_stone_brick",
+      "color": "#637049"
+    },
+    {
+      "id": 2,
+      "name": "minecraft:cracked_stone_brick",
+      "color": "#656565"
+    },
+    {
+      "id": 3,
+      "name": "minecraft:chiseled_stone_brick",
+      "color": "#9c9c9c"
     },
     {
       "id": 99,
-      "name": "Huge Brown Mushroom",
-      "color": "#d2b17d",
-      "variants": [
-        {
-          "data": 1,
-          "color": "#8f6b53"
-        },
-        {
-          "data": 2,
-          "color": "#8f6b53"
-        },
-        {
-          "data": 3,
-          "color": "#8f6b53"
-        },
-        {
-          "data": 4,
-          "color": "#8f6b53"
-        },
-        {
-          "data": 5,
-          "color": "#8f6b53"
-        },
-        {
-          "data": 6,
-          "color": "#8f6b53"
-        },
-        {
-          "data": 7,
-          "color": "#8f6b53"
-        },
-        {
-          "data": 8,
-          "color": "#8f6b53"
-        },
-        {
-          "data": 9,
-          "color": "#8f6b53"
-        },
-        {
-          "data": 10,
-          "color": "#d2b17d"
-        },
-        {
-          "data": 14,
-          "color": "#8f6b53"
-        },
-        {
-          "data": 15,
-          "color": "#cdc9bf"
-        }
-      ]
+      "name": "minecraft:huge_brown_mushroom",
+      "color": "#d2b17d"
+    },
+    {
+      "id": 1,
+      "color": "#8f6b53"
+    },
+    {
+      "id": 2,
+      "color": "#8f6b53"
+    },
+    {
+      "id": 3,
+      "color": "#8f6b53"
+    },
+    {
+      "id": 4,
+      "color": "#8f6b53"
+    },
+    {
+      "id": 5,
+      "color": "#8f6b53"
+    },
+    {
+      "id": 6,
+      "color": "#8f6b53"
+    },
+    {
+      "id": 7,
+      "color": "#8f6b53"
+    },
+    {
+      "id": 8,
+      "color": "#8f6b53"
+    },
+    {
+      "id": 9,
+      "color": "#8f6b53"
+    },
+    {
+      "id": 10,
+      "color": "#d2b17d"
+    },
+    {
+      "id": 14,
+      "color": "#8f6b53"
+    },
+    {
+      "id": 15,
+      "color": "#cdc9bf"
     },
     {
       "id": 100,
-      "name": "Huge Red Mushroom",
-      "color": "#d2b17d",
-      "variants": [
-        {
-          "data": 1,
-          "color": "#b51d1b"
-        },
-        {
-          "data": 2,
-          "color": "#b51d1b"
-        },
-        {
-          "data": 3,
-          "color": "#b51d1b"
-        },
-        {
-          "data": 4,
-          "color": "#b51d1b"
-        },
-        {
-          "data": 5,
-          "color": "#b51d1b"
-        },
-        {
-          "data": 6,
-          "color": "#b51d1b"
-        },
-        {
-          "data": 7,
-          "color": "#b51d1b"
-        },
-        {
-          "data": 8,
-          "color": "#b51d1b"
-        },
-        {
-          "data": 9,
-          "color": "#b51d1b"
-        },
-        {
-          "data": 10,
-          "color": "#d2b17d"
-        },
-        {
-          "data": 14,
-          "color": "#b51d1b"
-        },
-        {
-          "data": 15,
-          "color": "#cdc9bf"
-        }
-      ]
+      "name": "minecraft:huge_red_mushroom",
+      "color": "#d2b17d"
+    },
+    {
+      "id": 1,
+      "color": "#b51d1b"
+    },
+    {
+      "id": 2,
+      "color": "#b51d1b"
+    },
+    {
+      "id": 3,
+      "color": "#b51d1b"
+    },
+    {
+      "id": 4,
+      "color": "#b51d1b"
+    },
+    {
+      "id": 5,
+      "color": "#b51d1b"
+    },
+    {
+      "id": 6,
+      "color": "#b51d1b"
+    },
+    {
+      "id": 7,
+      "color": "#b51d1b"
+    },
+    {
+      "id": 8,
+      "color": "#b51d1b"
+    },
+    {
+      "id": 9,
+      "color": "#b51d1b"
+    },
+    {
+      "id": 10,
+      "color": "#d2b17d"
+    },
+    {
+      "id": 14,
+      "color": "#b51d1b"
+    },
+    {
+      "id": 15,
+      "color": "#cdc9bf"
     },
     {
       "id": 101,
-      "name": "Iron Bars",
+      "name": "minecraft:iron_bars",
       "color": "#6d6e6e",
       "transparent": true
     },
     {
       "id": 102,
-      "name": "Glass Pane",
+      "name": "minecraft:glass_pane",
       "color": "#c0f5fe",
       "alpha": 0.5,
       "transparent": true
     },
     {
       "id": 103,
-      "name": "Melon",
+      "name": "minecraft:melon",
       "color": "#adb82c"
     },
     {
       "id": 104,
-      "name": "Pumpkin Stem",
+      "name": "minecraft:pumpkin_stem",
       "color": "#6b6b0b",
       "transparent": true
     },
     {
       "id": 105,
-      "name": "Melon Stem",
+      "name": "minecraft:melon_stem",
       "color": "#6b6b0b",
       "transparent": true
     },
     {
       "id": 106,
-      "name": "Vines",
+      "name": "minecraft:vines",
       "color": "#6f6f6f",
       "transparent": true,
       "spawninside": true,
-      "biomeFoliage": true
+      "biomefoliage": true
     },
     {
       "id": 107,
-      "name": "Oak Fence Gate",
+      "name": "minecraft:oak_fence_gate",
       "color": "#b4905a",
       "alpha": 0.75,
       "transparent": true
     },
     {
       "id": 108,
-      "name": "Brick Stairs",
+      "name": "minecraft:brick_stairs",
       "color": "#7c4536",
       "transparent": true
     },
     {
       "id": 109,
-      "name": "Stone Brick Stairs",
+      "name": "minecraft:stone_brick_stairs",
       "color": "#727272",
       "transparent": true
     },
     {
       "id": 110,
-      "name": "Mycelium",
+      "name": "minecraft:mycelium",
       "color": "#806b6f"
     },
     {
       "id": 111,
-      "name": "Lily Pad",
+      "name": "minecraft:lily_pad",
       "color": "#88bf54",
       "transparent": true
     },
     {
       "id": 112,
-      "name": "Nether Brick",
+      "name": "minecraft:nether_brick",
       "color": "#30181c"
     },
     {
       "id": 113,
-      "name": "Nether Brick Fence",
+      "name": "minecraft:nether_brick_fence",
       "color": "#1c0e10",
       "transparent": true
     },
     {
       "id": 114,
-      "name": "Nether Brick Stairs",
+      "name": "minecraft:nether_brick_stairs",
       "color": "#381a1f",
       "transparent": true
     },
     {
       "id": 115,
-      "name": "Immature Nether Wart",
+      "name": "minecraft:immature_nether_wart",
       "color": "#70081c",
-      "transparent": true,
-      "variants": [
-        {
-          "data": 3,
-          "name": "Mature Nether Wart",
-          "color": "#8e181b"
-        }
-      ]
+      "transparent": true
+    },
+    {
+      "id": 3,
+      "name": "minecraft:mature_nether_wart",
+      "color": "#8e181b"
     },
     {
       "id": 116,
-      "name": "Enchantment Table",
+      "name": "minecraft:enchantment_table",
       "color": "#3c3056",
       "transparent": true
     },
     {
       "id": 117,
-      "name": "Brewing Stand",
+      "name": "minecraft:brewing_stand",
       "color": "#bea84a",
       "transparent": true
     },
     {
       "id": 118,
-      "name": "Cauldron",
+      "name": "minecraft:cauldron",
       "color": "#4d4d4d",
       "transparent": true
     },
     {
       "id": 119,
-      "name": "End Portal",
+      "name": "minecraft:end_portal",
       "color": "#0c0b0a",
       "transparent": true
     },
     {
       "id": 120,
-      "name": "End Portal Frame",
+      "name": "minecraft:end_portal_frame",
       "color": "#2f5754",
       "mask": 4,
       "transparent": true,
-      "rendercube": true,
-      "variants": [
-        {
-          "data": 4,
-          "name": "End Portal Frame (on)",
-          "color": "#406852"
-        }
-      ]
+      "rendercube": true
+    },
+    {
+      "id": 4,
+      "name": "minecraft:end_portal_frame_(on)",
+      "color": "#406852"
     },
     {
       "id": 121,
-      "name": "End Stone",
+      "name": "minecraft:end_stone",
       "color": "#d9dc9e"
     },
     {
       "id": 122,
-      "name": "Dragon Egg",
+      "name": "minecraft:dragon_egg",
       "color": "#2d0133"
     },
     {
       "id": 123,
-      "name": "Redstone Lamp (off)",
+      "name": "minecraft:redstone_lamp_(off)",
       "color": "#b0744c"
     },
     {
       "id": 124,
-      "name": "Redstone Lamp (on)",
+      "name": "minecraft:redstone_lamp_(on)",
       "color": "#f1d1af",
       "transparent": true
     },
     {
       "id": 125,
-      "name": "Double Oak Wood Slab",
-      "color": "#b4905a",
-      "variants": [
-        {
-          "data": 1,
-          "name": "Double Spruce Wood Slab",
-          "color": "#664f2f"
-        },
-        {
-          "data": 2,
-          "name": "Double Birch Wood Slab",
-          "color": "#d7cb8d"
-        },
-        {
-          "data": 3,
-          "name": "Double Jungle Wood Slab",
-          "color": "#b1805c"
-        },
-        {
-          "data": 4,
-          "name": "Double Acacia Wood Slab",
-          "color": "#ad5d32"
-        },
-        {
-          "data": 5,
-          "name": "Double Dark Oak Wood Slab",
-          "color": "#462d15"
-        }
-      ]
+      "name": "minecraft:double_oak_wood_slab",
+      "color": "#b4905a"
+    },
+    {
+      "id": 1,
+      "name": "minecraft:double_spruce_wood_slab",
+      "color": "#664f2f"
+    },
+    {
+      "id": 2,
+      "name": "minecraft:double_birch_wood_slab",
+      "color": "#d7cb8d"
+    },
+    {
+      "id": 3,
+      "name": "minecraft:double_jungle_wood_slab",
+      "color": "#b1805c"
+    },
+    {
+      "id": 4,
+      "name": "minecraft:double_acacia_wood_slab",
+      "color": "#ad5d32"
+    },
+    {
+      "id": 5,
+      "name": "minecraft:double_dark_oak_wood_slab",
+      "color": "#462d15"
     },
     {
       "id": 126,
-      "name": "Oak Wood Slab",
+      "name": "minecraft:oak_wood_slab",
       "color": "#b4905a",
-      "transparent": true,
-      "variants": [
-        {
-          "data": 1,
-          "name": "Spruce Wood Slab",
-          "color": "#664f2f"
-        },
-        {
-          "data": 2,
-          "name": "Birch Wood Slab",
-          "color": "#d7cb8d"
-        },
-        {
-          "data": 3,
-          "name": "Jungle Wood Slab",
-          "color": "#b1805c"
-        },
-        {
-          "data": 4,
-          "name": "Acacia Wood Slab",
-          "color": "#ba6337"
-        },
-        {
-          "data": 5,
-          "name": "Dark Oak Wood Slab",
-          "color": "#462d15"
-        },
-        {
-          "data": 8,
-          "name": "Upper Oak Wood Slab",
-          "color": "#b4905a"
-        },
-        {
-          "data": 9,
-          "name": "Upper Spruce Wood Slab",
-          "color": "#664f2f"
-        },
-        {
-          "data": 10,
-          "name": "Upper Birch Wood Slab",
-          "color": "#d7cb8d"
-        },
-        {
-          "data": 11,
-          "name": "Upper Jungle Wood Slab",
-          "color": "#b1805c"
-        },
-        {
-          "data": 12,
-          "name": "Upper Acacia Wood Slab",
-          "color": "#ba6337"
-        },
-        {
-          "data": 13,
-          "name": "Upper Dark Oak Wood Slab",
-          "color": "#462d15"
-        }
-      ]
+      "transparent": true
+    },
+    {
+      "id": 1,
+      "name": "minecraft:spruce_wood_slab",
+      "color": "#664f2f"
+    },
+    {
+      "id": 2,
+      "name": "minecraft:birch_wood_slab",
+      "color": "#d7cb8d"
+    },
+    {
+      "id": 3,
+      "name": "minecraft:jungle_wood_slab",
+      "color": "#b1805c"
+    },
+    {
+      "id": 4,
+      "name": "minecraft:acacia_wood_slab",
+      "color": "#ba6337"
+    },
+    {
+      "id": 5,
+      "name": "minecraft:dark_oak_wood_slab",
+      "color": "#462d15"
+    },
+    {
+      "id": 8,
+      "name": "minecraft:upper_oak_wood_slab",
+      "color": "#b4905a"
+    },
+    {
+      "id": 9,
+      "name": "minecraft:upper_spruce_wood_slab",
+      "color": "#664f2f"
+    },
+    {
+      "id": 10,
+      "name": "minecraft:upper_birch_wood_slab",
+      "color": "#d7cb8d"
+    },
+    {
+      "id": 11,
+      "name": "minecraft:upper_jungle_wood_slab",
+      "color": "#b1805c"
+    },
+    {
+      "id": 12,
+      "name": "minecraft:upper_acacia_wood_slab",
+      "color": "#ba6337"
+    },
+    {
+      "id": 13,
+      "name": "minecraft:upper_dark_oak_wood_slab",
+      "color": "#462d15"
     },
     {
       "id": 127,
-      "name": "Immature Cocoa Pod",
+      "name": "minecraft:immature_cocoa_pod",
       "color": "#929943",
       "transparent": true,
       "spawninside": true,
-      "mask": 12,
-      "variants": [
-        {
-          "data": 8,
-          "name": "Mature Cocoa Pod",
-          "color": "#d4924c"
-        }
-      ]
+      "mask": 12
+    },
+    {
+      "id": 8,
+      "name": "minecraft:mature_cocoa_pod",
+      "color": "#d4924c"
     },
     {
       "id": 128,
-      "name": "Sandstone Stairs",
+      "name": "minecraft:sandstone_stairs",
       "color": "#e9e0b3",
       "transparent": true
     },
     {
       "id": 129,
-      "name": "Emerald Ore",
+      "name": "minecraft:emerald_ore",
       "color": "#17dd62"
     },
     {
       "id": 130,
-      "name": "Ender Chest",
+      "name": "minecraft:ender_chest",
       "color": "#2d4042",
       "transparent": true
     },
     {
       "id": 131,
-      "name": "Tripwire Hook",
+      "name": "minecraft:tripwire_hook",
       "color": "#6e6e6e",
       "transparent": true,
       "spawninside": true,
-      "canProvidePower": true
+      "canprovidepower": true
     },
     {
       "id": 132,
-      "name": "Tripwire",
+      "name": "minecraft:tripwire",
       "color": "#ebebeb",
       "transparent": true
     },
     {
       "id": 133,
-      "name": "Block of Emerald",
+      "name": "minecraft:block_of_emerald",
       "color": "#64ea8a"
     },
     {
       "id": 134,
-      "name": "Spruce Wood Stairs",
+      "name": "minecraft:spruce_wood_stairs",
       "color": "#664f2f",
       "transparent": true
     },
     {
       "id": 135,
-      "name": "Birch Wood Stairs",
+      "name": "minecraft:birch_wood_stairs",
       "color": "#d7cb8d",
       "transparent": true
     },
     {
       "id": 136,
-      "name": "Jungle Wood Stairs",
+      "name": "minecraft:jungle_wood_stairs",
       "color": "#b1805c",
       "transparent": true
     },
     {
       "id": 137,
-      "name": "Command Block",
+      "name": "minecraft:command_block",
       "color": "#b18972"
     },
     {
       "id": 138,
-      "name": "Beacon",
+      "name": "minecraft:beacon",
       "color": "#c4fffe"
     },
     {
       "id": 139,
-      "name": "Cobblestone Wall",
+      "name": "minecraft:cobblestone_wall",
       "color": "#505050",
       "transparent": true
     },
     {
       "id": 140,
-      "name": "Flower Pot (empty)",
+      "name": "minecraft:flower_pot_(empty)",
       "color": "#7c4536",
-      "transparent": true,
-      "variants": [
-        {
-          "data": 1,
-          "name": "Flower Pot (poppy)",
-          "color": "#910205"
-        },
-        {
-          "data": 2,
-          "name": "Flower Pot (dandelion)",
-          "color": "#f1f902"
-        },
-        {
-          "data": 3,
-          "name": "Flower Pot (oak)",
-          "color": "#408f2f"
-        },
-        {
-          "data": 4,
-          "name": "Flower Pot (spruce)",
-          "color": "#395a39"
-        },
-        {
-          "data": 5,
-          "name": "Flower Pot (birch)",
-          "color": "#cfe3ba"
-        },
-        {
-          "data": 6,
-          "name": "Flower Pot (jungle)",
-          "color": "#2c6c18"
-        },
-        {
-          "data": 7,
-          "name": "Flower Pot (red mushroom)",
-          "color": "#9a171c"
-        },
-        {
-          "data": 8,
-          "name": "Flower Pot (brown mushroom)",
-          "color": "#725643"
-        },
-        {
-          "data": 9,
-          "name": "Flower Pot (cactus)",
-          "color": "#128a20"
-        },
-        {
-          "data": 10,
-          "name": "Flower Pot (dead bush)",
-          "color": "#946428"
-        },
-        {
-          "data": 11,
-          "name": "Flower Pot (fern)",
-          "color": "#315e05"
-        },
-        {
-          "data": 12,
-          "name": "Flower Pot (acacia)",
-          "color": "#946428"
-        },
-        {
-          "data": 13,
-          "name": "Flower Pot (dark oak)",
-          "color": "#315e05"
-        }
-      ]
+      "transparent": true
+    },
+    {
+      "id": 1,
+      "name": "minecraft:flower_pot_(poppy)",
+      "color": "#910205"
+    },
+    {
+      "id": 2,
+      "name": "minecraft:flower_pot_(dandelion)",
+      "color": "#f1f902"
+    },
+    {
+      "id": 3,
+      "name": "minecraft:flower_pot_(oak)",
+      "color": "#408f2f"
+    },
+    {
+      "id": 4,
+      "name": "minecraft:flower_pot_(spruce)",
+      "color": "#395a39"
+    },
+    {
+      "id": 5,
+      "name": "minecraft:flower_pot_(birch)",
+      "color": "#cfe3ba"
+    },
+    {
+      "id": 6,
+      "name": "minecraft:flower_pot_(jungle)",
+      "color": "#2c6c18"
+    },
+    {
+      "id": 7,
+      "name": "minecraft:flower_pot_(red_mushroom)",
+      "color": "#9a171c"
+    },
+    {
+      "id": 8,
+      "name": "minecraft:flower_pot_(brown_mushroom)",
+      "color": "#725643"
+    },
+    {
+      "id": 9,
+      "name": "minecraft:flower_pot_(cactus)",
+      "color": "#128a20"
+    },
+    {
+      "id": 10,
+      "name": "minecraft:flower_pot_(dead_bush)",
+      "color": "#946428"
+    },
+    {
+      "id": 11,
+      "name": "minecraft:flower_pot_(fern)",
+      "color": "#315e05"
+    },
+    {
+      "id": 12,
+      "name": "minecraft:flower_pot_(acacia)",
+      "color": "#946428"
+    },
+    {
+      "id": 13,
+      "name": "minecraft:flower_pot_(dark_oak)",
+      "color": "#315e05"
     },
     {
       "id": 141,
-      "name": "Immature Carrots",
+      "name": "minecraft:immature_carrots",
       "color": "#00c617",
-      "transparent": true,
-      "variants": [
-        {
-          "data": 7,
-          "name": "Mature Carrots",
-          "color": "#004e00"
-        }
-      ]
+      "transparent": true
+    },
+    {
+      "id": 7,
+      "name": "minecraft:mature_carrots",
+      "color": "#004e00"
     },
     {
       "id": 142,
-      "name": "Immature Potatoes",
+      "name": "minecraft:immature_potatoes",
       "color": "#00c617",
-      "transparent": true,
-      "variants": [
-        {
-          "data": 7,
-          "name": "Mature Potatoes",
-          "color": "#3aa649"
-        }
-      ]
+      "transparent": true
+    },
+    {
+      "id": 7,
+      "name": "minecraft:mature_potatoes",
+      "color": "#3aa649"
     },
     {
       "id": 143,
-      "name": "Wooden Button",
+      "name": "minecraft:wooden_button",
       "color": "#b4905a",
       "transparent": true,
       "spawninside": true,
-      "canProvidePower": true
+      "canprovidepower": true
     },
     {
       "id": 144,
-      "name": "Mob Head",
+      "name": "minecraft:mob_head",
       "color": "#1a1a1a",
       "transparent": true
     },
     {
       "id": 145,
-      "name": "Anvil",
+      "name": "minecraft:anvil",
       "color": "#474747",
       "transparent": true,
-      "mask": 12,
-      "variants": [
-        {
-          "data": 4,
-          "name": "Slightly Damaged Anvil"
-        },
-        {
-          "data": 8,
-          "name": "Very Damaged Anvil"
-        }
-      ]
+      "mask": 12
+    },
+    {
+      "id": 4,
+      "name": "minecraft:slightly_damaged_anvil"
+    },
+    {
+      "id": 8,
+      "name": "minecraft:very_damaged_anvil"
     },
     {
       "id": 146,
-      "name": "Trapped Chest",
+      "name": "minecraft:trapped_chest",
       "color": "#ab792d",
       "transparent": true,
-      "canProvidePower": true
+      "canprovidepower": true
     },
     {
       "id": 147,
-      "name": "Weighted Pressure Plate (Light)",
+      "name": "minecraft:weighted_pressure_plate_(light)",
       "color": "#fdfb4f",
       "transparent": true,
       "spawninside": true,
-      "canProvidePower": true
+      "canprovidepower": true
     },
     {
       "id": 148,
-      "name": "Weighted Pressure Plate (Heavy)",
+      "name": "minecraft:weighted_pressure_plate_(heavy)",
       "color": "#e6e6e6",
       "transparent": true,
       "spawninside": true,
-      "canProvidePower": true
+      "canprovidepower": true
     },
     {
       "id": 149,
-      "name": "Redstone Comparator (off)",
+      "name": "minecraft:redstone_comparator_(off)",
       "color": "#4f1010",
       "transparent": true,
-      "canProvidePower": true
+      "canprovidepower": true
     },
     {
       "id": 150,
-      "name": "Redstone Comparator (on)",
+      "name": "minecraft:redstone_comparator_(on)",
       "color": "#fd1010",
       "transparent": true,
-      "canProvidePower": true
+      "canprovidepower": true
     },
     {
       "id": 151,
-      "name": "Daylight Sensor",
+      "name": "minecraft:daylight_sensor",
       "color": "#d2c1ab",
       "transparent": true,
-      "canProvidePower": true
+      "canprovidepower": true
     },
     {
       "id": 152,
-      "name": "Block of Redstone",
+      "name": "minecraft:block_of_redstone",
       "color": "#bb1c0a",
       "transparent": true,
-      "canProvidePower": true
+      "canprovidepower": true
     },
     {
       "id": 153,
-      "name": "Nether Quartz Ore",
+      "name": "minecraft:nether_quartz_ore",
       "color": "#ddcbbe"
     },
     {
       "id": 154,
-      "name": "Hopper",
+      "name": "minecraft:hopper",
       "color": "#444444",
       "transparent": true
     },
     {
       "id": 155,
-      "name": "Block of Quartz",
-      "color": "#edebe5",
-      "variants": [
-        {
-          "data": 1,
-          "name": "Chiseled Quartz Block",
-          "color": "#e3dfd5"
-        },
-        {
-          "data": 2,
-          "name": "Pillar Quartz Block",
-          "color": "#e1dcd3"
-        },
-        {
-          "data": 3,
-          "name": "Pillar Quartz Block",
-          "color": "#e1dcd3"
-        },
-        {
-          "data": 4,
-          "name": "Pillar Quartz Block",
-          "color": "#e1dcd3"
-        }
-      ]
+      "name": "minecraft:block_of_quartz",
+      "color": "#edebe5"
+    },
+    {
+      "id": 1,
+      "name": "minecraft:chiseled_quartz_block",
+      "color": "#e3dfd5"
+    },
+    {
+      "id": 2,
+      "name": "minecraft:pillar_quartz_block",
+      "color": "#e1dcd3"
+    },
+    {
+      "id": 3,
+      "name": "minecraft:pillar_quartz_block",
+      "color": "#e1dcd3"
+    },
+    {
+      "id": 4,
+      "name": "minecraft:pillar_quartz_block",
+      "color": "#e1dcd3"
     },
     {
       "id": 156,
-      "name": "Quartz Stairs",
+      "name": "minecraft:quartz_stairs",
       "color": "#dfdacf",
       "transparent": true
     },
     {
       "id": 157,
-      "name": "Activator Rail",
+      "name": "minecraft:activator_rail",
       "color": "#ab0301",
       "transparent": true,
       "spawninside": true
     },
     {
       "id": 158,
-      "name": "Dropper",
+      "name": "minecraft:dropper",
       "color": "#848484"
     },
     {
       "id": 159,
-      "name": "White Terracotta",
-      "color": "#d1b1a1",
-      "variants": [
-        {
-          "data": 1,
-          "name": "Orange Terracotta",
-          "color": "#a55728"
-        },
-        {
-          "data": 2,
-          "name": "Magenta Terracotta",
-          "color": "#95586d"
-        },
-        {
-          "data": 3,
-          "name": "Light Blue Terracotta",
-          "color": "#6f6b89"
-        },
-        {
-          "data": 4,
-          "name": "Yellow Terracotta",
-          "color": "#b9821f"
-        },
-        {
-          "data": 5,
-          "name": "Lime Terracotta",
-          "color": "#667330"
-        },
-        {
-          "data": 6,
-          "name": "Pink Terracotta",
-          "color": "#a04b4e"
-        },
-        {
-          "data": 7,
-          "name": "Gray Terracotta",
-          "color": "#3a2a24"
-        },
-        {
-          "data": 8,
-          "name": "Silver Terracotta",
-          "color": "#876b62"
-        },
-        {
-          "data": 9,
-          "name": "Cyan Terracotta",
-          "color": "#565a5b"
-        },
-        {
-          "data": 10,
-          "name": "Purple Terracotta",
-          "color": "#734454"
-        },
-        {
-          "data": 11,
-          "name": "Blue Terracotta",
-          "color": "#4a3b5b"
-        },
-        {
-          "data": 12,
-          "name": "Brown Terracotta",
-          "color": "#4d3324"
-        },
-        {
-          "data": 13,
-          "name": "Green Terracotta",
-          "color": "#4e562c"
-        },
-        {
-          "data": 14,
-          "name": "Red Terracotta",
-          "color": "#8e3d2f"
-        },
-        {
-          "data": 15,
-          "name": "Black Terracotta",
-          "color": "#271912"
-        }
-      ]
+      "name": "minecraft:white_terracotta",
+      "color": "#d1b1a1"
+    },
+    {
+      "id": 1,
+      "name": "minecraft:orange_terracotta",
+      "color": "#a55728"
+    },
+    {
+      "id": 2,
+      "name": "minecraft:magenta_terracotta",
+      "color": "#95586d"
+    },
+    {
+      "id": 3,
+      "name": "minecraft:light_blue_terracotta",
+      "color": "#6f6b89"
+    },
+    {
+      "id": 4,
+      "name": "minecraft:yellow_terracotta",
+      "color": "#b9821f"
+    },
+    {
+      "id": 5,
+      "name": "minecraft:lime_terracotta",
+      "color": "#667330"
+    },
+    {
+      "id": 6,
+      "name": "minecraft:pink_terracotta",
+      "color": "#a04b4e"
+    },
+    {
+      "id": 7,
+      "name": "minecraft:gray_terracotta",
+      "color": "#3a2a24"
+    },
+    {
+      "id": 8,
+      "name": "minecraft:silver_terracotta",
+      "color": "#876b62"
+    },
+    {
+      "id": 9,
+      "name": "minecraft:cyan_terracotta",
+      "color": "#565a5b"
+    },
+    {
+      "id": 10,
+      "name": "minecraft:purple_terracotta",
+      "color": "#734454"
+    },
+    {
+      "id": 11,
+      "name": "minecraft:blue_terracotta",
+      "color": "#4a3b5b"
+    },
+    {
+      "id": 12,
+      "name": "minecraft:brown_terracotta",
+      "color": "#4d3324"
+    },
+    {
+      "id": 13,
+      "name": "minecraft:green_terracotta",
+      "color": "#4e562c"
+    },
+    {
+      "id": 14,
+      "name": "minecraft:red_terracotta",
+      "color": "#8e3d2f"
+    },
+    {
+      "id": 15,
+      "name": "minecraft:black_terracotta",
+      "color": "#271912"
     },
     {
       "id": 160,
-      "name": "White Stained Glass Pane",
+      "name": "minecraft:white_stained_glass_pane",
       "color": "#ededed",
       "alpha": 0.5,
-      "transparent": true,
-      "variants": [
-        {
-          "data": 1,
-          "name": "Orange Stained Glass Pane",
-          "color": "#c9762f"
-        },
-        {
-          "data": 2,
-          "name": "Magenta Stained Glass Pane",
-          "color": "#aa49cf"
-        },
-        {
-          "data": 3,
-          "name": "Light Blue Stained Glass Pane",
-          "color": "#5e8ec9"
-        },
-        {
-          "data": 4,
-          "name": "Yellow Stained Glass Pane",
-          "color": "#e4e432"
-        },
-        {
-          "data": 5,
-          "name": "Lime Stained Glass Pane",
-          "color": "#76bd17"
-        },
-        {
-          "data": 6,
-          "name": "Pink Stained Glass Pane",
-          "color": "#e1769a"
-        },
-        {
-          "data": 7,
-          "name": "Gray Stained Glass Pane",
-          "color": "#4c4c4c"
-        },
-        {
-          "data": 8,
-          "name": "Silver Stained Glass Pane",
-          "color": "#929292"
-        },
-        {
-          "data": 9,
-          "name": "Cyan Stained Glass Pane",
-          "color": "#4c7f98"
-        },
-        {
-          "data": 10,
-          "name": "Purple Stained Glass Pane",
-          "color": "#7f3fb1"
-        },
-        {
-          "data": 11,
-          "name": "Blue Stained Glass Pane",
-          "color": "#324cb1"
-        },
-        {
-          "data": 12,
-          "name": "Brown Stained Glass Pane",
-          "color": "#654c32"
-        },
-        {
-          "data": 13,
-          "name": "Green Stained Glass Pane",
-          "color": "#617a30"
-        },
-        {
-          "data": 14,
-          "name": "Red Stained Glass Pane",
-          "color": "#923030"
-        },
-        {
-          "data": 15,
-          "name": "Black Stained Glass Pane",
-          "color": "#191919"
-        }
-      ]
+      "transparent": true
+    },
+    {
+      "id": 1,
+      "name": "minecraft:orange_stained_glass_pane",
+      "color": "#c9762f"
+    },
+    {
+      "id": 2,
+      "name": "minecraft:magenta_stained_glass_pane",
+      "color": "#aa49cf"
+    },
+    {
+      "id": 3,
+      "name": "minecraft:light_blue_stained_glass_pane",
+      "color": "#5e8ec9"
+    },
+    {
+      "id": 4,
+      "name": "minecraft:yellow_stained_glass_pane",
+      "color": "#e4e432"
+    },
+    {
+      "id": 5,
+      "name": "minecraft:lime_stained_glass_pane",
+      "color": "#76bd17"
+    },
+    {
+      "id": 6,
+      "name": "minecraft:pink_stained_glass_pane",
+      "color": "#e1769a"
+    },
+    {
+      "id": 7,
+      "name": "minecraft:gray_stained_glass_pane",
+      "color": "#4c4c4c"
+    },
+    {
+      "id": 8,
+      "name": "minecraft:silver_stained_glass_pane",
+      "color": "#929292"
+    },
+    {
+      "id": 9,
+      "name": "minecraft:cyan_stained_glass_pane",
+      "color": "#4c7f98"
+    },
+    {
+      "id": 10,
+      "name": "minecraft:purple_stained_glass_pane",
+      "color": "#7f3fb1"
+    },
+    {
+      "id": 11,
+      "name": "minecraft:blue_stained_glass_pane",
+      "color": "#324cb1"
+    },
+    {
+      "id": 12,
+      "name": "minecraft:brown_stained_glass_pane",
+      "color": "#654c32"
+    },
+    {
+      "id": 13,
+      "name": "minecraft:green_stained_glass_pane",
+      "color": "#617a30"
+    },
+    {
+      "id": 14,
+      "name": "minecraft:red_stained_glass_pane",
+      "color": "#923030"
+    },
+    {
+      "id": 15,
+      "name": "minecraft:black_stained_glass_pane",
+      "color": "#191919"
     },
     {
       "id": 161,
-      "name": "Acacia Leaves",
+      "name": "minecraft:acacia_leaves",
       "color": "#515151",
       "transparent": true,
       "rendercube": true,
-      "biomeFoliage": true,
-      "mask": 1,
-      "variants": [
-        {
-          "data": 1,
-          "name": "Dark Oak Leaves",
-          "color": "#515151",
-          "biomeFoliage": true
-        }
-      ]
+      "biomefoliage": true,
+      "mask": 1
+    },
+    {
+      "id": 1,
+      "name": "minecraft:dark_oak_leaves",
+      "color": "#515151",
+      "biomefoliage": true
     },
     {
       "id": 162,
-      "name": "Acacia Wood",
+      "name": "minecraft:acacia_wood",
       "color": "#b25b3b",
-      "mask": 1,
-      "variants": [
-        {
-          "data": 1,
-          "name": "Dark Oak Wood",
-          "color": "#5d4931"
-        }
-      ]
+      "mask": 1
+    },
+    {
+      "id": 1,
+      "name": "minecraft:dark_oak_wood",
+      "color": "#5d4931"
     },
     {
       "id": 163,
-      "name": "Acacia Stairs",
+      "name": "minecraft:acacia_stairs",
       "color": "#a15730",
       "transparent": true
     },
     {
       "id": 164,
-      "name": "Dark Oak Stairs",
+      "name": "minecraft:dark_oak_stairs",
       "color": "#492f17",
       "transparent": true
     },
     {
       "id": 165,
-      "name": "Slime Block",
+      "name": "minecraft:slime_block",
       "color": "#59994a"
     },
     {
       "id": 166,
-      "name": "Barrier",
+      "name": "minecraft:barrier",
       "color": "#000000",
-      "alpha": 0.0
+      "alpha": 0
     },
     {
       "id": 167,
-      "name": "Iron Trapdoor",
+      "name": "minecraft:iron_trapdoor",
       "color": "#c7c7c7",
       "transparent": true
     },
     {
       "id": 168,
-      "name": "Prismarine",
-      "color": "#6baa97",
-      "variants": [
-        {
-          "data": 1,
-          "name": "Prismarine Bricks",
-          "color": "#64a08f"
-        },
-        {
-          "data": 2,
-          "name": "Dark Prismarine",
-          "color": "#3c584b"
-        }
-      ]
+      "name": "minecraft:prismarine",
+      "color": "#6baa97"
+    },
+    {
+      "id": 1,
+      "name": "minecraft:prismarine_bricks",
+      "color": "#64a08f"
+    },
+    {
+      "id": 2,
+      "name": "minecraft:dark_prismarine",
+      "color": "#3c584b"
     },
     {
       "id": 169,
-      "name": "Sea Lantern",
+      "name": "minecraft:sea_lantern",
       "color": "#abc8be"
     },
     {
       "id": 170,
-      "name": "Hay Bale",
+      "name": "minecraft:hay_bale",
       "color": "#af9711"
     },
     {
       "id": 171,
-      "name": "White Carpet",
+      "name": "minecraft:white_carpet",
       "color": "#dddddd",
-      "transparent": true,
-      "variants": [
-        {
-          "data": 1,
-          "name": "Orange Carpet",
-          "color": "#dd8143"
-        },
-        {
-          "data": 2,
-          "name": "Magenta Carpet",
-          "color": "#b650c0"
-        },
-        {
-          "data": 3,
-          "name": "Light Blue Carpet",
-          "color": "#8ea6d6"
-        },
-        {
-          "data": 4,
-          "name": "Yellow Carpet",
-          "color": "#c4b82e"
-        },
-        {
-          "data": 5,
-          "name": "Lime Carpet",
-          "color": "#53c347"
-        },
-        {
-          "data": 6,
-          "name": "Pink Carpet",
-          "color": "#cb778d"
-        },
-        {
-          "data": 7,
-          "name": "Gray Carpet",
-          "color": "#3b3b3b"
-        },
-        {
-          "data": 8,
-          "name": "Silver Carpet",
-          "color": "#aab0b0"
-        },
-        {
-          "data": 9,
-          "name": "Cyan Carpet",
-          "color": "#2d6a83"
-        },
-        {
-          "data": 10,
-          "name": "Purple Carpet",
-          "color": "#7537a9"
-        },
-        {
-          "data": 11,
-          "name": "Blue Carpet",
-          "color": "#323e9a"
-        },
-        {
-          "data": 12,
-          "name": "Brown Carpet",
-          "color": "#482e1c"
-        },
-        {
-          "data": 13,
-          "name": "Green Carpet",
-          "color": "#314119"
-        },
-        {
-          "data": 14,
-          "name": "Red Carpet",
-          "color": "#963330"
-        },
-        {
-          "data": 15,
-          "name": "Black Carpet",
-          "color": "#151111"
-        }
-      ]
+      "transparent": true
+    },
+    {
+      "id": 1,
+      "name": "minecraft:orange_carpet",
+      "color": "#dd8143"
+    },
+    {
+      "id": 2,
+      "name": "minecraft:magenta_carpet",
+      "color": "#b650c0"
+    },
+    {
+      "id": 3,
+      "name": "minecraft:light_blue_carpet",
+      "color": "#8ea6d6"
+    },
+    {
+      "id": 4,
+      "name": "minecraft:yellow_carpet",
+      "color": "#c4b82e"
+    },
+    {
+      "id": 5,
+      "name": "minecraft:lime_carpet",
+      "color": "#53c347"
+    },
+    {
+      "id": 6,
+      "name": "minecraft:pink_carpet",
+      "color": "#cb778d"
+    },
+    {
+      "id": 7,
+      "name": "minecraft:gray_carpet",
+      "color": "#3b3b3b"
+    },
+    {
+      "id": 8,
+      "name": "minecraft:silver_carpet",
+      "color": "#aab0b0"
+    },
+    {
+      "id": 9,
+      "name": "minecraft:cyan_carpet",
+      "color": "#2d6a83"
+    },
+    {
+      "id": 10,
+      "name": "minecraft:purple_carpet",
+      "color": "#7537a9"
+    },
+    {
+      "id": 11,
+      "name": "minecraft:blue_carpet",
+      "color": "#323e9a"
+    },
+    {
+      "id": 12,
+      "name": "minecraft:brown_carpet",
+      "color": "#482e1c"
+    },
+    {
+      "id": 13,
+      "name": "minecraft:green_carpet",
+      "color": "#314119"
+    },
+    {
+      "id": 14,
+      "name": "minecraft:red_carpet",
+      "color": "#963330"
+    },
+    {
+      "id": 15,
+      "name": "minecraft:black_carpet",
+      "color": "#151111"
     },
     {
       "id": 172,
-      "name": "Terracotta",
+      "name": "minecraft:terracotta",
       "color": "#945a41"
     },
     {
       "id": 173,
-      "name": "Block of Coal",
+      "name": "minecraft:block_of_coal",
       "color": "#2b2b2b"
     },
     {
       "id": 174,
-      "name": "Packed Ice",
+      "name": "minecraft:packed_ice",
       "color": "#bfcee8"
     },
     {
       "id": 175,
-      "name": "Sunflower",
+      "name": "minecraft:sunflower",
       "color": "#f1e424",
       "transparent": true,
-      "spawninside": true,
-      "variants": [
-        {
-          "data": 1,
-          "name": "Lilac",
-          "color": "#9f78a4"
-        },
-        {
-          "data": 2,
-          "name": "Double Tallgrass",
-          "color": "#969696",
-          "biomeGrass": true
-        },
-        {
-          "data": 3,
-          "name": "Large Fern",
-          "color": "#828282",
-          "biomeGrass": true
-        },
-        {
-          "data": 4,
-          "name": "Rose Bush",
-          "color": "#ba050b"
-        },
-        {
-          "data": 5,
-          "name": "Peony",
-          "color": "#e6bff7"
-        },
-        {
-          "data": 8,
-          "name": "Large Flower (top part)",
-          "color": "#ffffff",
-          "alpha": 0.0
-        },
-        {
-          "data": 10,
-          "name": "Large Flower (top part)",
-          "color": "#ffffff",
-          "alpha": 0.0
-        }
-      ]
+      "spawninside": true
+    },
+    {
+      "id": 1,
+      "name": "minecraft:lilac",
+      "color": "#9f78a4"
+    },
+    {
+      "id": 2,
+      "name": "minecraft:double_tallgrass",
+      "color": "#969696",
+      "biomegrass": true
+    },
+    {
+      "id": 3,
+      "name": "minecraft:large_fern",
+      "color": "#828282",
+      "biomegrass": true
+    },
+    {
+      "id": 4,
+      "name": "minecraft:rose_bush",
+      "color": "#ba050b"
+    },
+    {
+      "id": 5,
+      "name": "minecraft:peony",
+      "color": "#e6bff7"
+    },
+    {
+      "id": 8,
+      "name": "minecraft:large_flower_(top_part)",
+      "color": "#ffffff",
+      "alpha": 0
+    },
+    {
+      "id": 10,
+      "name": "minecraft:large_flower_(top_part)",
+      "color": "#ffffff",
+      "alpha": 0
     },
     {
       "id": 176,
-      "name": "Standing Banner",
+      "name": "minecraft:standing_banner",
       "color": "#ffffff",
       "transparent": true
     },
     {
       "id": 177,
-      "name": "Wall Banner",
+      "name": "minecraft:wall_banner",
       "color": "#ffffff",
       "transparent": true
     },
     {
       "id": 178,
-      "name": "Inverted Daylight Sensor",
+      "name": "minecraft:inverted_daylight_sensor",
       "color": "#d2c1ab",
       "transparent": true,
-      "canProvidePower": true
+      "canprovidepower": true
     },
     {
       "id": 179,
-      "name": "Red Sandstone",
-      "color": "#a6551e",
-      "variants": [
-        {
-          "data": 1,
-          "name": "Chiseled Red Sandstone",
-          "color": "#a2531c"
-        },
-        {
-          "data": 2,
-          "name": "Smooth Red Sandstone",
-          "color": "#a8561e"
-        }
-      ]
+      "name": "minecraft:red_sandstone",
+      "color": "#a6551e"
+    },
+    {
+      "id": 1,
+      "name": "minecraft:chiseled_red_sandstone",
+      "color": "#a2531c"
+    },
+    {
+      "id": 2,
+      "name": "minecraft:smooth_red_sandstone",
+      "color": "#a8561e"
     },
     {
       "id": 180,
-      "name": "Red Sandstone Stairs",
+      "name": "minecraft:red_sandstone_stairs",
       "color": "#a6551e",
       "transparent": true
     },
     {
       "id": 181,
-      "name": "Double Red Sandstone Slab",
-      "color": "#a6551e",
-      "variants": [
-        {
-          "data": 8,
-          "name": "Full Red Sandstone Slab",
-          "color": "#a7551e"
-        }
-      ]
+      "name": "minecraft:double_red_sandstone_slab",
+      "color": "#a6551e"
+    },
+    {
+      "id": 8,
+      "name": "minecraft:full_red_sandstone_slab",
+      "color": "#a7551e"
     },
     {
       "id": 182,
-      "name": "Red Sandstone Slab",
+      "name": "minecraft:red_sandstone_slab",
       "color": "#a7551e",
-      "transparent": true,
-      "variants": [
-        {
-          "data": 8,
-          "name": "Upper Red Sandstone Slab",
-          "color": "#a7551e"
-        }
-      ]
+      "transparent": true
+    },
+    {
+      "id": 8,
+      "name": "minecraft:upper_red_sandstone_slab",
+      "color": "#a7551e"
     },
     {
       "id": 183,
-      "name": "Spruce Fence Gate",
+      "name": "minecraft:spruce_fence_gate",
       "color": "#805e36",
       "alpha": 0.75,
       "transparent": true
     },
     {
       "id": 184,
-      "name": "Birch Fence Gate",
+      "name": "minecraft:birch_fence_gate",
       "color": "#c8b77a",
       "alpha": 0.75,
       "transparent": true
     },
     {
       "id": 185,
-      "name": "Jungle Fence Gate",
+      "name": "minecraft:jungle_fence_gate",
       "color": "#b1805c",
       "alpha": 0.75,
       "transparent": true
     },
     {
       "id": 186,
-      "name": "Dark Oak Fence Gate",
+      "name": "minecraft:dark_oak_fence_gate",
       "color": "#462d15",
       "alpha": 0.75,
       "transparent": true
     },
     {
       "id": 187,
-      "name": "Acacia Fence Gate",
+      "name": "minecraft:acacia_fence_gate",
       "color": "#ba6337",
       "alpha": 0.75,
       "transparent": true
     },
     {
       "id": 188,
-      "name": "Spruce Fence",
+      "name": "minecraft:spruce_fence",
       "color": "#805e36",
       "alpha": 0.75,
       "transparent": true
     },
     {
       "id": 189,
-      "name": "Birch Fence",
+      "name": "minecraft:birch_fence",
       "color": "#c8b77a",
       "alpha": 0.75,
       "transparent": true
     },
     {
       "id": 190,
-      "name": "Jungle Fence",
+      "name": "minecraft:jungle_fence",
       "color": "#b1805c",
       "alpha": 0.75,
       "transparent": true
     },
     {
       "id": 191,
-      "name": "Dark Oak Fence",
+      "name": "minecraft:dark_oak_fence",
       "color": "#462d15",
       "alpha": 0.75,
       "transparent": true
     },
     {
       "id": 192,
-      "name": "Acacia Fence",
+      "name": "minecraft:acacia_fence",
       "color": "#ba6337",
       "alpha": 0.75,
       "transparent": true
     },
     {
       "id": 193,
-      "name": "Spruce Door",
+      "name": "minecraft:spruce_door",
       "color": "#6e563b",
       "transparent": true
     },
     {
       "id": 194,
-      "name": "Birch Door",
+      "name": "minecraft:birch_door",
       "color": "#d2caa3",
       "transparent": true
     },
     {
       "id": 195,
-      "name": "Jungle Door",
+      "name": "minecraft:jungle_door",
       "color": "#ac7da3",
       "transparent": true
     },
     {
       "id": 196,
-      "name": "Acacia Door",
+      "name": "minecraft:acacia_door",
       "color": "#a5615b",
       "transparent": true
     },
     {
       "id": 197,
-      "name": "Dark Oak Door",
+      "name": "minecraft:dark_oak_door",
       "color": "#4a3118",
       "transparent": true
     },
     {
       "id": 198,
-      "name": "End Rod",
+      "name": "minecraft:end_rod",
       "color": "#dcc5ce"
     },
     {
       "id": 199,
-      "name": "Chorus Plant",
+      "name": "minecraft:chorus_plant",
       "color": "#603c60",
       "transparent": true
     },
     {
       "id": 200,
-      "name": "Chorus Flower",
+      "name": "minecraft:chorus_flower",
       "color": "#866886",
-      "transparent": true,
-      "variants": [
-        {
-          "data": 5,
-          "name": "Chorus Flower (fully grown)",
-          "color": "#624060"
-        }
-      ]
+      "transparent": true
+    },
+    {
+      "id": 5,
+      "name": "minecraft:chorus_flower_(fully_grown)",
+      "color": "#624060"
     },
     {
       "id": 201,
-      "name": "Purpur Block",
+      "name": "minecraft:purpur_block",
       "color": "#a67aa6"
     },
     {
       "id": 202,
-      "name": "Purpur Pillar",
+      "name": "minecraft:purpur_pillar",
       "color": "#ab80ab"
     },
     {
       "id": 203,
-      "name": "Purpur Stairs",
+      "name": "minecraft:purpur_stairs",
       "color": "#a67aa6"
     },
     {
       "id": 204,
-      "name": "Double Purpur Slab",
+      "name": "minecraft:double_purpur_slab",
       "color": "#a67aa6"
     },
     {
       "id": 205,
-      "name": "Purpur Slab",
+      "name": "minecraft:purpur_slab",
       "color": "#a67aa6"
     },
     {
       "id": 206,
-      "name": "End Stone Bricks",
+      "name": "minecraft:end_stone_bricks",
       "color": "#e2e7ab"
     },
     {
       "id": 207,
-      "name": "Immature Beetroot",
+      "name": "minecraft:immature_beetroot",
       "color": "#02ab10",
-      "transparent": true,
-      "variants": [
-        {
-          "data": 3,
-          "name": "Mature Beetroot",
-          "color": "#517136"
-        }
-      ]
+      "transparent": true
+    },
+    {
+      "id": 3,
+      "name": "minecraft:mature_beetroot",
+      "color": "#517136"
     },
     {
       "id": 208,
-      "name": "Grass Path",
+      "name": "minecraft:grass_path",
       "color": "#967d47"
     },
     {
       "id": 209,
-      "name": "End Gateway Block",
+      "name": "minecraft:end_gateway_block",
       "color": "#000000"
     },
     {
       "id": 210,
-      "name": "Repeating Command Block",
+      "name": "minecraft:repeating_command_block",
       "color": "#8170b0"
     },
     {
       "id": 211,
-      "name": "Chain Command Block",
+      "name": "minecraft:chain_command_block",
       "color": "#87a398"
     },
     {
       "id": 212,
-      "name": "Frosted Ice",
+      "name": "minecraft:frosted_ice",
       "color": "#77a9ff",
       "alpha": 0.62,
       "transparent": true,
@@ -2508,382 +2422,376 @@
     },
     {
       "id": 213,
-      "name": "Magma Block",
+      "name": "minecraft:magma_block",
       "color": "#87421a"
     },
     {
       "id": 214,
-      "name": "Nether Wart Block",
+      "name": "minecraft:nether_wart_block",
       "color": "#750607"
     },
     {
       "id": 215,
-      "name": "Red Nether Brick",
+      "name": "minecraft:red_nether_brick",
       "color": "#440407"
     },
     {
       "id": 216,
-      "name": "Bone Block",
+      "name": "minecraft:bone_block",
       "color": "#cec9b2"
     },
     {
       "id": 217,
-      "name": "Structure Void",
+      "name": "minecraft:structure_void",
       "color": "#ffffff",
-      "alpha": 0.0,
+      "alpha": 0,
       "transparent": true,
       "spawninside": true
     },
     {
       "id": 218,
-      "name": "Observer",
+      "name": "minecraft:observer",
       "color": "#535353"
     },
     {
       "id": 219,
-      "name": "White Shulker Box",
+      "name": "minecraft:white_shulker_box",
       "color": "#dedbdb"
     },
     {
       "id": 220,
-      "name": "Orange Shulker Box",
+      "name": "minecraft:orange_shulker_box",
       "color": "#ce7438"
     },
     {
       "id": 221,
-      "name": "Magenta Shulker Box",
+      "name": "minecraft:magenta_shulker_box",
       "color": "#ba64c2"
     },
     {
       "id": 222,
-      "name": "Light Blue Shulker Box",
+      "name": "minecraft:light_blue_shulker_box",
       "color": "#658ecb"
     },
     {
       "id": 223,
-      "name": "Yellow Shulker Box",
+      "name": "minecraft:yellow_shulker_box",
       "color": "#c1b73d"
     },
     {
       "id": 224,
-      "name": "Lime Shulker Box",
+      "name": "minecraft:lime_shulker_box",
       "color": "#47b73b"
     },
     {
       "id": 225,
-      "name": "Pink Shulker Box",
+      "name": "minecraft:pink_shulker_box",
       "color": "#d08ca1"
     },
     {
       "id": 226,
-      "name": "Gray Shulker Box",
+      "name": "minecraft:gray_shulker_box",
       "color": "#535151"
     },
     {
       "id": 227,
-      "name": "Light Gray Shulker Box",
+      "name": "minecraft:light_gray_shulker_box",
       "color": "#a4a2a2"
     },
     {
       "id": 228,
-      "name": "Cyan Shulker Box",
+      "name": "minecraft:cyan_shulker_box",
       "color": "#4488a4"
     },
     {
       "id": 229,
-      "name": "Purple Shulker Box",
+      "name": "minecraft:purple_shulker_box",
       "color": "#976797"
     },
     {
       "id": 230,
-      "name": "Blue Shulker Box",
+      "name": "minecraft:blue_shulker_box",
       "color": "#6571c9"
     },
     {
       "id": 231,
-      "name": "Brown Shulker Box",
+      "name": "minecraft:brown_shulker_box",
       "color": "#8d705d"
     },
     {
       "id": 232,
-      "name": "Green Shulker Box",
+      "name": "minecraft:green_shulker_box",
       "color": "#6f8254"
     },
     {
       "id": 233,
-      "name": "Red Shulker Box",
+      "name": "minecraft:red_shulker_box",
       "color": "#c25855"
     },
     {
       "id": 234,
-      "name": "Black Shulker Box",
+      "name": "minecraft:black_shulker_box",
       "color": "#383737"
     },
     {
       "id": 235,
-      "name": "White Glazed Terracotta",
+      "name": "minecraft:white_glazed_terracotta",
       "color": "#ede8b2"
     },
     {
       "id": 236,
-      "name": "Orange Glazed Terracotta",
+      "name": "minecraft:orange_glazed_terracotta",
       "color": "#be984e"
     },
     {
       "id": 237,
-      "name": "Magenta Glazed Terracotta",
+      "name": "minecraft:magenta_glazed_terracotta",
       "color": "#cd61bb"
     },
     {
       "id": 238,
-      "name": "Light Blue Glazed Terracotta",
+      "name": "minecraft:light_blue_glazed_terracotta",
       "color": "#458cc4"
     },
     {
       "id": 239,
-      "name": "Yellow Glazed Terracotta",
+      "name": "minecraft:yellow_glazed_terracotta",
       "color": "#fbd972"
     },
     {
       "id": 240,
-      "name": "Lime Glazed Terracotta",
+      "name": "minecraft:lime_glazed_terracotta",
       "color": "#8ac430"
     },
     {
       "id": 241,
-      "name": "Pink Glazed Terracotta",
+      "name": "minecraft:pink_glazed_terracotta",
       "color": "#e89bb4"
     },
     {
       "id": 242,
-      "name": "Gray Glazed Terracotta",
+      "name": "minecraft:gray_glazed_terracotta",
       "color": "#596063"
     },
     {
       "id": 243,
-      "name": "Light Gray Glazed Terracotta",
+      "name": "minecraft:light_gray_glazed_terracotta",
       "color": "#a3acaf"
     },
     {
       "id": 244,
-      "name": "Cyan Glazed Terracotta",
+      "name": "minecraft:cyan_glazed_terracotta",
       "color": "#3d8285"
     },
     {
       "id": 245,
-      "name": "Purple Glazed Terracotta",
+      "name": "minecraft:purple_glazed_terracotta",
       "color": "#7c3fa7"
     },
     {
       "id": 246,
-      "name": "Blue Glazed Terracotta",
+      "name": "minecraft:blue_glazed_terracotta",
       "color": "#31458f"
     },
     {
       "id": 247,
-      "name": "Brown Glazed Terracotta",
+      "name": "minecraft:brown_glazed_terracotta",
       "color": "#956741"
     },
     {
       "id": 248,
-      "name": "Green Glazed Terracotta",
+      "name": "minecraft:green_glazed_terracotta",
       "color": "#92a278"
     },
     {
       "id": 249,
-      "name": "Red Glazed Terracotta",
+      "name": "minecraft:red_glazed_terracotta",
       "color": "#a92f2b"
     },
     {
       "id": 250,
-      "name": "Black Glazed Terracotta",
+      "name": "minecraft:black_glazed_terracotta",
       "color": "#582528"
     },
     {
       "id": 251,
-      "name": "White Concrete",
-      "color": "#d0d6d7",
-      "variants": [
-        {
-          "data": 1,
-          "name": "Orange Concrete",
-          "color": "#e16201"
-        },
-        {
-          "data": 2,
-          "name": "Magenta Concrete",
-          "color": "#aa31a0"
-        },
-        {
-          "data": 3,
-          "name": "Light Blue Concrete",
-          "color": "#2489c7"
-        },
-        {
-          "data": 4,
-          "name": "Yellow Concrete",
-          "color": "#f2b016"
-        },
-        {
-          "data": 5,
-          "name": "Lime Concrete",
-          "color": "#5fa919"
-        },
-        {
-          "data": 6,
-          "name": "Pink Concrete",
-          "color": "#d6658f"
-        },
-        {
-          "data": 7,
-          "name": "Gray Concrete",
-          "color": "#373a3e"
-        },
-        {
-          "data": 8,
-          "name": "Light Gray Concrete",
-          "color": "#7d7d73"
-        },
-        {
-          "data": 9,
-          "name": "Cyan Concrete",
-          "color": "#167788"
-        },
-        {
-          "data": 10,
-          "name": "Purple Concrete",
-          "color": "#65209d"
-        },
-        {
-          "data": 11,
-          "name": "Blue Concrete",
-          "color": "#2d2f90"
-        },
-        {
-          "data": 12,
-          "name": "Brown Concrete",
-          "color": "#613c20"
-        },
-        {
-          "data": 13,
-          "name": "Green Concrete",
-          "color": "#4a5c25"
-        },
-        {
-          "data": 14,
-          "name": "Red Concrete",
-          "color": "#8f2121"
-        },
-        {
-          "data": 15,
-          "name": "Black Concrete",
-          "color": "#080a0f"
-        }
-      ]
+      "name": "minecraft:white_concrete",
+      "color": "#d0d6d7"
+    },
+    {
+      "id": 1,
+      "name": "minecraft:orange_concrete",
+      "color": "#e16201"
+    },
+    {
+      "id": 2,
+      "name": "minecraft:magenta_concrete",
+      "color": "#aa31a0"
+    },
+    {
+      "id": 3,
+      "name": "minecraft:light_blue_concrete",
+      "color": "#2489c7"
+    },
+    {
+      "id": 4,
+      "name": "minecraft:yellow_concrete",
+      "color": "#f2b016"
+    },
+    {
+      "id": 5,
+      "name": "minecraft:lime_concrete",
+      "color": "#5fa919"
+    },
+    {
+      "id": 6,
+      "name": "minecraft:pink_concrete",
+      "color": "#d6658f"
+    },
+    {
+      "id": 7,
+      "name": "minecraft:gray_concrete",
+      "color": "#373a3e"
+    },
+    {
+      "id": 8,
+      "name": "minecraft:light_gray_concrete",
+      "color": "#7d7d73"
+    },
+    {
+      "id": 9,
+      "name": "minecraft:cyan_concrete",
+      "color": "#167788"
+    },
+    {
+      "id": 10,
+      "name": "minecraft:purple_concrete",
+      "color": "#65209d"
+    },
+    {
+      "id": 11,
+      "name": "minecraft:blue_concrete",
+      "color": "#2d2f90"
+    },
+    {
+      "id": 12,
+      "name": "minecraft:brown_concrete",
+      "color": "#613c20"
+    },
+    {
+      "id": 13,
+      "name": "minecraft:green_concrete",
+      "color": "#4a5c25"
+    },
+    {
+      "id": 14,
+      "name": "minecraft:red_concrete",
+      "color": "#8f2121"
+    },
+    {
+      "id": 15,
+      "name": "minecraft:black_concrete",
+      "color": "#080a0f"
     },
     {
       "id": 252,
-      "name": "White Concrete Powder",
-      "color": "#e3e5e5",
-      "variants": [
-        {
-          "data": 1,
-          "name": "Orange Concrete Powder",
-          "color": "#e48521"
-        },
-        {
-          "data": 2,
-          "name": "Magenta Concrete Powder",
-          "color": "#c154b8"
-        },
-        {
-          "data": 3,
-          "name": "Light Blue Concrete Powder",
-          "color": "#4bb6d6"
-        },
-        {
-          "data": 4,
-          "name": "Yellow Concrete Powder",
-          "color": "#e9c735"
-        },
-        {
-          "data": 5,
-          "name": "Lime Concrete Powder",
-          "color": "#7dbd2a"
-        },
-        {
-          "data": 6,
-          "name": "Pink Concrete Powder",
-          "color": "#e599b5"
-        },
-        {
-          "data": 7,
-          "name": "Gray Concrete Powder",
-          "color": "#4e5256"
-        },
-        {
-          "data": 8,
-          "name": "Light Gray Concrete Powder",
-          "color": "#9b9b94"
-        },
-        {
-          "data": 9,
-          "name": "Cyan Concrete Powder",
-          "color": "#25929c"
-        },
-        {
-          "data": 10,
-          "name": "Purple Concrete Powder",
-          "color": "#8438b2"
-        },
-        {
-          "data": 11,
-          "name": "Blue Concrete Powder",
-          "color": "#4649a7"
-        },
-        {
-          "data": 12,
-          "name": "Brown Concrete Powder",
-          "color": "#7d5536"
-        },
-        {
-          "data": 13,
-          "name": "Green Concrete Powder",
-          "color": "#61762e"
-        },
-        {
-          "data": 14,
-          "name": "Red Concrete Powder",
-          "color": "#a83633"
-        },
-        {
-          "data": 15,
-          "name": "Black Concrete Powder",
-          "color": "#1a1c21"
-        }
-      ]
+      "name": "minecraft:white_concrete_powder",
+      "color": "#e3e5e5"
+    },
+    {
+      "id": 1,
+      "name": "minecraft:orange_concrete_powder",
+      "color": "#e48521"
+    },
+    {
+      "id": 2,
+      "name": "minecraft:magenta_concrete_powder",
+      "color": "#c154b8"
+    },
+    {
+      "id": 3,
+      "name": "minecraft:light_blue_concrete_powder",
+      "color": "#4bb6d6"
+    },
+    {
+      "id": 4,
+      "name": "minecraft:yellow_concrete_powder",
+      "color": "#e9c735"
+    },
+    {
+      "id": 5,
+      "name": "minecraft:lime_concrete_powder",
+      "color": "#7dbd2a"
+    },
+    {
+      "id": 6,
+      "name": "minecraft:pink_concrete_powder",
+      "color": "#e599b5"
+    },
+    {
+      "id": 7,
+      "name": "minecraft:gray_concrete_powder",
+      "color": "#4e5256"
+    },
+    {
+      "id": 8,
+      "name": "minecraft:light_gray_concrete_powder",
+      "color": "#9b9b94"
+    },
+    {
+      "id": 9,
+      "name": "minecraft:cyan_concrete_powder",
+      "color": "#25929c"
+    },
+    {
+      "id": 10,
+      "name": "minecraft:purple_concrete_powder",
+      "color": "#8438b2"
+    },
+    {
+      "id": 11,
+      "name": "minecraft:blue_concrete_powder",
+      "color": "#4649a7"
+    },
+    {
+      "id": 12,
+      "name": "minecraft:brown_concrete_powder",
+      "color": "#7d5536"
+    },
+    {
+      "id": 13,
+      "name": "minecraft:green_concrete_powder",
+      "color": "#61762e"
+    },
+    {
+      "id": 14,
+      "name": "minecraft:red_concrete_powder",
+      "color": "#a83633"
+    },
+    {
+      "id": 15,
+      "name": "minecraft:black_concrete_powder",
+      "color": "#1a1c21"
     },
     {
       "id": 255,
-      "name": "Structure Block Save",
-      "color": "#564757",
-      "variants": [
-        {
-          "data": 1,
-          "name": "Structure Block Load",
-          "color": "#453946"
-        },
-        {
-          "data": 2,
-          "name": "Structure Block Corner",
-          "color": "#443945"
-        },
-        {
-          "data": 3,
-          "name": "Structure Block Data",
-          "color": "#4f4150"
-        }
-      ]
+      "name": "minecraft:structure_block_save",
+      "color": "#564757"
+    },
+    {
+      "id": 1,
+      "name": "minecraft:structure_block_load",
+      "color": "#453946"
+    },
+    {
+      "id": 2,
+      "name": "minecraft:structure_block_corner",
+      "color": "#443945"
+    },
+    {
+      "id": 3,
+      "name": "minecraft:structure_block_id",
+      "color": "#4f4150"
     }
   ],
   "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_ids.json"
