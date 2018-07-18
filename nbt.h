@@ -37,6 +37,7 @@ class Tag {
   virtual double toDouble() const;
   virtual const quint8 *toByteArray() const;
   virtual const qint32 *toIntArray() const;
+  virtual const qint64 *toLongArray() const;
   virtual const QVariant getData() const;
 };
 
@@ -175,6 +176,19 @@ class Tag_Int_Array : public Tag {
  private:
   int len;
   qint32 *data;
+};
+
+class Tag_Long_Array : public Tag {
+ public:
+  explicit Tag_Long_Array(TagDataStream *s);
+  ~Tag_Long_Array();
+  int length() const;
+  const qint64 *toLongArray() const;
+  virtual const QString toString() const;
+  virtual const QVariant getData() const;
+ private:
+  int len;
+  qint64 *data;
 };
 
 #endif  // NBT_H_

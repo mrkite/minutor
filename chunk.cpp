@@ -1,6 +1,22 @@
 /** Copyright (c) 2013, Sean Kasun */
 
 #include "./chunk.h"
+#include <algorithm>
+
+quint16 getBits(const unsigned char *data, int pos, int n) {
+  quint16 result = 0;
+  int arrIndex = pos/8;
+  int bitIndex = pos%8;
+  quint32 loc =
+    data[arrIndex]   << 24 |
+    data[arrIndex+1] << 16 |
+    data[arrIndex+2] << 8  |
+    data[arrIndex+3];
+
+  return ((loc >> (32-bitIndex-n)) & ((1 << n) -1));
+}
+
+
 
 Chunk::Chunk() {
   loaded = false;
@@ -19,24 +35,32 @@ void Chunk::load(const NBT &nbt) {
   chunkZ = level->at("zPos")->toInt();
 
   auto biomes = level->at("Biomes");
-  memcpy(this->biomes, biomes->toByteArray(), biomes->length());
+  memcpy(this->biomes, biomes->toIntArray(), 4*biomes->length());
   auto sections = level->at("Sections");
   int numSections = sections->length();
   for (int i = 0; i < numSections; i++) {
     auto section = sections->at(i);
     auto cs = new ChunkSection();
-    auto raw = section->at("Blocks")->toByteArray();
-    for (int i = 0; i < 4096; i++)
-      cs->blocks[i] = raw[i];
-    if (section->has("Add")) {
-      raw = section->at("Add")->toByteArray();
-      for (int i = 0; i < 2048; i++) {
-        cs->blocks[i * 2] |= (raw[i] & 0xf) << 8;
-        cs->blocks[i * 2 + 1] |= (raw[i] & 0xf0) << 4;
-      }
+    auto rawPalette = section->at("Palette");
+    cs->paletteLength = rawPalette->length();
+    cs->palette = new BlockData[cs->paletteLength];
+    for (int j = 0; j < rawPalette->length(); j++) {
+      cs->palette[j].name = rawPalette->at(j)->at("Name")->toString();
+      if (rawPalette->at(j)->has("Properties"))
+        cs->palette[j].properties = rawPalette->at(j)->at("Properties")->getData().toMap();
     }
-    memcpy(cs->data, section->at("Data")->toByteArray(), 2048);
-    memcpy(cs->light, section->at("BlockLight")->toByteArray(), 2048);
+    auto raw = section->at("BlockStates")->toLongArray();
+    int blockStatesLength = section->at("BlockStates")->length();
+    unsigned char *byteData = new unsigned char[8*blockStatesLength];
+    memcpy(byteData, raw, 8*blockStatesLength);
+    std::reverse(byteData, byteData+(8*blockStatesLength));
+    int bitSize = (blockStatesLength)*64/4096;
+    for (int i = 0; i < 4096; i++) {
+      cs->blocks[4095-i] = getBits(byteData, i*bitSize, bitSize);
+    }
+    free(byteData);
+    memcpy(cs->skyLight, section->at("SkyLight")->toByteArray(), 2048);
+    memcpy(cs->blockLight, section->at("BlockLight")->toByteArray(), 2048);
     int idx = section->at("Y")->toInt();
     this->sections[idx] = cs;
   }
@@ -67,6 +91,7 @@ Chunk::~Chunk() {
   if (loaded) {
     for (int i = 0; i < 16; i++)
       if (sections[i]) {
+        delete[] sections[i]->palette;
         delete sections[i];
         sections[i] = NULL;
       }
@@ -74,46 +99,46 @@ Chunk::~Chunk() {
 }
 
 
-quint16 ChunkSection::getBlock(int x, int y, int z) {
+QString ChunkSection::getBlock(int x, int y, int z) {
   int xoffset = x;
   int yoffset = (y & 0x0f) << 8;
   int zoffset = z << 4;
-  return blocks[xoffset + yoffset + zoffset];
+  return palette[blocks[xoffset + yoffset + zoffset]].name;
 }
 
-quint16 ChunkSection::getBlock(int offset, int y) {
+QString ChunkSection::getBlock(int offset, int y) {
   int yoffset = (y & 0x0f) << 8;
-  return blocks[offset + yoffset];
+  return palette[blocks[offset + yoffset]].name;
 }
 
-quint8 ChunkSection::getData(int x, int y, int z) {
+quint8 ChunkSection::getSkyLight(int x, int y, int z) {
   int xoffset = x;
   int yoffset = (y & 0x0f) << 8;
   int zoffset = z << 4;
-  int value = data[(xoffset + yoffset + zoffset) / 2];
+  int value = skyLight[(xoffset + yoffset + zoffset) / 2];
   if (x & 1) value >>= 4;
   return value & 0x0f;
 }
 
-quint8 ChunkSection::getData(int offset, int y) {
+quint8 ChunkSection::getSkyLight(int offset, int y) {
   int yoffset = (y & 0x0f) << 8;
-  int value = data[(offset + yoffset) / 2];
+  int value = skyLight[(offset + yoffset) / 2];
   if (offset & 1) value >>= 4;
   return value & 0x0f;
 }
 
-quint8 ChunkSection::getLight(int x, int y, int z) {
+quint8 ChunkSection::getBlockLight(int x, int y, int z) {
   int xoffset = x;
   int yoffset = (y & 0x0f) << 8;
   int zoffset = z << 4;
-  int value = light[(xoffset + yoffset + zoffset) / 2];
+  int value = blockLight[(xoffset + yoffset + zoffset) / 2];
   if (x & 1) value >>= 4;
   return value & 0x0f;
 }
 
-quint8 ChunkSection::getLight(int offset, int y) {
+quint8 ChunkSection::getBlockLight(int offset, int y) {
   int yoffset = (y & 0x0f) << 8;
-  int value = light[(offset + yoffset) / 2];
+  int value = blockLight[(offset + yoffset) / 2];
   if (offset & 1) value >>= 4;
   return value & 0x0f;
 }
