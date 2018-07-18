@@ -124,6 +124,7 @@ BlockInfo &BlockIdentifier::getBlock(QString name, int data) {
   //   }
   // }
   // no blocks at all found.. dammit
+  unknownBlock.setName(name);
   return unknownBlock;
 }
 
