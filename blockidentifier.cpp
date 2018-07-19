@@ -53,7 +53,7 @@ void BlockInfo::setName(const QString & newname) {
       !this->name.contains("Full");
   snow = this->name.contains("Snow");
   // precompute biome based watercolormodifier
-  water = this->name.contains("Water");
+  water = this->name.contains("water");
 }
 
 const QString & BlockInfo::getName() { return name; }
