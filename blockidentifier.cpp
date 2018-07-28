@@ -29,6 +29,12 @@ bool BlockInfo::doesBlockHaveSolidTopSurface(int data) {
   return false;
 }
 
+bool BlockInfo::doesBlockHaveSolidTopSurface() {
+  if (this->isOpaque() && this->renderAsNormalBlock()) return true;
+  if (this->hopper) return true;
+  return false;
+}
+
 bool BlockInfo::isBlockNormalCube() {
   return this->isOpaque() && this->renderAsNormalBlock() &&
       !this->canProvidePower();
@@ -46,14 +52,15 @@ void BlockInfo::setName(const QString & newname) {
   // set name
   name = newname;
   // precompute mob spawning conditions
-  bedrock = this->name.contains("Bedrock");
-  hopper = this->name.contains("Hopper");
-  stairs = this->name.contains("Stairs");
-  halfslab = this->name.contains("Slab") && !this->name.contains("Double") &&
-      !this->name.contains("Full");
-  snow = this->name.contains("Snow");
+  bedrock = this->name.contains("Bedrock", Qt::CaseInsensitive);
+  hopper = this->name.contains("Hopper", Qt::CaseInsensitive);
+  stairs = this->name.contains("Stairs", Qt::CaseInsensitive);
+  halfslab = this->name.contains("Slab", Qt::CaseInsensitive) &&
+            !this->name.contains("Double", Qt::CaseInsensitive) &&
+            !this->name.contains("Full", Qt::CaseInsensitive);
+  snow = this->name.contains("Snow", Qt::CaseInsensitive);
   // precompute biome based watercolormodifier
-  water = this->name.contains("water");
+  water = this->name.contains("Water", Qt::CaseInsensitive);
 }
 
 const QString & BlockInfo::getName() { return name; }
@@ -73,27 +80,23 @@ void BlockInfo::setBiomeGrass(bool value)   { grass = value; }
 void BlockInfo::setBiomeFoliage(bool value) { foliage = value; }
 
 BlockIdentifier::BlockIdentifier() {
-  // clear cache pointers
-  for (int i = 0; i < 65536; i++)
-    cache[i] = NULL;
   for (int i = 0; i < 16; i++)
     unknownBlock.colors[i] = 0xff00ff;
   unknownBlock.alpha = 1.0;
   unknownBlock.setName("Unknown");
 }
+
 BlockIdentifier::~BlockIdentifier() {
-  clearCache();
   for (int i = 0; i < packs.length(); i++) {
     for (int j = 0; j < packs[i].length(); j++)
       delete packs[i][j];
   }
 }
 
-// this routine is ridiculously slow
-BlockInfo &BlockIdentifier::getBlock(QString name, int data) {
+BlockInfo &BlockIdentifier::getBlock(QString name) {
   // first apply the mask
   if (blocks.contains(name)) {
-    return *(blocks[name].first());
+    return *blocks[name];
   }
   //   data &= blocks[name].first()->mask;
   //
@@ -133,8 +136,6 @@ void BlockIdentifier::enableDefinitions(int pack) {
   int len = packs[pack].length();
   for (int i = 0; i < len; i++)
     packs[pack][i]->enabled = true;
-  // clear cache
-  clearCache();
 }
 
 void BlockIdentifier::disableDefinitions(int pack) {
@@ -142,8 +143,6 @@ void BlockIdentifier::disableDefinitions(int pack) {
   int len = packs[pack].length();
   for (int i = 0; i < len; i++)
     packs[pack][i]->enabled = false;
-  // clear cache
-  clearCache();
 }
 
 int BlockIdentifier::addDefinitions(JSONArray *defs, int pack) {
@@ -154,31 +153,24 @@ int BlockIdentifier::addDefinitions(JSONArray *defs, int pack) {
   int len = defs->length();
   for (int i = 0; i < len; i++)
     parseDefinition(dynamic_cast<JSONObject *>(defs->at(i)), NULL, pack);
-  // clear cache
-  clearCache();
   return pack;
-}
-
-void BlockIdentifier::clearCache() {
-  for (int i = 0; i < 65536; i++) {
-    cache[i] = NULL;
-  }
 }
 
 void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent,
                                       int pack) {
-  int id;
-  QString name;
-  if (parent == NULL) {
-    id = b->at("id")->asNumber();
-  } else {
-    id = parent->id;
-    int data = b->at("data")->asNumber();
-    id |= data << 12;
-  }
   BlockInfo *block = new BlockInfo();
-  block->id = id;
 
+//  int id;
+//  if (parent == NULL) {
+//    id = b->at("id")->asNumber();
+//  } else {
+//    id = parent->id;
+//    int data = b->at("data")->asNumber();
+//    id |= data << 12;
+//  }
+//  block->id = id;
+
+  QString name;
   if (b->has("name"))
     name = b->at("name")->asString();
   else if (parent != NULL)
@@ -280,6 +272,6 @@ void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent,
       parseDefinition(dynamic_cast<JSONObject *>(variants->at(j)), block, pack);
   }
 
-  blocks[name].append(block);
+  blocks.insert(name, block);
   packs[pack].append(block);
 }

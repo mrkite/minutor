@@ -25,7 +25,7 @@ struct Definition {
   QString version;
   QString path;
   QString update;
-  enum {Block, Biome, Dimension, Entity, Pack} type;
+  enum {Block, Biome, Dimension, Entity, Pack, Converter} type;
   int id;
   bool enabled;
   // for packs only
