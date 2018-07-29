@@ -16,6 +16,7 @@ class BiomeIdentifier;
 class BlockIdentifier;
 class DimensionIdentifier;
 class EntityIdentifier;
+class FlatteningConverter;
 class MapView;
 class JSONData;
 class DefinitionUpdater;
@@ -77,6 +78,7 @@ class DefinitionManager : public QWidget {
   BlockIdentifier *blockManager;  // todo: migrate to reference to singleton
   DimensionIdentifier *dimensionManager;  // todo: migrate to reference to singleton
   EntityIdentifier &entityManager;
+  FlatteningConverter &flatteningConverter;
   QString selected;
   QList<QVariant> sorted;
 

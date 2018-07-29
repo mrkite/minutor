@@ -15,6 +15,7 @@
 #include "./blockidentifier.h"
 #include "./dimensionidentifier.h"
 #include "./entityidentifier.h"
+#include "./flatteningconverter.h"
 #include "./mapview.h"
 #include "./json.h"
 #include "./zipreader.h"
@@ -23,7 +24,8 @@
 DefinitionManager::DefinitionManager(QWidget *parent) :
     QWidget(parent),
     isUpdating(false),
-    entityManager(EntityIdentifier::Instance()) {
+    entityManager(EntityIdentifier::Instance()),
+    flatteningConverter(FlatteningConverter::Instance()) {
   setWindowFlags(Qt::Window);
   setWindowTitle(tr("Definitions"));
 
@@ -371,8 +373,8 @@ void DefinitionManager::loadDefinition(QString path) {
     QString key = d.name + type;
     d.enabled = true;  // should look this up
     if (type == "block") {
-//      d.id = convertManager->addDefinitions(
-//          dynamic_cast<JSONArray*>(def->at("data")));
+      d.id = flatteningConverter.addDefinitions(
+          dynamic_cast<JSONArray*>(def->at("data")));
       d.type = Definition::Converter;
     } else if (type == "flatblock") {
       d.id = blockManager->addDefinitions(
@@ -426,7 +428,7 @@ void DefinitionManager::loadDefinition(QString path) {
       }
       QString type = def->at("type")->asString();
       if (type == "block") {
-//        d.blockid = blockManager->addDefinitions(
+//        d.blockid = flatteningConverter->addDefinitions(
 //            dynamic_cast<JSONArray*>(def->at("data")), d.blockid);
       } else if (type == "flatblock") {
           d.blockid = blockManager->addDefinitions(

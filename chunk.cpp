@@ -41,6 +41,7 @@ void Chunk::load(const NBT &nbt) {
   for (int i = 0; i < numSections; i++) {
     auto section = sections->at(i);
     auto cs = new ChunkSection();
+    // decode Palette to be able to map BlockStates
     auto rawPalette = section->at("Palette");
     cs->paletteLength = rawPalette->length();
     cs->palette = new BlockData[cs->paletteLength];
@@ -49,6 +50,8 @@ void Chunk::load(const NBT &nbt) {
       if (rawPalette->at(j)->has("Properties"))
         cs->palette[j].properties = rawPalette->at(j)->at("Properties")->getData().toMap();
     }
+    // map BlockStates to BlockData
+    // todo: bit fidling looks very complicated -> find easier code
     auto raw = section->at("BlockStates")->toLongArray();
     int blockStatesLength = section->at("BlockStates")->length();
     unsigned char *byteData = new unsigned char[8*blockStatesLength];
@@ -58,7 +61,8 @@ void Chunk::load(const NBT &nbt) {
     for (int i = 0; i < 4096; i++) {
       cs->blocks[4095-i] = getBits(byteData, i*bitSize, bitSize);
     }
-    free(byteData);
+    delete byteData;
+    // copy Light data (todo: Skylight is not needed)
     memcpy(cs->skyLight, section->at("SkyLight")->toByteArray(), 2048);
     memcpy(cs->blockLight, section->at("BlockLight")->toByteArray(), 2048);
     int idx = section->at("Y")->toInt();
@@ -75,7 +79,9 @@ void Chunk::load(const NBT &nbt) {
       entities.insertMulti(e->type(), e);
   }
 
-  for (int i = 15; i >= 0; i--) {  // check for the highest block in this chunk
+  // check for the highest block in this chunk
+  // todo: use highmap from stored NBT data
+  for (int i = 15; i >= 0; i--) {
     if (this->sections[i]) {
       for (int j = 4095; j >= 0; j--) {
         if (this->sections[i]->blocks[j]) {

@@ -7,13 +7,10 @@
 
 #include "./nbt.h"
 #include "./entity.h"
+#include "./blockdata.h"
+
 class BlockIdentifier;
 
-class BlockData {
- public:
-  QString name;
-  QMap<QString, QVariant> properties;
-};
 
 class ChunkSection {
  public:
@@ -26,9 +23,9 @@ class ChunkSection {
 
   BlockData *palette;
   int paletteLength;
-  quint16 blocks[4096];
-  quint8  skyLight[2048];
-  quint8  blockLight[2048];
+  quint16 blocks[16*16*16];
+  quint8  skyLight[16*16*16/2];
+  quint8  blockLight[16*16*16/2];
 };
 
 class Chunk {
