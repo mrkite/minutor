@@ -1,7 +1,9 @@
 /** Copyright (c) 2013, Sean Kasun */
 
-#include "./chunk.h"
 #include <algorithm>
+
+#include "./chunk.h"
+#include "./flatteningconverter.h"
 
 quint16 getBits(const unsigned char *data, int pos, int n) {
   quint16 result = 0;
@@ -30,46 +32,39 @@ void Chunk::load(const NBT &nbt) {
     this->sections[i] = NULL;
   highest = 0;
 
-  auto level = nbt.at("Level");
+  int version = nbt.at("DataVersion")->toInt();
+  const Tag * level = nbt.at("Level");
   chunkX = level->at("xPos")->toInt();
   chunkZ = level->at("zPos")->toInt();
 
+  // load Biome per column
   auto biomes = level->at("Biomes");
-  memcpy(this->biomes, biomes->toIntArray(), 4*biomes->length());
+  if (version >= 1519) {
+    memcpy(this->biomes, biomes->toIntArray(), sizeof(int)*biomes->length());
+  } else {
+    // convert quint8 to quint32
+    auto rawBiomes = biomes->toByteArray();
+    for (int i=0; i<256; i++)
+      this->biomes[i] = rawBiomes[i];
+  }
+
+  // load available Sections
   auto sections = level->at("Sections");
   int numSections = sections->length();
-  for (int i = 0; i < numSections; i++) {
-    auto section = sections->at(i);
-    auto cs = new ChunkSection();
-    // decode Palette to be able to map BlockStates
-    auto rawPalette = section->at("Palette");
-    cs->paletteLength = rawPalette->length();
-    cs->palette = new BlockData[cs->paletteLength];
-    for (int j = 0; j < rawPalette->length(); j++) {
-      cs->palette[j].name = rawPalette->at(j)->at("Name")->toString();
-      if (rawPalette->at(j)->has("Properties"))
-        cs->palette[j].properties = rawPalette->at(j)->at("Properties")->getData().toMap();
-    }
-    // map BlockStates to BlockData
-    // todo: bit fidling looks very complicated -> find easier code
-    auto raw = section->at("BlockStates")->toLongArray();
-    int blockStatesLength = section->at("BlockStates")->length();
-    unsigned char *byteData = new unsigned char[8*blockStatesLength];
-    memcpy(byteData, raw, 8*blockStatesLength);
-    std::reverse(byteData, byteData+(8*blockStatesLength));
-    int bitSize = (blockStatesLength)*64/4096;
-    for (int i = 0; i < 4096; i++) {
-      cs->blocks[4095-i] = getBits(byteData, i*bitSize, bitSize);
-    }
-    delete byteData;
-    // copy Light data (todo: Skylight is not needed)
-    memcpy(cs->skyLight, section->at("SkyLight")->toByteArray(), 2048);
-    memcpy(cs->blockLight, section->at("BlockLight")->toByteArray(), 2048);
+  // loop over all stored Sections, they are not guarantied to be ordered or consecutive
+  for (int s = 0; s < numSections; s++) {
+    ChunkSection *cs = new ChunkSection();
+    const Tag * section = sections->at(s);
+    if (version >= 1519)
+      loadSection1519(cs, section);
+    else
+      loadSection1000(cs, section);
+
     int idx = section->at("Y")->toInt();
     this->sections[idx] = cs;
   }
-  loaded = true;
 
+  loaded = true;
 
   auto entitylist = level->at("Entities");
   int numEntities = entitylist->length();
@@ -93,11 +88,71 @@ void Chunk::load(const NBT &nbt) {
   }
 }
 
+void Chunk::loadSection1000(ChunkSection *cs, const Tag *section) {
+  quint8 blocks[4096];
+  quint8 data[2048];
+  memcpy(blocks, section->at("Blocks")->toByteArray(), 4096);
+  memcpy(data,   section->at("Data")->toByteArray(),   2048);
+  memcpy(cs->blockLight, section->at("BlockLight")->toByteArray(), 2048);
+  // convert old BlockID + data into virtual ID
+  for (int i = 0; i < 4096; i++) {
+    int d = data[i>>1];
+    if (i & 1) d >>= 4;
+    int bid = blocks[i];
+    cs->blocks[i] = blocks[i] | ((d & 0x0f) << 8);
+  }
+// todo: identify this even more ancient stuff ???
+//  if (section->has("Add")) {
+//    raw = section->at("Add")->toByteArray();
+//    for (int i = 0; i < 2048; i++) {
+//      cs->blocks[i * 2] |= (raw[i] & 0xf) << 8;
+//      cs->blocks[i * 2 + 1] |= (raw[i] & 0xf0) << 4;
+//    }
+//  }
+
+  // link to Converter palette
+  cs->paletteLength = 0;
+  cs->palette = FlatteningConverter::Instance().getPalette();
+}
+
+// Cunk format afer "The Flattening" version 1509
+void Chunk::loadSection1519(ChunkSection *cs, const Tag *section) {
+  // decode Palette to be able to map BlockStates
+  auto rawPalette = section->at("Palette");
+  cs->paletteLength = rawPalette->length();
+  cs->palette = new BlockData[cs->paletteLength];
+  for (int j = 0; j < rawPalette->length(); j++) {
+    cs->palette[j].name = rawPalette->at(j)->at("Name")->toString();
+    if (rawPalette->at(j)->has("Properties"))
+      cs->palette[j].properties = rawPalette->at(j)->at("Properties")->getData().toMap();
+  }
+  // map BlockStates to BlockData
+  // todo: bit fidling looks very complicated -> find easier code
+  auto raw = section->at("BlockStates")->toLongArray();
+  int blockStatesLength = section->at("BlockStates")->length();
+  unsigned char *byteData = new unsigned char[8*blockStatesLength];
+  memcpy(byteData, raw, 8*blockStatesLength);
+  std::reverse(byteData, byteData+(8*blockStatesLength));
+  int bitSize = (blockStatesLength)*64/4096;
+  for (int i = 0; i < 4096; i++) {
+    cs->blocks[4095-i] = getBits(byteData, i*bitSize, bitSize);
+  }
+  delete byteData;
+  // copy Light data (todo: Skylight is not needed)
+  memcpy(cs->skyLight, section->at("SkyLight")->toByteArray(), 2048);
+  memcpy(cs->blockLight, section->at("BlockLight")->toByteArray(), 2048);
+}
+
 Chunk::~Chunk() {
   if (loaded) {
     for (int i = 0; i < 16; i++)
       if (sections[i]) {
-        delete[] sections[i]->palette;
+        if (sections[i]->paletteLength > 0) {
+          delete[] sections[i]->palette;
+          sections[i]->paletteLength = 0;
+        } else {
+          sections[i]->palette = NULL;
+        }
         delete sections[i];
         sections[i] = NULL;
       }

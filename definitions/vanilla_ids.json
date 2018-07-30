@@ -51,6 +51,7 @@
     {
       "id": 2,
       "name": "Grass",
+      "flatname": "minecraft:grass_block",
       "color": "#939393",
       "biomeGrass": true
     },
@@ -355,6 +356,7 @@
     {
       "id": 31,
       "name": "Dead Shrub",
+      "flatname": "minecraft:dead_bush",
       "color": "#946428",
       "alpha": 0.3,
       "transparent": true,
@@ -363,6 +365,7 @@
         {
           "data": 1,
           "name": "Tall Grass",
+          "flatname": "minecraft:grass",
           "color": "#909090",
           "biomeGrass": true
         },
@@ -1304,6 +1307,7 @@
     {
       "id": 106,
       "name": "Vines",
+      "flatname": "minecraft:vine",
       "color": "#6f6f6f",
       "transparent": true,
       "spawninside": true,

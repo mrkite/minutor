@@ -18,7 +18,8 @@ FlatteningConverter& FlatteningConverter::Instance() {
   return singleton;
 }
 
-const BlockData * FlatteningConverter::getPalette() {
+//const BlockData * FlatteningConverter::getPalette() {
+BlockData * FlatteningConverter::getPalette() {
   return palette;
 }
 
@@ -53,12 +54,12 @@ void FlatteningConverter::parseDefinition(
         int pack) {
 
   // get the ancient block ID
-  int bid;
+  int bid, data(0);
   if (parentID == NULL) {
     bid = b->at("id")->asNumber();
   } else {
     bid = *parentID;
-    int data = b->at("data")->asNumber();
+    data = b->at("data")->asNumber();
     bid |= data << 8;
   }
 
@@ -77,6 +78,12 @@ void FlatteningConverter::parseDefinition(
     flatname = b->at("flatname")->asString();
 
   palette[bid].name = flatname;
+  if ((parentID == NULL) && (data == 0)) {
+    // spread main block type for data == 0
+    for (int d=1; d<16; d++) {
+      palette[bid|d<<8].name = flatname;
+    }
+  }
   //  packs[pack].append(block);
 
   // recursive parsing of variants (with data)

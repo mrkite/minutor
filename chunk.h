@@ -34,6 +34,10 @@ class Chunk {
   void load(const NBT &nbt);
   ~Chunk();
  protected:
+  void loadSection1000(ChunkSection *cs, const Tag *section);
+  void loadSection1519(ChunkSection *cs, const Tag *section);
+
+
   typedef QMap<QString, QSharedPointer<OverlayItem>> EntityMap;
 
   quint32 biomes[256];

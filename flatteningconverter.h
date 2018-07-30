@@ -16,7 +16,8 @@ public:
   int addDefinitions(JSONArray *, int pack = -1);
   void enableDefinitions(int id);
   void disableDefinitions(int id);
-  const BlockData * getPalette();
+//  const BlockData * getPalette();
+  BlockData * getPalette();
 
 private:
   // singleton: prevent access to constructor and copyconstructor
