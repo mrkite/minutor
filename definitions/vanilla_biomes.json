@@ -6,7 +6,8 @@
     {
       "id": 0,
       "name": "Ocean",
-      "color": "#000070"
+      "color": "#000070",
+      "watermodifier": "#e0cce6"
     },
     {
       "id": 1,
@@ -24,7 +25,7 @@
     },
     {
       "id": 3,
-      "name": "Extreme Hills",
+      "name": "Mountains",
       "color": "#606060",
       "temperature": 0.2,
       "humidity": 0.3
@@ -45,7 +46,7 @@
     },
     {
       "id": 6,
-      "name": "Swampland",
+      "name": "Swamp",
       "color": "#07f9b2",
       "watermodifier": "#e0ffae",
       "temperature": 0.8,
@@ -58,20 +59,21 @@
     },
     {
       "id": 8,
-      "name": "Hell",
+      "name": "Nether",
       "color": "#ff0000",
       "temperature": 2.0,
       "humidity": 0.0
     },
     {
       "id": 9,
-      "name": "Sky",
+      "name": "The End",
       "color": "#8080ff"
     },
     {
       "id": 10,
       "name": "Frozen Ocean",
       "color": "#9090a0",
+      "watermodifier": "#f1cfd4",
       "temperature": 0.0,
       "humidity": 0.5
     },
@@ -84,28 +86,28 @@
     },
     {
       "id": 12,
-      "name": "Ice Plains",
+      "name": "Snowy Tundra",
       "color": "#ffffff",
       "temperature": 0.0,
       "humidity": 0.5
     },
     {
       "id": 13,
-      "name": "Ice Mountains",
+      "name": "Snowy Mountains",
       "color": "#a0a0a0",
       "temperature": 0.0,
       "humidity": 0.5
     },
     {
       "id": 14,
-      "name": "Mushroom Island",
+      "name": "Mushroom Fields",
       "color": "#ff00ff",
       "temperature": 0.9,
       "humidity": 1.0
     },
     {
       "id": 15,
-      "name": "Mushroom Island Shore",
+      "name": "Mushroom Field Shore",
       "color": "#a000ff",
       "temperature": 0.9,
       "humidity": 1.0
@@ -126,7 +128,7 @@
     },
     {
       "id": 18,
-      "name": "Forest Hills",
+      "name": "Woodwd Hills",
       "color": "#22551c",
       "temperature": 0.7,
       "humidity": 0.8
@@ -140,7 +142,7 @@
     },
     {
       "id": 20,
-      "name": "Extreme Hills Edge",
+      "name": "Mountain Edge",
       "color": "#72789a",
       "temperature": 0.2,
       "humidity": 0.3
@@ -169,18 +171,19 @@
     {
       "id": 24,
       "name": "Deep Ocean",
-      "color": "#000030"
+      "color": "#000030",
+      "watermodifier": "#e4cce1"
     },
     {
       "id": 25,
-      "name": "Stone Beach",
+      "name": "Stone Shore",
       "color": "#a2a284",
       "temperature": 0.2,
       "humidity": 0.3
     },
     {
       "id": 26,
-      "name": "Cold Beach",
+      "name": "Snowy Beach",
       "color": "#faf0c0",
       "temperature": 0.05,
       "humidity": 0.3
@@ -201,42 +204,42 @@
     },
     {
       "id": 29,
-      "name": "Roofed Forest",
+      "name": "Dark Forest",
       "color": "#40511a",
       "temperature": 0.7,
       "humidity": 0.8
     },
     {
       "id": 30,
-      "name": "Cold Taiga",
+      "name": "Snowy Taiga",
       "color": "#31554a",
       "temperature": -0.5,
       "humidity": 0.4
     },
     {
       "id": 31,
-      "name": "Cold Taiga Hills",
+      "name": "Snowy Taiga Hills",
       "color": "#243f36",
       "temperature": -0.5,
       "humidity": 0.4
     },
     {
       "id": 32,
-      "name": "Mega Taiga",
+      "name": "Giant Tree Taiga",
       "color": "#596651",
       "temperature": 0.3,
       "humidity": 0.8
     },
     {
       "id": 33,
-      "name": "Mega Taiga Hills",
+      "name": "Giant Tree Taiga Hills",
       "color": "#454f3e",
       "temperature": 0.3,
       "humidity": 0.8
     },
     {
       "id": 34,
-      "name": "Extreme Hills+",
+      "name": "Wooded Mountains",
       "color": "#507050",
       "temperature": 0.2,
       "humidity": 0.3
@@ -257,24 +260,86 @@
     },
     {
       "id": 37,
-      "name": "Mesa",
+      "name": "Badlands",
       "color": "#d94515",
       "temperature": 2.0,
       "humidity": 0.0
     },
     {
       "id": 38,
-      "name": "Mesa Plateau F",
+      "name": "Wooded Badlands Plateau",
       "color": "#b09765",
       "temperature": 2.0,
       "humidity": 0.0
     },
     {
       "id": 39,
-      "name": "Mesa Plateau",
+      "name": "Badlands Plateau",
       "color": "#ca8c65",
       "temperature": 2.0,
       "humidity": 0.0
+    },
+    {
+      "id": 40,
+      "name": "Small End Islands",
+      "color": "#282898"
+    },
+    {
+      "id": 41,
+      "name": "End Midlands",
+      "color": "#282898"
+    },
+    {
+      "id": 42,
+      "name": "End Highlands",
+      "color": "#282898"
+    },
+    {
+      "id": 43,
+      "name": "End Barrens",
+      "color": "#282898"
+    },
+    {
+      "id": 44,
+      "name": "Warm Ocean",
+      "color": "#000070",
+      "watermodifier": "#cfc9f8"
+    },
+    {
+      "id": 45,
+      "name": "Lukewarm Ocean",
+      "color": "#000070",
+      "watermodifier": "#d7caef"
+    },
+    {
+      "id": 46,
+      "name": "Cold Ocean",
+      "color": "#000070",
+      "watermodifier": "#e9cddd"
+    },
+    {
+      "id": 47,
+      "name": "Deep Warm Ocean",
+      "color": "#000070",
+      "watermodifier": "#d3c9f3"
+    },
+    {
+      "id": 48,
+      "name": "Deep Lukewarm Ocean",
+      "color": "#000070",
+      "watermodifier": "#dccbea"
+    },
+    {
+      "id": 49,
+      "name": "Deep Cold Ocean",
+      "color": "#000070",
+      "watermodifier": "#edced8"
+    },
+    {
+      "id": 50,
+      "name": "Deep Frozen Ocean",
+      "color": "#000070",
+      "watermodifier": "#f6d0d0"
     },
     {
       "id": 127,
@@ -290,14 +355,14 @@
     },
     {
       "id": 130,
-      "name": "Desert M",
+      "name": "Desert Lakes",
       "color": "#ffbc40",
       "temperature": 2.0,
       "humidity": 0.0
     },
     {
       "id": 131,
-      "name": "Extreme Hills M",
+      "name": "Gravelly Mountains",
       "color": "#888888",
       "temperature": 0.2,
       "humidity": 0.3
@@ -311,14 +376,14 @@
     },
     {
       "id": 133,
-      "name": "Taiga M",
+      "name": "Taiga Mountains",
       "color": "#338e81",
       "temperature": 0.25,
       "humidity": 0.8
     },
     {
       "id": 134,
-      "name": "Swampland M",
+      "name": "Swamp Hills",
       "color": "#2fffda",
       "watermodifier": "#e0ffae",
       "temperature": 0.8,
@@ -326,105 +391,105 @@
     },
     {
       "id": 140,
-      "name": "Ice Plains Spikes",
+      "name": "Ice Spikes",
       "color": "#b4dcdc",
       "temperature": 0.0,
       "humidity": 0.5
     },
     {
       "id": 149,
-      "name": "Jungle M",
+      "name": "Modified Jungle",
       "color": "#7ba331",
       "temperature": 0.95,
       "humidity": 0.9
     },
     {
       "id": 151,
-      "name": "Jungle Edge M",
+      "name": "Modified Jungle Edge",
       "color": "#8ab33f",
       "temperature": 0.95,
       "humidity": 0.8
     },
     {
       "id": 155,
-      "name": "Birch Forest M",
+      "name": "Tall Birch Forest",
       "color": "#589c6c",
       "temperature": 0.6,
       "humidity": 0.6
     },
     {
       "id": 156,
-      "name": "Birch Forest Hills M",
+      "name": "Tall Birch Hills",
       "color": "#47875a",
       "temperature": 0.6,
       "humidity": 0.6
     },
     {
       "id": 157,
-      "name": "Roofed Forest M",
+      "name": "Dark Forest Hills",
       "color": "#687942",
       "temperature": 0.7,
       "humidity": 0.8
     },
     {
       "id": 158,
-      "name": "Cold Taiga M",
+      "name": "Snowy Taiga Mountains",
       "color": "#597d72",
       "temperature": -0.5,
       "humidity": 0.4
     },
     {
       "id": 160,
-      "name": "Mega Spruce Taiga",
+      "name": "Giant Spruce Taiga",
       "color": "#818e79",
       "temperature": 0.25,
       "humidity": 0.8
     },
     {
       "id": 161,
-      "name": "Mega Spruce Taiga Hills",
+      "name": "Giant Spruce Taiga Hills",
       "color": "#6d7766",
       "temperature": 0.25,
       "humidity": 0.8
     },
     {
       "id": 162,
-      "name": "Extreme Hills+ M",
+      "name": "Gravelly Mountains+",
       "color": "#789878",
       "temperature": 0.2,
       "humidity": 0.3
     },
     {
       "id": 163,
-      "name": "Savanna M",
+      "name": "Shattered Savanna",
       "color": "#e5da87",
       "temperature": 1.1,
       "humidity": 0.0
     },
     {
       "id": 164,
-      "name": "Savanna Plateau M",
+      "name": "Shattered Savanna Plateau",
       "color": "#cfc58c",
       "temperature": 1.0,
       "humidity": 0.0
     },
     {
       "id": 165,
-      "name": "Mesa (Bryce)",
+      "name": "Eroded Badlands",
       "color": "#ff6d3d",
       "temperature": 2.0,
       "humidity": 0.0
     },
     {
       "id": 166,
-      "name": "Mesa Plateau F M",
+      "name": "Modified Wooded Badlands Plateau",
       "color": "#d8bf8d",
       "temperature": 2.0,
       "humidity": 0.0
     },
     {
       "id": 167,
-      "name": "Mesa Plateau M",
+      "name": "Modified Badlands Plateau",
       "color": "#f2b48d",
       "temperature": 2.0,
       "humidity": 0.0

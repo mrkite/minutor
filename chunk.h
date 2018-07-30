@@ -7,20 +7,25 @@
 
 #include "./nbt.h"
 #include "./entity.h"
+#include "./blockdata.h"
+
 class BlockIdentifier;
+
 
 class ChunkSection {
  public:
-  quint16 getBlock(int x, int y, int z);
-  quint16 getBlock(int offset, int y);
-  quint8  getData(int x, int y, int z);
-  quint8  getData(int offset, int y);
-  quint8  getLight(int x, int y, int z);
-  quint8  getLight(int offset, int y);
+  QString getBlock(int x, int y, int z);
+  QString getBlock(int offset, int y);
+  quint8  getSkyLight(int x, int y, int z);
+  quint8  getSkyLight(int offset, int y);
+  quint8  getBlockLight(int x, int y, int z);
+  quint8  getBlockLight(int offset, int y);
 
-  quint16 blocks[4096];
-  quint8  data[2048];
-  quint8  light[2048];
+  BlockData *palette;
+  int paletteLength;
+  quint16 blocks[16*16*16];
+  quint8  skyLight[16*16*16/2];
+  quint8  blockLight[16*16*16/2];
 };
 
 class Chunk {
@@ -29,9 +34,13 @@ class Chunk {
   void load(const NBT &nbt);
   ~Chunk();
  protected:
+  void loadSection1000(ChunkSection *cs, const Tag *section);
+  void loadSection1519(ChunkSection *cs, const Tag *section);
+
+
   typedef QMap<QString, QSharedPointer<OverlayItem>> EntityMap;
 
-  quint8 biomes[256];
+  quint32 biomes[256];
   int highest;
   ChunkSection *sections[16];
   int renderedAt;
