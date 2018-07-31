@@ -53,7 +53,7 @@ void BlockInfo::setName(const QString & newname) {
       !this->name.contains("Full");
   snow = this->name.contains("Snow");
   // precompute biome based watercolormodifier
-  water = this->name.contains("Water");
+  water = this->name.contains("water");
 }
 
 const QString & BlockInfo::getName() { return name; }
@@ -90,38 +90,41 @@ BlockIdentifier::~BlockIdentifier() {
 }
 
 // this routine is ridiculously slow
-BlockInfo &BlockIdentifier::getBlock(int id, int data) {
+BlockInfo &BlockIdentifier::getBlock(QString name, int data) {
   // first apply the mask
-  if (blocks.contains(id))
-    data &= blocks[id].first()->mask;
-
-  quint32 bid = id | (data << 12);
-  // first check the cache
-  if (cache[bid] != NULL)
-    return *cache[bid];
-
-  // now find the variant
-  if (blocks.contains(bid)) {
-    QList<BlockInfo*> &list = blocks[bid];
-    // run backwards for priority sorting
-    for (int i = list.length() - 1; i >= 0; i--) {
-      if (list[i]->enabled) {
-        cache[bid] = list[i];
-        return *list[i];
-      }
-    }
+  if (blocks.contains(name)) {
+    return *(blocks[name].first());
   }
-  // no enabled variant found
-  if (blocks.contains(id)) {
-    QList<BlockInfo*> &list = blocks[id];
-    for (int i = list.length() - 1; i >= 0; i--) {
-      if (list[i]->enabled) {
-        cache[bid] = list[i];
-        return *list[i];
-      }
-    }
-  }
+  //   data &= blocks[name].first()->mask;
+  //
+  // quint32 bid = id | (data << 12);
+  // // first check the cache
+  // if (cache[bid] != NULL)
+  //   return *cache[bid];
+  //
+  // // now find the variant
+  // if (blocks.contains(bid)) {
+  //   QList<BlockInfo*> &list = blocks[bid];
+  //   // run backwards for priority sorting
+  //   for (int i = list.length() - 1; i >= 0; i--) {
+  //     if (list[i]->enabled) {
+  //       cache[bid] = list[i];
+  //       return *list[i];
+  //     }
+  //   }
+  // }
+  // // no enabled variant found
+  // if (blocks.contains(id)) {
+  //   QList<BlockInfo*> &list = blocks[id];
+  //   for (int i = list.length() - 1; i >= 0; i--) {
+  //     if (list[i]->enabled) {
+  //       cache[bid] = list[i];
+  //       return *list[i];
+  //     }
+  //   }
+  // }
   // no blocks at all found.. dammit
+  unknownBlock.setName(name);
   return unknownBlock;
 }
 
@@ -165,6 +168,7 @@ void BlockIdentifier::clearCache() {
 void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent,
                                       int pack) {
   int id;
+  QString name;
   if (parent == NULL) {
     id = b->at("id")->asNumber();
   } else {
@@ -176,11 +180,12 @@ void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent,
   block->id = id;
 
   if (b->has("name"))
-    block->setName(b->at("name")->asString());
+    name = b->at("name")->asString();
   else if (parent != NULL)
-    block->setName(parent->getName());
+    name = parent->getName();
   else
-    block->setName("Unknown");
+    name = "Unknown";
+  block->setName(name);
   block->enabled = true;
 
   if (b->has("transparent")) {
@@ -275,6 +280,6 @@ void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent,
       parseDefinition(dynamic_cast<JSONObject *>(variants->at(j)), block, pack);
   }
 
-  blocks[id].append(block);
+  blocks[name].append(block);
   packs[pack].append(block);
 }

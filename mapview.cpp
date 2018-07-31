@@ -447,11 +447,11 @@ void MapView::renderChunk(Chunk *chunk) {
         }
 
         // get data value
-        int data = section->getData(offset, y);
+        //int data = section->getData(offset, y);
 
         // get BlockInfo from block value
-        BlockInfo &block = blocks->getBlock(section->getBlock(offset, y),
-                                            data);
+        BlockInfo &block = blocks->getBlock(section->getBlock(offset, y), 0);
+                                            // data);
         if (block.alpha == 0.0) continue;
 
         // get light value from one block above
@@ -460,7 +460,7 @@ void MapView::renderChunk(Chunk *chunk) {
         if (y < 255)
           section1 = chunk->sections[(y+1) >> 4];
         if (section1)
-          light = section1->getLight(offset, y+1);
+          light = section1->getBlockLight(offset, y+1);
         int light1 = light;
         if (!(flags & flgLighting))
           light = 13;
@@ -505,7 +505,7 @@ void MapView::renderChunk(Chunk *chunk) {
         }
         if (flags & flgMobSpawn) {
           // get block info from 1 and 2 above and 1 below
-          quint16 blid1(0), blid2(0), blidB(0);  // default to air
+          QString blid1(""), blid2(""), blidB("");  // default to air
           int data1(0), data2(0), dataB(0);  // default variant
           ChunkSection *section2 = NULL;
           ChunkSection *sectionB = NULL;
@@ -515,43 +515,43 @@ void MapView::renderChunk(Chunk *chunk) {
             sectionB = chunk->sections[(y-1) >> 4];
           if (section1) {
             blid1 = section1->getBlock(offset, y+1);
-            data1 = section1->getData(offset, y+1);
+            // data1 = section1->getData(offset, y+1);
           }
           if (section2) {
             blid2 = section2->getBlock(offset, y+2);
-            data2 = section2->getData(offset, y+2);
+            // data2 = section2->getData(offset, y+2);
           }
           if (sectionB) {
             blidB = sectionB->getBlock(offset, y-1);
-            dataB = sectionB->getData(offset, y-1);
+            // dataB = sectionB->getData(offset, y-1);
           }
-          BlockInfo &block2 = blocks->getBlock(blid2, data2);
-          BlockInfo &block1 = blocks->getBlock(blid1, data1);
+          BlockInfo &block2 = blocks->getBlock(blid2, 0);//data2);
+          BlockInfo &block1 = blocks->getBlock(blid1, 0);//data1);
           BlockInfo &block0 = block;
-          BlockInfo &blockB = blocks->getBlock(blidB, dataB);
-          int light0 = section->getLight(offset, y);
+          BlockInfo &blockB = blocks->getBlock(blidB, 0);//dataB);
+          int light0 = section->getBlockLight(offset, y);
 
-          // spawn check #1: on top of solid block
-          if (block0.doesBlockHaveSolidTopSurface(data) &&
-              !block0.isBedrock() && light1 < 8 &&
-              !block1.isBlockNormalCube() && block1.spawninside &&
-              !block1.isLiquid() &&
-              !block2.isBlockNormalCube() && block2.spawninside) {
-            colr = (colr + 256) / 2;
-            colg = (colg + 0) / 2;
-            colb = (colb + 192) / 2;
-          }
-          // spawn check #2: current block is transparent,
-          // but mob can spawn through (e.g. snow)
-          if (blockB.doesBlockHaveSolidTopSurface(dataB) &&
-              !blockB.isBedrock() && light0 < 8 &&
-              !block0.isBlockNormalCube() && block0.spawninside &&
-              !block0.isLiquid() &&
-              !block1.isBlockNormalCube() && block1.spawninside) {
-            colr = (colr + 192) / 2;
-            colg = (colg + 0) / 2;
-            colb = (colb + 256) / 2;
-          }
+          // // spawn check #1: on top of solid block
+          // if (block0.doesBlockHaveSolidTopSurface(data) &&
+          //     !block0.isBedrock() && light1 < 8 &&
+          //     !block1.isBlockNormalCube() && block1.spawninside &&
+          //     !block1.isLiquid() &&
+          //     !block2.isBlockNormalCube() && block2.spawninside) {
+          //   colr = (colr + 256) / 2;
+          //   colg = (colg + 0) / 2;
+          //   colb = (colb + 192) / 2;
+          // }
+          // // spawn check #2: current block is transparent,
+          // // but mob can spawn through (e.g. snow)
+          // if (blockB.doesBlockHaveSolidTopSurface(dataB) &&
+          //     !blockB.isBedrock() && light0 < 8 &&
+          //     !block0.isBlockNormalCube() && block0.spawninside &&
+          //     !block0.isLiquid() &&
+          //     !block1.isBlockNormalCube() && block1.spawninside) {
+          //   colr = (colr + 192) / 2;
+          //   colg = (colg + 0) / 2;
+          //   colb = (colb + 256) / 2;
+          // }
         }
         if (flags & flgBiomeColors) {
           colr = biome.colors[light].red();
@@ -588,9 +588,9 @@ void MapView::renderChunk(Chunk *chunk) {
           ChunkSection *section = chunk->sections[y >> 4];
           if (!section) continue;
           // get data value
-          int data = section->getData(offset, y);
+          // int data = section->getData(offset, y);
           // get BlockInfo from block value
-          BlockInfo &block = blocks->getBlock(section->getBlock(offset, y), data);
+          BlockInfo &block = blocks->getBlock(section->getBlock(offset, y), 0);//data);
           if (block.transparent) {
             cave_factor -= caveshade[cave_test];
           }
@@ -634,15 +634,15 @@ void MapView::getToolTip(int x, int z) {
         continue;
       }
       int yoffset = (y & 0xf) << 8;
-      int data = section->data[(offset + yoffset) / 2];
-      if (x & 1) data >>= 4;
-      auto &block = blocks->getBlock(section->blocks[offset + yoffset],
-                                     data & 0xf);
+      //int data = section->data[(offset + yoffset) / 2];
+      //if (x & 1) data >>= 4;
+      auto &block = blocks->getBlock(section->getBlock(offset, y), 0);
+                                     // data & 0xf);
       if (block.alpha == 0.0) continue;
       // found block
       name = block.getName();
-      id = section->blocks[offset + yoffset];
-      bd = data & 0xf;
+      //id = section->blocks[offset + yoffset];
+      //bd = data & 0xf;
       break;
     }
     auto &bi = biomes->getBiome(chunk->biomes[(x & 0xf) + (z & 0xf) * 16]);

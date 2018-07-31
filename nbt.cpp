@@ -135,6 +135,10 @@ const qint32 *Tag::toIntArray() const {
   qWarning() << "Unhandled toIntArray";
   return NULL;
 }
+const qint64 *Tag::toLongArray() const {
+  qWarning() << "Unhandled toLongArray";
+  return NULL;
+}
 const QVariant Tag::getData() const {
   qWarning() << "Unhandled getData";
   return QVariant();
@@ -307,6 +311,7 @@ Tag_List::Tag_List(TagDataStream *s) {
     case 9: setListData<Tag_List>(&data, len, s); break;
     case 10: setListData<Tag_Compound>(&data, len, s); break;
     case 11: setListData<Tag_Int_Array>(&data, len, s); break;
+    case 12: setListData<Tag_Long_Array>(&data, len, s); break;
     default: throw "Unknown type";
   }
 }
@@ -360,6 +365,7 @@ Tag_Compound::Tag_Compound(TagDataStream *s) {
       case 9: child = new Tag_List(s); break;
       case 10: child = new Tag_Compound(s); break;
       case 11: child = new Tag_Int_Array(s); break;
+      case 12: child = new Tag_Long_Array(s); break;
       default: throw "Unknown tag";
     }
     children[key] = child;
@@ -423,6 +429,41 @@ const QString Tag_Int_Array::toString() const {
 }
 
 const QVariant Tag_Int_Array::getData() const {
+  QList<QVariant> ret;
+  for (int i = 0; i < len; ++i) {
+    ret.push_back(data[i]);
+  }
+
+  return ret;
+}
+
+Tag_Long_Array::Tag_Long_Array(TagDataStream *s) {
+  len = s->r32();
+  data = new qint64[len];
+  for (int i = 0; i < len; i++)
+    data[i] = s->r64();
+}
+Tag_Long_Array::~Tag_Long_Array() {
+  delete[] data;
+}
+const qint64 *Tag_Long_Array::toLongArray() const {
+  return data;
+}
+int Tag_Long_Array::length() const {
+  return len;
+}
+
+const QString Tag_Long_Array::toString() const {
+  QStringList ret;
+  ret << "[";
+  for (int i = 0; i < len; ++i) {
+    ret << QString::number(data[i]) << ",";
+  }
+  ret.last() = "]";
+  return ret.join("");
+}
+
+const QVariant Tag_Long_Array::getData() const {
   QList<QVariant> ret;
   for (int i = 0; i < len; ++i) {
     ret.push_back(data[i]);
