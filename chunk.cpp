@@ -1,17 +1,15 @@
 /** Copyright (c) 2013, Sean Kasun */
 
 #include "./chunk.h"
-#include <algorithm>
 
-quint16 getBits(const unsigned char *data, int pos, int n) {
-  quint16 result = 0;
-  int arrIndex = pos/8;
+quint16 getBits(const unsigned char *data, int len, int pos, int n) {
+  int arrIndex = (len-1)-(pos/8);
   int bitIndex = pos%8;
   quint32 loc =
     data[arrIndex]   << 24 |
-    data[arrIndex+1] << 16 |
-    data[arrIndex+2] << 8  |
-    data[arrIndex+3];
+    data[arrIndex-1] << 16 |
+    data[arrIndex-2] << 8  |
+    data[arrIndex-3];
 
   return ((loc >> (32-bitIndex-n)) & ((1 << n) -1));
 }
@@ -49,16 +47,17 @@ void Chunk::load(const NBT &nbt) {
       if (rawPalette->at(j)->has("Properties"))
         cs->palette[j].properties = rawPalette->at(j)->at("Properties")->getData().toMap();
     }
+    // stored as a little-endian byte array
     auto raw = section->at("BlockStates")->toLongArray();
     int blockStatesLength = section->at("BlockStates")->length();
-    unsigned char *byteData = new unsigned char[8*blockStatesLength];
-    memcpy(byteData, raw, 8*blockStatesLength);
-    std::reverse(byteData, byteData+(8*blockStatesLength));
     int bitSize = (blockStatesLength)*64/4096;
     for (int i = 0; i < 4096; i++) {
-      cs->blocks[4095-i] = getBits(byteData, i*bitSize, bitSize);
+      cs->blocks[4095-i] = getBits(
+        reinterpret_cast<const unsigned char *>(raw), // The raw data
+        8*blockStatesLength,                          // The length of raw
+        i*bitSize,                                    // The index to get
+        bitSize);                                     // The number of bits
     }
-    free(byteData);
     memcpy(cs->skyLight, section->at("SkyLight")->toByteArray(), 2048);
     memcpy(cs->blockLight, section->at("BlockLight")->toByteArray(), 2048);
     int idx = section->at("Y")->toInt();
