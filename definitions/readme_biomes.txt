@@ -24,14 +24,14 @@ Inside the "data" tag available biomes are defined:
   ]
 
 "id"    - the SaveGameID used by Minecraft
-"color" - color used in Biome Overly (e.g. AMIDST color code)
+"color" - color used in Biome Overlay (e.g. AMIDST color code)
  if color is omitted a pseudo random color is calculated based on the hashed name
 
 some special values can be derived from the Minecraft source code:
 
-"watercolor"  - special color of water (in swamps)
-"temperature" - default 0.5
-"humidity"    - default 0.5
+"watermodifier" - special color of water (in swamps)
+"temperature"   - default 0.5
+"humidity"      - default 0.5
 
 
 

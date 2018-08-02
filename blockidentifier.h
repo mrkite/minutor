@@ -20,6 +20,7 @@ class BlockInfo {
   bool isOpaque();
   bool isLiquid();
   bool doesBlockHaveSolidTopSurface(int data);
+  bool doesBlockHaveSolidTopSurface();
   bool isBlockNormalCube();
   bool renderAsNormalBlock();
   bool canProvidePower();
@@ -41,7 +42,7 @@ class BlockInfo {
   void setBiomeFoliage(bool value);
   const QString &getName();
 
-  int id;
+//  int id;
   double alpha;
   quint8 mask;
   bool enabled;
@@ -72,13 +73,11 @@ class BlockIdentifier {
   int addDefinitions(JSONArray *, int pack = -1);
   void enableDefinitions(int id);
   void disableDefinitions(int id);
-  BlockInfo &getBlock(QString name, int data);
+  BlockInfo &getBlock(QString name);
  private:
-  void clearCache();
   void parseDefinition(JSONObject *block, BlockInfo *parent, int pack);
-  QMap<QString, QList<BlockInfo *>> blocks;
+  QMap<QString, BlockInfo*> blocks;
   QList<QList<BlockInfo*> > packs;
-  BlockInfo *cache[65536];
 };
 
 #endif  // BLOCKIDENTIFIER_H_

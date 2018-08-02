@@ -16,6 +16,7 @@ class BiomeIdentifier;
 class BlockIdentifier;
 class DimensionIdentifier;
 class EntityIdentifier;
+class FlatteningConverter;
 class MapView;
 class JSONData;
 class DefinitionUpdater;
@@ -25,7 +26,7 @@ struct Definition {
   QString version;
   QString path;
   QString update;
-  enum {Block, Biome, Dimension, Entity, Pack} type;
+  enum {Block, Biome, Dimension, Entity, Pack, Converter} type;
   int id;
   bool enabled;
   // for packs only
@@ -77,6 +78,7 @@ class DefinitionManager : public QWidget {
   BlockIdentifier *blockManager;  // todo: migrate to reference to singleton
   DimensionIdentifier *dimensionManager;  // todo: migrate to reference to singleton
   EntityIdentifier &entityManager;
+  FlatteningConverter &flatteningConverter;
   QString selected;
   QList<QVariant> sorted;
 

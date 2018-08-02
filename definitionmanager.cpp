@@ -15,6 +15,7 @@
 #include "./blockidentifier.h"
 #include "./dimensionidentifier.h"
 #include "./entityidentifier.h"
+#include "./flatteningconverter.h"
 #include "./mapview.h"
 #include "./json.h"
 #include "./zipreader.h"
@@ -23,7 +24,8 @@
 DefinitionManager::DefinitionManager(QWidget *parent) :
     QWidget(parent),
     isUpdating(false),
-    entityManager(EntityIdentifier::Instance()) {
+    entityManager(EntityIdentifier::Instance()),
+    flatteningConverter(FlatteningConverter::Instance()) {
   setWindowFlags(Qt::Window);
   setWindowTitle(tr("Definitions"));
 
@@ -116,7 +118,7 @@ void DefinitionManager::refresh() {
   table->setRowCount(0);
   QStringList types;
   types << tr("block") << tr("biome") << tr("dimension")
-        << tr("entity") << tr("pack");
+        << tr("entity") << tr("pack") << tr("converter");
   for (int i = 0; i < sorted.length(); i++) {
     Definition &def = definitions[sorted[i].toString()];
     int row = table->rowCount();
@@ -371,6 +373,10 @@ void DefinitionManager::loadDefinition(QString path) {
     QString key = d.name + type;
     d.enabled = true;  // should look this up
     if (type == "block") {
+      d.id = flatteningConverter.addDefinitions(
+          dynamic_cast<JSONArray*>(def->at("data")));
+      d.type = Definition::Converter;
+    } else if (type == "flatblock") {
       d.id = blockManager->addDefinitions(
           dynamic_cast<JSONArray*>(def->at("data")));
       d.type = Definition::Block;
@@ -421,18 +427,22 @@ void DefinitionManager::loadDefinition(QString path) {
         continue;
       }
       QString type = def->at("type")->asString();
-      if (type == "block")
-        d.blockid = blockManager->addDefinitions(
-            dynamic_cast<JSONArray*>(def->at("data")), d.blockid);
-      else if (type == "biome")
+      if (type == "block") {
+//        d.blockid = flatteningConverter->addDefinitions(
+//            dynamic_cast<JSONArray*>(def->at("data")), d.blockid);
+      } else if (type == "flatblock") {
+          d.blockid = blockManager->addDefinitions(
+              dynamic_cast<JSONArray*>(def->at("data")), d.blockid);
+      } else if (type == "biome") {
         d.biomeid = biomeManager->addDefinitions(
             dynamic_cast<JSONArray*>(def->at("data")), d.biomeid);
-      else if (type == "dimension")
+      } else if (type == "dimension") {
         d.dimensionid = dimensionManager->addDefinitions(
             dynamic_cast<JSONArray*>(def->at("data")), d.dimensionid);
-      else if (type == "entity")
+      } else if (type == "entity") {
         d.entityid = entityManager.addDefinitions(
             dynamic_cast<JSONArray*>(def->at("data")), d.entityid);
+      }
       delete def;
     }
     definitions.insert(path, d);
