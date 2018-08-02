@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "biome",
-  "version": "1.11.2",
+  "version": "1.13.18w26",
   "data": [
     {
       "id": 0,
@@ -128,7 +128,7 @@
     },
     {
       "id": 18,
-      "name": "Woodwd Hills",
+      "name": "Wooded Hills",
       "color": "#22551c",
       "temperature": 0.7,
       "humidity": 0.8
