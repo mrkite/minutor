@@ -318,6 +318,7 @@
     {
       "id": 25,
       "name": "Note Block",
+      "flatname": "minecraft:note_block",
       "color": "#915840"
     },
     {
@@ -329,6 +330,7 @@
     {
       "id": 27,
       "name": "Powered Rail",
+      "flatname": "minecraft:powered_rail",
       "color": "#ab0301",
       "transparent": true,
       "spawninside": true
@@ -350,6 +352,7 @@
     {
       "id": 30,
       "name": "Cobweb",
+      "flatname": "minecraft:cobweb",
       "color": "#ededed",
       "transparent": true
     },
@@ -481,6 +484,7 @@
     {
       "id": 36,
       "name": "Piston Extension",
+      "flatname": "minecraft:moving_piston",
       "color": "#b4905a"
     },
     {
@@ -570,51 +574,61 @@
     {
       "id": 43,
       "name": "Double Stone Slab",
+      "flatname": "minecraft:stone_slab",
       "color": "#a3a3a3",
       "variants": [
         {
           "data": 1,
           "name": "Double Sandstone Slab",
+          "flatname": "minecraft:sandstone_slab",
           "color": "#d7ce95"
         },
         {
           "data": 2,
           "name": "Double Wooden Slab",
+          "flatname": "minecraft:oak_slab",
           "color": "#b4905a"
         },
         {
           "data": 3,
           "name": "Double Cobblestone Slab",
+          "flatname": "minecraft:cobblestone_slab",
           "color": "#8f8f8f"
         },
         {
           "data": 4,
           "name": "Double Bricks Slab",
+          "flatname": "minecraft:brick_slab",
           "color": "#7c4536"
         },
         {
           "data": 5,
           "name": "Double Stone Brick Slab",
+          "flatname": "minecraft:stone_brick_slab",
           "color": "#797979"
         },
         {
           "data": 6,
           "name": "Double Nether Brick Slab",
+          "flatname": "minecraft:nether_brick_slab",
           "color": "#30181c"
         },
         {
           "data": 7,
           "name": "Double Quartz Slab",
+          "flatname": "minecraft:quartz_slab",
           "color": "#f0eee8"
         },
         {
           "data": 8,
           "name": "Full Stone Slab",
+          "flatname": "minecraft:stone_slab",
           "color": "#9c9c9c"
         },
         {
           "data": 9,
           "name": "Full Sandstone Slab",
+          "flatname": "minecraft:sandstone_slab",
           "color": "#d7cf9c"
         }
       ]
@@ -633,6 +647,7 @@
         {
           "data": 2,
           "name": "Wooden Slab",
+      "flatname": "minecraft:oak_slab",
           "color": "#b4905a"
         },
         {
@@ -663,41 +678,49 @@
         {
           "data": 8,
           "name": "Upper Stone Slab",
+          "flatname": "minecraft:stone_slab",
           "color": "#a3a3a3"
         },
         {
           "data": 9,
           "name": "Upper Sandstone Slab",
+          "flatname": "minecraft:sandstone_slab",
           "color": "#d7ce95"
         },
         {
           "data": 10,
           "name": "Upper Wooden Slab",
+          "flatname": "minecraft:oak_slab",
           "color": "#b4905a"
         },
         {
           "data": 11,
           "name": "Upper Cobblestone Slab",
+          "flatname": "minecraft:cobblestone_slab",
           "color": "#8f8f8f"
         },
         {
           "data": 12,
           "name": "Upper Brick Slab",
+          "flatname": "minecraft:brick_slab",
           "color": "#7c4536"
         },
         {
           "data": 13,
           "name": "Upper Stone Brick Slab",
+          "flatname": "minecraft:stone_brick_slab",
           "color": "#797979"
         },
         {
           "data": 14,
           "name": "Upper Nether Brick Slab",
+          "flatname": "minecraft:nether_brick_slab",
           "color": "#30181c"
         },
         {
           "data": 15,
           "name": "Upper Quartz Slab",
+          "flatname": "minecraft:quartz_slab",
           "color": "#f0eee8"
         }
       ]
@@ -814,11 +837,13 @@
     {
       "id": 62,
       "name": "Burning Furnace",
+      "flatname": "minecraft:furnace",
       "color": "#535353"
     },
     {
       "id": 63,
       "name": "Sign Post",
+      "flatname": "minecraft:sign",
       "color": "#9f844d",
       "transparent": true,
       "spawninside": true
@@ -881,6 +906,7 @@
     {
       "id": 72,
       "name": "Wooden Pressure Plate",
+      "flatname": "minecraft:oak_pressure_plate",
       "color": "#bc9862",
       "transparent": true,
       "spawninside": true,
@@ -889,16 +915,19 @@
     {
       "id": 73,
       "name": "Redstone Ore",
+      "flatname": "minecraft:redstone_ore",
       "color": "#8f0303"
     },
     {
       "id": 74,
       "name": "Redstone Ore (glowing)",
+      "flatname": "minecraft:redstone_ore",
       "color": "#8f0303"
     },
     {
       "id": 75,
       "name": "Redstone Torch (off)",
+      "flatname": "minecraft:redstone_torch",
       "color": "#480000",
       "transparent": true,
       "canProvidePower": true
@@ -906,6 +935,7 @@
     {
       "id": 76,
       "name": "Redstone Torch (on)",
+      "flatname": "minecraft:redstone_torch",
       "color": "#fd0000",
       "transparent": true,
       "canProvidePower": true
@@ -921,6 +951,7 @@
     {
       "id": 78,
       "name": "Snow",
+      "flatname": "minecraft:snow",
       "color": "#eeffff",
       "spawninside": true,
       "transparent": true
@@ -936,6 +967,7 @@
     {
       "id": 80,
       "name": "Snow Block",
+      "flatname": "minecraft:snow_block",
       "color": "#eeffff"
     },
     {
@@ -998,6 +1030,7 @@
     {
       "id": 91,
       "name": "Jack o'Lantern",
+      "flatname": "minecraft:jack_o_lantern",
       "color": "#e9b416"
     },
     {
@@ -1009,6 +1042,7 @@
     {
       "id": 93,
       "name": "Redstone Repeater (off)",
+      "flatname": "minecraft:repeater",
       "color": "#2a0002",
       "transparent": true,
       "canProvidePower": true
@@ -1016,6 +1050,7 @@
     {
       "id": 94,
       "name": "Redstone Repeater (on)",
+      "flatname": "minecraft:repeater",
       "color": "#fd0101",
       "transparent": true,
       "canProvidePower": true
@@ -1064,7 +1099,7 @@
         },
         {
           "data": 8,
-          "name": "Silver Stained Glass",
+          "name": "Light Gray Stained Glass",
           "color": "#999999"
         },
         {
@@ -1107,6 +1142,7 @@
     {
       "id": 96,
       "name": "Wooden Trapdoor",
+      "flatname": "minecraft:oak_trapdoor",
       "color": "#7c5a2a",
       "transparent": true
     },
@@ -1346,6 +1382,7 @@
     {
       "id": 112,
       "name": "Nether Brick",
+      "flatname": "minecraft:nether_bricks",
       "color": "#30181c"
     },
     {
@@ -1425,42 +1462,50 @@
     {
       "id": 123,
       "name": "Redstone Lamp (off)",
+      "flatname": "minecraft:redstone_lamp",
       "color": "#b0744c"
     },
     {
       "id": 124,
       "name": "Redstone Lamp (on)",
+      "flatname": "minecraft:redstone_lamp",
       "color": "#f1d1af",
       "transparent": true
     },
     {
       "id": 125,
       "name": "Double Oak Wood Slab",
+      "flatname": "minecraft:oak_slab",
       "color": "#b4905a",
       "variants": [
         {
           "data": 1,
           "name": "Double Spruce Wood Slab",
+          "flatname": "minecraft:spruce_slab",
           "color": "#664f2f"
         },
         {
           "data": 2,
           "name": "Double Birch Wood Slab",
+          "flatname": "minecraft:birch_slab",
           "color": "#d7cb8d"
         },
         {
           "data": 3,
           "name": "Double Jungle Wood Slab",
+          "flatname": "minecraft:jungle_slab",
           "color": "#b1805c"
         },
         {
           "data": 4,
           "name": "Double Acacia Wood Slab",
+          "flatname": "minecraft:acacia_slab",
           "color": "#ad5d32"
         },
         {
           "data": 5,
           "name": "Double Dark Oak Wood Slab",
+          "flatname": "minecraft:dark_oak_slab",
           "color": "#462d15"
         }
       ]
@@ -1468,62 +1513,74 @@
     {
       "id": 126,
       "name": "Oak Wood Slab",
+      "flatname": "minecraft:oak_slab",
       "color": "#b4905a",
       "transparent": true,
       "variants": [
         {
           "data": 1,
           "name": "Spruce Wood Slab",
+          "flatname": "minecraft:spruce_slab",
           "color": "#664f2f"
         },
         {
           "data": 2,
           "name": "Birch Wood Slab",
+          "flatname": "minecraft:birch_slab",
           "color": "#d7cb8d"
         },
         {
           "data": 3,
           "name": "Jungle Wood Slab",
+          "flatname": "minecraft:jungle_slab",
           "color": "#b1805c"
         },
         {
           "data": 4,
           "name": "Acacia Wood Slab",
+          "flatname": "minecraft:acacia_slab",
           "color": "#ba6337"
         },
         {
           "data": 5,
           "name": "Dark Oak Wood Slab",
+          "flatname": "minecraft:dark_oak_slab",
           "color": "#462d15"
         },
         {
           "data": 8,
           "name": "Upper Oak Wood Slab",
+          "flatname": "minecraft:oak_slab",
           "color": "#b4905a"
         },
         {
           "data": 9,
           "name": "Upper Spruce Wood Slab",
+          "flatname": "minecraft:spruce_slab",
           "color": "#664f2f"
         },
         {
           "data": 10,
           "name": "Upper Birch Wood Slab",
+          "flatname": "minecraft:birch_slab",
           "color": "#d7cb8d"
         },
         {
           "data": 11,
           "name": "Upper Jungle Wood Slab",
+          "flatname": "minecraft:jungle_slab",
           "color": "#b1805c"
         },
         {
           "data": 12,
           "name": "Upper Acacia Wood Slab",
+          "flatname": "minecraft:acacia_slab",
           "color": "#ba6337"
         },
         {
           "data": 13,
           "name": "Upper Dark Oak Wood Slab",
+          "flatname": "minecraft:dark_oak_slab",
           "color": "#462d15"
         }
       ]
@@ -1715,6 +1772,7 @@
     {
       "id": 143,
       "name": "Wooden Button",
+      "flatname": "minecraft:oak_button",
       "color": "#b4905a",
       "transparent": true,
       "spawninside": true,
@@ -1769,6 +1827,7 @@
     {
       "id": 149,
       "name": "Redstone Comparator (off)",
+      "flatname": "minecraft:comparator",
       "color": "#4f1010",
       "transparent": true,
       "canProvidePower": true
@@ -1776,6 +1835,7 @@
     {
       "id": 150,
       "name": "Redstone Comparator (on)",
+      "flatname": "minecraft:comparator",
       "color": "#fd1010",
       "transparent": true,
       "canProvidePower": true
@@ -1783,6 +1843,7 @@
     {
       "id": 151,
       "name": "Daylight Sensor",
+      "flatname": "minecraft:daylight_detector",
       "color": "#d2c1ab",
       "transparent": true,
       "canProvidePower": true
@@ -1797,6 +1858,7 @@
     {
       "id": 153,
       "name": "Nether Quartz Ore",
+      "flatname": "minecraft:nether_quartz_ore",
       "color": "#ddcbbe"
     },
     {
@@ -1892,7 +1954,7 @@
         },
         {
           "data": 8,
-          "name": "Silver Terracotta",
+          "name": "Light Gray Terracotta",
           "color": "#876b62"
         },
         {
@@ -1976,7 +2038,7 @@
         },
         {
           "data": 8,
-          "name": "Silver Stained Glass Pane",
+          "name": "Light Gray Stained Glass Pane",
           "color": "#929292"
         },
         {
@@ -2061,6 +2123,7 @@
     {
       "id": 165,
       "name": "Slime Block",
+      "flatname": "minecraft:slime_block",
       "color": "#59994a"
     },
     {
@@ -2145,7 +2208,7 @@
         },
         {
           "data": 8,
-          "name": "Silver Carpet",
+          "name": "Light Gray Carpet",
           "color": "#aab0b0"
         },
         {
@@ -2251,18 +2314,21 @@
     {
       "id": 176,
       "name": "Standing Banner",
+      "flatname": "minecraft:white_banner",
       "color": "#ffffff",
       "transparent": true
     },
     {
       "id": 177,
       "name": "Wall Banner",
+      "flatname": "minecraft:white_wall_banner",
       "color": "#ffffff",
       "transparent": true
     },
     {
       "id": 178,
       "name": "Inverted Daylight Sensor",
+      "flatname": "minecraft:daylight_detector",
       "color": "#d2c1ab",
       "transparent": true,
       "canProvidePower": true
@@ -2293,11 +2359,13 @@
     {
       "id": 181,
       "name": "Double Red Sandstone Slab",
+      "flatname": "minecraft:red_sandstone_slab",
       "color": "#a6551e",
       "variants": [
         {
           "data": 8,
           "name": "Full Red Sandstone Slab",
+          "flatname": "minecraft:red_sandstone_slab",
           "color": "#a7551e"
         }
       ]
@@ -2305,12 +2373,14 @@
     {
       "id": 182,
       "name": "Red Sandstone Slab",
+      "flatname": "minecraft:red_sandstone_slab",
       "color": "#a7551e",
       "transparent": true,
       "variants": [
         {
           "data": 8,
           "name": "Upper Red Sandstone Slab",
+          "flatname": "minecraft:red_sandstone_slab",
           "color": "#a7551e"
         }
       ]
@@ -2457,16 +2527,19 @@
     {
       "id": 204,
       "name": "Double Purpur Slab",
+      "flatname": "minecraft:purpure_slab",
       "color": "#a67aa6"
     },
     {
       "id": 205,
       "name": "Purpur Slab",
+      "flatname": "minecraft:purpure_slab",
       "color": "#a67aa6"
     },
     {
       "id": 206,
       "name": "End Stone Bricks",
+      "flatname": "minecraft:end_stone_bricks",
       "color": "#e2e7ab"
     },
     {
@@ -2523,6 +2596,7 @@
     {
       "id": 215,
       "name": "Red Nether Brick",
+      "flatname": "minecraft:red_nether_bricks",
       "color": "#440407"
     },
     {

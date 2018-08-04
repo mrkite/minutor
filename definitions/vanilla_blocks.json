@@ -53,11 +53,6 @@
       "color": "#838385"
     },
     {
-      "name": "minecraft:grass",
-      "color": "#939393",
-      "biomeGrass": true
-    },
-    {
       "name": "minecraft:grass_block",
       "color": "#939393",
       "biomeGrass": true
@@ -207,8 +202,7 @@
     },
     {
       "name": "minecraft:oak_log",
-      "color": "#665130",
-      "mask": 3
+      "color": "#665130"
     },
     {
       "name": "minecraft:spruce_log",
@@ -224,8 +218,7 @@
     },
     {
       "name": "minecraft:acacia_log",
-      "color": "#b25b3b",
-      "mask": 1
+      "color": "#b25b3b"
     },
     {
       "name": "minecraft:dark_oak_log",
@@ -233,8 +226,7 @@
     },
     {
       "name": "minecraft:oak_wood",
-      "color": "#665130",
-      "mask": 3
+      "color": "#665130"
     },
     {
       "name": "minecraft:spruce_wood",
@@ -250,8 +242,7 @@
     },
     {
       "name": "minecraft:acacia_wood",
-      "color": "#b25b3b",
-      "mask": 1
+      "color": "#b25b3b"
     },
     {
       "name": "minecraft:dark_oak_wood",
@@ -259,8 +250,7 @@
     },
     {
       "name": "minecraft:stripped_oak_wood",
-      "color": "#665130",
-      "mask": 3
+      "color": "#665130"
     },
     {
       "name": "minecraft:stripped_spruce_wood",
@@ -276,8 +266,7 @@
     },
     {
       "name": "minecraft:stripped_acacia_wood",
-      "color": "#b25b3b",
-      "mask": 1
+      "color": "#b25b3b"
     },
     {
       "name": "minecraft:stripped_dark_oak_wood",
@@ -288,35 +277,41 @@
       "color": "#515151",
       "transparent": true,
       "rendercube": true,
-      "biomeFoliage": true,
-      "mask": 3
+      "biomeFoliage": true
     },
     {
       "name": "minecraft:spruce_leaves",
       "color": "#619961",
+      "transparent": true,
+      "rendercube": true,
       "biomeFoliage": false
     },
     {
       "name": "minecraft:birch_leaves",
       "color": "#80a755",
+      "transparent": true,
+      "rendercube": true,
       "biomeFoliage": false
     },
     {
       "name": "minecraft:jungle_leaves",
       "color": "#727069",
-      "biomeFoliage": true,
+      "transparent": true,
+      "rendercube": true,
+      "biomeFoliage": true
     },
     {
       "name": "minecraft:acacia_leaves",
       "color": "#515151",
       "transparent": true,
       "rendercube": true,
-      "biomeFoliage": true,
-      "mask": 1
+      "biomeFoliage": true
     },
     {
       "name": "minecraft:dark_oak_leaves",
       "color": "#515151",
+      "transparent": true,
+      "rendercube": true,
       "biomeFoliage": true
     },
     {
@@ -582,46 +577,6 @@
       "color": "#e6e6e6"
     },
     {
-      "name": "minecraft:double_stone_slab",
-      "color": "#a3a3a3"
-    },
-    {
-      "name": "minecraft:double_sandstone_slab",
-      "color": "#d7ce95"
-    },
-    {
-      "name": "minecraft:double_wooden_slab",
-      "color": "#b4905a"
-    },
-    {
-      "name": "minecraft:double_cobblestone_slab",
-      "color": "#8f8f8f"
-    },
-    {
-      "name": "minecraft:double_bricks_slab",
-      "color": "#7c4536"
-    },
-    {
-      "name": "minecraft:double_stone_brick_slab",
-      "color": "#797979"
-    },
-    {
-      "name": "minecraft:double_nether_brick_slab",
-      "color": "#30181c"
-    },
-    {
-      "name": "minecraft:double_quartz_slab",
-      "color": "#f0eee8"
-    },
-    {
-      "name": "minecraft:full_stone_slab",
-      "color": "#9c9c9c"
-    },
-    {
-      "name": "minecraft:full_sandstone_slab",
-      "color": "#d7cf9c"
-    },
-    {
       "name": "minecraft:stone_slab",
       "color": "#a3a3a3",
       "transparent": true
@@ -629,10 +584,6 @@
     {
       "name": "minecraft:sandstone_slab",
       "color": "#d7ce95"
-    },
-    {
-      "name": "minecraft:wooden_slab",
-      "color": "#b4905a"
     },
     {
       "name": "minecraft:cobblestone_slab",
@@ -652,38 +603,6 @@
     },
     {
       "name": "minecraft:quartz_slab",
-      "color": "#f0eee8"
-    },
-    {
-      "name": "minecraft:upper_stone_slab",
-      "color": "#a3a3a3"
-    },
-    {
-      "name": "minecraft:upper_sandstone_slab",
-      "color": "#d7ce95"
-    },
-    {
-      "name": "minecraft:upper_wooden_slab",
-      "color": "#b4905a"
-    },
-    {
-      "name": "minecraft:upper_cobblestone_slab",
-      "color": "#8f8f8f"
-    },
-    {
-      "name": "minecraft:upper_brick_slab",
-      "color": "#7c4536"
-    },
-    {
-      "name": "minecraft:upper_stone_brick_slab",
-      "color": "#797979"
-    },
-    {
-      "name": "minecraft:upper_nether_brick_slab",
-      "color": "#30181c"
-    },
-    {
-      "name": "minecraft:upper_quartz_slab",
       "color": "#f0eee8"
     },
     {
@@ -778,17 +697,13 @@
       "color": "#535353"
     },
     {
-      "name": "minecraft:burning_furnace",
-      "color": "#535353"
-    },
-    {
-      "name": "minecraft:standing_sign",
+      "name": "minecraft:sign",
       "color": "#9f844d",
       "transparent": true,
       "spawninside": true
     },
     {
-      "name": "minecraft:wooden_door",
+      "name": "minecraft:oak_door",
       "color": "#b0572a",
       "transparent": true
     },
@@ -844,16 +759,6 @@
     {
       "name": "minecraft:redstone_ore",
       "color": "#8f0303"
-    },
-    {
-      "name": "minecraft:redstone_ore_(glowing)",
-      "color": "#8f0303"
-    },
-    {
-      "name": "minecraft:unlit_redstone_torch",
-      "color": "#480000",
-      "transparent": true,
-      "canprovidepower": true
     },
     {
       "name": "minecraft:redstone_torch",
@@ -937,7 +842,7 @@
       "transparent": true
     },
     {
-      "name": "minecraft:jack_o'lantern",
+      "name": "minecraft:jack_o_lantern",
       "color": "#e9b416"
     },
     {
@@ -946,13 +851,7 @@
       "transparent": true
     },
     {
-      "name": "minecraft:powered_repeater",
-      "color": "#2a0002",
-      "transparent": true,
-      "canprovidepower": true
-    },
-    {
-      "name": "minecraft:redstone_repeater_(on)",
+      "name": "minecraft:repeater",
       "color": "#fd0101",
       "transparent": true,
       "canprovidepower": true
@@ -1006,7 +905,7 @@
       "alpha": 0.5
     },
     {
-      "name": "minecraft:silver_stained_glass",
+      "name": "minecraft:light_gray_stained_glass",
       "color": "#999999",
       "transparent": true,
       "alpha": 0.5
@@ -1209,7 +1108,6 @@
     {
       "name": "minecraft:end_portal_frame",
       "color": "#2f5754",
-      "mask": 4,
       "transparent": true,
       "rendercube": true
     },
@@ -1227,36 +1125,8 @@
     },
     {
       "name": "minecraft:redstone_lamp",
-      "color": "#b0744c"
-    },
-    {
-      "name": "minecraft:redstone_lamp_(on)",
       "color": "#f1d1af",
       "transparent": true
-    },
-    {
-      "name": "minecraft:double_oak_wood_slab",
-      "color": "#b4905a"
-    },
-    {
-      "name": "minecraft:double_spruce_wood_slab",
-      "color": "#664f2f"
-    },
-    {
-      "name": "minecraft:double_birch_wood_slab",
-      "color": "#d7cb8d"
-    },
-    {
-      "name": "minecraft:double_jungle_wood_slab",
-      "color": "#b1805c"
-    },
-    {
-      "name": "minecraft:double_acacia_wood_slab",
-      "color": "#ad5d32"
-    },
-    {
-      "name": "minecraft:double_dark_oak_wood_slab",
-      "color": "#462d15"
     },
     {
       "name": "minecraft:oak_slab",
@@ -1284,35 +1154,10 @@
       "color": "#462d15"
     },
     {
-      "name": "minecraft:upper_oak_wood_slab",
-      "color": "#b4905a"
-    },
-    {
-      "name": "minecraft:upper_spruce_wood_slab",
-      "color": "#664f2f"
-    },
-    {
-      "name": "minecraft:upper_birch_wood_slab",
-      "color": "#d7cb8d"
-    },
-    {
-      "name": "minecraft:upper_jungle_wood_slab",
-      "color": "#b1805c"
-    },
-    {
-      "name": "minecraft:upper_acacia_wood_slab",
-      "color": "#ba6337"
-    },
-    {
-      "name": "minecraft:upper_dark_oak_wood_slab",
-      "color": "#462d15"
-    },
-    {
       "name": "minecraft:immature_cocoa_pod",
       "color": "#929943",
       "transparent": true,
-      "spawninside": true,
-      "mask": 12
+      "spawninside": true
     },
     {
       "name": "minecraft:cocoa",
@@ -1466,20 +1311,17 @@
     {
       "name": "minecraft:anvil",
       "color": "#474747",
-      "transparent": true,
-      "mask": 12
+      "transparent": true
     },
     {
       "name": "minecraft:chipped_anvil",
       "color": "#474747",
-      "transparent": true,
-      "mask": 12
+      "transparent": true
     },
     {
       "name": "minecraft:damaged_anvil",
       "color": "#474747",
-      "transparent": true,
-      "mask": 12
+      "transparent": true
     },
     {
       "name": "minecraft:trapped_chest",
@@ -1502,13 +1344,7 @@
       "canprovidepower": true
     },
     {
-      "name": "minecraft:redstone_comparator_(off)",
-      "color": "#4f1010",
-      "transparent": true,
-      "canprovidepower": true
-    },
-    {
-      "name": "minecraft:powered_comparator",
+      "name": "minecraft:comparator",
       "color": "#fd1010",
       "transparent": true,
       "canprovidepower": true
@@ -1674,7 +1510,7 @@
       "transparent": true
     },
     {
-      "name": "minecraft:silver_stained_glass_pane",
+      "name": "minecraft:light_gray_stained_glass_pane",
       "color": "#929292",
       "alpha": 0.5,
       "transparent": true
@@ -1806,7 +1642,7 @@
       "transparent": true
     },
     {
-      "name": "minecraft:silver_carpet",
+      "name": "minecraft:light_gray_carpet",
       "color": "#aab0b0",
       "transparent": true
     },
@@ -1910,12 +1746,12 @@
       "alpha": 0
     },
     {
-      "name": "minecraft:standing_banner",
+      "name": "minecraft:white_banner",
       "color": "#ffffff",
       "transparent": true
     },
     {
-      "name": "minecraft:wall_banner",
+      "name": "minecraft:white_wall_banner",
       "color": "#ffffff",
       "transparent": true
     },
@@ -1943,21 +1779,9 @@
       "transparent": true
     },
     {
-      "name": "minecraft:double_red_sandstone_slab",
-      "color": "#a6551e"
-    },
-    {
-      "name": "minecraft:full_red_sandstone_slab",
-      "color": "#a7551e"
-    },
-    {
       "name": "minecraft:red_sandstone_slab",
       "color": "#a7551e",
       "transparent": true
-    },
-    {
-      "name": "minecraft:upper_red_sandstone_slab",
-      "color": "#a7551e"
     },
     {
       "name": "minecraft:spruce_fence_gate",
@@ -2059,10 +1883,6 @@
       "transparent": true
     },
     {
-      "name": "minecraft:chorus_flower_(fully_grown)",
-      "color": "#624060"
-    },
-    {
       "name": "minecraft:purpur_block",
       "color": "#a67aa6"
     },
@@ -2072,10 +1892,6 @@
     },
     {
       "name": "minecraft:purpur_stairs",
-      "color": "#a67aa6"
-    },
-    {
-      "name": "minecraft:purpur_double_slab",
       "color": "#a67aa6"
     },
     {
