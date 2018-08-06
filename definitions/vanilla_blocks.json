@@ -391,41 +391,51 @@
     {
       "name": "minecraft:tall_seagrass",
       "color": "#006428",
-      "biomeGrass": true
-    },
-    {
-      "name": "minecraft:seagrass",
-      "color": "#006428",
-      "biomeGrass": true
-    },
-    {
-      "name": "minecraft:tall_grass",
-      "color": "#946428",
       "alpha": 0.3,
       "transparent": true,
       "spawninside": true
     },
     {
-      "name": "minecraft:tallgrass",
+      "name": "minecraft:seagrass",
+      "color": "#006428",
+      "alpha": 0.3,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
+      "name": "minecraft:grass",
       "color": "#909090",
-      "biomeGrass": true
+      "biomeGrass": true,
+      "alpha": 0.3,
+      "transparent": true,
+      "spawninside": true
     },
     {
       "name": "minecraft:kelp",
-      "color": "#003013"
+      "color": "#003013",
+      "alpha": 0.3,
+      "transparent": true,
+      "spawninside": true
     },
     {
       "name": "minecraft:kelp_plant",
-      "color": "#003013"
+      "color": "#003013",
+      "alpha": 0.3,
+      "transparent": true,
+      "spawninside": true
     },
     {
       "name": "minecraft:fern",
       "color": "#828282",
-      "biomeGrass": true
+      "biomeGrass": true,
+      "alpha": 0.3,
+      "transparent": true,
+      "spawninside": true
     },
     {
       "name": "minecraft:dead_bush",
       "color": "#946428",
+      "alpha": 0.3,
       "transparent": true,
       "spawninside": true,
       "alpha": 0.3
@@ -642,7 +652,7 @@
       "transparent": true
     },
     {
-      "name": "minecraft:mob_spawner",
+      "name": "minecraft:spawner",
       "color": "#1b2a35",
       "transparent": true,
       "rendercube": true
@@ -757,6 +767,41 @@
       "canprovidepower": true
     },
     {
+      "name": "minecraft:spruce_pressure_plate",
+      "color": "#bc9862",
+      "transparent": true,
+      "spawninside": true,
+      "canprovidepower": true
+    },
+    {
+      "name": "minecraft:birch_pressure_plate",
+      "color": "#bc9862",
+      "transparent": true,
+      "spawninside": true,
+      "canprovidepower": true
+    },
+    {
+      "name": "minecraft:jungle_pressure_plate",
+      "color": "#bc9862",
+      "transparent": true,
+      "spawninside": true,
+      "canprovidepower": true
+    },
+    {
+      "name": "minecraft:acacia_pressure_plate",
+      "color": "#bc9862",
+      "transparent": true,
+      "spawninside": true,
+      "canprovidepower": true
+    },
+    {
+      "name": "minecraft:dark_oak_pressure_plate",
+      "color": "#bc9862",
+      "transparent": true,
+      "spawninside": true,
+      "canprovidepower": true
+    },
+    {
       "name": "minecraft:redstone_ore",
       "color": "#8f0303"
     },
@@ -802,9 +847,9 @@
     {
       "name": "minecraft:sugar_cane",
       "color": "#97c06b",
+      "biomeGrass": true,
       "spawninside": true,
-      "transparent": true,
-      "biomeGrass": true
+      "transparent": true
     },
     {
       "name": "minecraft:jukebox",
@@ -986,12 +1031,12 @@
       "color": "#797979"
     },
     {
-      "name": "minecraft:mossy_stone_bricks",
-      "color": "#637049"
-    },
-    {
       "name": "minecraft:cracked_stone_bricks",
       "color": "#656565"
+    },
+    {
+      "name": "minecraft:mossy_stone_bricks",
+      "color": "#637049"
     },
     {
       "name": "minecraft:chiseled_stone_bricks",
@@ -1227,12 +1272,44 @@
       "transparent": true
     },
     {
+      "name": "minecraft:potted_dandelion",
+      "color": "#f1f902"
+    },
+    {
       "name": "minecraft:potted_poppy",
       "color": "#910205"
     },
     {
-      "name": "minecraft:potted_dandelion",
-      "color": "#f1f902"
+      "name": "minecraft:potted_blue_orchid",
+      "color": "#29aefb"
+    },
+    {
+      "name": "minecraft:potted_allium",
+      "color": "#b865fb"
+    },
+    {
+      "name": "minecraft:potted_azure_bluet",
+      "color": "#e4eaf2"
+    },
+    {
+      "name": "minecraft:potted_red_tulip",
+      "color": "#d33a17"
+    },
+    {
+      "name": "minecraft:potted_orange_tulip",
+      "color": "#de731f"
+    },
+    {
+      "name": "minecraft:potted_white_tulip",
+      "color": "#e7e7e7"
+    },
+    {
+      "name": "minecraft:potted_pink_tulip",
+      "color": "#eabeea"
+    },
+    {
+      "name": "minecraft:potted_oxeye_daisy",
+      "color": "#eae6ad"
     },
     {
       "name": "minecraft:potted_oak_sapling",
@@ -1251,6 +1328,22 @@
       "color": "#2c6c18"
     },
     {
+      "name": "minecraft:potted_acacia_sapling",
+      "color": "#946428"
+    },
+    {
+      "name": "minecraft:potted_dark_oak_sapling",
+      "color": "#315e05"
+    },
+    {
+      "name": "minecraft:potted_fern",
+      "color": "#315e05"
+    },
+    {
+      "name": "minecraft:potted_dead_bush",
+      "color": "#946428"
+    },
+    {
       "name": "minecraft:potted_red_mushroom",
       "color": "#9a171c"
     },
@@ -1263,34 +1356,8 @@
       "color": "#128a20"
     },
     {
-      "name": "minecraft:potted_dead_bush",
-      "color": "#946428"
-    },
-    {
-      "name": "minecraft:potted_fern",
-      "color": "#315e05"
-    },
-    {
-      "name": "minecraft:potted_acacia_sapling",
-      "color": "#946428"
-    },
-    {
-      "name": "minecraft:potted_dark_oak_sapling",
-      "color": "#315e05"
-    },
-    {
-      "name": "minecraft:immature_carrots",
-      "color": "#00c617",
-      "transparent": true
-    },
-    {
       "name": "minecraft:carrots",
       "color": "#004e00"
-    },
-    {
-      "name": "minecraft:immature_potatoes",
-      "color": "#00c617",
-      "transparent": true
     },
     {
       "name": "minecraft:potatoes",
@@ -1903,12 +1970,7 @@
       "color": "#e2e7ab"
     },
     {
-      "name": "minecraft:immature_beetroot",
-      "color": "#02ab10",
-      "transparent": true
-    },
-    {
-      "name": "minecraft:beetroots",
+      "name": "minecraft:beetroot",
       "color": "#517136"
     },
     {

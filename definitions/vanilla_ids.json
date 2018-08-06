@@ -79,32 +79,38 @@
     },
     {
       "id": 5,
-      "name": "Oak Wood Plank",
+      "name": "Oak Wood Planks",
+      "flatname": "minecraft:oak_planks",
       "color": "#b4905a",
       "variants": [
         {
           "data": 1,
-          "name": "Spruce Wood Plank",
+          "name": "Spruce Wood Planks",
+          "flatname": "minecraft:spruce_planks",
           "color": "#805e36"
         },
         {
           "data": 2,
-          "name": "Birch Wood Plank",
+          "name": "Birch Wood Planks",
+          "flatname": "minecraft:birch_planks",
           "color": "#c8b77a"
         },
         {
           "data": 3,
-          "name": "Jungle Wood Plank",
+          "name": "Jungle Wood Planks",
+          "flatname": "minecraft:jungle_planks",
           "color": "#b1805c"
         },
         {
           "data": 4,
-          "name": "Acacia Wood Plank",
+          "name": "Acacia Wood Planks",
+          "flatname": "minecraft:acacia_planks",
           "color": "#ba6337"
         },
         {
           "data": 5,
-          "name": "Dark Oak Wood Plank",
+          "name": "Dark Oak Wood Planks",
+          "flatname": "minecraft:dark_oak_planks",
           "color": "#462d15"
         }
       ]
@@ -215,22 +221,26 @@
     {
       "id": 17,
       "name": "Oak Wood",
+      "flatname": "minecraft:oak_log",
       "color": "#665130",
       "mask": 3,
       "variants": [
         {
           "data": 1,
           "name": "Spruce Wood",
+          "flatname": "minecraft:spruce_log",
           "color": "#2e1d0a"
         },
         {
           "data": 2,
           "name": "Birch Wood",
+          "flatname": "minecraft:birch_log",
           "color": "#d6dad6"
         },
         {
           "data": 3,
           "name": "Jungle Wood",
+          "flatname": "minecraft:jungle_log",
           "color": "#584219"
         }
       ]
@@ -286,11 +296,13 @@
     {
       "id": 21,
       "name": "Lapis Lazuli Ore",
+      "flatname": "minecraft:lapis_ore",
       "color": "#1b43ad"
     },
     {
       "id": 22,
       "name": "Lapis Lazuli Block",
+      "flatname": "minecraft:lapis_block",
       "color": "#0f26b8"
     },
     {
@@ -563,12 +575,12 @@
     },
     {
       "id": 41,
-      "name": "Block of Gold",
+      "name": "Gold Block",
       "color": "#fdfb4f"
     },
     {
       "id": 42,
-      "name": "Block of Iron",
+      "name": "Iron Block",
       "color": "#e6e6e6"
     },
     {
@@ -744,6 +756,7 @@
     {
       "id": 48,
       "name": "Moss Stone",
+      "flatname": "minecraft:mossy_cobblestone",
       "color": "#3a623a"
     },
     {
@@ -766,13 +779,14 @@
     {
       "id": 52,
       "name": "Monster Spawner",
+      "flatname": "minecraft:spawner",
       "color": "#1b2a35",
       "transparent": true,
       "rendercube": true
     },
     {
       "id": 53,
-      "name": "Oak Wood Stairs",
+      "name": "Oak Stairs",
       "color": "#9f844d",
       "transparent": true
     },
@@ -795,7 +809,7 @@
     },
     {
       "id": 57,
-      "name": "Block of Diamond",
+      "name": "Diamond Block",
       "color": "#91e8e4"
     },
     {
@@ -806,12 +820,14 @@
     {
       "id": 59,
       "name": "Immature Wheat",
+      "flatname": "minecraft:wheat",
       "color": "#8ba803",
       "transparent": true,
       "variants": [
         {
           "data": 7,
           "name": "Grown Wheat",
+          "flatname": "minecraft:wheat",
           "color": "#8e7c10"
         }
       ]
@@ -819,12 +835,14 @@
     {
       "id": 60,
       "name": "Wet Farmland",
+      "flatname": "minecraft:farmland",
       "color": "#43240b",
       "transparent": true,
       "variants": [
         {
           "data": 0,
           "name": "Dry Farmland",
+          "flatname": "minecraft:farmland",
           "color": "#633f24"
         }
       ]
@@ -979,6 +997,7 @@
     {
       "id": 82,
       "name": "Clay Block",
+      "flatname": "minecraft:clay",
       "color": "#9da3ae"
     },
     {
@@ -1019,6 +1038,7 @@
     {
       "id": 89,
       "name": "Glowstone Block",
+      "flatname": "minecraft:glowstone",
       "color": "#f9d49c"
     },
     {
@@ -1149,53 +1169,59 @@
     {
       "id": 97,
       "name": "Stone Monster Egg",
+      "flatname": "minecraft:infested_stone",
       "color": "#7a7a7a",
       "variants": [
         {
           "data": 1,
           "name": "Cobblestone Monster Egg",
+          "flatname": "minecraft:infested_cobblestone",
           "color": "#787878"
         },
         {
           "data": 2,
           "name": "Stone Brick Monster Egg",
+          "flatname": "minecraft:infested_stone_bricks",
           "color": "#777777"
         },
         {
           "data": 3,
           "name": "Mossy Stone Brick Monster Egg",
+          "flatname": "minecraft:infested_mossy_stone_bricks",
           "color": "#707467"
         },
         {
           "data": 4,
           "name": "Cracked Stone Brick Monster Egg",
+          "flatname": "minecraft:infested_cracked_stone_bricks",
           "color": "#747474"
         },
         {
           "data": 5,
           "name": "Chiseled Stone Brick Monster Egg",
+          "flatname": "minecraft:infested_chiseled_stone_bricks",
           "color": "#747474"
         }
       ]
     },
     {
       "id": 98,
-      "name": "Stone Brick",
+      "name": "Stone Bricks",
       "color": "#797979",
       "variants": [
         {
           "data": 1,
-          "name": "Mossy Stone Brick",
+          "name": "Mossy Stone Bricks",
           "color": "#637049"
         },
         {
           "data": 2,
-          "name": "Cracked Stone Brick",
+          "name": "Cracked Stone Bricks",
           "color": "#656565"
         },
         {
           "data": 3,
-          "name": "Chiseled Stone Brick",
+          "name": "Chiseled Stone Bricks",
           "color": "#9c9c9c"
         }
       ]
@@ -1203,6 +1229,7 @@
     {
       "id": 99,
       "name": "Huge Brown Mushroom",
+      "flatname": "minecraft:brown_mushroom_block",
       "color": "#d2b17d",
       "variants": [
         {
@@ -1258,6 +1285,7 @@
     {
       "id": 100,
       "name": "Huge Red Mushroom",
+      "flatname": "minecraft:red_mushroom_block",
       "color": "#d2b17d",
       "variants": [
         {
@@ -1413,6 +1441,7 @@
     {
       "id": 116,
       "name": "Enchantment Table",
+      "flatname": "minecraft:enchanting_table",
       "color": "#3c3056",
       "transparent": true
     },
@@ -1588,6 +1617,7 @@
     {
       "id": 127,
       "name": "Immature Cocoa Pod",
+      "flatname": "minecraft:cocoa",
       "color": "#929943",
       "transparent": true,
       "spawninside": true,
@@ -1596,6 +1626,7 @@
         {
           "data": 8,
           "name": "Mature Cocoa Pod",
+          "flatname": "minecraft:cocoa",
           "color": "#d4924c"
         }
       ]
@@ -1633,24 +1664,24 @@
     },
     {
       "id": 133,
-      "name": "Block of Emerald",
+      "name": "Emerald Block",
       "color": "#64ea8a"
     },
     {
       "id": 134,
-      "name": "Spruce Wood Stairs",
+      "name": "Spruce Stairs",
       "color": "#664f2f",
       "transparent": true
     },
     {
       "id": 135,
-      "name": "Birch Wood Stairs",
+      "name": "Birch Stairs",
       "color": "#d7cb8d",
       "transparent": true
     },
     {
       "id": 136,
-      "name": "Jungle Wood Stairs",
+      "name": "Jungle Stairs",
       "color": "#b1805c",
       "transparent": true
     },
@@ -1668,77 +1699,98 @@
       "id": 139,
       "name": "Cobblestone Wall",
       "color": "#505050",
-      "transparent": true
+      "transparent": true,
+      "variants": [
+        {
+          "data": 1,
+          "name": "Mossy Cobblestone Wall",
+          "color": "#3a623a"
+        }
+      ]
     },
     {
       "id": 140,
       "name": "Flower Pot (empty)",
+      "flatname": "minecraft:flower_pot",
       "color": "#7c4536",
       "transparent": true,
       "variants": [
         {
           "data": 1,
           "name": "Flower Pot (poppy)",
+          "flatname": "minecraft:potted_poppy",
           "color": "#910205"
         },
         {
           "data": 2,
           "name": "Flower Pot (dandelion)",
+          "flatname": "minecraft:potted_dandelion",
           "color": "#f1f902"
         },
         {
           "data": 3,
           "name": "Flower Pot (oak)",
+          "flatname": "minecraft:potted_oak_sapling",
           "color": "#408f2f"
         },
         {
           "data": 4,
           "name": "Flower Pot (spruce)",
+          "flatname": "minecraft:potted_spruce_sapling",
           "color": "#395a39"
         },
         {
           "data": 5,
           "name": "Flower Pot (birch)",
+          "flatname": "minecraft:potted_birch_sapling",
           "color": "#cfe3ba"
         },
         {
           "data": 6,
           "name": "Flower Pot (jungle)",
+          "flatname": "minecraft:potted_jungle_sapling",
           "color": "#2c6c18"
         },
         {
           "data": 7,
           "name": "Flower Pot (red mushroom)",
+          "flatname": "minecraft:potted_red_mushroom",
           "color": "#9a171c"
         },
         {
           "data": 8,
           "name": "Flower Pot (brown mushroom)",
+          "flatname": "minecraft:potted_brown_mushroom",
           "color": "#725643"
         },
         {
           "data": 9,
           "name": "Flower Pot (cactus)",
+          "flatname": "minecraft:potted_cactus",
           "color": "#128a20"
         },
         {
           "data": 10,
           "name": "Flower Pot (dead bush)",
+          "flatname": "minecraft:potted_dead_bush",
           "color": "#946428"
         },
         {
           "data": 11,
           "name": "Flower Pot (fern)",
+          "flatname": "minecraft:potted_fern",
           "color": "#315e05"
         },
         {
           "data": 12,
           "name": "Flower Pot (acacia)",
+          "flatname": "minecraft:potted_acacia_sapling",
           "color": "#946428"
         },
         {
           "data": 13,
           "name": "Flower Pot (dark oak)",
+          "flatname": "minecraft:potted_dark_oak_sapling",
           "color": "#315e05"
         }
       ]
@@ -1746,12 +1798,14 @@
     {
       "id": 141,
       "name": "Immature Carrots",
+      "flatname": "minecraft:carrots",
       "color": "#00c617",
       "transparent": true,
       "variants": [
         {
           "data": 7,
           "name": "Mature Carrots",
+          "flatname": "minecraft:carrots",
           "color": "#004e00"
         }
       ]
@@ -1759,12 +1813,14 @@
     {
       "id": 142,
       "name": "Immature Potatoes",
+      "flatname": "minecraft:potatoes",
       "color": "#00c617",
       "transparent": true,
       "variants": [
         {
           "data": 7,
           "name": "Mature Potatoes",
+          "flatname": "minecraft:potatoes",
           "color": "#3aa649"
         }
       ]
@@ -1787,17 +1843,20 @@
     {
       "id": 145,
       "name": "Anvil",
+      "flatname": "minecraft:anvil",
       "color": "#474747",
       "transparent": true,
       "mask": 12,
       "variants": [
         {
           "data": 4,
-          "name": "Slightly Damaged Anvil"
+          "name": "Slightly Damaged Anvil",
+          "flatname": "minecraft:chipped_anvil",
         },
         {
           "data": 8,
-          "name": "Very Damaged Anvil"
+          "name": "Very Damaged Anvil",
+          "flatname": "minecraft:damaged_anvil",
         }
       ]
     },
@@ -1810,7 +1869,7 @@
     },
     {
       "id": 147,
-      "name": "Weighted Pressure Plate (Light)",
+      "name": "Light Weighted Pressure Plate",
       "color": "#fdfb4f",
       "transparent": true,
       "spawninside": true,
@@ -1818,7 +1877,7 @@
     },
     {
       "id": 148,
-      "name": "Weighted Pressure Plate (Heavy)",
+      "name": "Heavy Weighted Pressure Plate",
       "color": "#e6e6e6",
       "transparent": true,
       "spawninside": true,
@@ -1850,7 +1909,7 @@
     },
     {
       "id": 152,
-      "name": "Block of Redstone",
+      "name": "Redstone Block",
       "color": "#bb1c0a",
       "transparent": true,
       "canProvidePower": true
@@ -1869,7 +1928,7 @@
     },
     {
       "id": 155,
-      "name": "Block of Quartz",
+      "name": "Quartz Block",
       "color": "#edebe5",
       "variants": [
         {
@@ -2098,12 +2157,14 @@
     {
       "id": 162,
       "name": "Acacia Wood",
+      "flatname": "minecraft:acacia_log",
       "color": "#b25b3b",
       "mask": 1,
       "variants": [
         {
           "data": 1,
           "name": "Dark Oak Wood",
+          "flatname": "minecraft:dark_oak_log",
           "color": "#5d4931"
         }
       ]
@@ -2163,6 +2224,7 @@
     {
       "id": 170,
       "name": "Hay Bale",
+      "flatname": "minecraft:hay_block",
       "color": "#af9711"
     },
     {
@@ -2255,7 +2317,7 @@
     },
     {
       "id": 173,
-      "name": "Block of Coal",
+      "name": "Coal Block",
       "color": "#2b2b2b"
     },
     {
@@ -2278,6 +2340,7 @@
         {
           "data": 2,
           "name": "Double Tallgrass",
+          "flatname": "minecraft:tall_grass",
           "color": "#969696",
           "biomeGrass": true
         },
@@ -2499,12 +2562,14 @@
     {
       "id": 200,
       "name": "Chorus Flower",
+      "flatname": "minecraft:chorus_flower",
       "color": "#866886",
       "transparent": true,
       "variants": [
         {
           "data": 5,
           "name": "Chorus Flower (fully grown)",
+          "flatname": "minecraft:chorus_flower",
           "color": "#624060"
         }
       ]
@@ -2527,13 +2592,13 @@
     {
       "id": 204,
       "name": "Double Purpur Slab",
-      "flatname": "minecraft:purpure_slab",
+      "flatname": "minecraft:purpur_slab",
       "color": "#a67aa6"
     },
     {
       "id": 205,
       "name": "Purpur Slab",
-      "flatname": "minecraft:purpure_slab",
+      "flatname": "minecraft:purpur_slab",
       "color": "#a67aa6"
     },
     {
@@ -2545,12 +2610,14 @@
     {
       "id": 207,
       "name": "Immature Beetroot",
+      "flatname": "minecraft:beetroot",
       "color": "#02ab10",
       "transparent": true,
       "variants": [
         {
           "data": 3,
           "name": "Mature Beetroot",
+          "flatname": "minecraft:beetroot",
           "color": "#517136"
         }
       ]

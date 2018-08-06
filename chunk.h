@@ -34,7 +34,7 @@ class Chunk {
   void load(const NBT &nbt);
   ~Chunk();
  protected:
-  void loadSection1000(ChunkSection *cs, const Tag *section);
+  void loadSection1343(ChunkSection *cs, const Tag *section);
   void loadSection1519(ChunkSection *cs, const Tag *section);
 
 
