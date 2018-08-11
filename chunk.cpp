@@ -147,6 +147,7 @@ void Chunk::loadSection1519(ChunkSection *cs, const Tag *section) {
   cs->palette = new BlockData[cs->paletteLength];
   for (int j = 0; j < rawPalette->length(); j++) {
     cs->palette[j].name = rawPalette->at(j)->at("Name")->toString();
+    cs->palette[j].hid  = qHash(cs->palette[j].name);
     if (rawPalette->at(j)->has("Properties"))
       cs->palette[j].properties = rawPalette->at(j)->at("Properties")->getData().toMap();
   }
@@ -173,10 +174,10 @@ Chunk::~Chunk() {
       if (sections[i]) {
         if (sections[i]->paletteLength > 0) {
           delete[] sections[i]->palette;
-          sections[i]->paletteLength = 0;
-        } else {
-          sections[i]->palette = NULL;
         }
+        sections[i]->paletteLength = 0;
+        sections[i]->palette = NULL;
+
         delete sections[i];
         sections[i] = NULL;
       }
@@ -184,16 +185,16 @@ Chunk::~Chunk() {
 }
 
 
-QString ChunkSection::getBlock(int x, int y, int z) {
+uint ChunkSection::getBlock(int x, int y, int z) {
   int xoffset = x;
   int yoffset = (y & 0x0f) << 8;
   int zoffset = z << 4;
-  return palette[blocks[xoffset + yoffset + zoffset]].name;
+  return palette[blocks[xoffset + yoffset + zoffset]].hid;
 }
 
-QString ChunkSection::getBlock(int offset, int y) {
+uint ChunkSection::getBlock(int offset, int y) {
   int yoffset = (y & 0x0f) << 8;
-  return palette[blocks[offset + yoffset]].name;
+  return palette[blocks[offset + yoffset]].hid;
 }
 
 quint8 ChunkSection::getSkyLight(int x, int y, int z) {

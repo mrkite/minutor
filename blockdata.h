@@ -7,6 +7,7 @@
 
 class BlockData {
  public:
+  uint    hid;   // we use hashed name as ID
   QString name;
   QMap<QString, QVariant> properties;
 };

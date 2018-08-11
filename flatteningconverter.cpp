@@ -78,10 +78,13 @@ void FlatteningConverter::parseDefinition(
     flatname = b->at("flatname")->asString();
 
   palette[bid].name = flatname;
+  palette[bid].hid  = qHash(palette[bid].name);
   if ((parentID == NULL) && (data == 0)) {
     // spread main block type for data == 0
     for (int d=1; d<16; d++) {
-      palette[bid | (d<<8)].name = flatname;
+      int sid = bid | (d<<8);
+      palette[sid].name = flatname;
+      palette[sid].hid  = palette[bid].hid;
     }
   }
   //  packs[pack].append(block);
@@ -106,6 +109,7 @@ void FlatteningConverter::parseDefinition(
       int id  = bid | (j << 8);
       int mid = bid | ((j & mask) << 8);
       palette[id].name = palette[mid].name;
+      palette[id].hid  = palette[mid].hid;
     }
   }
 }

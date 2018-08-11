@@ -450,7 +450,7 @@ void MapView::renderChunk(Chunk *chunk) {
         //int data = section->getData(offset, y);
 
         // get BlockInfo from block value
-        BlockInfo &block = blocks->getBlock(section->getBlock(offset, y));
+        BlockInfo &block = blocks->getBlockInfo(section->getBlock(offset, y));
         if (block.alpha == 0.0) continue;
 
         // get light value from one block above
@@ -504,8 +504,7 @@ void MapView::renderChunk(Chunk *chunk) {
         }
         if (flags & flgMobSpawn) {
           // get block info from 1 and 2 above and 1 below
-          QString blid1(""), blid2(""), blidB("");  // default to air
-          int data1(0), data2(0), dataB(0);  // default variant
+          uint blid1(0), blid2(0), blidB(0);  // default to legacy air (todo: better handling of block above)
           ChunkSection *section2 = NULL;
           ChunkSection *sectionB = NULL;
           if (y < 254)
@@ -514,20 +513,17 @@ void MapView::renderChunk(Chunk *chunk) {
             sectionB = chunk->sections[(y-1) >> 4];
           if (section1) {
             blid1 = section1->getBlock(offset, y+1);
-            // data1 = section1->getData(offset, y+1);
           }
           if (section2) {
             blid2 = section2->getBlock(offset, y+2);
-            // data2 = section2->getData(offset, y+2);
           }
           if (sectionB) {
             blidB = sectionB->getBlock(offset, y-1);
-            // dataB = sectionB->getData(offset, y-1);
           }
-          BlockInfo &block2 = blocks->getBlock(blid2);
-          BlockInfo &block1 = blocks->getBlock(blid1);
+          BlockInfo &block2 = blocks->getBlockInfo(blid2);
+          BlockInfo &block1 = blocks->getBlockInfo(blid1);
           BlockInfo &block0 = block;
-          BlockInfo &blockB = blocks->getBlock(blidB);
+          BlockInfo &blockB = blocks->getBlockInfo(blidB);
           int light0 = section->getBlockLight(offset, y);
 
            // spawn check #1: on top of solid block
@@ -589,7 +585,7 @@ void MapView::renderChunk(Chunk *chunk) {
           // get data value
           // int data = section->getData(offset, y);
           // get BlockInfo from block value
-          BlockInfo &block = blocks->getBlock(section->getBlock(offset, y));
+          BlockInfo &block = blocks->getBlockInfo(section->getBlock(offset, y));
           if (block.transparent) {
             cave_factor -= caveshade[cave_test];
           }
@@ -635,7 +631,7 @@ void MapView::getToolTip(int x, int z) {
       int yoffset = (y & 0xf) << 8;
       //int data = section->data[(offset + yoffset) / 2];
       //if (x & 1) data >>= 4;
-      auto &block = blocks->getBlock(section->getBlock(offset, y));
+      auto &block = blocks->getBlockInfo(section->getBlock(offset, y));
       if (block.alpha == 0.0) continue;
       // found block
       name = block.getName();
