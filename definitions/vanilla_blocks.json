@@ -249,6 +249,30 @@
       "color": "#5d4931"
     },
     {
+      "name": "minecraft:stripped_oak_log",
+      "color": "#665130"
+    },
+    {
+      "name": "minecraft:stripped_spruce_log",
+      "color": "#2e1d0a"
+    },
+    {
+      "name": "minecraft:stripped_birch_log",
+      "color": "#d6dad6"
+    },
+    {
+      "name": "minecraft:stripped_jungle_log",
+      "color": "#584219"
+    },
+    {
+      "name": "minecraft:stripped_acacia_log",
+      "color": "#b25b3b"
+    },
+    {
+      "name": "minecraft:stripped_dark_oak_log",
+      "color": "#5d4931"
+    },
+    {
       "name": "minecraft:stripped_oak_wood",
       "color": "#665130"
     },
@@ -1267,6 +1291,11 @@
       "transparent": true
     },
     {
+      "name": "minecraft:mossy_cobblestone_wall",
+      "color": "#508050",
+      "transparent": true
+    },
+    {
       "name": "minecraft:flower_pot",
       "color": "#7c4536",
       "transparent": true
@@ -1371,7 +1400,67 @@
       "canprovidepower": true
     },
     {
-      "name": "minecraft:skull",
+      "name": "minecraft:mob_head",
+      "color": "#1a1a1a",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:skeleton_skull",
+      "color": "#1a1a1a",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:skeleton_wall_skull",
+      "color": "#1a1a1a",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:wither_skeleton_skull",
+      "color": "#1a1a1a",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:wither_skeleton_wall_skull",
+      "color": "#1a1a1a",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:zombie_head",
+      "color": "#1a1a1a",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:zombie_wall_head",
+      "color": "#1a1a1a",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:player_head",
+      "color": "#1a1a1a",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:player_wall_head",
+      "color": "#1a1a1a",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:creeper_head",
+      "color": "#1a1a1a",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:creeper_wall_head",
+      "color": "#1a1a1a",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:dragon_head",
+      "color": "#1a1a1a",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:dragon_wall_head",
       "color": "#1a1a1a",
       "transparent": true
     },
@@ -1448,6 +1537,10 @@
     {
       "name": "minecraft:quartz_pillar",
       "color": "#e1dcd3"
+    },
+    {
+      "name": "minecraft:smooth_quartz",
+      "color": "#edebe5"
     },
     {
       "name": "minecraft:quartz_stairs",

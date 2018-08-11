@@ -1,7 +1,7 @@
 {
-  "name": "Vanilla Flattening Converter",
+  "name": "Vanilla",
   "type": "block",
-  "version": "1.12.17w13a",
+  "version": "1.12.18w32",
   "data": [
     {
       "id": 0,
@@ -159,6 +159,7 @@
     {
       "id": 8,
       "name": "Water (flowing)",
+      "flatname": "minecraft:flowing_water",
       "color": "#1f55ff",
       "alpha": 0.53,
       "transparent": true,
@@ -175,6 +176,7 @@
     {
       "id": 10,
       "name": "Lava (flowing)",
+      "flatname": "minecraft:flowing_lava",
       "color": "#fc5700",
       "transparent": true,
       "liquid": true
@@ -628,7 +630,7 @@
         {
           "data": 7,
           "name": "Double Quartz Slab",
-          "flatname": "minecraft:quartz_slab",
+          "flatname": "minecraft:smooth_quartz",
           "color": "#f0eee8"
         },
         {
@@ -659,7 +661,7 @@
         {
           "data": 2,
           "name": "Wooden Slab",
-      "flatname": "minecraft:oak_slab",
+          "flatname": "minecraft:oak_slab",
           "color": "#b4905a"
         },
         {
@@ -1929,26 +1931,31 @@
     {
       "id": 155,
       "name": "Quartz Block",
+      "flatname": "minecraft:quartz_block",
       "color": "#edebe5",
       "variants": [
         {
           "data": 1,
           "name": "Chiseled Quartz Block",
+          "flatname": "minecraft:chiseled_quartz_block",
           "color": "#e3dfd5"
         },
         {
           "data": 2,
           "name": "Pillar Quartz Block",
+          "flatname": "minecraft:quartz_pillar",
           "color": "#e1dcd3"
         },
         {
           "data": 3,
           "name": "Pillar Quartz Block",
+          "flatname": "minecraft:quartz_pillar",
           "color": "#e1dcd3"
         },
         {
           "data": 4,
           "name": "Pillar Quartz Block",
+          "flatname": "minecraft:quartz_pillar",
           "color": "#e1dcd3"
         }
       ]
@@ -2630,6 +2637,7 @@
     {
       "id": 209,
       "name": "End Gateway Block",
+      "flatname": "minecraft:end_gateway",
       "color": "#000000"
     },
     {

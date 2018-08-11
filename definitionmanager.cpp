@@ -36,7 +36,7 @@ DefinitionManager::DefinitionManager(QWidget *parent) :
   table->setHorizontalHeaderLabels(labels);
   table->horizontalHeader()->setSectionResizeMode(
       QHeaderView::ResizeToContents);
-  table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
+  table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
   table->horizontalHeader()->setHighlightSections(false);
   table->verticalHeader()->hide();
   table->setShowGrid(false);
@@ -229,8 +229,32 @@ void DefinitionManager::installJson(QString path, bool overwrite,
   }
 
   QString key = def->at("name")->asString() + def->at("type")->asString();
+  QString exeversion = def->at("version")->asString();
   delete def;
   QString dest = destdir + "/" + QString("%1").arg(qHash(key)) + ".json";
+
+  // check if build in version is newer than version on disk
+  if (QFile::exists(dest)) {
+    QFile f(dest);
+    f.open(QIODevice::ReadOnly);
+    try {
+      def = JSON::parse(f.readAll());
+      f.close();
+    } catch (JSONParseException e) {
+      f.close();
+      return;
+    }
+    QString fileversion = def->at("version")->asString();
+    delete def;
+    if (exeversion.compare(fileversion, Qt::CaseInsensitive) > 0) {
+      // force overwriting outdated local copy
+      QFile::remove(dest);
+      QFile::copy(path, dest);
+      QFile::setPermissions(dest, QFile::ReadOwner|QFile::WriteOwner);
+    }
+  }
+
+  // import new definition (if file is not present)
   if (!QFile::exists(dest) || overwrite) {
     if (QFile::exists(dest) && install)
       removeDefinition(dest);
