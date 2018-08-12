@@ -282,63 +282,63 @@
     {
       "id": 40,
       "name": "Small End Islands",
-      "color": "#282898"
+      "color": "#8080ff"
     },
     {
       "id": 41,
       "name": "End Midlands",
-      "color": "#282898"
+      "color": "#8080ff"
     },
     {
       "id": 42,
       "name": "End Highlands",
-      "color": "#282898"
+      "color": "#8080ff"
     },
     {
       "id": 43,
       "name": "End Barrens",
-      "color": "#282898"
+      "color": "#8080ff"
     },
     {
       "id": 44,
       "name": "Warm Ocean",
-      "color": "#000070",
+      "color": "#0000ac",
       "watermodifier": "#cfc9f8"
     },
     {
       "id": 45,
       "name": "Lukewarm Ocean",
-      "color": "#000070",
+      "color": "#000090",
       "watermodifier": "#d7caef"
     },
     {
       "id": 46,
       "name": "Cold Ocean",
-      "color": "#000070",
+      "color": "#202070",
       "watermodifier": "#e9cddd"
     },
     {
       "id": 47,
       "name": "Deep Warm Ocean",
-      "color": "#000070",
+      "color": "#000050",
       "watermodifier": "#d3c9f3"
     },
     {
       "id": 48,
       "name": "Deep Lukewarm Ocean",
-      "color": "#000070",
+      "color": "#000040",
       "watermodifier": "#dccbea"
     },
     {
       "id": 49,
       "name": "Deep Cold Ocean",
-      "color": "#000070",
+      "color": "#202038",
       "watermodifier": "#edced8"
     },
     {
       "id": 50,
       "name": "Deep Frozen Ocean",
-      "color": "#000070",
+      "color": "#404090",
       "watermodifier": "#f6d0d0"
     },
     {

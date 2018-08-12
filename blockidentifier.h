@@ -73,10 +73,10 @@ class BlockIdentifier {
   int addDefinitions(JSONArray *, int pack = -1);
   void enableDefinitions(int id);
   void disableDefinitions(int id);
-  BlockInfo &getBlock(QString name);
+  BlockInfo &getBlockInfo(uint hid);
  private:
   void parseDefinition(JSONObject *block, BlockInfo *parent, int pack);
-  QMap<QString, BlockInfo*> blocks;
+  QMap<uint, BlockInfo*> blocks;
   QList<QList<BlockInfo*> > packs;
 };
 

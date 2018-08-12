@@ -1,6 +1,7 @@
 /** Copyright (c) 2013, Sean Kasun */
 
 #include <QDebug>
+#include <QtWidgets/QMessageBox>
 #include <assert.h>
 #include <cmath>
 
@@ -83,7 +84,7 @@ BlockIdentifier::BlockIdentifier() {
   for (int i = 0; i < 16; i++)
     unknownBlock.colors[i] = 0xff00ff;
   unknownBlock.alpha = 1.0;
-  unknownBlock.setName("Unknown");
+  unknownBlock.setName("Unknown Block");
 }
 
 BlockIdentifier::~BlockIdentifier() {
@@ -93,10 +94,10 @@ BlockIdentifier::~BlockIdentifier() {
   }
 }
 
-BlockInfo &BlockIdentifier::getBlock(QString name) {
+BlockInfo &BlockIdentifier::getBlockInfo(uint hid) {
   // first apply the mask
-  if (blocks.contains(name)) {
-    return *blocks[name];
+  if (blocks.contains(hid)) {
+    return *blocks[hid];
   }
   //   data &= blocks[name].first()->mask;
   //
@@ -126,8 +127,8 @@ BlockInfo &BlockIdentifier::getBlock(QString name) {
   //     }
   //   }
   // }
+
   // no blocks at all found.. dammit
-  unknownBlock.setName(name);
   return unknownBlock;
 }
 
@@ -272,6 +273,21 @@ void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent,
       parseDefinition(dynamic_cast<JSONObject *>(variants->at(j)), block, pack);
   }
 
-  blocks.insert(name, block);
+  uint hid = qHash(name);
+  if (blocks.contains(hid)) {
+    // this will only trigger during development of vanilla_blocks.json
+    // and prevents generating a wrong definition file
+    QMessageBox::warning((QWidget*)(NULL),
+                         "Error hashing Block",
+                         name,
+                         QMessageBox::Cancel, QMessageBox::Cancel);
+  }
+  blocks.insert(hid, block);
   packs[pack].append(block);
+
+  // we need this ugly code to allow mob spawn detection
+  // todo: rework mob spawn highlight
+  if (block->getName() == "minecraft:air") {
+    blocks.insert(0, block);
+  }
 }

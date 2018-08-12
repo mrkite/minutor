@@ -78,19 +78,38 @@ void FlatteningConverter::parseDefinition(
     flatname = b->at("flatname")->asString();
 
   palette[bid].name = flatname;
+  palette[bid].hid  = qHash(palette[bid].name);
   if ((parentID == NULL) && (data == 0)) {
     // spread main block type for data == 0
     for (int d=1; d<16; d++) {
-      palette[bid|d<<8].name = flatname;
+      int sid = bid | (d<<8);
+      palette[sid].name = flatname;
+      palette[sid].hid  = palette[bid].hid;
     }
   }
   //  packs[pack].append(block);
+
+  // get optional mask value (or guess default)
+  int mask = 0;
+  if (b->has("mask")) {
+    mask = b->at("mask")->asNumber();
+  } else if (b->has("variants")) {
+    mask = 0x0f;
+  }
 
   // recursive parsing of variants (with data)
   if (b->has("variants")) {
     JSONArray *variants = dynamic_cast<JSONArray *>(b->at("variants"));
     int vlen = variants->length();
-    for (int j = 0; j < vlen; j++)
+    for (int j = 0; j < vlen; j++) {
       parseDefinition(dynamic_cast<JSONObject *>(variants->at(j)), &bid, pack);
+    }
+    // spread variants in masked bid
+    for (int j = vlen; j < 16; j++) {
+      int id  = bid | (j << 8);
+      int mid = bid | ((j & mask) << 8);
+      palette[id].name = palette[mid].name;
+      palette[id].hid  = palette[mid].hid;
+    }
   }
 }

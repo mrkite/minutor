@@ -32,7 +32,9 @@ void Chunk::load(const NBT &nbt) {
     this->sections[i] = NULL;
   highest = 0;
 
-  int version = nbt.at("DataVersion")->toInt();
+  int version = 0;
+  if (nbt.has("DataVersion"))
+    version = nbt.at("DataVersion")->toInt();
   const Tag * level = nbt.at("Level");
   chunkX = level->at("xPos")->toInt();
   chunkZ = level->at("zPos")->toInt();
@@ -58,7 +60,7 @@ void Chunk::load(const NBT &nbt) {
     if (version >= 1519)
       loadSection1519(cs, section);
     else
-      loadSection1000(cs, section);
+      loadSection1343(cs, section);
 
     int idx = section->at("Y")->toInt();
     this->sections[idx] = cs;
@@ -88,27 +90,49 @@ void Chunk::load(const NBT &nbt) {
   }
 }
 
-void Chunk::loadSection1000(ChunkSection *cs, const Tag *section) {
+// supported DataVersions:
+//    0 = 1.8 and below
+//
+//  169 = 1.9
+//  175 = 1.9.1
+//  176 = 1.9.2
+//  183 = 1.9.3
+//  184 = 1.9.4
+//
+//  510 = 1.10
+//  511 = 1.10.1
+//  512 = 1.10.2
+//
+//  819 = 1.11
+//  921 = 1.11.1
+//  922 = 1.11.2
+//
+// 1139 = 1.12
+// 1241 = 1.12.1
+// 1343 = 1.12.2
+void Chunk::loadSection1343(ChunkSection *cs, const Tag *section) {
+  // copy raw data
   quint8 blocks[4096];
   quint8 data[2048];
   memcpy(blocks, section->at("Blocks")->toByteArray(), 4096);
   memcpy(data,   section->at("Data")->toByteArray(),   2048);
   memcpy(cs->blockLight, section->at("BlockLight")->toByteArray(), 2048);
+
   // convert old BlockID + data into virtual ID
   for (int i = 0; i < 4096; i++) {
-    int d = data[i>>1];
-    if (i & 1) d >>= 4;
-    int bid = blocks[i];
+    int d = data[i>>1];         // get raw data (two nibbles)
+    if (i & 1) d >>= 4;         // get one nibble of data
     cs->blocks[i] = blocks[i] | ((d & 0x0f) << 8);
   }
-// todo: identify this even more ancient stuff ???
-//  if (section->has("Add")) {
-//    raw = section->at("Add")->toByteArray();
-//    for (int i = 0; i < 2048; i++) {
-//      cs->blocks[i * 2] |= (raw[i] & 0xf) << 8;
-//      cs->blocks[i * 2 + 1] |= (raw[i] & 0xf0) << 4;
-//    }
-//  }
+
+  // parse optional "Add" part for higher block IDs in mod packs
+  if (section->has("Add")) {
+    auto raw = section->at("Add")->toByteArray();
+    for (int i = 0; i < 2048; i++) {
+      cs->blocks[i * 2] |= (raw[i] & 0xf) << 8;
+      cs->blocks[i * 2 + 1] |= (raw[i] & 0xf0) << 4;
+    }
+  }
 
   // link to Converter palette
   cs->paletteLength = 0;
@@ -123,6 +147,7 @@ void Chunk::loadSection1519(ChunkSection *cs, const Tag *section) {
   cs->palette = new BlockData[cs->paletteLength];
   for (int j = 0; j < rawPalette->length(); j++) {
     cs->palette[j].name = rawPalette->at(j)->at("Name")->toString();
+    cs->palette[j].hid  = qHash(cs->palette[j].name);
     if (rawPalette->at(j)->has("Properties"))
       cs->palette[j].properties = rawPalette->at(j)->at("Properties")->getData().toMap();
   }
@@ -149,10 +174,10 @@ Chunk::~Chunk() {
       if (sections[i]) {
         if (sections[i]->paletteLength > 0) {
           delete[] sections[i]->palette;
-          sections[i]->paletteLength = 0;
-        } else {
-          sections[i]->palette = NULL;
         }
+        sections[i]->paletteLength = 0;
+        sections[i]->palette = NULL;
+
         delete sections[i];
         sections[i] = NULL;
       }
@@ -160,16 +185,16 @@ Chunk::~Chunk() {
 }
 
 
-QString ChunkSection::getBlock(int x, int y, int z) {
+const BlockData & ChunkSection::getBlockData(int x, int y, int z) {
   int xoffset = x;
   int yoffset = (y & 0x0f) << 8;
   int zoffset = z << 4;
-  return palette[blocks[xoffset + yoffset + zoffset]].name;
+  return palette[blocks[xoffset + yoffset + zoffset]];
 }
 
-QString ChunkSection::getBlock(int offset, int y) {
+const BlockData & ChunkSection::getBlockData(int offset, int y) {
   int yoffset = (y & 0x0f) << 8;
-  return palette[blocks[offset + yoffset]].name;
+  return palette[blocks[offset + yoffset]];
 }
 
 quint8 ChunkSection::getSkyLight(int x, int y, int z) {

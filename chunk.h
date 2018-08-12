@@ -9,20 +9,19 @@
 #include "./entity.h"
 #include "./blockdata.h"
 
-class BlockIdentifier;
-
 
 class ChunkSection {
  public:
-  QString getBlock(int x, int y, int z);
-  QString getBlock(int offset, int y);
-  quint8  getSkyLight(int x, int y, int z);
-  quint8  getSkyLight(int offset, int y);
-  quint8  getBlockLight(int x, int y, int z);
-  quint8  getBlockLight(int offset, int y);
+  const BlockData & getBlockData(int x, int y, int z);
+  const BlockData & getBlockData(int offset, int y);
+  quint8 getSkyLight(int x, int y, int z);
+  quint8 getSkyLight(int offset, int y);
+  quint8 getBlockLight(int x, int y, int z);
+  quint8 getBlockLight(int offset, int y);
 
   BlockData *palette;
-  int paletteLength;
+  int        paletteLength;
+
   quint16 blocks[16*16*16];
   quint8  skyLight[16*16*16/2];
   quint8  blockLight[16*16*16/2];
@@ -34,7 +33,7 @@ class Chunk {
   void load(const NBT &nbt);
   ~Chunk();
  protected:
-  void loadSection1000(ChunkSection *cs, const Tag *section);
+  void loadSection1343(ChunkSection *cs, const Tag *section);
   void loadSection1519(ChunkSection *cs, const Tag *section);
 
 
