@@ -2617,14 +2617,14 @@
     {
       "id": 207,
       "name": "Immature Beetroot",
-      "flatname": "minecraft:beetroot",
+      "flatname": "minecraft:beetroots",
       "color": "#02ab10",
       "transparent": true,
       "variants": [
         {
           "data": 3,
           "name": "Mature Beetroot",
-          "flatname": "minecraft:beetroot",
+          "flatname": "minecraft:beetroots",
           "color": "#517136"
         }
       ]

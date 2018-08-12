@@ -185,16 +185,16 @@ Chunk::~Chunk() {
 }
 
 
-uint ChunkSection::getBlock(int x, int y, int z) {
+const BlockData & ChunkSection::getBlockData(int x, int y, int z) {
   int xoffset = x;
   int yoffset = (y & 0x0f) << 8;
   int zoffset = z << 4;
-  return palette[blocks[xoffset + yoffset + zoffset]].hid;
+  return palette[blocks[xoffset + yoffset + zoffset]];
 }
 
-uint ChunkSection::getBlock(int offset, int y) {
+const BlockData & ChunkSection::getBlockData(int offset, int y) {
   int yoffset = (y & 0x0f) << 8;
-  return palette[blocks[offset + yoffset]].hid;
+  return palette[blocks[offset + yoffset]];
 }
 
 quint8 ChunkSection::getSkyLight(int x, int y, int z) {

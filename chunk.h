@@ -12,8 +12,8 @@
 
 class ChunkSection {
  public:
-  uint   getBlock(int x, int y, int z);
-  uint   getBlock(int offset, int y);
+  const BlockData & getBlockData(int x, int y, int z);
+  const BlockData & getBlockData(int offset, int y);
   quint8 getSkyLight(int x, int y, int z);
   quint8 getSkyLight(int offset, int y);
   quint8 getBlockLight(int x, int y, int z);
