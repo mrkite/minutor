@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "entity",
-  "version": "1.12.17w16a",
+  "version": "1.13.18w15a",
   "data": [
     {
       "category": "Hostile",
@@ -120,12 +120,20 @@
           "color": "#008000"
         },
         {
+          "id": "drowned",
+          "color": "MediumAquaMarine"
+        }
+,
+        {
           "id": "PigZombie",
           "id1": "zombie_pigman",
           "name": "Zombie Pigman",
           "color": "#008000"
-        }
-      ]
+        },
+        {
+          "id": "phantom",
+          "color": "MidnightBlue"
+        }      ]
     },
     {
       "category": "Passive",
@@ -224,6 +232,30 @@
         {
           "id": "parrot",
           "color": "#0000ff"
+        },
+        {
+          "id": "turtle",
+          "color": "MediumSeaGreen"
+        },
+        {
+          "id": "dolphin",
+          "color": "LightSteelBlue"
+        },
+        {
+          "id": "cod",
+          "color": "DarkKhaki"
+        },
+        {
+          "id": "salmon",
+          "color": "Salmon"
+        },
+        {
+          "id": "tropical_fish",
+          "color": "Tomato"
+        },
+        {
+          "id": "pufferfish",
+          "color": "Gold"
         }
       ]
     },
