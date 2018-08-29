@@ -26,7 +26,7 @@
     },
     {
       "name": "minecraft:stone",
-      "color": "#7d7d7d"
+      "color": "#838383"
     },
     {
       "name": "minecraft:granite",
@@ -71,7 +71,7 @@
     },
     {
       "name": "minecraft:cobblestone",
-      "color": "#747474"
+      "color": "#7b7b7b"
     },
     {
       "name": "minecraft:oak_planks",
@@ -179,7 +179,7 @@
     },
     {
       "name": "minecraft:gravel",
-      "color": "#858281"
+      "color": "#787574"
     },
     {
       "name": "minecraft:gold_ore",
@@ -600,62 +600,86 @@
     {
       "name": "minecraft:dandelion",
       "color": "#f1f902",
+      "alpha": 0.7,
       "transparent": true,
-      "spawninside": true,
-      "alpha": 0.3
+      "spawninside": true
     },
     {
       "name": "minecraft:poppy",
       "color": "#ba050b",
+      "alpha": 0.7,
       "transparent": true,
-      "spawninside": true,
-      "alpha": 0.3
+      "spawninside": true
     },
     {
       "name": "minecraft:blue_orchid",
-      "color": "#29aefb"
+      "color": "#29aefb",
+      "alpha": 0.7,
+      "transparent": true,
+      "spawninside": true
     },
     {
       "name": "minecraft:allium",
-      "color": "#b865fb"
+      "color": "#b865fb",
+      "alpha": 0.7,
+      "transparent": true,
+      "spawninside": true
     },
     {
       "name": "minecraft:azure_bluet",
-      "color": "#e4eaf2"
+      "color": "#e4eaf2",
+      "alpha": 0.7,
+      "transparent": true,
+      "spawninside": true
     },
     {
       "name": "minecraft:red_tulip",
-      "color": "#d33a17"
+      "color": "#d33a17",
+      "alpha": 0.7,
+      "transparent": true,
+      "spawninside": true
     },
     {
       "name": "minecraft:orange_tulip",
-      "color": "#de731f"
+      "color": "#de731f",
+      "alpha": 0.7,
+      "transparent": true,
+      "spawninside": true
     },
     {
       "name": "minecraft:white_tulip",
-      "color": "#e7e7e7"
+      "color": "#e7e7e7",
+      "alpha": 0.7,
+      "transparent": true,
+      "spawninside": true
     },
     {
       "name": "minecraft:pink_tulip",
-      "color": "#eabeea"
+      "color": "#eabeea",
+      "alpha": 0.7,
+      "transparent": true,
+      "spawninside": true
     },
     {
       "name": "minecraft:oxeye_daisy",
-      "color": "#eae6ad"
+      "color": "#eae6ad",
+      "alpha": 0.7,
+      "transparent": true,
+      "spawninside": true
     },
     {
       "name": "minecraft:brown_mushroom",
       "color": "#8a6a54",
+      "alpha": 0.7,
       "transparent": true,
-      "spawninside": true,
-      "alpha": 0.3
+      "spawninside": true
     },
     {
       "name": "minecraft:red_mushroom",
       "color": "#c33638",
+      "alpha": 0.7,
       "transparent": true,
-      "spawninside": true,
-      "alpha": 0.3
+      "spawninside": true
     },
     {
       "name": "minecraft:gold_block",
@@ -709,7 +733,7 @@
     },
     {
       "name": "minecraft:oak_stairs",
-      "color": "#9d804f",
+      "color": "#95794b",
       "transparent": true
     },
     {
@@ -871,7 +895,7 @@
     },
     {
       "name": "minecraft:stone_button",
-      "color": "#7d7d7d",
+      "color": "#838383",
       "alpha": 0.25,
       "transparent": true,
       "spawninside": true,
@@ -1088,11 +1112,11 @@
     },
     {
       "name": "minecraft:infested_stone",
-      "color": "#7d7d7d"
+      "color": "#838383"
     },
     {
       "name": "minecraft:infested_cobblestone",
-      "color": "#747474"
+      "color": "#7b7b7b"
     },
     {
       "name": "minecraft:infested_stone_bricks",
@@ -1188,12 +1212,12 @@
     },
     {
       "name": "minecraft:brick_stairs",
-      "color": "#936457",
+      "color": "#8b5f52",
       "transparent": true
     },
     {
       "name": "minecraft:stone_brick_stairs",
-      "color": "#7a7a7a",
+      "color": "#737373",
       "transparent": true
     },
     {
@@ -1216,7 +1240,7 @@
     },
     {
       "name": "minecraft:nether_brick_stairs",
-      "color": "#2d171b",
+      "color": "#2a1519",
       "transparent": true
     },
     {
@@ -1274,7 +1298,7 @@
     },
     {
       "name": "minecraft:sandstone_stairs",
-      "color": "#d9d29d",
+      "color": "#cfc797",
       "transparent": true
     },
     {
@@ -1304,17 +1328,17 @@
     },
     {
       "name": "minecraft:spruce_stairs",
-      "color": "#684e2f",
+      "color": "#624a2c",
       "transparent": true
     },
     {
       "name": "minecraft:birch_stairs",
-      "color": "#c4b37b",
+      "color": "#baaa74",
       "transparent": true
     },
     {
       "name": "minecraft:jungle_stairs",
-      "color": "#9a6e4d",
+      "color": "#926849",
       "transparent": true
     },
     {
@@ -1327,7 +1351,7 @@
     },
     {
       "name": "minecraft:cobblestone_wall",
-      "color": "#747474",
+      "color": "#7b7b7b",
       "alpha": 0.7,
       "transparent": true
     },
@@ -1623,7 +1647,7 @@
     },
     {
       "name": "minecraft:quartz_stairs",
-      "color": "#ece9e2",
+      "color": "#e0ddd6",
       "transparent": true
     },
     {
@@ -1798,12 +1822,12 @@
     },
     {
       "name": "minecraft:acacia_stairs",
-      "color": "#a95c33",
+      "color": "#a05730",
       "transparent": true
     },
     {
       "name": "minecraft:dark_oak_stairs",
-      "color": "#3d2812",
+      "color": "#392611",
       "transparent": true
     },
     {
@@ -1834,27 +1858,27 @@
     },
     {
       "name": "minecraft:prismarine_stairs",
-      "color": "#64988e"
+      "color": "#5f907d"
     },
     {
       "name": "minecraft:prismarine_brick_stairs",
-      "color": "#64a08f"
+      "color": "#5f9887"
     },
     {
       "name": "minecraft:dark_prismarine_stairs",
-      "color": "#3c584b"
+      "color": "#395347"
     },
     {
       "name": "minecraft:prismarine_slab",
-      "color": "#64988e"
+      "color": "#699f8a"
     },
     {
       "name": "minecraft:prismarine_brick_slab",
-      "color": "#64a08f"
+      "color": "#69a896"
     },
     {
       "name": "minecraft:dark_prismarine_slab",
-      "color": "#3c584b"
+      "color": "#3f5ce4"
     },
     {
       "name": "minecraft:sea_lantern",
@@ -2174,33 +2198,33 @@
     },
     {
       "name": "minecraft:red_sandstone_stairs",
-      "color": "#a6551e",
+      "color": "#9e501c",
       "transparent": true
     },
     {
       "name": "minecraft:oak_slab",
-      "color": "#9d804f",
+      "color": "#a48652",
       "transparent": true
     },
     {
       "name": "minecraft:spruce_slab",
-      "color": "#684e2f"
+      "color": "#6d5131"
     },
     {
       "name": "minecraft:birch_slab",
-      "color": "#c4b37b"
+      "color": "#cdbb81"
     },
     {
       "name": "minecraft:jungle_slab",
-      "color": "#9a6e4d"
+      "color": "#a17350"
     },
     {
       "name": "minecraft:acacia_slab",
-      "color": "#a95c33"
+      "color": "#b16035"
     },
     {
       "name": "minecraft:dark_oak_slab",
-      "color": "#3d2812"
+      "color": "#402a12"
     },
     {
       "name": "minecraft:stone_slab",
@@ -2209,7 +2233,7 @@
     },
     {
       "name": "minecraft:sandstone_slab",
-      "color": "#d9d29d"
+      "color": "#e4dca6"
     },
     {
       "name": "minecraft:petrified_oak_slab",
@@ -2217,32 +2241,32 @@
     },
     {
       "name": "minecraft:cobblestone_slab",
-      "color": "#747474"
+      "color": "#818181"
     },
     {
       "name": "minecraft:brick_slab",
-      "color": "#936457"
+      "color": "#9a695b"
     },
     {
       "name": "minecraft:stone_brick_slab",
-      "color": "#7a7a7a"
+      "color": "#808080"
     },
     {
       "name": "minecraft:nether_brick_slab",
-      "color": "#2d171b"
+      "color": "#2f181c"
     },
     {
       "name": "minecraft:quartz_slab",
-      "color": "#ece9e2"
+      "color": "#f7f4ed"
     },
     {
       "name": "minecraft:red_sandstone_slab",
-      "color": "#a6551e",
+      "color": "#af591f",
       "transparent": true
     },
     {
       "name": "minecraft:purpur_slab",
-      "color": "#a67aa6"
+      "color": "#ae80ae"
     },
     {
       "name": "minecraft:smooth_stone",
@@ -2369,7 +2393,7 @@
     },
     {
       "name": "minecraft:purpur_stairs",
-      "color": "#a67aa6"
+      "color": "#9d739d"
     },
     {
       "name": "minecraft:end_stone_bricks",
@@ -2868,7 +2892,7 @@
     },
     {
       "name": "minecraft:bubble_column",
-      "color": "#6b8fff",
+      "color": "#2335b1",
       "alpha": 0.53,
       "transparent": true,
       "liquid": true
