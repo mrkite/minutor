@@ -1430,12 +1430,14 @@
     {
       "id": 115,
       "name": "Immature Nether Wart",
+      "flatname": "minecraft:nether_wart",
       "color": "#70081c",
       "transparent": true,
       "variants": [
         {
           "data": 3,
           "name": "Mature Nether Wart",
+          "flatname": "minecraft:nether_wart",
           "color": "#8e181b"
         }
       ]
@@ -1476,6 +1478,7 @@
         {
           "data": 4,
           "name": "End Portal Frame (on)",
+          "flatname": "minecraft:end_portal_frame",
           "color": "#406852"
         }
       ]
@@ -3019,21 +3022,25 @@
     {
       "id": 255,
       "name": "Structure Block Save",
+      "flatname": "minecraft:structure_block",
       "color": "#564757",
       "variants": [
         {
           "data": 1,
           "name": "Structure Block Load",
+          "flatname": "minecraft:structure_block",
           "color": "#453946"
         },
         {
           "data": 2,
           "name": "Structure Block Corner",
+          "flatname": "minecraft:structure_block",
           "color": "#443945"
         },
         {
           "data": 3,
           "name": "Structure Block Data",
+          "flatname": "minecraft:structure_block",
           "color": "#4f4150"
         }
       ]

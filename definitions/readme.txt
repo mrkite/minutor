@@ -71,7 +71,10 @@ String representation of this Block, shown in status bar when hovering mouse ove
 
 "color": "#ffffff"
 
-Color usedd for rendering this block
+Color used for rendering this block
+ For new Blocks, please use the average color of the texture Minecraft would use for the top side.
+ ImageMagick can do that for you:
+ > convert ${filename} -filter box -resize 1x1 -depth 8 txt:-
 
 
 "alpha": float_number
