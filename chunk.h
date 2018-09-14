@@ -23,7 +23,7 @@ class ChunkSection {
   int        paletteLength;
 
   quint16 blocks[16*16*16];
-  quint8  skyLight[16*16*16/2];
+//quint8  skyLight[16*16*16/2];   // not needed in Minutor
   quint8  blockLight[16*16*16/2];
 };
 
@@ -39,7 +39,7 @@ class Chunk {
 
   typedef QMap<QString, QSharedPointer<OverlayItem>> EntityMap;
 
-  quint32 biomes[256];
+  quint32 biomes[16*16];
   int highest;
   ChunkSection *sections[16];
   int renderedAt;

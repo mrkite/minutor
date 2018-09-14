@@ -4,7 +4,7 @@
 #include <assert.h>
 #include <cmath>
 
-#include "./FlatteningConverter.h"
+#include "./flatteningconverter.h"
 #include "./json.h"
 
 

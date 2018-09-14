@@ -27,7 +27,6 @@ Chunk::Chunk() {
 void Chunk::load(const NBT &nbt) {
   renderedAt = -1;  // impossible.
   renderedFlags = 0;  // no flags
-  memset(this->biomes, 127, 256);  // init to unknown biome
   for (int i = 0; i < 16; i++)
     this->sections[i] = NULL;
   highest = 0;
@@ -42,6 +41,7 @@ void Chunk::load(const NBT &nbt) {
   // load Biome per column
   auto biomes = level->at("Biomes");
   if (version >= 1519) {
+    // raw copy Biome data
     memcpy(this->biomes, biomes->toIntArray(), sizeof(int)*biomes->length());
   } else {
     // convert quint8 to quint32
@@ -163,8 +163,8 @@ void Chunk::loadSection1519(ChunkSection *cs, const Tag *section) {
     cs->blocks[4095-i] = getBits(byteData, i*bitSize, bitSize);
   }
   delete byteData;
-  // copy Light data (todo: Skylight is not needed)
-  memcpy(cs->skyLight, section->at("SkyLight")->toByteArray(), 2048);
+  // copy Light data
+//memcpy(cs->skyLight, section->at("SkyLight")->toByteArray(), 2048);
   memcpy(cs->blockLight, section->at("BlockLight")->toByteArray(), 2048);
 }
 
@@ -197,21 +197,21 @@ const BlockData & ChunkSection::getBlockData(int offset, int y) {
   return palette[blocks[offset + yoffset]];
 }
 
-quint8 ChunkSection::getSkyLight(int x, int y, int z) {
-  int xoffset = x;
-  int yoffset = (y & 0x0f) << 8;
-  int zoffset = z << 4;
-  int value = skyLight[(xoffset + yoffset + zoffset) / 2];
-  if (x & 1) value >>= 4;
-  return value & 0x0f;
-}
+//quint8 ChunkSection::getSkyLight(int x, int y, int z) {
+//  int xoffset = x;
+//  int yoffset = (y & 0x0f) << 8;
+//  int zoffset = z << 4;
+//  int value = skyLight[(xoffset + yoffset + zoffset) / 2];
+//  if (x & 1) value >>= 4;
+//  return value & 0x0f;
+//}
 
-quint8 ChunkSection::getSkyLight(int offset, int y) {
-  int yoffset = (y & 0x0f) << 8;
-  int value = skyLight[(offset + yoffset) / 2];
-  if (offset & 1) value >>= 4;
-  return value & 0x0f;
-}
+//quint8 ChunkSection::getSkyLight(int offset, int y) {
+//  int yoffset = (y & 0x0f) << 8;
+//  int value = skyLight[(offset + yoffset) / 2];
+//  if (offset & 1) value >>= 4;
+//  return value & 0x0f;
+//}
 
 quint8 ChunkSection::getBlockLight(int x, int y, int z) {
   int xoffset = x;
