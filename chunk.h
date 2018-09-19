@@ -8,6 +8,7 @@
 #include "./nbt.h"
 #include "./entity.h"
 #include "./blockdata.h"
+#include "./generatedstructure.h"
 
 
 class ChunkSection {
@@ -27,11 +28,18 @@ class ChunkSection {
   quint8  blockLight[16*16*16/2];
 };
 
-class Chunk {
+
+class Chunk : public QObject {
+  Q_OBJECT
+
  public:
   Chunk();
-  void load(const NBT &nbt);
   ~Chunk();
+  void load(const NBT &nbt);
+
+ signals:
+  void structureFound(QSharedPointer<GeneratedStructure> structure);
+
  protected:
   void loadSection1343(ChunkSection *cs, const Tag *section);
   void loadSection1519(ChunkSection *cs, const Tag *section);

@@ -7,7 +7,7 @@
 class Village : public GeneratedStructure {
  public:
   static QList<QSharedPointer<GeneratedStructure>>
-      tryParse(const Tag* tag, const QString &dimension);
+      tryParseDatFile(const Tag* tag, const QString &dimension);
 
  protected:
   Village() {}

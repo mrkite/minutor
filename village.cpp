@@ -2,8 +2,10 @@
 #include "./village.h"
 #include "./nbt.h"
 
+// parse structures in *.dat files
 QList<QSharedPointer<GeneratedStructure>>
-Village::tryParse(const Tag* tag, const QString& dimension) {
+Village::tryParseDatFile(const Tag* tag, const QString& dimension) {
+  // we will return a list of all found structures
   QList<QSharedPointer<GeneratedStructure> > ret;
 
   if (tag && tag != &NBT::Null) {

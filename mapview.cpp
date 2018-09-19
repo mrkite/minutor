@@ -15,7 +15,9 @@ MapView::MapView(QWidget *parent) : QWidget(parent) {
   scale = 1;
   zoom = 1.0;
   connect(&cache, SIGNAL(chunkLoaded(int, int)),
-          this, SLOT(chunkUpdated(int, int)));
+          this,   SLOT  (chunkUpdated(int, int)));
+  connect(&cache, SIGNAL(structureFound(QSharedPointer<GeneratedStructure>)),
+          this,   SLOT  (addStructureFromChunk(QSharedPointer<GeneratedStructure>)));
   setMouseTracking(true);
   setFocusPolicy(Qt::StrongFocus);
 
@@ -313,9 +315,10 @@ void MapView::redraw() {
   // draw the entities
   for (int cz = startz; cz < startz + blockstall; cz++) {
     for (int cx = startx; cx < startx + blockswide; cx++) {
-      for (auto &type : overlayItemTypes) {
-        Chunk *chunk = cache.fetch(cx, cz);
-        if (chunk) {
+      Chunk *chunk = cache.fetch(cx, cz);
+      if (chunk) {
+        // Entities from Chunks
+        for (auto &type : overlayItemTypes) {
           auto range = chunk->entities.equal_range(type);
           for (auto it = range.first; it != range.second; ++it) {
             // don't show entities above our depth
@@ -333,10 +336,10 @@ void MapView::redraw() {
             }
           }
         }
+
       }
     }
   }
-
 
   // draw the generated structures
   for (auto &type : overlayItemTypes) {
@@ -669,11 +672,22 @@ void MapView::getToolTip(int x, int z) {
                         .arg(entityStr));
 }
 
+void MapView::addStructureFromChunk(QSharedPointer<GeneratedStructure> structure) {
+  // update menu (if necessary)
+  emit addOverlayItemType(structure->type(), structure->color());
+  // add to list with overlays
+  addOverlayItem(structure);
+}
+
 void MapView::addOverlayItem(QSharedPointer<OverlayItem> item) {
   overlayItems[item->type()].push_back(item);
 }
 
-void MapView::showOverlayItemTypes(const QSet<QString>& itemTypes) {
+void MapView::clearOverlayItems() {
+  overlayItems.clear();
+}
+
+void MapView::setVisibleOverlayItemTypes(const QSet<QString>& itemTypes) {
   overlayItemTypes = itemTypes;
 }
 

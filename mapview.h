@@ -42,7 +42,8 @@ class MapView : public QWidget {
   void setDimension(QString path, int scale);
   void setFlags(int flags);
   void addOverlayItem(QSharedPointer<OverlayItem> item);
-  void showOverlayItemTypes(const QSet<QString>& itemTypes);
+  void clearOverlayItems();
+  void setVisibleOverlayItemTypes(const QSet<QString>& itemTypes);
 
   // public for saving the png
   void renderChunk(Chunk *chunk);
@@ -75,6 +76,9 @@ class MapView : public QWidget {
   void keyPressEvent(QKeyEvent *event);
   void resizeEvent(QResizeEvent *event);
   void paintEvent(QPaintEvent *event);
+
+ private slots:
+  void addStructureFromChunk(QSharedPointer<GeneratedStructure> structure);
 
  private:
   void drawChunk(int x, int z);

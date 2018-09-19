@@ -24,6 +24,23 @@ Chunk::Chunk() {
   loaded = false;
 }
 
+Chunk::~Chunk() {
+  if (loaded) {
+    for (int i = 0; i < 16; i++)
+      if (sections[i]) {
+        if (sections[i]->paletteLength > 0) {
+          delete[] sections[i]->palette;
+        }
+        sections[i]->paletteLength = 0;
+        sections[i]->palette = NULL;
+
+        delete sections[i];
+        sections[i] = NULL;
+      }
+  }
+}
+
+
 void Chunk::load(const NBT &nbt) {
   renderedAt = -1;  // impossible.
   renderedFlags = 0;  // no flags
@@ -57,17 +74,28 @@ void Chunk::load(const NBT &nbt) {
   for (int s = 0; s < numSections; s++) {
     ChunkSection *cs = new ChunkSection();
     const Tag * section = sections->at(s);
-    if (version >= 1519)
+    if (version >= 1519) {
       loadSection1519(cs, section);
-    else
+    } else {
       loadSection1343(cs, section);
+    }
 
     int idx = section->at("Y")->toInt();
     this->sections[idx] = cs;
   }
 
+  // parse Structures that start in this Chunk
+  if (version >= 1519) {
+    auto nbtListStructures = level->at("Structures");
+    auto structurelist     = GeneratedStructure::tryParseChunk(nbtListStructures);
+    for (auto it = structurelist.begin(); it != structurelist.end(); ++it) {
+      emit structureFound(*it);
+    }
+  }
+
   loaded = true;
 
+  // parse Entities
   auto entitylist = level->at("Entities");
   int numEntities = entitylist->length();
   for (int i = 0; i < numEntities; ++i) {
@@ -110,6 +138,9 @@ void Chunk::load(const NBT &nbt) {
 // 1139 = 1.12
 // 1241 = 1.12.1
 // 1343 = 1.12.2
+//
+// 1519 = 1.13
+// 1623 = 1.13.1
 void Chunk::loadSection1343(ChunkSection *cs, const Tag *section) {
   // copy raw data
   quint8 blocks[4096];
@@ -151,6 +182,7 @@ void Chunk::loadSection1519(ChunkSection *cs, const Tag *section) {
     if (rawPalette->at(j)->has("Properties"))
       cs->palette[j].properties = rawPalette->at(j)->at("Properties")->getData().toMap();
   }
+
   // map BlockStates to BlockData
   // todo: bit fidling looks very complicated -> find easier code
   auto raw = section->at("BlockStates")->toLongArray();
@@ -163,25 +195,10 @@ void Chunk::loadSection1519(ChunkSection *cs, const Tag *section) {
     cs->blocks[4095-i] = getBits(byteData, i*bitSize, bitSize);
   }
   delete byteData;
+
   // copy Light data
 //memcpy(cs->skyLight, section->at("SkyLight")->toByteArray(), 2048);
   memcpy(cs->blockLight, section->at("BlockLight")->toByteArray(), 2048);
-}
-
-Chunk::~Chunk() {
-  if (loaded) {
-    for (int i = 0; i < 16; i++)
-      if (sections[i]) {
-        if (sections[i]->paletteLength > 0) {
-          delete[] sections[i]->palette;
-        }
-        sections[i]->paletteLength = 0;
-        sections[i]->palette = NULL;
-
-        delete sections[i];
-        sections[i] = NULL;
-      }
-  }
 }
 
 
