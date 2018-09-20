@@ -643,6 +643,7 @@ void MapView::getToolTip(int x, int z) {
     auto &bi = biomes->getBiome(chunk->biomes[(x & 0xf) + (z & 0xf) * 16]);
     biome = bi.name;
 
+    // count Entity of each display type
     for (auto &item : getItems(x, y, z)) {
       entityIds[item->display()]++;
     }
@@ -651,8 +652,8 @@ void MapView::getToolTip(int x, int z) {
   QString entityStr;
   if (!entityIds.empty()) {
     QStringList entities;
-    QMap<QString, int>::iterator it, itEnd = entityIds.end();
-    for (it = entityIds.begin(); it != itEnd; ++it) {
+    QMap<QString, int>::const_iterator it, itEnd = entityIds.cend();
+    for (it = entityIds.cbegin(); it != itEnd; ++it) {
       if (it.value() > 1) {
         entities << it.key() + ":" + QString::number(it.value());
       } else {
@@ -680,6 +681,14 @@ void MapView::addStructureFromChunk(QSharedPointer<GeneratedStructure> structure
 }
 
 void MapView::addOverlayItem(QSharedPointer<OverlayItem> item) {
+  // test if item is already in list
+  for (auto &it: overlayItems[item->type()]) {
+    OverlayItem::Point p1 = it  ->midpoint();
+    OverlayItem::Point p2 = item->midpoint();
+    if ( (p1.x == p2.x) && (p1.y == p2.y) && (p1.z == p2.z) )
+      return;  // skip if already present
+  }
+  // otherwise add item
   overlayItems[item->type()].push_back(item);
 }
 
