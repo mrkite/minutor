@@ -8,6 +8,7 @@
 #include "./nbt.h"
 #include "./entity.h"
 #include "./blockdata.h"
+#include "./generatedstructure.h"
 
 
 class ChunkSection {
@@ -23,15 +24,22 @@ class ChunkSection {
   int        paletteLength;
 
   quint16 blocks[16*16*16];
-  quint8  skyLight[16*16*16/2];
+//quint8  skyLight[16*16*16/2];   // not needed in Minutor
   quint8  blockLight[16*16*16/2];
 };
 
-class Chunk {
+
+class Chunk : public QObject {
+  Q_OBJECT
+
  public:
   Chunk();
-  void load(const NBT &nbt);
   ~Chunk();
+  void load(const NBT &nbt);
+
+ signals:
+  void structureFound(QSharedPointer<GeneratedStructure> structure);
+
  protected:
   void loadSection1343(ChunkSection *cs, const Tag *section);
   void loadSection1519(ChunkSection *cs, const Tag *section);
@@ -39,7 +47,7 @@ class Chunk {
 
   typedef QMap<QString, QSharedPointer<OverlayItem>> EntityMap;
 
-  quint32 biomes[256];
+  quint32 biomes[16*16];
   int highest;
   ChunkSection *sections[16];
   int renderedAt;

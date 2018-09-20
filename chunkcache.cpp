@@ -35,6 +35,9 @@ ChunkCache::ChunkCache() {
 #endif
   cache.setMaxCost(chunks);
   maxcache = 2 * chunks;  // most chunks are less than half filled with sections
+
+
+  qRegisterMetaType<QSharedPointer<GeneratedStructure>>("QSharedPointer<GeneratedStructure>");
 }
 
 ChunkCache::~ChunkCache() {
@@ -66,6 +69,8 @@ Chunk *ChunkCache::fetch(int x, int z) {
   }
   // launch background process to load this chunk
   chunk = new Chunk();
+  connect(chunk, SIGNAL(structureFound(QSharedPointer<GeneratedStructure>)),
+          this,  SLOT  (routeStructure(QSharedPointer<GeneratedStructure>)));
   mutex.lock();
   cache.insert(id, chunk);
   mutex.unlock();
@@ -78,6 +83,10 @@ Chunk *ChunkCache::fetch(int x, int z) {
 
 void ChunkCache::gotChunk(int x, int z) {
   emit chunkLoaded(x, z);
+}
+
+void ChunkCache::routeStructure(QSharedPointer<GeneratedStructure> structure) {
+  emit structureFound(structure);
 }
 
 void ChunkCache::adaptCacheToWindow(int x, int y) {

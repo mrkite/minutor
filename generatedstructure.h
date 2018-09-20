@@ -11,7 +11,9 @@ class QColor;
 
 class GeneratedStructure: public OverlayItem {
  public:
-  static QList<QSharedPointer<GeneratedStructure>> tryParse(const Tag* tag);
+  static QList<QSharedPointer<GeneratedStructure>> tryParseDatFile(const Tag* tag);
+  static QList<QSharedPointer<GeneratedStructure>> tryParseChunk(const Tag* tag);
+  static QList<QSharedPointer<GeneratedStructure>> tryParseFeatures(QVariant &maybeFeatureMap);
 
   virtual bool intersects(const Point& min, const Point& max) const;
   virtual void draw(double offsetX, double offsetZ, double scale,

@@ -24,10 +24,26 @@ Chunk::Chunk() {
   loaded = false;
 }
 
+Chunk::~Chunk() {
+  if (loaded) {
+    for (int i = 0; i < 16; i++)
+      if (sections[i]) {
+        if (sections[i]->paletteLength > 0) {
+          delete[] sections[i]->palette;
+        }
+        sections[i]->paletteLength = 0;
+        sections[i]->palette = NULL;
+
+        delete sections[i];
+        sections[i] = NULL;
+      }
+  }
+}
+
+
 void Chunk::load(const NBT &nbt) {
   renderedAt = -1;  // impossible.
   renderedFlags = 0;  // no flags
-  memset(this->biomes, 127, 256);  // init to unknown biome
   for (int i = 0; i < 16; i++)
     this->sections[i] = NULL;
   highest = 0;
@@ -42,6 +58,7 @@ void Chunk::load(const NBT &nbt) {
   // load Biome per column
   auto biomes = level->at("Biomes");
   if (version >= 1519) {
+    // raw copy Biome data
     memcpy(this->biomes, biomes->toIntArray(), sizeof(int)*biomes->length());
   } else {
     // convert quint8 to quint32
@@ -57,17 +74,28 @@ void Chunk::load(const NBT &nbt) {
   for (int s = 0; s < numSections; s++) {
     ChunkSection *cs = new ChunkSection();
     const Tag * section = sections->at(s);
-    if (version >= 1519)
+    if (version >= 1519) {
       loadSection1519(cs, section);
-    else
+    } else {
       loadSection1343(cs, section);
+    }
 
     int idx = section->at("Y")->toInt();
     this->sections[idx] = cs;
   }
 
+  // parse Structures that start in this Chunk
+  if (version >= 1519) {
+    auto nbtListStructures = level->at("Structures");
+    auto structurelist     = GeneratedStructure::tryParseChunk(nbtListStructures);
+    for (auto it = structurelist.begin(); it != structurelist.end(); ++it) {
+      emit structureFound(*it);
+    }
+  }
+
   loaded = true;
 
+  // parse Entities
   auto entitylist = level->at("Entities");
   int numEntities = entitylist->length();
   for (int i = 0; i < numEntities; ++i) {
@@ -110,6 +138,9 @@ void Chunk::load(const NBT &nbt) {
 // 1139 = 1.12
 // 1241 = 1.12.1
 // 1343 = 1.12.2
+//
+// 1519 = 1.13
+// 1623 = 1.13.1
 void Chunk::loadSection1343(ChunkSection *cs, const Tag *section) {
   // copy raw data
   quint8 blocks[4096];
@@ -151,6 +182,7 @@ void Chunk::loadSection1519(ChunkSection *cs, const Tag *section) {
     if (rawPalette->at(j)->has("Properties"))
       cs->palette[j].properties = rawPalette->at(j)->at("Properties")->getData().toMap();
   }
+
   // map BlockStates to BlockData
   // todo: bit fidling looks very complicated -> find easier code
   auto raw = section->at("BlockStates")->toLongArray();
@@ -163,25 +195,10 @@ void Chunk::loadSection1519(ChunkSection *cs, const Tag *section) {
     cs->blocks[4095-i] = getBits(byteData, i*bitSize, bitSize);
   }
   delete byteData;
-  // copy Light data (todo: Skylight is not needed)
-  memcpy(cs->skyLight, section->at("SkyLight")->toByteArray(), 2048);
+
+  // copy Light data
+//memcpy(cs->skyLight, section->at("SkyLight")->toByteArray(), 2048);
   memcpy(cs->blockLight, section->at("BlockLight")->toByteArray(), 2048);
-}
-
-Chunk::~Chunk() {
-  if (loaded) {
-    for (int i = 0; i < 16; i++)
-      if (sections[i]) {
-        if (sections[i]->paletteLength > 0) {
-          delete[] sections[i]->palette;
-        }
-        sections[i]->paletteLength = 0;
-        sections[i]->palette = NULL;
-
-        delete sections[i];
-        sections[i] = NULL;
-      }
-  }
 }
 
 
@@ -197,21 +214,21 @@ const BlockData & ChunkSection::getBlockData(int offset, int y) {
   return palette[blocks[offset + yoffset]];
 }
 
-quint8 ChunkSection::getSkyLight(int x, int y, int z) {
-  int xoffset = x;
-  int yoffset = (y & 0x0f) << 8;
-  int zoffset = z << 4;
-  int value = skyLight[(xoffset + yoffset + zoffset) / 2];
-  if (x & 1) value >>= 4;
-  return value & 0x0f;
-}
+//quint8 ChunkSection::getSkyLight(int x, int y, int z) {
+//  int xoffset = x;
+//  int yoffset = (y & 0x0f) << 8;
+//  int zoffset = z << 4;
+//  int value = skyLight[(xoffset + yoffset + zoffset) / 2];
+//  if (x & 1) value >>= 4;
+//  return value & 0x0f;
+//}
 
-quint8 ChunkSection::getSkyLight(int offset, int y) {
-  int yoffset = (y & 0x0f) << 8;
-  int value = skyLight[(offset + yoffset) / 2];
-  if (offset & 1) value >>= 4;
-  return value & 0x0f;
-}
+//quint8 ChunkSection::getSkyLight(int offset, int y) {
+//  int yoffset = (y & 0x0f) << 8;
+//  int value = skyLight[(offset + yoffset) / 2];
+//  if (offset & 1) value >>= 4;
+//  return value & 0x0f;
+//}
 
 quint8 ChunkSection::getBlockLight(int x, int y, int z) {
   int xoffset = x;
