@@ -123,7 +123,10 @@ void Minutor::open() {
 }
 
 void Minutor::reload() {
+  auto loc = *(mapview->getLocation());
+
   loadWorld(currentWorld);
+  mapview->setLocation(loc.x, loc.y, loc.z, false, true);
 }
 
 void Minutor::save() {
