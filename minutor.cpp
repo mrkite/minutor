@@ -234,12 +234,12 @@ void Minutor::setViewMobspawning(bool value) {
 }
 
 void Minutor::setViewCavemode(bool value) {
-  depthShadingAct->setChecked(value);
+  caveModeAct->setChecked(value);
   toggleFlags();
 }
 
 void Minutor::setViewDepthshading(bool value) {
-  lightingAct->setChecked(value);
+  depthShadingAct->setChecked(value);
   toggleFlags();
 }
 
