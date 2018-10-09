@@ -56,52 +56,65 @@ void Chunk::load(const NBT &nbt) {
   chunkZ = level->at("zPos")->toInt();
 
   // load Biome per column
-  auto biomes = level->at("Biomes");
-  if (version >= 1519) {
-    // raw copy Biome data
-    memcpy(this->biomes, biomes->toIntArray(), sizeof(int)*biomes->length());
+  if (level->has("Biomes")) {
+    const Tag_Int_Array * biomes = dynamic_cast<const Tag_Int_Array*> (level->at("Biomes"));
+    if ((version >= 1519) && biomes) {
+      // raw copy Biome data
+      memcpy(this->biomes, biomes->toIntArray(), sizeof(int)*biomes->length());
+    } else {
+      const Tag * biomes = level->at("Biomes");
+      // convert quint8 to quint32
+      auto rawBiomes = biomes->toByteArray();
+      for (int i=0; i<256; i++)
+        this->biomes[i] = rawBiomes[i];
+    }
   } else {
-    // convert quint8 to quint32
-    auto rawBiomes = biomes->toByteArray();
+    // no Biome data present
     for (int i=0; i<256; i++)
-      this->biomes[i] = rawBiomes[i];
+      this->biomes[i] = -1;
   }
 
   // load available Sections
-  auto sections = level->at("Sections");
-  int numSections = sections->length();
-  // loop over all stored Sections, they are not guarantied to be ordered or consecutive
-  for (int s = 0; s < numSections; s++) {
-    ChunkSection *cs = new ChunkSection();
-    const Tag * section = sections->at(s);
-    if (version >= 1519) {
-      loadSection1519(cs, section);
-    } else {
-      loadSection1343(cs, section);
-    }
+  if (level->has("Sections")) {
+    auto sections = level->at("Sections");
+    int numSections = sections->length();
+    // loop over all stored Sections, they are not guarantied to be ordered or consecutive
+    for (int s = 0; s < numSections; s++) {
+      ChunkSection *cs = new ChunkSection();
+      const Tag * section = sections->at(s);
+      if (version >= 1519) {
+        loadSection1519(cs, section);
+      } else {
+        loadSection1343(cs, section);
+      }
 
-    int idx = section->at("Y")->toInt();
-    this->sections[idx] = cs;
+      int idx = section->at("Y")->toInt();
+      this->sections[idx] = cs;
+    }
   }
 
   // parse Structures that start in this Chunk
   if (version >= 1519) {
-    auto nbtListStructures = level->at("Structures");
-    auto structurelist     = GeneratedStructure::tryParseChunk(nbtListStructures);
-    for (auto it = structurelist.begin(); it != structurelist.end(); ++it) {
-      emit structureFound(*it);
+    if (level->has("Structures")) {
+      auto nbtListStructures = level->at("Structures");
+      auto structurelist     = GeneratedStructure::tryParseChunk(nbtListStructures);
+      for (auto it = structurelist.begin(); it != structurelist.end(); ++it) {
+        emit structureFound(*it);
+      }
     }
   }
 
   loaded = true;
 
   // parse Entities
-  auto entitylist = level->at("Entities");
-  int numEntities = entitylist->length();
-  for (int i = 0; i < numEntities; ++i) {
-    auto e = Entity::TryParse(entitylist->at(i));
-    if (e)
-      entities.insertMulti(e->type(), e);
+  if (level->has("Entities")) {
+    auto entitylist = level->at("Entities");
+    int numEntities = entitylist->length();
+    for (int i = 0; i < numEntities; ++i) {
+      auto e = Entity::TryParse(entitylist->at(i));
+      if (e)
+        entities.insertMulti(e->type(), e);
+    }
   }
 
   // check for the highest block in this chunk
@@ -140,7 +153,7 @@ void Chunk::load(const NBT &nbt) {
 // 1343 = 1.12.2
 //
 // 1519 = 1.13
-// 1623 = 1.13.1
+// 1628 = 1.13.1
 void Chunk::loadSection1343(ChunkSection *cs, const Tag *section) {
   // copy raw data
   quint8 blocks[4096];
