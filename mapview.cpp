@@ -616,6 +616,7 @@ void MapView::getToolTip(int x, int z) {
   Chunk *chunk = cache.fetch(cx, cz);
   int offset = (x & 0xf) + (z & 0xf) * 16;
   int id = 0, bd = 0;
+  int y = 0;
 
   QString name = "Unknown";
   QString biome = "Unknown Biome";
@@ -623,7 +624,6 @@ void MapView::getToolTip(int x, int z) {
 
   if (chunk) {
     int top = qMin(depth, chunk->highest);
-    int y = 0;
     for (y = top; y >= 0; y--) {
       int sec = y >> 4;
       ChunkSection *section = chunk->sections[sec];
@@ -663,8 +663,9 @@ void MapView::getToolTip(int x, int z) {
     entityStr = entities.join(", ");
   }
 
-  emit hoverTextChanged(tr("X:%1 Z:%2 - %3 - %4 (%5:%6) %7")
+  emit hoverTextChanged(tr("X:%1 Y:%2 Z:%3 - %4 - %5 (%6:%7) %8")
                         .arg(x)
+                        .arg(y)
                         .arg(z)
                         .arg(biome)
                         .arg(name)
