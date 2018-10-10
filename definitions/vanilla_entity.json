@@ -209,6 +209,8 @@
         {
           "id": "SnowMan",
           "id1": "snow_man",
+          "id2": "snow_golem",
+          "name": "Snow Golem",
           "color": "#ffffff"
         },
         {
@@ -226,6 +228,7 @@
         {
           "id": "VillagerGolem",
           "id1": "villager_golem",
+          "id2": "iron_golem",
           "name": "Iron Golem",
           "color": "#00ffff"
         },

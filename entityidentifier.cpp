@@ -93,11 +93,10 @@ void EntityIdentifier::parseCategoryDefinition(JSONObject *data, int packID) {
 void EntityIdentifier::parseEntityDefinition(JSONObject *entity,
                                              QString const &category,
                                              QColor catcolor, int packID) {
-  QString id;
-  if (entity->has("id"))
+  QString id("unknown");
+  if (entity->has("id")) {
     id = entity->at("id")->asString().toLower();
-  else
-    id = "unknown";
+  }
 
   if (entity->has("catcolor")) {
     QString colorname = entity->at("catcolor")->asString();
@@ -115,19 +114,21 @@ void EntityIdentifier::parseEntityDefinition(JSONObject *entity,
     color.setHsv(hue % 360, 255, 255);
   }
 
-  // try to build name automatically
-  QStringList tokens = id.toLower().replace('_',' ').split(" ");
-  if (entity->has("id1")) {
-    QString id1 = entity->at("id1")->asString().toLower();
-    tokens = id1.toLower().replace('_',' ').split(" ");
-  }
-  for (QList<QString>::iterator tokItr = tokens.begin(); tokItr != tokens.end(); ++tokItr) {
-    (*tokItr) = (*tokItr).at(0).toUpper() + (*tokItr).mid(1);
-  }
-  QString name = tokens.join(" ");
-  // or use given name
+  // use given name
+  QString name;
   if (entity->has("name")) {
     name = entity->at("name")->asString();
+  } else {
+    // or try to build name automatically
+    QStringList tokens = id.toLower().replace('_',' ').split(" ");
+    if (entity->has("id1")) {
+      QString id1 = entity->at("id1")->asString().toLower();
+      tokens = id1.toLower().replace('_',' ').split(" ");
+    }
+    for (QList<QString>::iterator tokItr = tokens.begin(); tokItr != tokens.end(); ++tokItr) {
+      (*tokItr) = (*tokItr).at(0).toUpper() + (*tokItr).mid(1);
+    }
+    name = tokens.join(" ");
   }
 
   // enter entity into manager
@@ -138,6 +139,10 @@ void EntityIdentifier::parseEntityDefinition(JSONObject *entity,
   if (entity->has("id1")) {
     QString id1 = entity->at("id1")->asString().toLower();
     map.insert(id1, EntityInfo(name, category, catcolor, color));
+  }
+  if (entity->has("id2")) {
+    QString id2 = entity->at("id2")->asString().toLower();
+    map.insert(id2, EntityInfo(name, category, catcolor, color));
   }
 }
 
