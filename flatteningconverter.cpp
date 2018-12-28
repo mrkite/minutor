@@ -19,7 +19,7 @@ FlatteningConverter& FlatteningConverter::Instance() {
 }
 
 //const BlockData * FlatteningConverter::getPalette() {
-BlockData * FlatteningConverter::getPalette() {
+PaletteEntry * FlatteningConverter::getPalette() {
   return palette;
 }
 

@@ -45,7 +45,7 @@ HEADERS += \
     jumpto.h \
     pngexport.h \
     flatteningconverter.h \
-    blockdata.h
+    paletteentry.h
 SOURCES += \
 	  labelledslider.cpp \
     biomeidentifier.cpp \

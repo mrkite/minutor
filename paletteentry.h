@@ -1,15 +1,15 @@
 /** Copyright (c) 2018, nnooney, EtlamGit */
-#ifndef BLOCKDATA_H_
-#define BLOCKDATA_H_
+#ifndef PALETTEENTRY_H_
+#define PALETTEENTRY_H_
 
 #include <QString>
 #include <QMap>
 
-class BlockData {
+class PaletteEntry {
  public:
   uint    hid;   // we use hashed name as ID
   QString name;
   QMap<QString, QVariant> properties;
 };
 
-#endif  // BLOCKDATA_H_
+#endif  // PALETTEENTRY_H_

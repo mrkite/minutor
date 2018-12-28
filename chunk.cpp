@@ -4,6 +4,7 @@
 
 #include "./chunk.h"
 #include "./flatteningconverter.h"
+#include "./blockidentifier.h"
 
 quint16 getBits(const unsigned char *data, int pos, int n) {
 //  quint16 result = 0;
@@ -183,17 +184,34 @@ void Chunk::loadSection1343(ChunkSection *cs, const Tag *section) {
   cs->palette = FlatteningConverter::Instance().getPalette();
 }
 
-// Cunk format afer "The Flattening" version 1509
+// Chunk format after "The Flattening" version 1509
 void Chunk::loadSection1519(ChunkSection *cs, const Tag *section) {
+  BlockIdentifier &bi = BlockIdentifier::Instance();
   // decode Palette to be able to map BlockStates
   auto rawPalette = section->at("Palette");
   cs->paletteLength = rawPalette->length();
-  cs->palette = new BlockData[cs->paletteLength];
+  cs->palette = new PaletteEntry[cs->paletteLength];
   for (int j = 0; j < rawPalette->length(); j++) {
+    // get name and hash it to hid
     cs->palette[j].name = rawPalette->at(j)->at("Name")->toString();
-    cs->palette[j].hid  = qHash(cs->palette[j].name);
+    uint hid  = qHash(cs->palette[j].name);
+    // copy all other properties
     if (rawPalette->at(j)->has("Properties"))
       cs->palette[j].properties = rawPalette->at(j)->at("Properties")->getData().toMap();
+
+    // check vor variants
+    BlockInfo const & block = bi.getBlockInfo(hid);
+    if (block.hasVariants()) {
+      // test all available properties
+      for (auto key : cs->palette[j].properties.keys()) {
+        QString vname = cs->palette[j].name + key + ":" + cs->palette[j].properties[key].toString();
+        uint vhid = qHash(vname);
+        if (bi.hasBlockInfo(vhid))
+          hid = vhid; // use this vaiant instead
+      }
+    }
+    // store hash of found variant
+    cs->palette[j].hid  = hid;
   }
 
   // map BlockStates to BlockData
@@ -215,14 +233,14 @@ void Chunk::loadSection1519(ChunkSection *cs, const Tag *section) {
 }
 
 
-const BlockData & ChunkSection::getBlockData(int x, int y, int z) {
+const PaletteEntry & ChunkSection::getPaletteEntry(int x, int y, int z) {
   int xoffset = x;
   int yoffset = (y & 0x0f) << 8;
   int zoffset = z << 4;
   return palette[blocks[xoffset + yoffset + zoffset]];
 }
 
-const BlockData & ChunkSection::getBlockData(int offset, int y) {
+const PaletteEntry & ChunkSection::getPaletteEntry(int offset, int y) {
   int yoffset = (y & 0x0f) << 8;
   return palette[blocks[offset + yoffset]];
 }
