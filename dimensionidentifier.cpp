@@ -15,6 +15,11 @@ class DimensionDef {
   bool enabled;
 };
 
+
+// --------- --------- --------- ---------
+// DimensionIdentifier
+// --------- --------- --------- ---------
+
 DimensionIdentifier::DimensionIdentifier() {
   group = NULL;
 }
@@ -24,6 +29,12 @@ DimensionIdentifier::~DimensionIdentifier() {
       delete packs[i][j];
   }
 }
+
+DimensionIdentifier& DimensionIdentifier::Instance() {
+  static DimensionIdentifier singleton;
+  return singleton;
+}
+
 
 void DimensionIdentifier::enableDefinitions(int pack) {
   if (pack < 0) return;
@@ -85,6 +96,7 @@ void DimensionIdentifier::removeDimensions(QMenu *menu) {
     group = NULL;
   }
 }
+
 void DimensionIdentifier::getDimensions(QDir path, QMenu *menu,
                                         QObject *parent) {
   // first get the currently selected dimension so it doesn't change

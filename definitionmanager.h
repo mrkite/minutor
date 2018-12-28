@@ -43,9 +43,6 @@ class DefinitionManager : public QWidget {
   QSize minimumSizeHint() const;
   QSize sizeHint() const;
 
-  BlockIdentifier *blockIdentifier();
-  BiomeIdentifier *biomeIdentifier();
-  DimensionIdentifier *dimensionIdentifer();
   void autoUpdate();
 
  signals:
@@ -74,10 +71,10 @@ class DefinitionManager : public QWidget {
   void removeDefinition(QString path);
   void refresh();
   QHash<QString, Definition> definitions;
-  BiomeIdentifier *biomeManager;  // todo: migrate to reference to singleton
-  BlockIdentifier *blockManager;  // todo: migrate to reference to singleton
-  DimensionIdentifier *dimensionManager;  // todo: migrate to reference to singleton
-  EntityIdentifier &entityManager;
+  BiomeIdentifier     &biomeManager;
+  BlockIdentifier     &blockManager;
+  DimensionIdentifier &dimensionManager;
+  EntityIdentifier    &entityManager;
   FlatteningConverter &flatteningConverter;
   QString selected;
   QList<QVariant> sorted;

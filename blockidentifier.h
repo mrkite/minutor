@@ -68,13 +68,21 @@ class BlockInfo {
 
 class BlockIdentifier {
  public:
-  BlockIdentifier();
-  ~BlockIdentifier();
+  // singleton: access to global usable instance
+  static BlockIdentifier &Instance();
+
   int addDefinitions(JSONArray *, int pack = -1);
   void enableDefinitions(int id);
   void disableDefinitions(int id);
   BlockInfo &getBlockInfo(uint hid);
- private:
+
+private:
+  // singleton: prevent access to constructor and copyconstructor
+  BlockIdentifier();
+  ~BlockIdentifier();
+  BlockIdentifier(const BlockIdentifier &);
+  BlockIdentifier &operator=(const BlockIdentifier &);
+
   void parseDefinition(JSONObject *block, BlockInfo *parent, int pack);
   QMap<uint, BlockInfo*> blocks;
   QList<QList<BlockInfo*> > packs;

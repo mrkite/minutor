@@ -12,6 +12,11 @@ EntityInfo::EntityInfo(QString name, QString category, QColor brushColor,
 static EntityInfo entityDummy("Name unknown", "Others",  // Name Category
                               Qt::black, Qt::black);     // Black circle with Black border
 
+
+// --------- --------- --------- ---------
+// EntityIdentifier
+// --------- --------- --------- ---------
+
 EntityIdentifier::EntityIdentifier() {}
 EntityIdentifier::~EntityIdentifier() {}
 

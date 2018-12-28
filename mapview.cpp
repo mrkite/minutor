@@ -52,8 +52,6 @@ void MapView::attach(DefinitionManager *dm) {
   this->dm = dm;
   connect(dm, SIGNAL(packsChanged()),
           this, SLOT(redraw()));
-  this->blocks = dm->blockIdentifier();
-  this->biomes = dm->biomeIdentifier();
 }
 
 void MapView::setLocation(double x, double z) {
@@ -436,7 +434,7 @@ void MapView::renderChunk(Chunk *chunk) {
       uchar r = 0, g = 0, b = 0;
       double alpha = 0.0;
       // get Biome
-      auto &biome = biomes->getBiome(chunk->biomes[offset]);
+      auto &biome = BiomeIdentifier::Instance().getBiome(chunk->biomes[offset]);
       int top = depth;
       if (top > chunk->highest)
         top = chunk->highest;
@@ -453,7 +451,7 @@ void MapView::renderChunk(Chunk *chunk) {
         //int data = section->getData(offset, y);
 
         // get BlockInfo from block value
-        BlockInfo &block = blocks->getBlockInfo(section->getBlockData(offset, y).hid);
+        BlockInfo &block = BlockIdentifier::Instance().getBlockInfo(section->getBlockData(offset, y).hid);
         if (block.alpha == 0.0) continue;
 
         // get light value from one block above
@@ -523,10 +521,10 @@ void MapView::renderChunk(Chunk *chunk) {
           if (sectionB) {
             blidB = sectionB->getBlockData(offset, y-1).hid;
           }
-          BlockInfo &block2 = blocks->getBlockInfo(blid2);
-          BlockInfo &block1 = blocks->getBlockInfo(blid1);
+          BlockInfo &block2 = BlockIdentifier::Instance().getBlockInfo(blid2);
+          BlockInfo &block1 = BlockIdentifier::Instance().getBlockInfo(blid1);
           BlockInfo &block0 = block;
-          BlockInfo &blockB = blocks->getBlockInfo(blidB);
+          BlockInfo &blockB = BlockIdentifier::Instance().getBlockInfo(blidB);
           int light0 = section->getBlockLight(offset, y);
 
            // spawn check #1: on top of solid block
@@ -588,7 +586,7 @@ void MapView::renderChunk(Chunk *chunk) {
           // get data value
           // int data = section->getData(offset, y);
           // get BlockInfo from block value
-          BlockInfo &block = blocks->getBlockInfo(section->getBlockData(offset, y).hid);
+          BlockInfo &block = BlockIdentifier::Instance().getBlockInfo(section->getBlockData(offset, y).hid);
           if (block.transparent) {
             cave_factor -= caveshade[cave_test];
           }
@@ -636,11 +634,11 @@ void MapView::getToolTip(int x, int z) {
       name = bdata.name;
       // in case of fully transparent blocks (meaning air)
       // -> we continue downwards
-      auto & block = blocks->getBlockInfo(bdata.hid);
+      auto & block = BlockIdentifier::Instance().getBlockInfo(bdata.hid);
       if (block.alpha == 0.0) continue;
       break;
     }
-    auto &bi = biomes->getBiome(chunk->biomes[(x & 0xf) + (z & 0xf) * 16]);
+    auto &bi = BiomeIdentifier::Instance().getBiome(chunk->biomes[(x & 0xf) + (z & 0xf) * 16]);
     biome = bi.name;
 
     // count Entity of each display type

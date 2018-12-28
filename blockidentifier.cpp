@@ -80,6 +80,11 @@ bool BlockInfo::biomeFoliage() { return foliage; }
 void BlockInfo::setBiomeGrass(bool value)   { grass = value; }
 void BlockInfo::setBiomeFoliage(bool value) { foliage = value; }
 
+
+// --------- --------- --------- ---------
+// BlockIdentifier
+// --------- --------- --------- ---------
+
 BlockIdentifier::BlockIdentifier() {
   for (int i = 0; i < 16; i++)
     unknownBlock.colors[i] = 0xff00ff;
@@ -92,6 +97,11 @@ BlockIdentifier::~BlockIdentifier() {
     for (int j = 0; j < packs[i].length(); j++)
       delete packs[i][j];
   }
+}
+
+BlockIdentifier& BlockIdentifier::Instance() {
+  static BlockIdentifier singleton;
+  return singleton;
 }
 
 BlockInfo &BlockIdentifier::getBlockInfo(uint hid) {

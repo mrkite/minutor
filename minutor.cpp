@@ -38,7 +38,7 @@ Minutor::Minutor() {
   mapview->attach(dm);
   connect(dm,   SIGNAL(packsChanged()),
           this, SLOT(updateDimensions()));
-  dimensions = dm->dimensionIdentifer();
+  DimensionIdentifier *dimensions = &DimensionIdentifier::Instance();
   connect(dimensions, SIGNAL(dimensionChanged(const DimensionInfo &)),
           this, SLOT(viewDimension(const DimensionInfo &)));
   settings = new Settings(this);
@@ -206,7 +206,7 @@ void Minutor::closeWorld() {
   players.clear();
   jumpMenu->setEnabled(false);
   // clear dimensions menu
-  dimensions->removeDimensions(dimMenu);
+  DimensionIdentifier::Instance().removeDimensions(dimMenu);
   // clear overlays
   mapview->clearOverlayItems();
   // clear other stuff
@@ -304,7 +304,7 @@ void Minutor::about() {
 }
 
 void Minutor::updateDimensions() {
-  dimensions->getDimensions(currentWorld, dimMenu, this);
+  DimensionIdentifier::Instance().getDimensions(currentWorld, dimMenu, this);
 }
 
 void Minutor::createActions() {
@@ -644,7 +644,7 @@ void Minutor::loadWorld(QDir path) {
   }
 
   // show dimensions
-  dimensions->getDimensions(path, dimMenu, this);
+  DimensionIdentifier::Instance().getDimensions(path, dimMenu, this);
   emit worldLoaded(true);
   mapview->setLocation(locations.first().x, locations.first().z);
   toggleFlags();

@@ -6,7 +6,7 @@
 #include "./flatteningconverter.h"
 
 quint16 getBits(const unsigned char *data, int pos, int n) {
-  quint16 result = 0;
+//  quint16 result = 0;
   int arrIndex = pos/8;
   int bitIndex = pos%8;
   quint32 loc =
