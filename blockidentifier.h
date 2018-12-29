@@ -21,7 +21,6 @@ class BlockInfo {
   // special block attribute used during mob spawning detection
   bool isOpaque() const;
   bool isLiquid() const;
-  bool doesBlockHaveSolidTopSurface(int data) const;
   bool doesBlockHaveSolidTopSurface() const;
   bool isBlockNormalCube() const;
   bool renderAsNormalBlock() const;
@@ -44,10 +43,13 @@ class BlockInfo {
   void setBiomeFoliage(bool value);
   const QString &getName();
 
+  // enabled for complete definition pack
+  bool    enabled;
+
+  // internal state
   double  alpha;
   QString blockstate;
   bool    variants;  // block_state dependant variants
-  bool    enabled;
   bool    transparent;
   bool    liquid;
   bool    rendernormal;
@@ -60,8 +62,6 @@ class BlockInfo {
   // cache special block attributes used during mob spawning detection
   bool    bedrock;
   bool    hopper;
-  bool    stairs;
-  bool    halfslab;
   bool    snow;
   bool    water;
   bool    grass;
@@ -73,7 +73,7 @@ class BlockIdentifier {
   // singleton: access to global usable instance
   static BlockIdentifier &Instance();
 
-  int addDefinitions(JSONArray *, int pack = -1);
+  int  addDefinitions(JSONArray *, int pack = -1);
   void enableDefinitions(int id);
   void disableDefinitions(int id);
   BlockInfo &getBlockInfo(uint hid);

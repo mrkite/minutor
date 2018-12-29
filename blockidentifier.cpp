@@ -32,15 +32,6 @@ bool BlockInfo::isLiquid() const {
   return this->liquid;
 }
 
-bool BlockInfo::doesBlockHaveSolidTopSurface(int data) const {
-  if (this->isOpaque() && this->renderAsNormalBlock()) return true;
-  if (this->stairs && ((data & 4) == 4)) return true;
-  if (this->halfslab && ((data & 8) == 8)) return true;
-  if (this->hopper) return true;
-  if (this->snow && ((data & 7) == 7)) return true;
-  return false;
-}
-
 bool BlockInfo::doesBlockHaveSolidTopSurface() const {
   if (this->isOpaque() && this->renderAsNormalBlock()) return true;
   if (this->hopper) return true;
@@ -65,14 +56,10 @@ void BlockInfo::setName(const QString & newname) {
   name = newname;
   // precompute mob spawning conditions
   bedrock = this->name.contains("Bedrock", Qt::CaseInsensitive);
-  hopper = this->name.contains("Hopper", Qt::CaseInsensitive);
-  stairs = this->name.contains("Stairs", Qt::CaseInsensitive);
-  halfslab = this->name.contains("Slab", Qt::CaseInsensitive) &&
-            !this->name.contains("Double", Qt::CaseInsensitive) &&
-            !this->name.contains("Full", Qt::CaseInsensitive);
-  snow = this->name.contains("Snow", Qt::CaseInsensitive);
+  hopper  = this->name.contains("Hopper", Qt::CaseInsensitive);
+  snow    = this->name.contains("Snow", Qt::CaseInsensitive);
   // precompute biome based watercolormodifier
-  water = this->name.contains("Water", Qt::CaseInsensitive);
+  water   = this->name.contains("Water", Qt::CaseInsensitive);
 }
 
 const QString & BlockInfo::getName() { return name; }
@@ -80,8 +67,6 @@ const QString & BlockInfo::getName() { return name; }
 
 bool BlockInfo::isBedrock()  { return bedrock; }
 bool BlockInfo::isHopper()   { return hopper; }
-bool BlockInfo::isStairs()   { return stairs; }
-bool BlockInfo::isHalfSlab() { return halfslab; }
 bool BlockInfo::isSnow()     { return snow; }
 
 bool BlockInfo::biomeWater()   { return water; }
