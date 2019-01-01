@@ -2,7 +2,7 @@
 #ifndef FLATTENINGCONVERTER_H_
 #define FLATTENINGCONVERTER_H_
 
-#include "./blockdata.h"
+#include "./paletteentry.h"
 
 class JSONArray;
 class JSONObject;
@@ -17,7 +17,7 @@ public:
   void enableDefinitions(int id);
   void disableDefinitions(int id);
 //  const BlockData * getPalette();
-  BlockData * getPalette();
+  PaletteEntry * getPalette();
 
 private:
   // singleton: prevent access to constructor and copyconstructor
@@ -27,7 +27,7 @@ private:
   FlatteningConverter &operator=(const FlatteningConverter &);
 
   void parseDefinition(JSONObject *block, int *parentID, int pack);
-  BlockData palette[16*256];  // 4 bit data + 8 bit ID
+  PaletteEntry palette[16*256];  // 4 bit data + 8 bit ID
 //  QList<QList<BlockInfo*> > packs;
 };
 

@@ -196,6 +196,11 @@ BiomeIdentifier::~BiomeIdentifier() {
   }
 }
 
+BiomeIdentifier& BiomeIdentifier::Instance() {
+  static BiomeIdentifier singleton;
+  return singleton;
+}
+
 BiomeInfo &BiomeIdentifier::getBiome(int biome) {
   QList<BiomeInfo*> &list = biomes[biome];
   // search backwards for priority sorting to work

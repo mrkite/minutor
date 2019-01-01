@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "block",
-  "version": "1.12.18w32",
+  "version": "1.12.19w01",
   "data": [
     {
       "id": 0,
@@ -692,13 +692,13 @@
         {
           "data": 8,
           "name": "Upper Stone Slab",
-          "flatname": "minecraft:stone_slab",
+          "flatname": "minecraft:stone_slab:type:top",
           "color": "#a3a3a3"
         },
         {
           "data": 9,
           "name": "Upper Sandstone Slab",
-          "flatname": "minecraft:sandstone_slab",
+          "flatname": "minecraft:sandstone_slab:type:top",
           "color": "#d7ce95"
         },
         {
@@ -710,31 +710,31 @@
         {
           "data": 11,
           "name": "Upper Cobblestone Slab",
-          "flatname": "minecraft:cobblestone_slab",
+          "flatname": "minecraft:cobblestone_slab:type:top",
           "color": "#8f8f8f"
         },
         {
           "data": 12,
           "name": "Upper Brick Slab",
-          "flatname": "minecraft:brick_slab",
+          "flatname": "minecraft:brick_slab:type:top",
           "color": "#7c4536"
         },
         {
           "data": 13,
           "name": "Upper Stone Brick Slab",
-          "flatname": "minecraft:stone_brick_slab",
+          "flatname": "minecraft:stone_brick_slab:type:top",
           "color": "#797979"
         },
         {
           "data": 14,
           "name": "Upper Nether Brick Slab",
-          "flatname": "minecraft:nether_brick_slab",
+          "flatname": "minecraft:nether_brick_slab:type:top",
           "color": "#30181c"
         },
         {
           "data": 15,
           "name": "Upper Quartz Slab",
-          "flatname": "minecraft:quartz_slab",
+          "flatname": "minecraft:quartz_slab:type:top",
           "color": "#f0eee8"
         }
       ]
@@ -790,7 +790,16 @@
       "id": 53,
       "name": "Oak Stairs",
       "color": "#9f844d",
-      "transparent": true
+      "transparent": true,
+      "mask" : 4,
+      "variants": [
+        {
+          "data": 4,
+          "name": "Oak Stairs (upside down)",
+          "flatname": "minecraft:oak_stairs:half:top",
+          "rendercube": true
+        }
+      ]
     },
     {
       "id": 54,
@@ -821,16 +830,52 @@
     },
     {
       "id": 59,
-      "name": "Immature Wheat",
+      "name": "Wheat (fully grown)",
       "flatname": "minecraft:wheat",
-      "color": "#8ba803",
+      "color": "#576608",
       "transparent": true,
       "variants": [
         {
-          "data": 7,
-          "name": "Grown Wheat",
-          "flatname": "minecraft:wheat",
-          "color": "#8e7c10"
+          "data": 0,
+          "name": "Wheat (immature, age 0)",
+          "flatname": "minecraft:wheat:age:0",
+          "color": "#01b312"
+        },
+        {
+          "data": 1,
+          "name": "Wheat (immature, age 1)",
+          "flatname": "minecraft:wheat:age:1",
+          "color": "#13ac10"
+        },
+        {
+          "data": 2,
+          "name": "Wheat (immature, age 2)",
+          "flatname": "minecraft:wheat:age:2",
+          "color": "#1d8a0c"
+        },
+        {
+          "data": 3,
+          "name": "Wheat (immature, age 3)",
+          "flatname": "minecraft:wheat:age:3",
+          "color": "#268c09"
+        },
+        {
+          "data": 4,
+          "name": "Wheat (immature, age 4)",
+          "flatname": "minecraft:wheat:age:4",
+          "color": "#2e8008"
+        },
+        {
+          "data": 5,
+          "name": "Wheat (immature, age 5)",
+          "flatname": "minecraft:wheat:age:5",
+          "color": "#427b08"
+        },
+        {
+          "data": 6,
+          "name": "Wheat (immature, age 6)",
+          "flatname": "minecraft:wheat:age:6",
+          "color": "#507707"
         }
       ]
     },
@@ -844,7 +889,7 @@
         {
           "data": 0,
           "name": "Dry Farmland",
-          "flatname": "minecraft:farmland",
+          "flatname": "minecraft:farmland:moisture:0",
           "color": "#633f24"
         }
       ]
@@ -892,7 +937,16 @@
       "id": 67,
       "name": "Cobblestone Stairs",
       "color": "#565656",
-      "transparent": true
+      "transparent": true,
+      "mask" : 4,
+      "variants": [
+        {
+          "data": 4,
+          "name": "Cobblestone Stairs (upside down)",
+          "flatname": "minecraft:cobblestone_stairs:half:top",
+          "rendercube": true
+        }
+      ]
     },
     {
       "id": 68,
@@ -955,7 +1009,7 @@
     {
       "id": 76,
       "name": "Redstone Torch (on)",
-      "flatname": "minecraft:redstone_torch",
+      "flatname": "minecraft:redstone_torch:powered:true",
       "color": "#fd0000",
       "transparent": true,
       "canProvidePower": true
@@ -1072,7 +1126,7 @@
     {
       "id": 94,
       "name": "Redstone Repeater (on)",
-      "flatname": "minecraft:repeater",
+      "flatname": "minecraft:repeater:powered:true",
       "color": "#fd0101",
       "transparent": true,
       "canProvidePower": true
@@ -1232,8 +1286,13 @@
       "id": 99,
       "name": "Huge Brown Mushroom",
       "flatname": "minecraft:brown_mushroom_block",
-      "color": "#d2b17d",
+      "color": "#8f6b53",
       "variants": [
+        {
+          "data": 0,
+          "flatname": "minecraft:brown_mushroom_block:up:false",
+          "color": "#d2b17d"
+        },
         {
           "data": 1,
           "color": "#8f6b53"
@@ -1272,6 +1331,7 @@
         },
         {
           "data": 10,
+          "flatname": "minecraft:mushroom_stem:up:false",
           "color": "#d2b17d"
         },
         {
@@ -1280,6 +1340,7 @@
         },
         {
           "data": 15,
+          "flatname": "minecraft:mushroom_stem",
           "color": "#cdc9bf"
         }
       ]
@@ -1288,8 +1349,13 @@
       "id": 100,
       "name": "Huge Red Mushroom",
       "flatname": "minecraft:red_mushroom_block",
-      "color": "#d2b17d",
+      "color": "#b51d1b",
       "variants": [
+        {
+          "data": 0,
+          "flatname": "minecraft:red_mushroom_block:up:false",
+          "color": "#d2b17d"
+        },
         {
           "data": 1,
           "color": "#b51d1b"
@@ -1328,6 +1394,7 @@
         },
         {
           "data": 10,
+          "flatname": "minecraft:mushroom_stem:up:false",
           "color": "#d2b17d"
         },
         {
@@ -1336,6 +1403,7 @@
         },
         {
           "data": 15,
+          "flatname": "minecraft:mushroom_stem",
           "color": "#cdc9bf"
         }
       ]
@@ -1390,13 +1458,31 @@
       "id": 108,
       "name": "Brick Stairs",
       "color": "#7c4536",
-      "transparent": true
+      "transparent": true,
+      "mask" : 4,
+      "variants": [
+        {
+          "data": 4,
+          "name": "Brick Stairs (upside down)",
+          "flatname": "minecraft:brick_stairs:half:top",
+          "rendercube": true
+        }
+      ]
     },
     {
       "id": 109,
       "name": "Stone Brick Stairs",
       "color": "#727272",
-      "transparent": true
+      "transparent": true,
+      "mask" : 4,
+      "variants": [
+        {
+          "data": 4,
+          "name": "Stone Brick Stairs (upside down)",
+          "flatname": "minecraft:stone_brick_stairs:half:top",
+          "rendercube": true
+        }
+      ]
     },
     {
       "id": 110,
@@ -1425,20 +1511,35 @@
       "id": 114,
       "name": "Nether Brick Stairs",
       "color": "#381a1f",
-      "transparent": true
+      "transparent": true,
+      "mask" : 4,
+      "variants": [
+        {
+          "data": 4,
+          "name": "Nether Brick Stairs (upside down)",
+          "flatname": "minecraft:netherbrick_stairs:half:top",
+          "rendercube": true
+        }
+      ]
     },
     {
       "id": 115,
-      "name": "Immature Nether Wart",
+      "name": "Nether Wart",
       "flatname": "minecraft:nether_wart",
-      "color": "#70081c",
+      "color": "#6c0f17",
       "transparent": true,
       "variants": [
         {
+          "data": 0,
+          "name": "Immature Nether Wart",
+          "flatname": "minecraft:nether_wart:age:0",
+          "color": "#6b0f1f"
+        },
+        {
           "data": 3,
           "name": "Mature Nether Wart",
-          "flatname": "minecraft:nether_wart",
-          "color": "#8e181b"
+          "flatname": "minecraft:nether_wart:age:3",
+          "color": "#701311"
         }
       ]
     },
@@ -1470,6 +1571,7 @@
     {
       "id": 120,
       "name": "End Portal Frame",
+      "flatname": "minecraft:end_portal_frame",
       "color": "#2f5754",
       "mask": 4,
       "transparent": true,
@@ -1478,7 +1580,7 @@
         {
           "data": 4,
           "name": "End Portal Frame (on)",
-          "flatname": "minecraft:end_portal_frame",
+          "flatname": "minecraft:end_portal_frame:eye:true",
           "color": "#406852"
         }
       ]
@@ -1502,7 +1604,7 @@
     {
       "id": 124,
       "name": "Redstone Lamp (on)",
-      "flatname": "minecraft:redstone_lamp",
+      "flatname": "minecraft:redstone_lamp:lit:on",
       "color": "#f1d1af",
       "transparent": true
     },
@@ -1584,37 +1686,37 @@
         {
           "data": 8,
           "name": "Upper Oak Wood Slab",
-          "flatname": "minecraft:oak_slab",
+          "flatname": "minecraft:oak_slab:type:top",
           "color": "#b4905a"
         },
         {
           "data": 9,
           "name": "Upper Spruce Wood Slab",
-          "flatname": "minecraft:spruce_slab",
+          "flatname": "minecraft:spruce_slab:type:top",
           "color": "#664f2f"
         },
         {
           "data": 10,
           "name": "Upper Birch Wood Slab",
-          "flatname": "minecraft:birch_slab",
+          "flatname": "minecraft:birch_slab:type:top",
           "color": "#d7cb8d"
         },
         {
           "data": 11,
           "name": "Upper Jungle Wood Slab",
-          "flatname": "minecraft:jungle_slab",
+          "flatname": "minecraft:jungle_slab:type:top",
           "color": "#b1805c"
         },
         {
           "data": 12,
           "name": "Upper Acacia Wood Slab",
-          "flatname": "minecraft:acacia_slab",
+          "flatname": "minecraft:acacia_slab:type:top",
           "color": "#ba6337"
         },
         {
           "data": 13,
           "name": "Upper Dark Oak Wood Slab",
-          "flatname": "minecraft:dark_oak_slab",
+          "flatname": "minecraft:dark_oak_slab:type:top",
           "color": "#462d15"
         }
       ]
@@ -1640,7 +1742,16 @@
       "id": 128,
       "name": "Sandstone Stairs",
       "color": "#e9e0b3",
-      "transparent": true
+      "transparent": true,
+      "mask" : 4,
+      "variants": [
+        {
+          "data": 4,
+          "name": "Sandstone Stairs (upside down)",
+          "flatname": "minecraft:sandstone_stairs:half:top",
+          "rendercube": true
+        }
+      ]
     },
     {
       "id": 129,
@@ -1676,19 +1787,46 @@
       "id": 134,
       "name": "Spruce Stairs",
       "color": "#664f2f",
-      "transparent": true
+      "transparent": true,
+      "mask" : 4,
+      "variants": [
+        {
+          "data": 4,
+          "name": "Spruce Stairs (upside down)",
+          "flatname": "minecraft:spruce_stairs:half:top",
+          "rendercube": true
+        }
+      ]
     },
     {
       "id": 135,
       "name": "Birch Stairs",
       "color": "#d7cb8d",
-      "transparent": true
+      "transparent": true,
+      "mask" : 4,
+      "variants": [
+        {
+          "data": 4,
+          "name": "Birch Stairs (upside down)",
+          "flatname": "minecraft:birch_stairs:half:top",
+          "rendercube": true
+        }
+      ]
     },
     {
       "id": 136,
       "name": "Jungle Stairs",
       "color": "#b1805c",
-      "transparent": true
+      "transparent": true,
+      "mask" : 4,
+      "variants": [
+        {
+          "data": 4,
+          "name": "Jungle Stairs (upside down)",
+          "flatname": "minecraft:jungle_stairs:half:top",
+          "rendercube": true
+        }
+      ]
     },
     {
       "id": 137,
@@ -1802,31 +1940,79 @@
     },
     {
       "id": 141,
-      "name": "Immature Carrots",
+      "name": "Carrots",
       "flatname": "minecraft:carrots",
-      "color": "#00c617",
+      "color": "#158002",
       "transparent": true,
       "variants": [
         {
-          "data": 7,
-          "name": "Mature Carrots",
-          "flatname": "minecraft:carrots",
-          "color": "#004e00"
+          "data": 2,
+          "name": "Carrots (age 2)",
+          "flatname": "minecraft:carrots:age:2",
+          "color": "#01be11"
+        },
+        {
+          "data": 1,
+          "name": "Carrots (age 1)",
+          "flatname": "minecraft:carrots:age:1",
+          "color": "#01bb10"
+        },
+        {
+          "data": 0,
+          "name": "Carrots (age 0)",
+          "flatname": "minecraft:carrots:age:0",
+          "color": "#02ab10"
         }
       ]
     },
     {
       "id": 142,
-      "name": "Immature Potatoes",
+      "name": "Potatoes",
       "flatname": "minecraft:potatoes",
-      "color": "#00c617",
+      "color": "#23ab24",
       "transparent": true,
       "variants": [
         {
-          "data": 7,
-          "name": "Mature Potatoes",
-          "flatname": "minecraft:potatoes",
-          "color": "#3aa649"
+          "data": 6,
+          "name": "Potatoes (age 6)",
+          "flatname": "minecraft:potatoes:age:6",
+          "color": "#01be11"
+        },
+        {
+          "data": 5,
+          "name": "Potatoes (age 5)",
+          "flatname": "minecraft:potatoes:age:5",
+          "color": "#01be11"
+        },
+        {
+          "data": 4,
+          "name": "Potatoes (age 4)",
+          "flatname": "minecraft:potatoes:age:4",
+          "color": "#01be11"
+        },
+        {
+          "data": 3,
+          "name": "Potatoes (age 3)",
+          "flatname": "minecraft:potatoes:age:3",
+          "color": "#01be11"
+        },
+        {
+          "data": 2,
+          "name": "Potatoes (age 2)",
+          "flatname": "minecraft:potatoes:age:2",
+          "color": "#01be11"
+        },
+        {
+          "data": 1,
+          "name": "Potatoes (age 1)",
+          "flatname": "minecraft:potatoes:age:1",
+          "color": "#02ab10"
+        },
+        {
+          "data": 0,
+          "name": "Potatoes (age 0)",
+          "flatname": "minecraft:potatoes:age:0",
+          "color": "#02ab10"
         }
       ]
     },
@@ -1899,7 +2085,7 @@
     {
       "id": 150,
       "name": "Redstone Comparator (on)",
-      "flatname": "minecraft:comparator",
+      "flatname": "minecraft:comparator:powered:true",
       "color": "#fd1010",
       "transparent": true,
       "canProvidePower": true
@@ -1967,7 +2153,16 @@
       "id": 156,
       "name": "Quartz Stairs",
       "color": "#dfdacf",
-      "transparent": true
+      "transparent": true,
+      "mask" : 4,
+      "variants": [
+        {
+          "data": 4,
+          "name": "Quartz Stairs (upside down)",
+          "flatname": "minecraft:quartz_stairs:half:top",
+          "rendercube": true
+        }
+      ]
     },
     {
       "id": 157,
@@ -2183,13 +2378,31 @@
       "id": 163,
       "name": "Acacia Stairs",
       "color": "#a15730",
-      "transparent": true
+      "transparent": true,
+      "mask" : 4,
+      "variants": [
+        {
+          "data": 4,
+          "name": "Acacia Stairs (upside down)",
+          "flatname": "minecraft:acacia_stairs:half:top",
+          "rendercube": true
+        }
+      ]
     },
     {
       "id": 164,
       "name": "Dark Oak Stairs",
       "color": "#492f17",
-      "transparent": true
+      "transparent": true,
+      "mask" : 4,
+      "variants": [
+        {
+          "data": 4,
+          "name": "Dark Oak Stairs (upside down)",
+          "flatname": "minecraft:dark_oak_stairs:half:top",
+          "rendercube": true
+        }
+      ]
     },
     {
       "id": 165,
@@ -2427,7 +2640,16 @@
       "id": 180,
       "name": "Red Sandstone Stairs",
       "color": "#a6551e",
-      "transparent": true
+      "transparent": true,
+      "mask" : 4,
+      "variants": [
+        {
+          "data": 4,
+          "name": "Red Sandstone Stairs (upside down)",
+          "flatname": "minecraft:red_sandstone_stairs:half:top",
+          "rendercube": true
+        }
+      ]
     },
     {
       "id": 181,
@@ -2453,7 +2675,7 @@
         {
           "data": 8,
           "name": "Upper Red Sandstone Slab",
-          "flatname": "minecraft:red_sandstone_slab",
+          "flatname": "minecraft:red_sandstone_slab:type:top",
           "color": "#a7551e"
         }
       ]
@@ -2579,7 +2801,7 @@
         {
           "data": 5,
           "name": "Chorus Flower (fully grown)",
-          "flatname": "minecraft:chorus_flower",
+          "flatname": "minecraft:chorus_flower:age:5",
           "color": "#624060"
         }
       ]
@@ -2597,7 +2819,17 @@
     {
       "id": 203,
       "name": "Purpur Stairs",
-      "color": "#a67aa6"
+      "color": "#a67aa6",
+      "transparent": true,
+      "mask" : 4,
+      "variants": [
+        {
+          "data": 4,
+          "name": "Purpur Stairs (upside down)",
+          "flatname": "minecraft:purpur_stairs:half:top",
+          "rendercube": true
+        }
+      ]
     },
     {
       "id": 204,
@@ -2609,7 +2841,16 @@
       "id": 205,
       "name": "Purpur Slab",
       "flatname": "minecraft:purpur_slab",
-      "color": "#a67aa6"
+      "color": "#a67aa6",
+      "transparent": true,
+      "variants": [
+        {
+          "data": 8,
+          "name": "Upper Purpur Slab",
+          "flatname": "minecraft:purpur_slab:type:top",
+          "color": "#a67aa6"
+        }
+      ]
     },
     {
       "id": 206,
@@ -2619,23 +2860,36 @@
     },
     {
       "id": 207,
-      "name": "Immature Beetroot",
+      "name": "Beetroot",
       "flatname": "minecraft:beetroots",
       "color": "#02ab10",
       "transparent": true,
       "variants": [
         {
-          "data": 3,
-          "name": "Mature Beetroot",
-          "flatname": "minecraft:beetroots",
-          "color": "#517136"
+          "data": 2,
+          "name": "Beetroot (age 2)",
+          "flatname": "minecraft:beetroots:age:2",
+          "color": "#01be11"
+        },
+        {
+          "data": 1,
+          "name": "Beetroot (age 1)",
+          "flatname": "minecraft:beetroots:age:1",
+          "color": "#01bb10"
+        },
+        {
+          "data": 0,
+          "name": "Beetroot (age 0)",
+          "flatname": "minecraft:beetroots:age:0",
+          "color": "#02ab10"
         }
       ]
     },
     {
       "id": 208,
       "name": "Grass Path",
-      "color": "#967d47"
+      "color": "#967d47",
+      "transparent": true
     },
     {
       "id": 209,

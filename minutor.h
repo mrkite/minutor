@@ -115,7 +115,6 @@ private slots:
   DefinitionManager *dm;
   Settings *settings;
   JumpTo *jumpTo;
-  DimensionIdentifier *dimensions;
   QDir currentWorld;
 
   QSet<QString> overlayItemTypes;

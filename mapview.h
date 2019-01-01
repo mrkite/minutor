@@ -97,8 +97,6 @@ class MapView : public QWidget {
   ChunkCache cache;
   QImage image;
   DefinitionManager *dm;
-  BlockIdentifier *blocks;
-  BiomeIdentifier *biomes;
   uchar placeholder[16 * 16 * 4];  // no chunk found placeholder
   QSet<QString> overlayItemTypes;
   QMap<QString, QList<QSharedPointer<OverlayItem>>> overlayItems;

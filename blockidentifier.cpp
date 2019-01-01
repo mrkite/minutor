@@ -10,42 +10,44 @@
 
 static BlockInfo unknownBlock;
 
-BlockInfo::BlockInfo() : transparent(false), liquid(false), rendernormal(true),
-  providepower(false), spawninside(false), grass(false), foliage(false) {}
+BlockInfo::BlockInfo()
+  : variants(false)
+  , transparent(false)
+  , liquid(false)
+  , rendernormal(true)
+  , providepower(false)
+  , spawninside(false)
+  , grass(false)
+  , foliage(false) {}
 
-bool BlockInfo::isOpaque() {
+bool BlockInfo::hasVariants() const {
+  return this->variants;
+}
+
+bool BlockInfo::isOpaque() const {
   return !(this->transparent);
 }
 
-bool BlockInfo::isLiquid() {
+bool BlockInfo::isLiquid() const {
   return this->liquid;
 }
 
-bool BlockInfo::doesBlockHaveSolidTopSurface(int data) {
-  if (this->isOpaque() && this->renderAsNormalBlock()) return true;
-  if (this->stairs && ((data & 4) == 4)) return true;
-  if (this->halfslab && ((data & 8) == 8)) return true;
-  if (this->hopper) return true;
-  if (this->snow && ((data & 7) == 7)) return true;
-  return false;
-}
-
-bool BlockInfo::doesBlockHaveSolidTopSurface() {
+bool BlockInfo::doesBlockHaveSolidTopSurface() const {
   if (this->isOpaque() && this->renderAsNormalBlock()) return true;
   if (this->hopper) return true;
   return false;
 }
 
-bool BlockInfo::isBlockNormalCube() {
+bool BlockInfo::isBlockNormalCube() const {
   return this->isOpaque() && this->renderAsNormalBlock() &&
       !this->canProvidePower();
 }
 
-bool BlockInfo::renderAsNormalBlock() {
+bool BlockInfo::renderAsNormalBlock() const {
   return this->rendernormal;
 }
 
-bool BlockInfo::canProvidePower() {
+bool BlockInfo::canProvidePower() const {
   return this->providepower;
 }
 
@@ -54,14 +56,10 @@ void BlockInfo::setName(const QString & newname) {
   name = newname;
   // precompute mob spawning conditions
   bedrock = this->name.contains("Bedrock", Qt::CaseInsensitive);
-  hopper = this->name.contains("Hopper", Qt::CaseInsensitive);
-  stairs = this->name.contains("Stairs", Qt::CaseInsensitive);
-  halfslab = this->name.contains("Slab", Qt::CaseInsensitive) &&
-            !this->name.contains("Double", Qt::CaseInsensitive) &&
-            !this->name.contains("Full", Qt::CaseInsensitive);
-  snow = this->name.contains("Snow", Qt::CaseInsensitive);
+  hopper  = this->name.contains("Hopper", Qt::CaseInsensitive);
+  snow    = this->name.contains("Snow", Qt::CaseInsensitive);
   // precompute biome based watercolormodifier
-  water = this->name.contains("Water", Qt::CaseInsensitive);
+  water   = this->name.contains("Water", Qt::CaseInsensitive);
 }
 
 const QString & BlockInfo::getName() { return name; }
@@ -69,8 +67,6 @@ const QString & BlockInfo::getName() { return name; }
 
 bool BlockInfo::isBedrock()  { return bedrock; }
 bool BlockInfo::isHopper()   { return hopper; }
-bool BlockInfo::isStairs()   { return stairs; }
-bool BlockInfo::isHalfSlab() { return halfslab; }
 bool BlockInfo::isSnow()     { return snow; }
 
 bool BlockInfo::biomeWater()   { return water; }
@@ -79,6 +75,11 @@ bool BlockInfo::biomeFoliage() { return foliage; }
 
 void BlockInfo::setBiomeGrass(bool value)   { grass = value; }
 void BlockInfo::setBiomeFoliage(bool value) { foliage = value; }
+
+
+// --------- --------- --------- ---------
+// BlockIdentifier
+// --------- --------- --------- ---------
 
 BlockIdentifier::BlockIdentifier() {
   for (int i = 0; i < 16; i++)
@@ -94,42 +95,21 @@ BlockIdentifier::~BlockIdentifier() {
   }
 }
 
+BlockIdentifier& BlockIdentifier::Instance() {
+  static BlockIdentifier singleton;
+  return singleton;
+}
+
 BlockInfo &BlockIdentifier::getBlockInfo(uint hid) {
-  // first apply the mask
   if (blocks.contains(hid)) {
     return *blocks[hid];
   }
-  //   data &= blocks[name].first()->mask;
-  //
-  // quint32 bid = id | (data << 12);
-  // // first check the cache
-  // if (cache[bid] != NULL)
-  //   return *cache[bid];
-  //
-  // // now find the variant
-  // if (blocks.contains(bid)) {
-  //   QList<BlockInfo*> &list = blocks[bid];
-  //   // run backwards for priority sorting
-  //   for (int i = list.length() - 1; i >= 0; i--) {
-  //     if (list[i]->enabled) {
-  //       cache[bid] = list[i];
-  //       return *list[i];
-  //     }
-  //   }
-  // }
-  // // no enabled variant found
-  // if (blocks.contains(id)) {
-  //   QList<BlockInfo*> &list = blocks[id];
-  //   for (int i = list.length() - 1; i >= 0; i--) {
-  //     if (list[i]->enabled) {
-  //       cache[bid] = list[i];
-  //       return *list[i];
-  //     }
-  //   }
-  // }
-
   // no blocks at all found.. dammit
   return unknownBlock;
+}
+
+bool BlockIdentifier::hasBlockInfo(uint hid) {
+  return blocks.contains(hid);
 }
 
 void BlockIdentifier::enableDefinitions(int pack) {
@@ -171,6 +151,7 @@ void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent,
 //  }
 //  block->id = id;
 
+  // name of Block
   QString name;
   if (b->has("name"))
     name = b->at("name")->asString();
@@ -180,6 +161,10 @@ void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent,
     name = "Unknown";
   block->setName(name);
   block->enabled = true;
+
+  // optional Block State
+  if (b->has("blockstate"))
+    block->blockstate = b->at("blockstate")->asString();
 
   if (b->has("transparent")) {
     block->transparent = b->at("transparent")->asBool();
@@ -199,6 +184,7 @@ void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent,
     block->spawninside = false;
   }
 
+  // generic attributes
   if (b->has("liquid"))
     block->liquid = b->at("liquid")->asBool();
   else if (parent != NULL)
@@ -258,15 +244,9 @@ void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent,
   if (b->has("biomeFoliage"))
     block->setBiomeFoliage( b->at("biomeFoliage")->asBool() );
 
-  // variant reduction mask
-  if (b->has("mask"))
-    block->mask = b->at("mask")->asNumber();
-  else if (b->has("variants"))
-    block->mask = 0x0f;
-  else
-    block->mask = 0x00;
-
+  // variants due to block_state difference
   if (b->has("variants")) {
+    block->variants = true;
     JSONArray *variants = dynamic_cast<JSONArray *>(b->at("variants"));
     int vlen = variants->length();
     for (int j = 0; j < vlen; j++)
@@ -274,6 +254,8 @@ void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent,
   }
 
   uint hid = qHash(name);
+  if (!block->blockstate.isEmpty())
+    hid = qHash(name + ":" + block->blockstate);
   if (blocks.contains(hid)) {
     // this will only trigger during development of vanilla_blocks.json
     // and prevents generating a wrong definition file

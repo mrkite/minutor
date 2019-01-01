@@ -7,20 +7,20 @@
 
 #include "./nbt.h"
 #include "./entity.h"
-#include "./blockdata.h"
+#include "./paletteentry.h"
 #include "./generatedstructure.h"
 
 
 class ChunkSection {
  public:
-  const BlockData & getBlockData(int x, int y, int z);
-  const BlockData & getBlockData(int offset, int y);
+  const PaletteEntry & getPaletteEntry(int x, int y, int z);
+  const PaletteEntry & getPaletteEntry(int offset, int y);
   quint8 getSkyLight(int x, int y, int z);
   quint8 getSkyLight(int offset, int y);
   quint8 getBlockLight(int x, int y, int z);
   quint8 getBlockLight(int offset, int y);
 
-  BlockData *palette;
+  PaletteEntry *palette;
   int        paletteLength;
 
   quint16 blocks[16*16*16];

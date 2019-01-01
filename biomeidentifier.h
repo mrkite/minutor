@@ -44,13 +44,21 @@ class BiomeInfo {
 
 class BiomeIdentifier {
  public:
-  BiomeIdentifier();
-  ~BiomeIdentifier();
+  // singleton: access to global usable instance
+  static BiomeIdentifier &Instance();
+
   int addDefinitions(JSONArray *, int pack = -1);
   void enableDefinitions(int id);
   void disableDefinitions(int id);
   BiomeInfo &getBiome(int id);
- private:
+
+private:
+  // singleton: prevent access to constructor and copyconstructor
+  BiomeIdentifier();
+  ~BiomeIdentifier();
+  BiomeIdentifier(const BiomeIdentifier &);
+  BiomeIdentifier &operator=(const BiomeIdentifier &);
+
   QHash<int, QList<BiomeInfo*>> biomes;
   QList<QList<BiomeInfo*> > packs;
 };

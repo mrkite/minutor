@@ -19,18 +19,18 @@ FlatteningConverter& FlatteningConverter::Instance() {
 }
 
 //const BlockData * FlatteningConverter::getPalette() {
-BlockData * FlatteningConverter::getPalette() {
+PaletteEntry * FlatteningConverter::getPalette() {
   return palette;
 }
 
-void FlatteningConverter::enableDefinitions(int pack) {
+void FlatteningConverter::enableDefinitions(int /*pack*/) {
 //  if (pack < 0) return;
 //  int len = packs[pack].length();
 //  for (int i = 0; i < len; i++)
 //    packs[pack][i]->enabled = true;
 }
 
-void FlatteningConverter::disableDefinitions(int pack) {
+void FlatteningConverter::disableDefinitions(int /*pack*/) {
 //  if (pack < 0) return;
 //  int len = packs[pack].length();
 //  for (int i = 0; i < len; i++)

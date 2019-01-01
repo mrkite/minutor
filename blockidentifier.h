@@ -16,14 +16,15 @@ class BlockInfo {
  public:
   BlockInfo();
 
+  bool hasVariants() const;
+
   // special block attribute used during mob spawning detection
-  bool isOpaque();
-  bool isLiquid();
-  bool doesBlockHaveSolidTopSurface(int data);
-  bool doesBlockHaveSolidTopSurface();
-  bool isBlockNormalCube();
-  bool renderAsNormalBlock();
-  bool canProvidePower();
+  bool isOpaque() const;
+  bool isLiquid() const;
+  bool doesBlockHaveSolidTopSurface() const;
+  bool isBlockNormalCube() const;
+  bool renderAsNormalBlock() const;
+  bool canProvidePower() const;
 
   // special block type used during mob spawning detection
   bool isBedrock();
@@ -42,24 +43,25 @@ class BlockInfo {
   void setBiomeFoliage(bool value);
   const QString &getName();
 
-//  int id;
-  double alpha;
-  quint8 mask;
-  bool enabled;
-  bool transparent;
-  bool liquid;
-  bool rendernormal;
-  bool providepower;
-  bool spawninside;
-  QColor colors[16];
+  // enabled for complete definition pack
+  bool    enabled;
+
+  // internal state
+  double  alpha;
+  QString blockstate;
+  bool    variants;  // block_state dependant variants
+  bool    transparent;
+  bool    liquid;
+  bool    rendernormal;
+  bool    providepower;
+  bool    spawninside;
+  QColor  colors[16];
 
  private:
   QString name;
-  // cache special blocks used during mob spawning detection
+  // cache special block attributes used during mob spawning detection
   bool    bedrock;
   bool    hopper;
-  bool    stairs;
-  bool    halfslab;
   bool    snow;
   bool    water;
   bool    grass;
@@ -68,15 +70,24 @@ class BlockInfo {
 
 class BlockIdentifier {
  public:
-  BlockIdentifier();
-  ~BlockIdentifier();
-  int addDefinitions(JSONArray *, int pack = -1);
+  // singleton: access to global usable instance
+  static BlockIdentifier &Instance();
+
+  int  addDefinitions(JSONArray *, int pack = -1);
   void enableDefinitions(int id);
   void disableDefinitions(int id);
   BlockInfo &getBlockInfo(uint hid);
+  bool       hasBlockInfo(uint hid);
+
  private:
+  // singleton: prevent access to constructor and copyconstructor
+  BlockIdentifier();
+  ~BlockIdentifier();
+  BlockIdentifier(const BlockIdentifier &);
+  BlockIdentifier &operator=(const BlockIdentifier &);
+
   void parseDefinition(JSONObject *block, BlockInfo *parent, int pack);
-  QMap<uint, BlockInfo*> blocks;
+  QMap<uint, BlockInfo*>    blocks;
   QList<QList<BlockInfo*> > packs;
 };
 
