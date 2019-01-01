@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.13.1",
+  "version": "1.13.2",
   "data": [
     {
       "name": "minecraft:air",
@@ -873,36 +873,36 @@
     },
     {
       "name": "minecraft:wheat",
-      "color": "#01b312",
+      "color": "#576608",
       "transparent": true,
       "variants": [
         {
-          "blockstate": "age:1",
-          "color": "#13ac10"
-        },
-        {
-          "blockstate": "age:2",
-          "color": "#1d8a0c"
-        },
-        {
-          "blockstate": "age:3",
-          "color": "#268c09"
-        },
-        {
-          "blockstate": "age:4",
-          "color": "#2e8008"
+          "blockstate": "age:6",
+          "color": "#507707"
         },
         {
           "blockstate": "age:5",
           "color": "#427b08"
         },
         {
-          "blockstate": "age:6",
-          "color": "#507707"
+          "blockstate": "age:4",
+          "color": "#2e8008"
         },
         {
-          "blockstate": "age:7",
-          "color": "#576608"
+          "blockstate": "age:3",
+          "color": "#268c09"
+        },
+        {
+          "blockstate": "age:2",
+          "color": "#1d8a0c"
+        },
+        {
+          "blockstate": "age:1",
+          "color": "#13ac10"
+        },
+        {
+          "blockstate": "age:0",
+          "color": "#01b312"
         }
       ]
     },

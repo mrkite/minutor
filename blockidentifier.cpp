@@ -253,7 +253,9 @@ void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent,
       parseDefinition(dynamic_cast<JSONObject *>(variants->at(j)), block, pack);
   }
 
-  uint hid = qHash(name+block->blockstate);
+  uint hid = qHash(name);
+  if (!block->blockstate.isEmpty())
+    hid = qHash(name + ":" + block->blockstate);
   if (blocks.contains(hid)) {
     // this will only trigger during development of vanilla_blocks.json
     // and prevents generating a wrong definition file

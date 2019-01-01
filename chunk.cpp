@@ -204,7 +204,7 @@ void Chunk::loadSection1519(ChunkSection *cs, const Tag *section) {
     if (block.hasVariants()) {
       // test all available properties
       for (auto key : cs->palette[j].properties.keys()) {
-        QString vname = cs->palette[j].name + key + ":" + cs->palette[j].properties[key].toString();
+        QString vname = cs->palette[j].name + ":" + key + ":" + cs->palette[j].properties[key].toString();
         uint vhid = qHash(vname);
         if (bi.hasBlockInfo(vhid))
           hid = vhid; // use this vaiant instead
