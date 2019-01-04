@@ -98,11 +98,9 @@ void EntityIdentifier::parseCategoryDefinition(JSONObject *data, int packID) {
 void EntityIdentifier::parseEntityDefinition(JSONObject *entity,
                                              QString const &category,
                                              QColor catcolor, int packID) {
-  QString id;
+  QString id("unknown");
   if (entity->has("id"))
     id = entity->at("id")->asString().toLower();
-  else
-    id = "unknown";
 
   if (entity->has("catcolor")) {
     QString colorname = entity->at("catcolor")->asString();
@@ -120,29 +118,34 @@ void EntityIdentifier::parseEntityDefinition(JSONObject *entity,
     color.setHsv(hue % 360, 255, 255);
   }
 
-  // try to build name automatically
-  QStringList tokens = id.toLower().replace('_',' ').split(" ");
-  if (entity->has("id1")) {
-    QString id1 = entity->at("id1")->asString().toLower();
-    tokens = id1.toLower().replace('_',' ').split(" ");
-  }
-  for (QList<QString>::iterator tokItr = tokens.begin(); tokItr != tokens.end(); ++tokItr) {
-    (*tokItr) = (*tokItr).at(0).toUpper() + (*tokItr).mid(1);
-  }
-  QString name = tokens.join(" ");
-  // or use given name
+  QString name;
   if (entity->has("name")) {
+    // use provided name
     name = entity->at("name")->asString();
+  } else {
+    // or try to build name automatically
+    // split at underscores
+    QStringList tokens = id.toLower().replace('_',' ').split(" ");
+    // make first character uppercase
+    for (QList<QString>::iterator tokItr = tokens.begin(); tokItr != tokens.end(); ++tokItr) {
+      (*tokItr) = (*tokItr).at(0).toUpper() + (*tokItr).mid(1);
+    }
+    name = tokens.join(" ");
   }
 
   // enter entity into manager
   TentityMap& map = getMapForPackID(packID);
   map.insert(id, EntityInfo(name, category, catcolor, color));
 
-  // add duplicate, when legacy and new 1.11+ id definitions are available
-  if (entity->has("id1")) {
-    QString id1 = entity->at("id1")->asString().toLower();
-    map.insert(id1, EntityInfo(name, category, catcolor, color));
+  // add duplicates: when new 1.11+ or 1.13+ id definitions are available
+  // legacy id is stored in own definition element (duplicates automatically)
+  if (entity->has("idlist")) {
+    JSONArray *idlist = dynamic_cast<JSONArray *>(entity->at("idlist"));
+    int len = idlist->length();
+    for (int j = 0; j < len; j++) {
+      QString idl = entity->at("idlist")->at(j)->asString().toLower();
+      map.insert(idl, EntityInfo(name, category, catcolor, color));
+    }
   }
 }
 
