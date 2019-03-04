@@ -1,3 +1,14 @@
+
+20190304:by hezhenwei
+finally able to show most of part with new nbt.
+still:
+1.biomes not so correct.
+2.some palette over 16 is not shown correct.
+3.not all blocks tranlated.
+
+======== original ===========
+
+
 This is the source code for Minutor 2.1
 web/ contains the source code for the web-based pack builder.  The live version
 can be found at http://seancode.com/minutor/packs
