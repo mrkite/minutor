@@ -39,7 +39,7 @@ class Tag {
   virtual const qint32 *toIntArray() const;
   virtual const QVariant getData() const;
   virtual const QString getTypeName() const;
-  virtual const quint32 getType() const;
+  virtual quint32 getType() const;
   const static quint32 Unknonw   =  0;
   const static quint32 Byte      =  1;
   const static quint32 Short     =  2;
@@ -142,7 +142,7 @@ class Tag_Byte_Array : public Tag {
   virtual const QString toString() const;
   virtual const QVariant getData() const;
   virtual const QString getTypeName() const;
-  virtual const quint32 getType() const;
+  virtual quint32 getType() const;
  private:
   const quint8 *data;
   int len;
@@ -166,7 +166,7 @@ class Tag_List : public Tag {
   virtual const QString toString() const;
   virtual const QVariant getData() const;
   virtual const QString getTypeName() const;
-  virtual const quint32 getType() const;
+  virtual quint32 getType() const;
   void PrintDebugInfo();
  private:
   QList<Tag *> data;
@@ -181,7 +181,7 @@ class Tag_Compound : public Tag {
   virtual const QString toString() const;
   virtual const QVariant getData() const;
   virtual const QString getTypeName() const;
-  virtual const quint32 getType() const;
+  virtual quint32 getType() const;
   void PrintDebugInfo();
  private:
   QHash<QString, Tag *> children;
@@ -197,7 +197,7 @@ class Tag_Int_Array : public Tag {
   virtual const QString toString() const;
   virtual const QVariant getData() const;
   virtual const QString getTypeName() const;
-  virtual const quint32 getType() const;
+  virtual quint32 getType() const;
  private:
   int len;
   qint32 *data;
@@ -215,7 +215,7 @@ class Tag_Long_Array : public Tag {
   virtual const QString toString() const;
   virtual const QVariant getData() const;
   virtual const QString getTypeName() const;
-  virtual const quint32 getType() const;
+  virtual quint32 getType() const;
  private:
   int len;
   qint64 *data;

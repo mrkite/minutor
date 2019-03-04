@@ -117,11 +117,13 @@ void Chunk::load(const NBT &nbt) {
 		if( section_palette->getType() == Tag::List ) 
 		{
 			Tag_List* section_palette_real = (Tag_List*)section_palette;
+			/*
 			if( nRawLength != 256 ) {
 				qDebug().nospace() << "non-256 palette length " << section_palette_real->length();
 				//section_palette_real->PrintDebugInfo();
 				//qDebug().nospace() << section_blocks->toString();
 			}
+			*/
 			memset(PaletteMap, 14, 256);
 
 			for( int i=0; i<256; ++i ) 
@@ -133,6 +135,7 @@ void Chunk::load(const NBT &nbt) {
 					//qDebug().nospace() << "palette item to comp" << QString("minecraft:grass") ;
 					//qDebug().nospace() << "palette item type " << section_palette_real->at(i)->at("Name")->getType();
 					// seems value 2/5 make segment fault
+					// most of these are not correct. need hard compare
 					if(0 == qstrItemName.compare(QString("minecraft:air")))
 					{
 						PaletteMap[i] = 0;
@@ -400,76 +403,55 @@ void Chunk::load(const NBT &nbt) {
 				}
 				
 			} 
-			/*
 			else if(nBlockBitWidth == 5)
 			{
+				
 				if ( i*5%8 == 0 )
 				{
 					cs->blocks[i] = PaletteMap[ raw[i*5/8] & 31 ];
 				}
-				else if ( i*5%8 < 3 )
+				else if ( (i*5)%8 < 3 )
 				{
-					cs->blocks[i] = PaletteMap[ (raw[i*5/8] >> (i*5%8) ) & 31 ];
+					cs->blocks[i] = PaletteMap[ (raw[(i*5)/8] >> ((i*5)%8) ) & 31 ];
 				}
 				else
 				{
-					cs->blocks[i] = PaletteMap[ (raw[i*5/8] >> (i*5%8) + raw[i*5/8+1] << (8 - i*5%8) ) & 31 ];
+					cs->blocks[i] = PaletteMap[ ((raw[(i*5)/8] >> ((i*5)%8)) + (raw[(i*5)/8+1] << (5 - (i*5+5)%8) )) & 31 ];
 				}
-			}
-			*/
-			else if(nBlockBitWidth == 5)
-			{
-				/*
-				if( i%2 == 0 ) {
-					cs->blocks[i] = PaletteMap[raw[i/2] % 4 + raw[2048 + i/8] ];
-				}
-				else 
-				{
-					cs->blocks[i] = PaletteMap[raw[i/2] >> 4];
-				}
-				*/
-				cs->blocks[i] = (i/4) % 256; // test purpose
 			}
 			else if(nBlockBitWidth == 6)
 			{
-				/*
-				cs->blocks[i] = PaletteMap
-					[
-						//( raw[i/2] >> ((i%2) *4)) % 4 
-						( raw[i/2] >> ((i%2) *4)) % 16 
-							+ 
-						(( raw[2048 + i/4] >> ((i%4) *2)) % 2) * 16
-						
-					];
-				*/
-				/*
-				cs->blocks[i] = PaletteMap[ 
-												(
-													raw[(i*6)/8] >> ((i*6)%8) + 
-													raw[(i*6)/8+1] << (8 - (i*6)%8) 
-												) 
-												& 63 
-											];
-				*/
-				cs->blocks[i] = (i/8) % 256; // test purpose
-			}
-			else
-			{
-				/*
-				if ( i*nBlockBitWidth%8 == 0 )
+				if ( (i*6)%8 == 0 )
 				{
-					cs->blocks[i] = PaletteMap[ raw[i*nBlockBitWidth/8] & 31 ];
+					cs->blocks[i] = PaletteMap[ raw[(i*6)/8] & 63 ];
 				}
-				else if ( i*nBlockBitWidth%8 < 3 )
+				else if ( (i*6)%8 < 3 )
 				{
-					cs->blocks[i] = PaletteMap[ (raw[i*nBlockBitWidth/8] >> (i*nBlockBitWidth%8) ) & 31 ];
+					cs->blocks[i] = PaletteMap[ (raw[(i*6)/8] >> ((i*6)%8) ) & 63 ];
 				}
 				else
 				{
-					cs->blocks[i] = PaletteMap[ (raw[i*nBlockBitWidth/8] >> (i*nBlockBitWidth%8) + raw[i*nBlockBitWidth/8+1] << (8 - i*nBlockBitWidth%8) ) & 31 ];
+					cs->blocks[i] = PaletteMap[ ((raw[(i*6)/8] >> ((i*6)%8)) + (raw[(i*6)/8+1] << (6 - (i*6+6)%8) )) & 63 ];
+				}
+			}
+			else
+			{
+				/* 
+				// should be correct but never tested so...
+				if ( (i*nBlockBitWidth)%8 == 0 )
+				{
+					cs->blocks[i] = PaletteMap[ raw[(i*nBlockBitWidth)/8] & (2^nBlockBitWidth-1) ];
+				}
+				else if ( (i*nBlockBitWidth)%8 < 3 )
+				{
+					cs->blocks[i] = PaletteMap[ (raw[(i*nBlockBitWidth)/8] >> ((i*nBlockBitWidth)%8) ) & (2^nBlockBitWidth-1) ];
+				}
+				else
+				{
+					cs->blocks[i] = PaletteMap[ ((raw[(i*nBlockBitWidth)/8] >> ((i*nBlockBitWidth)%8)) + (raw[(i*nBlockBitWidth)/8+1] << (nBlockBitWidth - (i*nBlockBitWidth+nBlockBitWidth)%8) )) & (2^nBlockBitWidth-1) ];
 				}
 				*/
-				cs->blocks[i] = i % 256; // test purpose
+				cs->blocks[i] = (i % 256)/8; // test purpose
 				qDebug().nospace() << "unknown bit width " << nBlockBitWidth;
 			}
 			//cs->blocks[i] = i % 256; // test purpose

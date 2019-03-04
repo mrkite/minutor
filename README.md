@@ -3,7 +3,6 @@
 finally able to show most of part with new nbt.
 still:
 1.biomes not so correct.
-2.some palette over 16 is not shown correct.
 3.not all blocks tranlated.
 
 ======== original ===========

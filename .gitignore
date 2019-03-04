@@ -17,3 +17,12 @@ Makefile.Release
 *.pdb
 *.user
 *.pro.user.*
+
+# outputfiles
+*.o
+
+# moc_ things
+moc_*
+ui_*
+qrc_minutor.cpp
+minutor

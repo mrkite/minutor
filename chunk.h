@@ -32,8 +32,8 @@ class Chunk {
  protected:
   typedef QMap<QString, QSharedPointer<OverlayItem>> EntityMap;
 
-  //quint8 biomes[256];
-  quint32 biomes[256];
+  quint8 biomes[256];
+  //quint32 biomes[256];
   int highest;
   ChunkSection *sections[16];
   int renderedAt;

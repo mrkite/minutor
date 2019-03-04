@@ -187,7 +187,7 @@ const QString Tag::getTypeName() const {
     return QString::fromLatin1(reinterpret_cast<const char *>(pName));
 }
 
-const quint32 Tag::getType() const {
+quint32 Tag::getType() const {
 	quint32 u32Type = Tag::Unknonw;
 
     if (typeid(this) == typeid(Tag_Byte)) {
@@ -361,7 +361,7 @@ const QString Tag_Byte_Array::toString() const {
 const QString Tag_Byte_Array::getTypeName() const {
 	return "ByteArray";
 }
-const quint32 Tag_Byte_Array::getType() const {
+quint32 Tag_Byte_Array::getType() const {
 	return Tag::ByteArray;
 }
 
@@ -442,7 +442,7 @@ const QVariant Tag_List::getData() const {
 const QString Tag_List::getTypeName() const {
 	return "List";
 }
-const quint32 Tag_List::getType() const {
+quint32 Tag_List::getType() const {
 	return Tag::List;
 }
 void Tag_List::PrintDebugInfo() {
@@ -519,7 +519,7 @@ const QVariant Tag_Compound::getData() const {
 const QString Tag_Compound::getTypeName() const {
 	return "Compound";
 }
-const quint32 Tag_Compound::getType() const {
+quint32 Tag_Compound::getType() const {
 	return Tag::Compound;
 }
 
@@ -574,7 +574,7 @@ const QVariant Tag_Int_Array::getData() const {
 const QString Tag_Int_Array::getTypeName() const {
 	return "IntArray";
 }
-const quint32 Tag_Int_Array::getType() const {
+quint32 Tag_Int_Array::getType() const {
 	return Tag::IntArray;
 }
 
@@ -623,7 +623,7 @@ const QVariant Tag_Long_Array::getData() const {
 const QString Tag_Long_Array::getTypeName() const {
 	return "LongArray";
 }
-const quint32 Tag_Long_Array::getType() const {
+quint32 Tag_Long_Array::getType() const {
 	return Tag::LongArray;
 }
 
