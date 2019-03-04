@@ -26,7 +26,7 @@
 #include "./jumpto.h"
 #include "./pngexport.h"
 
-Minutor::Minutor(): maxentitydistance(0) {
+Minutor::Minutor() {
   mapview = new MapView;
   connect(mapview, SIGNAL(hoverTextChanged(QString)),
           statusBar(), SLOT(showMessage(QString)));
@@ -38,7 +38,7 @@ Minutor::Minutor(): maxentitydistance(0) {
   mapview->attach(dm);
   connect(dm,   SIGNAL(packsChanged()),
           this, SLOT(updateDimensions()));
-  dimensions = dm->dimensionIdentifer();
+  DimensionIdentifier *dimensions = &DimensionIdentifier::Instance();
   connect(dimensions, SIGNAL(dimensionChanged(const DimensionInfo &)),
           this, SLOT(viewDimension(const DimensionInfo &)));
   settings = new Settings(this);
@@ -123,7 +123,10 @@ void Minutor::open() {
 }
 
 void Minutor::reload() {
+  auto loc = *(mapview->getLocation());
+
   loadWorld(currentWorld);
+  mapview->setLocation(loc.x, loc.y, loc.z, false, true);
 }
 
 void Minutor::save() {
@@ -194,6 +197,7 @@ void Minutor::saveFinished() {
 }
 
 void Minutor::closeWorld() {
+  // clear jump menu
   locations.clear();
   for (int i = 0; i < players.size(); i++) {
     jumpMenu->removeAction(players[i]);
@@ -201,7 +205,11 @@ void Minutor::closeWorld() {
   }
   players.clear();
   jumpMenu->setEnabled(false);
-  dimensions->removeDimensions(dimMenu);
+  // clear dimensions menu
+  DimensionIdentifier::Instance().removeDimensions(dimMenu);
+  // clear overlays
+  mapview->clearOverlayItems();
+  // clear other stuff
   currentWorld = QString();
   emit worldLoaded(false);
 }
@@ -229,12 +237,12 @@ void Minutor::setViewMobspawning(bool value) {
 }
 
 void Minutor::setViewCavemode(bool value) {
-  depthShadingAct->setChecked(value);
+  caveModeAct->setChecked(value);
   toggleFlags();
 }
 
 void Minutor::setViewDepthshading(bool value) {
-  lightingAct->setChecked(value);
+  depthShadingAct->setChecked(value);
   toggleFlags();
 }
 
@@ -268,7 +276,7 @@ void Minutor::toggleFlags() {
       overlayTypes.insert(action->data().toString());
     }
   }
-  mapview->showOverlayItemTypes(overlayTypes);
+  mapview->setVisibleOverlayItemTypes(overlayTypes);
   mapview->redraw();
 }
 
@@ -296,7 +304,7 @@ void Minutor::about() {
 }
 
 void Minutor::updateDimensions() {
-  dimensions->getDimensions(currentWorld, dimMenu, this);
+  DimensionIdentifier::Instance().getDimensions(currentWorld, dimMenu, this);
 }
 
 void Minutor::createActions() {
@@ -568,7 +576,8 @@ MapView *Minutor::getMapview() const
 }
 
 void Minutor::loadWorld(QDir path) {
-  closeWorld();  // just in case
+  // cleanup current state (just in case)
+  closeWorld();
   currentWorld = path;
 
   NBT level(path.filePath("level.dat"));
@@ -635,7 +644,7 @@ void Minutor::loadWorld(QDir path) {
   }
 
   // show dimensions
-  dimensions->getDimensions(path, dimMenu, this);
+  DimensionIdentifier::Instance().getDimensions(path, dimMenu, this);
   emit worldLoaded(true);
   mapview->setLocation(locations.first().x, locations.first().z);
   toggleFlags();
@@ -702,12 +711,11 @@ void Minutor::addOverlayItemType(QString type, QColor color,
 }
 
 void Minutor::addOverlayItem(QSharedPointer<OverlayItem> item) {
+  // create menu entries (if necessary)
   addOverlayItemType(item->type(), item->color(), item->dimension());
 
-  maxentitydistance = 50;
-
-  const OverlayItem::Point& p = item->midpoint();
-  overlayItems[item->type()].insertMulti(QPair<int, int>(p.x, p.z), item);
+//  const OverlayItem::Point& p = item->midpoint();
+//  overlayItems[item->type()].insertMulti(QPair<int, int>(p.x, p.z), item);
 
   mapview->addOverlayItem(item);
 }
@@ -726,20 +734,20 @@ void Minutor::loadStructures(const QDir &dataPath) {
     NBT file(dataPath.filePath(fileName));
     auto data = file.at("data");
 
-    auto items = GeneratedStructure::tryParse(data);
+    auto items = GeneratedStructure::tryParseDatFile(data);
     for (auto &item : items) {
       addOverlayItem(item);
     }
 
     if (items.isEmpty()) {
-      // try parsing it as a village.dat file
+      // try parsing it as a villages.dat file
       int underidx = fileName.lastIndexOf('_');
       int dotidx = fileName.lastIndexOf('.');
       QString dimension = "overworld";
       if (underidx > 0) {
         dimension = fileName.mid(underidx + 1, dotidx - underidx - 1);
       }
-      items = Village::tryParse(data, dimension);
+      items = Village::tryParseDatFile(data, dimension);
 
       for (auto &item : items) {
         addOverlayItem(item);

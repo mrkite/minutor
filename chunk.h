@@ -7,31 +7,47 @@
 
 #include "./nbt.h"
 #include "./entity.h"
-class BlockIdentifier;
+#include "./paletteentry.h"
+#include "./generatedstructure.h"
+
 
 class ChunkSection {
  public:
-  quint16 getBlock(int x, int y, int z);
-  quint16 getBlock(int offset, int y);
-  quint8  getData(int x, int y, int z);
-  quint8  getData(int offset, int y);
-  quint8  getLight(int x, int y, int z);
-  quint8  getLight(int offset, int y);
+  const PaletteEntry & getPaletteEntry(int x, int y, int z);
+  const PaletteEntry & getPaletteEntry(int offset, int y);
+  quint8 getSkyLight(int x, int y, int z);
+  quint8 getSkyLight(int offset, int y);
+  quint8 getBlockLight(int x, int y, int z);
+  quint8 getBlockLight(int offset, int y);
 
-  quint16 blocks[4096];
-  quint8  data[2048];
-  quint8  light[2048];
+  PaletteEntry *palette;
+  int        paletteLength;
+
+  quint16 blocks[16*16*16];
+//quint8  skyLight[16*16*16/2];   // not needed in Minutor
+  quint8  blockLight[16*16*16/2];
 };
 
-class Chunk {
+
+class Chunk : public QObject {
+  Q_OBJECT
+
  public:
   Chunk();
-  void load(const NBT &nbt);
   ~Chunk();
+  void load(const NBT &nbt);
+
+ signals:
+  void structureFound(QSharedPointer<GeneratedStructure> structure);
+
  protected:
+  void loadSection1343(ChunkSection *cs, const Tag *section);
+  void loadSection1519(ChunkSection *cs, const Tag *section);
+
+
   typedef QMap<QString, QSharedPointer<OverlayItem>> EntityMap;
 
-  quint8 biomes[256];
+  quint32 biomes[16*16];
   int highest;
   ChunkSection *sections[16];
   int renderedAt;

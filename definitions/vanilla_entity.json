@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "entity",
-  "version": "1.12.17w16a",
+  "version": "1.13.18w15a",
   "data": [
     {
       "category": "Hostile",
@@ -12,8 +12,12 @@
           "color": "#ffff00"
         },
         {
+          "note": "old naming scheme until 1.10",
           "id": "CaveSpider",
-          "id1": "cave_spider",
+          "color": "#808000"
+        },
+        {
+          "id": "cave_spider",
           "color": "#808000"
         },
         {
@@ -21,8 +25,12 @@
           "color": "#00ff00"
         },
         {
+          "note": "old naming scheme until 1.10",
           "id": "EnderDragon",
-          "id1": "ender_dragon",
+          "color": "#ff00ff"
+        },
+        {
+          "id": "ender_dragon",
           "color": "#ff00ff"
         },
         {
@@ -46,8 +54,12 @@
           "color": "#000080"
         },
         {
+          "note": "old naming scheme until 1.10",
           "id": "LavaSlime",
-          "id1": "magma_cube",
+          "color": "#00ffff"
+        },
+        {
+          "id": "magma_cube",
           "color": "#00ffff"
         },
         {
@@ -102,9 +114,13 @@
           "color": "#008080"
         },
         {
+          "note": "old naming scheme until 1.10",
           "id": "WitherBoss",
-          "id1": "wither",
           "name": "Wither",
+          "color": "#808080"
+        },
+        {
+          "id": "wither",
           "color": "#808080"
         },
         {
@@ -120,10 +136,22 @@
           "color": "#008000"
         },
         {
+          "id": "drowned",
+          "color": "MediumAquaMarine"
+        },
+        {
+          "note": "old naming scheme until 1.10",
           "id": "PigZombie",
-          "id1": "zombie_pigman",
           "name": "Zombie Pigman",
           "color": "#008000"
+        },
+        {
+          "id": "zombie_pigman",
+          "color": "#008000"
+        },
+        {
+          "id": "phantom",
+          "color": "MidnightBlue"
         }
       ]
     },
@@ -144,9 +172,13 @@
           "color": "#008080"
         },
         {
+          "note": "old naming scheme until 1.10",
           "id": "EntityHorse",
-          "id1": "horse",
           "name": "Horse",
+          "color": "#000080"
+        },
+        {
+          "id": "horse",
           "color": "#000080"
         },
         {
@@ -175,19 +207,29 @@
         },
         {
           "id": "MushroomCow",
-          "id1": "mooshroom",
           "name": "Mooshroom",
           "color": "#ff0000"
         },
         {
+          "id": "mooshroom",
+          "color": "#ff0000"
+        },
+        {
+          "note": "old naming scheme until 1.10",
           "id": "Ozelot",
-          "id1": "ocelot",
           "name": "Ocelot",
           "color": "#808000"
         },
         {
+          "id": "ocelot",
+          "color": "#808000"
+        },
+        {
           "id": "PolarBear",
-          "id1": "polar_bear",
+          "color": "#404040"
+        },
+        {
+          "id": "polar_bear",
           "color": "#404040"
         },
         {
@@ -199,8 +241,15 @@
           "color": "#c0c0c0"
         },
         {
+          "note": "old naming scheme until 1.10",
           "id": "SnowMan",
-          "id1": "snow_man",
+          "name": "Snow Golem",
+          "color": "#ffffff"
+        },
+        {
+          "id": "snow_man",
+          "idlist": ["snow_man", "snow_golem"],
+          "name": "Snow Golem",
           "color": "#ffffff"
         },
         {
@@ -216,14 +265,44 @@
           "color": "#800080"
         },
         {
+          "note": "old naming scheme until 1.10",
           "id": "VillagerGolem",
-          "id1": "villager_golem",
+          "name": "Iron Golem",
+          "color": "#00ffff"
+        },
+        {
+          "id": "villager_golem",
+          "idlist": ["villager_golem", "ironw_golem"],
           "name": "Iron Golem",
           "color": "#00ffff"
         },
         {
           "id": "parrot",
           "color": "#0000ff"
+        },
+        {
+          "id": "turtle",
+          "color": "MediumSeaGreen"
+        },
+        {
+          "id": "dolphin",
+          "color": "LightSteelBlue"
+        },
+        {
+          "id": "cod",
+          "color": "DarkKhaki"
+        },
+        {
+          "id": "salmon",
+          "color": "Salmon"
+        },
+        {
+          "id": "tropical_fish",
+          "color": "Tomato"
+        },
+        {
+          "id": "pufferfish",
+          "color": "Gold"
         }
       ]
     },
@@ -232,21 +311,36 @@
       "catcolor": "lightgray",
       "entity": [
         {
+          "note": "old naming scheme until 1.10",
           "id": "XPOrb",
-          "id1": "xp_orb",
           "name": "XP Orb",
           "catcolor": "GreenYellow",
           "color": "Gold"
         },
         {
+          "id": "xp_orb",
+          "catcolor": "GreenYellow",
+          "color": "Gold"
+        },
+        {
+          "note": "old naming scheme until 1.10",
           "id": "LeashKnot",
-          "id1": "leash_knot",
           "catcolor": "GreenYellow",
           "color": "SandyBrown"
         },
         {
+          "id": "leash_knot",
+          "catcolor": "GreenYellow",
+          "color": "SandyBrown"
+        },
+        {
+          "note": "old naming scheme until 1.10",
           "id": "EnderCrystal",
-          "id1": "ender_crystal",
+          "catcolor": "Plum",
+          "color": "SkyBlue"
+        },
+        {
+          "id": "ender_crystal",
           "catcolor": "Plum",
           "color": "SkyBlue"
         },
@@ -256,51 +350,86 @@
           "color": "Sienna"
         },
         {
+          "note": "old naming scheme until 1.10",
           "id": "MinecartCommandBlock",
-          "id1": "commandblock_minecart",
           "name": "CommandBlock Minecart",
           "catcolor": "DarkOrange",
           "color": "HotPink"
         },
         {
+          "id": "commandblock_minecart",
+          "catcolor": "DarkOrange",
+          "color": "HotPink"
+        },
+        {
+          "note": "old naming scheme until 1.10",
           "id": "MinecartRideable",
-          "id1": "minecart",
           "name": "Minecart",
           "catcolor": "DarkOrange",
           "color": "#a0a0a0"
         },
         {
+          "id": "minecart",
+          "catcolor": "DarkOrange",
+          "color": "#a0a0a0"
+        },
+        {
+          "note": "old naming scheme until 1.10",
           "id": "MinecartChest",
-          "id1": "chest_minecart",
           "name": "Chest Minecart",
           "catcolor": "DarkOrange",
           "color": "SaddleBrown"
         },
         {
+          "id": "chest_minecart",
+          "catcolor": "DarkOrange",
+          "color": "SaddleBrown"
+        },
+        {
+          "note": "old naming scheme until 1.10",
           "id": "MinecartFurnace",
-          "id1": "furnace_minecart",
           "name": "Furnace Minecart",
           "catcolor": "DarkOrange",
           "color": "#202020"
         },
         {
+          "id": "furnace_minecart",
+          "catcolor": "DarkOrange",
+          "color": "#202020"
+        },
+        {
+          "note": "old naming scheme until 1.10",
           "id": "MinecartTNT",
-          "id1": "tnt_minecart",
           "name": "TNT Minecart",
           "catcolor": "DarkOrange",
           "color": "#ff0000"
         },
         {
+          "id": "tnt_minecart",
+          "catcolor": "DarkOrange",
+          "color": "#ff0000"
+        },
+        {
+          "note": "old naming scheme until 1.10",
           "id": "MinecartHopper",
-          "id1": "hopper_minecart",
           "name": "Hopper Minecart",
           "catcolor": "DarkOrange",
           "color": "#808080"
         },
         {
+          "id": "hopper_minecart",
+          "catcolor": "DarkOrange",
+          "color": "#808080"
+        },
+        {
+          "note": "old naming scheme until 1.10",
           "id": "MinecartSpawner",
-          "id1": "spawner_minecart",
           "name": "Spawner Minecart",
+          "catcolor": "DarkOrange",
+          "color": "Plum"
+        },
+        {
+          "id": "spawner_minecart",
           "catcolor": "DarkOrange",
           "color": "Plum"
         },
@@ -310,14 +439,24 @@
           "color": "OrangeRed"
         },
         {
+          "note": "old naming scheme until 1.10",
           "id": "ItemFrame",
-          "id1": "item_frame",
           "catcolor": "Violet",
           "color": "Seashell"
         },
         {
+          "id": "item_frame",
+          "catcolor": "Violet",
+          "color": "Seashell"
+        },
+        {
+          "note": "old naming scheme until 1.10",
           "id": "ArmorStand",
-          "id1": "armor_stand",
+          "catcolor": "Violet",
+          "color": "Aquamarine"
+        },
+        {
+          "id": "armor_stand",
           "catcolor": "Violet",
           "color": "Aquamarine"
         }

@@ -43,7 +43,9 @@ HEADERS += \
     zipreader.h \
     clamp.h \
     jumpto.h \
-    pngexport.h
+    pngexport.h \
+    flatteningconverter.h \
+    paletteentry.h
 SOURCES += \
 	  labelledslider.cpp \
     biomeidentifier.cpp \
@@ -68,7 +70,8 @@ SOURCES += \
     worldsave.cpp \
     zipreader.cpp \
     jumpto.cpp \
-    pngexport.cpp
+    pngexport.cpp \
+    flatteningconverter.cpp
 RESOURCES = minutor.qrc
 
 win32:SOURCES += zlib/adler32.c \
