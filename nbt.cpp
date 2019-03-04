@@ -3,12 +3,16 @@
 #include <QByteArray>
 #include <QDebug>
 #include <QStringList>
+#include <typeinfo>
+#include <QHashIterator> 
 
 #include "./nbt.h"
 #include "zlib/zlib.h"
 
 // this handles decoding the gzipped level.dat
 NBT::NBT(const QString level) {
+  qDebug().nospace() << "file is " << qPrintable(level) ;
+
   root = &NBT::Null;  // just in case we die
 
   QFile f(level);
@@ -20,6 +24,7 @@ NBT::NBT(const QString level) {
   z_stream strm;
   static const int CHUNK_SIZE = 8192;
   char out[CHUNK_SIZE];
+  memset(out, 0, sizeof(out));
   strm.zalloc = Z_NULL;
   strm.zfree = Z_NULL;
   strm.opaque = Z_NULL;
@@ -138,6 +143,90 @@ const qint32 *Tag::toIntArray() const {
 const QVariant Tag::getData() const {
   qWarning() << "Unhandled getData";
   return QVariant();
+}
+
+const QString Tag::getTypeName() const {
+	const char* pName = "Unknown";
+
+    if (typeid(this) == typeid(Tag_Byte)) {
+		pName = "Tag_Byte";
+	}
+    if (typeid(this) == typeid(Tag_Short)) {
+		pName = "Tag_Short";
+	}
+    if (typeid(this) == typeid(Tag_Int)) {
+		pName = "Tag_Int";
+	}
+    if (typeid(this) == typeid(Tag_Long)) {
+		pName = "Tag_Long";
+	}
+    if (typeid(this) == typeid(Tag_Float)) {
+		pName = "Tag_Float";
+	}
+    if (typeid(this) == typeid(Tag_Double)) {
+		pName = "Tag_Double";
+	}
+    if (typeid(this) == typeid(Tag_Byte_Array)) {
+		pName = "Tag_Byte_Array";
+	}
+    if (typeid(this) == typeid(Tag_String)) {
+		pName = "Tag_String";
+	}
+    if (typeid(this) == typeid(Tag_List)) {
+		pName = "Tag_List";
+	}
+    if (typeid(this) == typeid(Tag_Compound)) {
+		pName = "Tag_Compound";
+	}
+    if (typeid(this) == typeid(Tag_Int_Array)) {
+		pName = "Tag_Int_Array";
+	}
+    if (typeid(this) == typeid(Tag_Long_Array)) {
+		pName = "Tag_Long_Array";
+	}
+    return QString::fromLatin1(reinterpret_cast<const char *>(pName));
+}
+
+const quint32 Tag::getType() const {
+	quint32 u32Type = Tag::Unknonw;
+
+    if (typeid(this) == typeid(Tag_Byte)) {
+		u32Type = 1;
+	}
+    if (typeid(this) == typeid(Tag_Short)) {
+		u32Type = 2;
+	}
+    if (typeid(this) == typeid(Tag_Int)) {
+		u32Type = 3;
+	}
+    if (typeid(this) == typeid(Tag_Long)) {
+		u32Type = 4;
+	}
+    if (typeid(this) == typeid(Tag_Float)) {
+		u32Type = 5;
+	}
+    if (typeid(this) == typeid(Tag_Double)) {
+		u32Type = 6;
+	}
+    if (typeid(this) == typeid(Tag_Byte_Array)) {
+		u32Type = 7;
+	}
+    if (typeid(this) == typeid(Tag_String)) {
+		u32Type = 8;
+	}
+    if (typeid(this) == typeid(Tag_List)) {
+		u32Type = 9;
+	}
+    if (typeid(this) == typeid(Tag_Compound)) {
+		u32Type = 10;
+	}
+    if (typeid(this) == typeid(Tag_Int_Array)) {
+		u32Type = 11;
+	}
+    if (typeid(this) == typeid(Tag_Long_Array)) {
+		u32Type = 12;
+	}
+    return u32Type;
 }
 
 Tag_Byte::Tag_Byte(TagDataStream *s) {
@@ -269,6 +358,15 @@ const QString Tag_Byte_Array::toString() const {
 
   return "<Binary data>";
 }
+const QString Tag_Byte_Array::getTypeName() const {
+	return "ByteArray";
+}
+const quint32 Tag_Byte_Array::getType() const {
+	return Tag::ByteArray;
+}
+
+
+
 
 Tag_String::Tag_String(TagDataStream *s) {
   int len = s->r16();
@@ -307,6 +405,7 @@ Tag_List::Tag_List(TagDataStream *s) {
     case 9: setListData<Tag_List>(&data, len, s); break;
     case 10: setListData<Tag_Compound>(&data, len, s); break;
     case 11: setListData<Tag_Int_Array>(&data, len, s); break;
+    case 12: setListData<Tag_Long_Array>(&data, len, s); break;
     default: throw "Unknown type";
   }
 }
@@ -319,7 +418,7 @@ int Tag_List::length() const {
   return data.count();
 }
 const Tag *Tag_List::at(int index) const {
-  return data[index];
+	return data[index];
 }
 
 const QString Tag_List::toString() const {
@@ -340,6 +439,22 @@ const QVariant Tag_List::getData() const {
   }
   return lst;
 }
+const QString Tag_List::getTypeName() const {
+	return "List";
+}
+const quint32 Tag_List::getType() const {
+	return Tag::List;
+}
+void Tag_List::PrintDebugInfo() {
+	//debug
+	qDebug().nospace() << "list content:";
+	for(int i=0; i<data.size(); ++i)
+	{
+		qDebug().nospace() << "value:" << data[i]->toString()  ;
+	}
+}	
+
+
 
 Tag_Compound::Tag_Compound(TagDataStream *s) {
   quint8 type;
@@ -360,9 +475,12 @@ Tag_Compound::Tag_Compound(TagDataStream *s) {
       case 9: child = new Tag_List(s); break;
       case 10: child = new Tag_Compound(s); break;
       case 11: child = new Tag_Int_Array(s); break;
+      case 12: child = new Tag_Long_Array(s); break;
+	  //case 0: child = 0;
       default: throw "Unknown tag";
     }
     children[key] = child;
+	//qDebug().nospace() << "compound key:" << key;
   }
 }
 Tag_Compound::~Tag_Compound() {
@@ -373,9 +491,12 @@ bool Tag_Compound::has(const QString key) const {
   return children.contains(key);
 }
 const Tag *Tag_Compound::at(const QString key) const {
-  if (!children.contains(key))
-    return &NBT::Null;
-  return children[key];
+
+	if (!children.contains(key)) 
+	{
+		return &NBT::Null;
+	}
+	return children[key];
 }
 
 const QString Tag_Compound::toString() const {
@@ -395,6 +516,23 @@ const QVariant Tag_Compound::getData() const {
   }
   return map;
 }
+const QString Tag_Compound::getTypeName() const {
+	return "Compound";
+}
+const quint32 Tag_Compound::getType() const {
+	return Tag::Compound;
+}
+
+void Tag_Compound::PrintDebugInfo() {
+	//debug 
+	qDebug().nospace() << "compound content:";
+	QHashIterator<QString, Tag*> i(children);
+	while(i.hasNext()){
+		i.next();
+		qDebug().nospace() << "key:" << i.key() << " value:" << i.value()->toString() ;
+	}   
+}
+
 
 Tag_Int_Array::Tag_Int_Array(TagDataStream *s) {
   len = s->r32();
@@ -408,6 +546,9 @@ Tag_Int_Array::~Tag_Int_Array() {
 const qint32 *Tag_Int_Array::toIntArray() const {
   return data;
 }
+//const quint8* Tag_Int_Array::toByteArray() const {
+//  return (quint8*)data;
+//}
 int Tag_Int_Array::length() const {
   return len;
 }
@@ -430,6 +571,65 @@ const QVariant Tag_Int_Array::getData() const {
 
   return ret;
 }
+const QString Tag_Int_Array::getTypeName() const {
+	return "IntArray";
+}
+const quint32 Tag_Int_Array::getType() const {
+	return Tag::IntArray;
+}
+
+
+
+
+
+Tag_Long_Array::Tag_Long_Array(TagDataStream *s) {
+  //len = s->r64();
+  len = s->r32();	// length is 32bit
+  data = new qint64[len];
+  for (int i = 0; i < len; i++)
+    data[i] = s->r64();
+}
+Tag_Long_Array::~Tag_Long_Array() {
+  delete[] data;
+}
+const qint64 *Tag_Long_Array::toLongArray() const {
+  return data;
+}
+//const quint8* Tag_Long_Array::toByteArray() const {
+//  return (quint8*)data;
+//}
+int Tag_Long_Array::length() const {
+  return len;
+}
+
+const QString Tag_Long_Array::toString() const {
+  QStringList ret;
+  ret << "[";
+  for (int i = 0; i < len; ++i) {
+    ret << QString::number(data[i]) << ",";
+  }
+  ret.last() = "]";
+  return ret.join("");
+}
+
+const QVariant Tag_Long_Array::getData() const {
+  QList<QVariant> ret;
+  for (int i = 0; i < len; ++i) {
+    ret.push_back(data[i]);
+  }
+
+  return ret;
+}
+const QString Tag_Long_Array::getTypeName() const {
+	return "LongArray";
+}
+const quint32 Tag_Long_Array::getType() const {
+	return Tag::LongArray;
+}
+
+
+
+
 
 TagDataStream::TagDataStream(const char *data, int len) {
   this->data = (const quint8 *)data;

@@ -38,6 +38,21 @@ class Tag {
   virtual const quint8 *toByteArray() const;
   virtual const qint32 *toIntArray() const;
   virtual const QVariant getData() const;
+  virtual const QString getTypeName() const;
+  virtual const quint32 getType() const;
+  const static quint32 Unknonw   =  0;
+  const static quint32 Byte      =  1;
+  const static quint32 Short     =  2;
+  const static quint32 Int       =  3;
+  const static quint32 Long      =  4;
+  const static quint32 Float     =  5;
+  const static quint32 Double    =  6;
+  const static quint32 ByteArray =  7;
+  const static quint32 String    =  8;
+  const static quint32 List      =  9;
+  const static quint32 Compound  = 10;
+  const static quint32 IntArray  = 11;
+  const static quint32 LongArray = 12;
 };
 
 class NBT {
@@ -126,6 +141,8 @@ class Tag_Byte_Array : public Tag {
   const quint8 *toByteArray() const;
   virtual const QString toString() const;
   virtual const QVariant getData() const;
+  virtual const QString getTypeName() const;
+  virtual const quint32 getType() const;
  private:
   const quint8 *data;
   int len;
@@ -148,6 +165,9 @@ class Tag_List : public Tag {
   int length() const;
   virtual const QString toString() const;
   virtual const QVariant getData() const;
+  virtual const QString getTypeName() const;
+  virtual const quint32 getType() const;
+  void PrintDebugInfo();
  private:
   QList<Tag *> data;
 };
@@ -160,6 +180,9 @@ class Tag_Compound : public Tag {
   const Tag *at(const QString key) const;
   virtual const QString toString() const;
   virtual const QVariant getData() const;
+  virtual const QString getTypeName() const;
+  virtual const quint32 getType() const;
+  void PrintDebugInfo();
  private:
   QHash<QString, Tag *> children;
 };
@@ -170,11 +193,32 @@ class Tag_Int_Array : public Tag {
   ~Tag_Int_Array();
   int length() const;
   const qint32 *toIntArray() const;
+//  const quint8* toByteArray() const;
   virtual const QString toString() const;
   virtual const QVariant getData() const;
+  virtual const QString getTypeName() const;
+  virtual const quint32 getType() const;
  private:
   int len;
   qint32 *data;
+};
+
+
+
+class Tag_Long_Array : public Tag {
+ public:
+  explicit Tag_Long_Array(TagDataStream *s);
+  ~Tag_Long_Array();
+  int length() const;
+  const qint64 *toLongArray() const;
+//  const quint8* toByteArray() const;
+  virtual const QString toString() const;
+  virtual const QVariant getData() const;
+  virtual const QString getTypeName() const;
+  virtual const quint32 getType() const;
+ private:
+  int len;
+  qint64 *data;
 };
 
 #endif  // NBT_H_
