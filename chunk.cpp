@@ -24,28 +24,44 @@ void Chunk::load(const NBT &nbt) {
 
 	//const void* pBiomesArray = biomes->toByteArray();
 	/* debug */
-	const void* pBiomesArray = NULL;
+	//qDebug().nospace() << "biomes " << biomes->toString();
+	//qDebug().nospace() << "this->biomes " << qPrintable(p1) ;
+	//qDebug().nospace() << "biomes->toByteArray() " << QString("%1").arg((quint64)pBiomesArray, 0, 16)  ;
+	const int nBiomesLength = biomes->length();
+	//qDebug().nospace() << "biomes length " << nBiomesLength;
+	//memcpy(this->biomes, biomes->toByteArray(), biomes->length());
 	if ( biomes->getType() == Tag::ByteArray)
 	{
+		const unsigned char* pBiomesArray = NULL;
 		pBiomesArray = biomes->toByteArray();
+		if( pBiomesArray != NULL ) {
+			for (int i = 0; i < nBiomesLength; i++) {
+			  this->biomes[i] = pBiomesArray[i];
+			}
+		}
 	} 
 	else if ( biomes->getType() == Tag::IntArray)
 	{
+		const int* pBiomesArray = NULL;
 		pBiomesArray = biomes->toIntArray();
+		if( pBiomesArray != NULL ) {
+			for (int i = 0; i < nBiomesLength; i++) {
+			  this->biomes[i] = pBiomesArray[i];
+			}
+		}
 	}
 	else
 	{
+		const unsigned char* pBiomesArray = NULL;
 		pBiomesArray = biomes->toByteArray();
+		if( pBiomesArray != NULL ) {
+			for (int i = 0; i < nBiomesLength; i++) {
+			  this->biomes[i] = pBiomesArray[i];
+			}
+		}
 	}
-  //qDebug().nospace() << "this->biomes " << qPrintable(p1) ;
-  //qDebug().nospace() << "biomes->toByteArray() " << QString("%1").arg((quint64)pBiomesArray, 0, 16)  ;
-  const int nBiomesLength = biomes->length();
   
 
-  //memcpy(this->biomes, biomes->toByteArray(), biomes->length());
-    if( pBiomesArray != NULL ) {
-        memcpy(this->biomes, pBiomesArray, nBiomesLength);  
-    }
 
   auto sections = level->at("Sections");
   int numSections = sections->length();
@@ -70,6 +86,26 @@ void Chunk::load(const NBT &nbt) {
 	if( section->getType() == Tag::Compound ) {
 		//((Tag_Compound*)section)->PrintDebugInfo();
 	}
+
+	
+	/////////////////////////
+	// data part.  
+	// i moved it to here before block,
+	// because new data struct with palette may rewrite data later.
+	auto section_data = section->at("Data");
+	//qDebug().nospace() << "section_data type is " << section_data->getType() ;
+	if( section_data == &NBT::Null ) {
+		//qDebug().nospace() << "section_data is null" ;
+	} else {	
+		//qDebug().nospace() << "section_data type is " << section_data->getType() ;
+		//qDebug().nospace() << "section_data length" << section_data->length();
+		//qDebug().nospace() << "section_data " << section_data->getData();
+	    memcpy(cs->data, section_data->toByteArray(), 2048);
+	}
+
+
+	/////////////////////////
+	// block part
 	auto section_blocks = section->at("Blocks");
     //qDebug().nospace() << "section_blocks length " << QString("%1").arg((quint64)section_blocks->length(), 0, 16)  ;
 	// added by hzw
@@ -113,18 +149,20 @@ void Chunk::load(const NBT &nbt) {
 		//qDebug().nospace() << "nBlockBitWidth " << nBlockBitWidth;
 
 		unsigned char PaletteMap[256];
+		unsigned char PaletteMapData[256];
 		auto section_palette = section->at("Palette");
 		if( section_palette->getType() == Tag::List ) 
 		{
 			Tag_List* section_palette_real = (Tag_List*)section_palette;
 			/*
 			if( nRawLength != 256 ) {
-				qDebug().nospace() << "non-256 palette length " << section_palette_real->length();
-				//section_palette_real->PrintDebugInfo();
+				//qDebug().nospace() << "non-256 palette length " << section_palette_real->length();
 				//qDebug().nospace() << section_blocks->toString();
 			}
 			*/
+			//section_palette_real->PrintDebugInfo();
 			memset(PaletteMap, 14, 256);
+			memset(PaletteMapData, 0, 256);
 
 			for( int i=0; i<256; ++i ) 
 			{ 
@@ -148,9 +186,26 @@ void Chunk::load(const NBT &nbt) {
 					{
 						PaletteMap[i] = 2;
 					} 
-					else if(0 == qstrItemName.compare(QString("minecraft:dirt")))
+					else if(0 == qstrItemName.compare(QString("minecraft:grass_block")))
+					{
+						PaletteMap[i] = 2;
+					}
+
+					// all kinds of dirt
+					else if(0 == qstrItemName.compare(QString("minecraft:dirt"))) // 3:0
 					{
 						PaletteMap[i] = 3;
+						PaletteMapData[i] = 0;
+					}
+					else if(0 == qstrItemName.compare(QString("minecraft:coarse_dirt")))
+					{
+						PaletteMap[i] = 3;
+						PaletteMapData[i] = 1;
+					}
+					else if(0 == qstrItemName.compare(QString("minecraft:podzol"))) // 3:2
+					{
+						PaletteMap[i] = 3;
+						PaletteMapData[i] = 2;
 					}
 					else if(0 == qstrItemName.compare(QString("minecraft:cobble_stone")))
 					{
@@ -208,10 +263,31 @@ void Chunk::load(const NBT &nbt) {
 					{
 						PaletteMap[i] = 17;
 					}
+
+					// all leaves are 18, base on different biomes
 					else if(0 == qstrItemName.compare(QString("minecraft:oak_leaves")))
 					{
 						PaletteMap[i] = 18;
 					}
+					else if(0 == qstrItemName.compare(QString("minecraft:spruce_leaves"))) // 18:1
+					{
+						PaletteMap[i] = 18;
+						PaletteMapData[i] = 1;
+					}
+					else if(0 == qstrItemName.compare(QString("minecraft:birch_leaves")))
+					{
+						PaletteMap[i] = 18;
+					}
+					else if(0 == qstrItemName.compare(QString("minecraft:acacia_leaves")))
+					{
+						PaletteMap[i] = 18;
+					}
+					else if(0 == qstrItemName.compare(QString("minecraft:jungle_leaves")))
+					{
+						PaletteMap[i] = 18;
+					}
+
+
 					else if(0 == qstrItemName.compare(QString("minecraft:sponge")))
 					{
 						PaletteMap[i] = 19;
@@ -224,6 +300,34 @@ void Chunk::load(const NBT &nbt) {
 					{
 						PaletteMap[i] = 21;
 					}
+
+					// all tall grass
+					else if(0 == qstrItemName.compare(QString("minecraft:tall_grass"))) // 31:0
+					{
+						PaletteMap[i] = 31;
+						PaletteMapData[i] = 1;
+					}
+					else if(0 == qstrItemName.compare(QString("minecraft:fern"))) // 31:2
+					{
+						PaletteMap[i] = 31;
+						PaletteMapData[i] = 2;
+					}
+					else if(0 == qstrItemName.compare(QString("minecraft:poppy")))
+					{
+						PaletteMap[i] = 38;
+					}
+					else if(0 == qstrItemName.compare(QString("minecraft:mossy_cobblestone")))
+					{
+						PaletteMap[i] = 48;
+					}
+					else if(0 == qstrItemName.compare(QString("minecraft:wheat")))
+					{
+						PaletteMap[i] = 59; // immuature wheat
+					}
+					else if(0 == qstrItemName.compare(QString("minecraft:farmland")))
+					{
+						PaletteMap[i] = 60;	// wet farm land
+					}
 					else if(0 == qstrItemName.compare(QString("minecraft:snow")))
 					{
 						PaletteMap[i] = 78;
@@ -232,11 +336,25 @@ void Chunk::load(const NBT &nbt) {
 					{
 						PaletteMap[i] = 79;
 					}
-					else if(0 == qstrItemName.compare(QString("minecraft:")))
+					else if(0 == qstrItemName.compare(QString("minecraft:jack_o_lantern")))
 					{
-						PaletteMap[i] = 0;
+						PaletteMap[i] = 91;
 					}
-					else if(0 == qstrItemName.compare(QString("minecraft:birch_leaves")))
+					else if(0 == qstrItemName.compare(QString("minecraft:stone_brick_stairs")))
+					{
+						PaletteMap[i] = 109;
+					}
+					else if(0 == qstrItemName.compare(QString("minecraft:sunflower"))) // 175:0
+					{
+						PaletteMap[i] = 175;
+						PaletteMapData[i] = 0;
+					}
+					else if(0 == qstrItemName.compare(QString("minecraft:large_fern"))) // 175:3
+					{
+						PaletteMap[i] = 175;
+						PaletteMapData[i] = 3;
+					}
+					else if(0 == qstrItemName.compare(QString("minecraft:")))
 					{
 						PaletteMap[i] = 0;
 					}
@@ -253,10 +371,6 @@ void Chunk::load(const NBT &nbt) {
 						PaletteMap[i] = 0;
 					}
 					else if(0 == qstrItemName.compare(QString("minecraft:redstone_ore")))
-					{
-						PaletteMap[i] = 0;
-					}
-					else if(0 == qstrItemName.compare(QString("minecraft:grass_block")))
 					{
 						PaletteMap[i] = 0;
 					}
@@ -284,15 +398,7 @@ void Chunk::load(const NBT &nbt) {
 					{
 						PaletteMap[i] = 0;
 					}
-					else if(0 == qstrItemName.compare(QString("minecraft:acacia_leaves")))
-					{
-						PaletteMap[i] = 0;
-					}
 					else if(0 == qstrItemName.compare(QString("minecraft:acacia_log")))
-					{
-						PaletteMap[i] = 0;
-					}
-					else if(0 == qstrItemName.compare(QString("minecraft:tall_grass")))
 					{
 						PaletteMap[i] = 0;
 					}
@@ -325,10 +431,6 @@ void Chunk::load(const NBT &nbt) {
 						PaletteMap[i] = 0;
 					}
 					else if(0 == qstrItemName.compare(QString("minecraft:vine")))
-					{
-						PaletteMap[i] = 0;
-					}
-					else if(0 == qstrItemName.compare(QString("minecraft:jungle_leaves")))
 					{
 						PaletteMap[i] = 0;
 					}
@@ -372,9 +474,17 @@ void Chunk::load(const NBT &nbt) {
 					{
 						PaletteMap[i] = 0;
 					}
+					else if(0 == qstrItemName.compare(QString("minecraft:cobble_stone")))
+					{
+						PaletteMap[i] = 0;
+					}
+					else if(0 == qstrItemName.compare(QString("minecraft:redstone_wire")))
+					{
+						PaletteMap[i] = 0;
+					}
 					else
 					{
-						//qDebug().nospace() << "unhandled palette item " << qstrItemName ;
+						qDebug().nospace() << "unhandled palette item " << qstrItemName ;
 					}
 				}
 
@@ -389,70 +499,80 @@ void Chunk::load(const NBT &nbt) {
 		for (int i = 0; i < 4096 ; i++) {
 		//for (int i = 0; i < 4096 && i< nRawLength*16; i++) {
 			//cs->blocks[i] = raw[i];
+			unsigned char u8PaletteIndex = 0;
 			if (nBlockBitWidth == 4)
 			{
 				if( i%2 == 0 ) {
-					//cs->blocks[i] = PaletteMap[raw[i/2] % 4 ]; // wierd correct...
-					unsigned char u8PaletteIndex = raw[i/2] % 16;
-					//qDebug().nospace() << "PaletteIndex " << u8PaletteIndex ;
-					cs->blocks[i] = PaletteMap[u8PaletteIndex];
+					u8PaletteIndex = raw[i/2] % 16;
 				}
 				else 
 				{
-					cs->blocks[i] = PaletteMap[raw[i/2] >> 4];
+					u8PaletteIndex = raw[i/2] >> 4;
 				}
-				
+				//qDebug().nospace() << "PaletteIndex " << u8PaletteIndex ;
+				cs->blocks[i] = PaletteMap[u8PaletteIndex];
+				if( i%2 == 0 ) {
+					cs->data[i/2] = cs->data[i/2] & 0xF0;
+					cs->data[i/2] = cs->data[i/2] | (PaletteMapData[u8PaletteIndex]&0x0F);
+				}
+				else
+				{
+					cs->data[i/2] = cs->data[i/2] & 0x0F;
+					cs->data[i/2] = cs->data[i/2] | (PaletteMapData[u8PaletteIndex]<<4);
+				}
 			} 
 			else if(nBlockBitWidth == 5)
 			{
 				
 				if ( i*5%8 == 0 )
 				{
-					cs->blocks[i] = PaletteMap[ raw[i*5/8] & 31 ];
+					u8PaletteIndex = raw[i*5/8] & 31;
 				}
 				else if ( (i*5)%8 < 3 )
 				{
-					cs->blocks[i] = PaletteMap[ (raw[(i*5)/8] >> ((i*5)%8) ) & 31 ];
+					u8PaletteIndex = (raw[(i*5)/8] >> ((i*5)%8) ) & 31;
 				}
 				else
 				{
-					cs->blocks[i] = PaletteMap[ ((raw[(i*5)/8] >> ((i*5)%8)) + (raw[(i*5)/8+1] << (5 - (i*5+5)%8) )) & 31 ];
+					u8PaletteIndex = ((raw[(i*5)/8] >> ((i*5)%8)) + (raw[(i*5)/8+1] << (5 - (i*5+5)%8) )) & 31;
 				}
+				cs->blocks[i] = PaletteMap[u8PaletteIndex];
 			}
 			else if(nBlockBitWidth == 6)
 			{
 				if ( (i*6)%8 == 0 )
 				{
-					cs->blocks[i] = PaletteMap[ raw[(i*6)/8] & 63 ];
+					u8PaletteIndex = raw[(i*6)/8] & 63;
 				}
 				else if ( (i*6)%8 < 3 )
 				{
-					cs->blocks[i] = PaletteMap[ (raw[(i*6)/8] >> ((i*6)%8) ) & 63 ];
+					u8PaletteIndex = (raw[(i*6)/8] >> ((i*6)%8) ) & 63;
 				}
 				else
 				{
-					cs->blocks[i] = PaletteMap[ ((raw[(i*6)/8] >> ((i*6)%8)) + (raw[(i*6)/8+1] << (6 - (i*6+6)%8) )) & 63 ];
+					u8PaletteIndex = ((raw[(i*6)/8] >> ((i*6)%8)) + (raw[(i*6)/8+1] << (6 - (i*6+6)%8) )) & 63;
 				}
+				cs->blocks[i] = PaletteMap[u8PaletteIndex];
 			}
 			else
 			{
-				/* 
-				// should be correct but never tested so...
+				// should be correct but never full tested so...
 				if ( (i*nBlockBitWidth)%8 == 0 )
 				{
-					cs->blocks[i] = PaletteMap[ raw[(i*nBlockBitWidth)/8] & (2^nBlockBitWidth-1) ];
+					u8PaletteIndex =  raw[(i*nBlockBitWidth)/8] & (2^nBlockBitWidth-1);
 				}
 				else if ( (i*nBlockBitWidth)%8 < 3 )
 				{
-					cs->blocks[i] = PaletteMap[ (raw[(i*nBlockBitWidth)/8] >> ((i*nBlockBitWidth)%8) ) & (2^nBlockBitWidth-1) ];
+					u8PaletteIndex = (raw[(i*nBlockBitWidth)/8] >> ((i*nBlockBitWidth)%8) ) & (2^nBlockBitWidth-1);
 				}
 				else
 				{
-					cs->blocks[i] = PaletteMap[ ((raw[(i*nBlockBitWidth)/8] >> ((i*nBlockBitWidth)%8)) + (raw[(i*nBlockBitWidth)/8+1] << (nBlockBitWidth - (i*nBlockBitWidth+nBlockBitWidth)%8) )) & (2^nBlockBitWidth-1) ];
-				}
-				*/
-				cs->blocks[i] = (i % 256)/8; // test purpose
-				qDebug().nospace() << "unknown bit width " << nBlockBitWidth;
+					u8PaletteIndex = ((raw[(i*nBlockBitWidth)/8] >> ((i*nBlockBitWidth)%8)) + (raw[(i*nBlockBitWidth)/8+1] << (nBlockBitWidth - (i*nBlockBitWidth+nBlockBitWidth)%8) )) & (2^nBlockBitWidth-1) ;
+				}				
+				cs->blocks[i] = PaletteMap[u8PaletteIndex];
+
+				cs->blocks[i] = (i % 256); // test purpose
+				//qDebug().nospace() << "unknown bit width " << nBlockBitWidth;
 			}
 			//cs->blocks[i] = i % 256; // test purpose
 			//cs->blocks[i] = PaletteMap[raw[i*4]];
@@ -484,14 +604,10 @@ void Chunk::load(const NBT &nbt) {
         cs->blocks[i * 2 + 1] |= (raw_add[i] & 0xf0) << 4;
       }
     }
-	//
-	auto section_data = section->at("Data");
-	//qDebug().nospace() << "section_data type is " << section_data->getType() ;
-	if( section_data == &NBT::Null ) {
-		//qDebug().nospace() << "section_data is null" ;
-	} else {
-	    memcpy(cs->data, section_data->toByteArray(), 2048);
-	}
+
+
+
+
     memcpy(cs->light, section->at("BlockLight")->toByteArray(), 2048);
     int idx = section->at("Y")->toInt();
     this->sections[idx] = cs;
