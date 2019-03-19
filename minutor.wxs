@@ -1,23 +1,23 @@
 <?xml version="1.0"?>
 <!-- Increase product version each release.. and that's the only change -->
-<?define ProductVersion="2.1.2"?>
+<?define ProductVersion="2.2.0"?>
 <?define ProductUpgradeCode="5da343bf-7e4f-4849-acb0-da8c6682a71e"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 	<Product Id="*" Name="Minutor" Language="1033" Version="$(var.ProductVersion)" Manufacturer="Sean Kasun" UpgradeCode="$(var.ProductUpgradeCode)">
 		<Package InstallerVersion="200" Compressed="yes" />
 		<Media Id="1" Cabinet="minutor.cab" EmbedCab="yes" CompressionLevel="high" />
-		
+
 		<Icon Id="ProductIcon" SourceFile="icon.ico" />
 		<Property Id="ARPPRODUCTICON" Value="ProductIcon" />
 		<Property Id="ARPHELPLINK" Value="http://seancode.com/minutor" />
 		<Property Id="ARPURLINFOABOUT" Value="http://seancode.com" />
 		<Property Id="ARPNOREPAIR" Value="1" />
-		
+
 		<Upgrade Id="$(var.ProductUpgradeCode)">
 			<UpgradeVersion Minimum="$(var.ProductVersion)" OnlyDetect="yes" Property="NEWESTVERSIONDETECTED" />
 			<UpgradeVersion Minimum="0.0.0" Maximum="$(var.ProductVersion)" IncludeMinimum="yes" IncludeMaximum="no" Property="OLDERVERSIONBEINGUPGRADED" />
 		 </Upgrade>
-		 
+
 		<Condition Message="A newer version of this software is already installed.">NOT NEWERVERSIONDETECTED</Condition>
 
 		<Directory Id="TARGETDIR" Name="SourceDir">
@@ -28,7 +28,7 @@
 				<Directory Id="ApplicationProgramsFolder" Name="Minutor" />
 			</Directory>
 		</Directory>
-		
+
 		<DirectoryRef Id="INSTALLDIR">
 			<Component Id="minutor.exe" Guid="670f74ff-eb96-4003-828a-2f24e5a42539">
 				<File Id="minutor.exe" Source="minutor.exe" KeyPath="yes" Checksum="yes">
@@ -40,15 +40,15 @@
 				<RemoveFolder Id="DeleteShortcutFolder" Directory="ApplicationProgramsFolder" On="uninstall" />
 			</Component>
 		</DirectoryRef>
-		
+
 		<InstallExecuteSequence>
 			<RemoveExistingProducts After="InstallValidate" />
 		</InstallExecuteSequence>
-		
+
 		<Feature Id="DefaultFeature" Level="1">
 			<ComponentRef Id="minutor.exe" />
 		</Feature>
-		
+
 		<Property Id="WIXUI_INSTALLDIR">INSTALLDIR</Property>
 		<UIRef Id="MyWixUI_InstallDir" />
 	</Product>
