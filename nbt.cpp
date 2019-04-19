@@ -144,11 +144,18 @@ const QVariant Tag::getData() const {
   return QVariant();
 }
 
+// Tag_Byte
+
 Tag_Byte::Tag_Byte(TagDataStream *s) {
   data = s->r8();
 }
+
 int Tag_Byte::toInt() const {
-  return data;
+  return (signed char)data;
+}
+
+unsigned int Tag_Byte::toUInt() const {
+  return (unsigned char)data;
 }
 
 const QString Tag_Byte::toString() const {
@@ -159,12 +166,18 @@ const QVariant Tag_Byte::getData() const {
   return data;
 }
 
+// Tag_Short
+
 Tag_Short::Tag_Short(TagDataStream *s) {
   data = s->r16();
 }
 
 int Tag_Short::toInt() const {
-  return data;
+  return (signed short)data;
+}
+
+unsigned int Tag_Short::toUInt() const {
+  return (unsigned short)data;
 }
 
 const QString Tag_Short::toString() const {
@@ -174,6 +187,8 @@ const QString Tag_Short::toString() const {
 const QVariant Tag_Short::getData() const {
   return data;
 }
+
+// Tag_Int
 
 Tag_Int::Tag_Int(TagDataStream *s) {
   data = s->r32();
@@ -193,6 +208,8 @@ const QVariant Tag_Int::getData() const {
 double Tag_Int::toDouble() const {
   return static_cast<double>(data);
 }
+
+// Tag_Long
 
 Tag_Long::Tag_Long(TagDataStream *s) {
   data = s->r64();
@@ -214,6 +231,8 @@ const QVariant Tag_Long::getData() const {
   return data;
 }
 
+// Tag_Float
+
 Tag_Float::Tag_Float(TagDataStream *s) {
   union {qint32 d; float f;} fl;
   fl.d = s->r32();
@@ -231,6 +250,8 @@ const QVariant Tag_Float::getData() const {
   return data;
 }
 
+// Tag_Double
+
 Tag_Double::Tag_Double(TagDataStream *s) {
   union {qint64 d; double f;} fl;
   fl.d = s->r64();
@@ -247,6 +268,8 @@ const QVariant Tag_Double::getData() const {
 const QString Tag_Double::toString() const {
   return QString::number(data);
 }
+
+// Tag_Byte_Array
 
 Tag_Byte_Array::Tag_Byte_Array(TagDataStream *s) {
   len = s->r32();
@@ -274,6 +297,8 @@ const QString Tag_Byte_Array::toString() const {
   return "<Binary data>";
 }
 
+// Tag_String
+
 Tag_String::Tag_String(TagDataStream *s) {
   int len = s->r16();
   data = s->utf8(len);
@@ -285,6 +310,8 @@ const QString Tag_String::toString() const {
 const QVariant Tag_String::getData() const {
   return data;
 }
+
+// Tag_List
 
 template <class T>
 static void setListData(QList<Tag *> *data, int len,
@@ -346,6 +373,8 @@ const QVariant Tag_List::getData() const {
   return lst;
 }
 
+// Tag_Compound
+
 Tag_Compound::Tag_Compound(TagDataStream *s) {
   quint8 type;
   while ((type = s->r8()) != 0) {
@@ -402,6 +431,8 @@ const QVariant Tag_Compound::getData() const {
   return map;
 }
 
+// Tag_Int_Array
+
 Tag_Int_Array::Tag_Int_Array(TagDataStream *s) {
   len = s->r32();
   data = new qint32[len];
@@ -437,6 +468,8 @@ const QVariant Tag_Int_Array::getData() const {
   return ret;
 }
 
+// Tag_Long_Array
+
 Tag_Long_Array::Tag_Long_Array(TagDataStream *s) {
   len = s->r32();
   data = new qint64[len];
@@ -471,6 +504,8 @@ const QVariant Tag_Long_Array::getData() const {
 
   return ret;
 }
+
+// TagDataStream
 
 TagDataStream::TagDataStream(const char *data, int len) {
   this->data = (const quint8 *)data;
