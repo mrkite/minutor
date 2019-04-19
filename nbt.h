@@ -58,7 +58,8 @@ class NBT {
 class Tag_Byte : public Tag {
  public:
   explicit Tag_Byte(TagDataStream *s);
-  int toInt() const;
+  signed   int toInt() const;
+  unsigned int toUInt() const;
   virtual const QString toString() const;
   virtual const QVariant getData() const;
  private:
@@ -68,7 +69,8 @@ class Tag_Byte : public Tag {
 class Tag_Short : public Tag {
  public:
   explicit Tag_Short(TagDataStream *s);
-  int toInt() const;
+  signed   int toInt() const;
+  unsigned int toUInt() const;
   virtual const QString toString() const;
   virtual const QVariant getData() const;
  private:

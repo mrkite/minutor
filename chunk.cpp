@@ -81,16 +81,19 @@ void Chunk::load(const NBT &nbt) {
     int numSections = sections->length();
     // loop over all stored Sections, they are not guarantied to be ordered or consecutive
     for (int s = 0; s < numSections; s++) {
-      ChunkSection *cs = new ChunkSection();
       const Tag * section = sections->at(s);
-      if (version >= 1519) {
-        loadSection1519(cs, section);
-      } else {
-        loadSection1343(cs, section);
-      }
-
       int idx = section->at("Y")->toInt();
-      this->sections[idx] = cs;
+      // only sections 0..15 contain block data
+      if ((idx >=0) && (idx <16)) {
+        ChunkSection *cs = new ChunkSection();
+        if (version >= 1519) {
+          loadSection1519(cs, section);
+        } else {
+          loadSection1343(cs, section);
+        }
+
+        this->sections[idx] = cs;
+      }
     }
   }
 
@@ -188,48 +191,64 @@ void Chunk::loadSection1343(ChunkSection *cs, const Tag *section) {
 void Chunk::loadSection1519(ChunkSection *cs, const Tag *section) {
   BlockIdentifier &bi = BlockIdentifier::Instance();
   // decode Palette to be able to map BlockStates
-  auto rawPalette = section->at("Palette");
-  cs->paletteLength = rawPalette->length();
-  cs->palette = new PaletteEntry[cs->paletteLength];
-  for (int j = 0; j < rawPalette->length(); j++) {
-    // get name and hash it to hid
-    cs->palette[j].name = rawPalette->at(j)->at("Name")->toString();
-    uint hid  = qHash(cs->palette[j].name);
-    // copy all other properties
-    if (rawPalette->at(j)->has("Properties"))
+  if (section->has("Palette")) {
+    auto rawPalette = section->at("Palette");
+    cs->paletteLength = rawPalette->length();
+    cs->palette = new PaletteEntry[cs->paletteLength];
+    for (int j = 0; j < rawPalette->length(); j++) {
+      // get name and hash it to hid
+      cs->palette[j].name = rawPalette->at(j)->at("Name")->toString();
+      uint hid  = qHash(cs->palette[j].name);
+      // copy all other properties
+      if (rawPalette->at(j)->has("Properties"))
       cs->palette[j].properties = rawPalette->at(j)->at("Properties")->getData().toMap();
 
-    // check vor variants
-    BlockInfo const & block = bi.getBlockInfo(hid);
-    if (block.hasVariants()) {
+      // check vor variants
+      BlockInfo const & block = bi.getBlockInfo(hid);
+      if (block.hasVariants()) {
       // test all available properties
       for (auto key : cs->palette[j].properties.keys()) {
         QString vname = cs->palette[j].name + ":" + key + ":" + cs->palette[j].properties[key].toString();
         uint vhid = qHash(vname);
         if (bi.hasBlockInfo(vhid))
           hid = vhid; // use this vaiant instead
+        }
       }
+      // store hash of found variant
+      cs->palette[j].hid  = hid;
     }
-    // store hash of found variant
-    cs->palette[j].hid  = hid;
+  } else {
+    // create a dummy palette
+    cs->palette = new PaletteEntry[1];
+    cs->palette[0].name = "minecraft:air";
+    cs->palette[0].hid  = 0;
   }
 
   // map BlockStates to BlockData
   // todo: bit fidling looks very complicated -> find easier code
-  auto raw = section->at("BlockStates")->toLongArray();
-  int blockStatesLength = section->at("BlockStates")->length();
-  unsigned char *byteData = new unsigned char[8*blockStatesLength];
-  memcpy(byteData, raw, 8*blockStatesLength);
-  std::reverse(byteData, byteData+(8*blockStatesLength));
-  int bitSize = (blockStatesLength)*64/4096;
-  for (int i = 0; i < 4096; i++) {
-    cs->blocks[4095-i] = getBits(byteData, i*bitSize, bitSize);
+  if (section->has("BlockStates")) {
+    auto raw = section->at("BlockStates")->toLongArray();
+    int blockStatesLength = section->at("BlockStates")->length();
+    unsigned char *byteData = new unsigned char[8*blockStatesLength];
+    memcpy(byteData, raw, 8*blockStatesLength);
+    std::reverse(byteData, byteData+(8*blockStatesLength));
+    int bitSize = (blockStatesLength)*64/4096;
+    for (int i = 0; i < 4096; i++) {
+      cs->blocks[4095-i] = getBits(byteData, i*bitSize, bitSize);
+    }
+    delete byteData;
+  } else {
+    // set everything to 0 (minecraft:air)
+    memset(cs->blocks, 0, sizeof(cs->blocks));
   }
-  delete byteData;
 
-  // copy Light data
-//memcpy(cs->skyLight, section->at("SkyLight")->toByteArray(), 2048);
-  memcpy(cs->blockLight, section->at("BlockLight")->toByteArray(), 2048);
+    // copy Light data
+//  if (section->has("SkyLight")) {
+//    memcpy(cs->skyLight, section->at("SkyLight")->toByteArray(), 2048);
+//  }
+  if (section->has("BlockLight")) {
+    memcpy(cs->blockLight, section->at("BlockLight")->toByteArray(), 2048);
+  }
 }
 
 
