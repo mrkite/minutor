@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "biome",
-  "version": "1.13.18w26",
+  "version": "1.14.18w43a",
   "data": [
     {
       "id": 0,
@@ -493,6 +493,21 @@
       "color": "#f2b48d",
       "temperature": 2.0,
       "humidity": 0.0
+    },
+
+    {
+      "id": 168,
+      "name": "Bamboo Jungle",
+      "color": "#768e14",
+      "temperature": 0.95,
+      "humidity": 0.9
+    },
+    {
+      "id": 169,
+      "name": "Bamboo Jungle Hills",
+      "color": "#3b470a",
+      "temperature": 0.95,
+      "humidity": 0.9
     }
   ],
   "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_biomes.json"

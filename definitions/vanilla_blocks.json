@@ -340,6 +340,19 @@
       "spawninside": true
     },
     {
+      "name": "minecraft:bamboo_sapling",
+      "color": "#5c5924",
+      "alpha": 0.3,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
+      "name": "minecraft:bamboo",
+      "color": "#5e9014",
+      "alpha": 0.75,
+      "transparent": true
+    },
+    {
       "name": "minecraft:bedrock",
       "color": "#545454"
     },
@@ -2136,6 +2149,10 @@
       "color": "#128a20"
     },
     {
+      "name": "minecraft:potted_bamboo",
+      "color": "#5c5924"
+    },
+    {
       "name": "minecraft:carrots",
       "color": "#158002",
       "transparent": true,
@@ -3821,28 +3838,44 @@
       "color": "#e4e3c0"
     },
     {
-      "name": "minecraft:dead_tube_coral_block",
-      "color": "#827b78"
+      "name": "minecraft:brain_coral",
+      "color": "#c65598"
     },
     {
-      "name": "minecraft:dead_brain_coral_block",
-      "color": "#7c7672"
+      "name": "minecraft:bubble_coral",
+      "color": "#a118a0"
     },
     {
-      "name": "minecraft:dead_bubble_coral_block",
-      "color": "#847c77"
+      "name": "minecraft:fire_coral",
+      "color": "#a7262f"
     },
     {
-      "name": "minecraft:dead_fire_coral_block",
-      "color": "#847c78"
+      "name": "minecraft:horn_coral",
+      "color": "#d1ba3f"
     },
     {
-      "name": "minecraft:dead_horn_coral_block",
-      "color": "#867e7a"
+      "name": "minecraft:tube_coral",
+      "color": "#3053c5"
     },
     {
-      "name": "minecraft:tube_coral_block",
-      "color": "#3157cf"
+      "name": "minecraft:dead_brain_coral",
+      "color": "#867d79"
+    },
+    {
+      "name": "minecraft:dead_bubble_coral",
+      "color": "#857d79"
+    },
+    {
+      "name": "minecraft:dead_fire_coral",
+      "color": "#89807c"
+    },
+    {
+      "name": "minecraft:dead_horn_coral",
+      "color": "#8f8782"
+    },
+    {
+      "name": "minecraft:dead_tube_coral",
+      "color": "#766f6c"
     },
     {
       "name": "minecraft:brain_coral_block",
@@ -3861,68 +3894,48 @@
       "color": "#d8c842"
     },
     {
-      "name": "minecraft:tube_coral",
-      "color": "#3053c5"
+      "name": "minecraft:tube_coral_block",
+      "color": "#3157cf"
     },
     {
-      "name": "minecraft:brain_coral",
-      "color": "#c65598"
+      "name": "minecraft:dead_brain_coral_block",
+      "color": "#7c7672"
     },
     {
-      "name": "minecraft:bubble_coral",
-      "color": "#a118a0"
+      "name": "minecraft:dead_bubble_coral_block",
+      "color": "#847c77"
     },
     {
-      "name": "minecraft:fire_coral",
-      "color": "#a7262f"
+      "name": "minecraft:dead_fire_coral_block",
+      "color": "#847c78"
     },
     {
-      "name": "minecraft:horn_coral",
-      "color": "#d1ba3f"
+      "name": "minecraft:dead_horn_coral_block",
+      "color": "#867e7a"
     },
     {
-      "name": "minecraft:dead_tube_coral_wall_fan",
-      "color": "#807a76"
+      "name": "minecraft:dead_tube_coral_block",
+      "color": "#827b78"
     },
     {
-      "name": "minecraft:dead_brain_coral_wall_fan",
-      "color": "#857d79"
-    },
-    {
-      "name": "minecraft:dead_bubble_coral_wall_fan",
-      "color": "#8d8782"
-    },
-    {
-      "name": "minecraft:dead_fire_coral_wall_fan",
-      "color": "#7d7673"
-    },
-    {
-      "name": "minecraft:dead_horn_coral_wall_fan",
-      "color": "#867e79"
-    },
-    {
-      "name": "minecraft:tube_coral_wall_fan",
-      "color": "#335cd1"
-    },
-    {
-      "name": "minecraft:brain_coral_wall_fan",
+      "name": "minecraft:brain_coral_fan",
       "color": "#cb549a"
     },
     {
-      "name": "minecraft:bubble_coral_wall_fan",
+      "name": "minecraft:bubble_coral_fan",
       "color": "#a0219f"
     },
     {
-      "name": "minecraft:fire_coral_wall_fan",
+      "name": "minecraft:fire_coral_fan",
       "color": "#9f232e"
     },
     {
-      "name": "minecraft:horn_coral_wall_fan",
+      "name": "minecraft:horn_coral_fan",
       "color": "#ceb73d"
     },
     {
-      "name": "minecraft:dead_tube_coral_fan",
-      "color": "#807a76"
+      "name": "minecraft:tube_coral_fan",
+      "color": "#335cd1"
     },
     {
       "name": "minecraft:dead_brain_coral_fan",
@@ -3941,24 +3954,48 @@
       "color": "#867e79"
     },
     {
-      "name": "minecraft:tube_coral_fan",
-      "color": "#335cd1"
+      "name": "minecraft:dead_tube_coral_fan",
+      "color": "#807a76"
     },
     {
-      "name": "minecraft:brain_coral_fan",
+      "name": "minecraft:brain_coral_wall_fan",
       "color": "#cb549a"
     },
     {
-      "name": "minecraft:bubble_coral_fan",
+      "name": "minecraft:bubble_coral_wall_fan",
       "color": "#a0219f"
     },
     {
-      "name": "minecraft:fire_coral_fan",
+      "name": "minecraft:fire_coral_wall_fan",
       "color": "#9f232e"
     },
     {
-      "name": "minecraft:horn_coral_fan",
+      "name": "minecraft:horn_coral_wall_fan",
       "color": "#ceb73d"
+    },
+    {
+      "name": "minecraft:tube_coral_wall_fan",
+      "color": "#335cd1"
+    },
+    {
+      "name": "minecraft:dead_brain_coral_wall_fan",
+      "color": "#857d79"
+    },
+    {
+      "name": "minecraft:dead_bubble_coral_wall_fan",
+      "color": "#8d8782"
+    },
+    {
+      "name": "minecraft:dead_fire_coral_wall_fan",
+      "color": "#7d7673"
+    },
+    {
+      "name": "minecraft:dead_horn_coral_wall_fan",
+      "color": "#867e79"
+    },
+    {
+      "name": "minecraft:dead_tube_coral_wall_fan",
+      "color": "#807a76"
     },
     {
       "name": "minecraft:sea_pickle",
