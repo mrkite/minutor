@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.14.18w45a",
+  "version": "1.14.18w46a",
   "data": [
     {
       "name": "minecraft:air",
@@ -1602,6 +1602,12 @@
     {
       "name": "minecraft:jack_o_lantern",
       "color": "#b9851c"
+    },
+    {
+      "name": "minecraft:lantern",
+      "color": "#6a5b54",
+      "transparent": true,
+      "alpha": 0.75
     },
     {
       "name": "minecraft:cake",
@@ -4079,6 +4085,10 @@
     {
       "name": "minecraft:structure_block",
       "color": "#594a5a"
+    },
+    {
+      "name": "minecraft:jigsaw",
+      "color": "#504651"
     }
   ],
   "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_blocks.json"
