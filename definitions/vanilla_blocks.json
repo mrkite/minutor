@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.14.18w46a",
+  "version": "1.14.18w49a",
   "data": [
     {
       "name": "minecraft:air",
@@ -3531,6 +3531,25 @@
         {
           "blockstate": "age:0",
           "color": "#02ab10"
+        }
+      ]
+    },
+    {
+      "name": "minecraft:sweet_berry_bush ",
+      "color": "#444e33",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "age:2",
+          "color": "#3c5838"
+        },
+        {
+          "blockstate": "age:1",
+          "color": "#305e3a"
+        },
+        {
+          "blockstate": "age:0",
+          "color": "#2b5a38"
         }
       ]
     },
