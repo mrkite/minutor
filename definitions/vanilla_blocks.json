@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.14.18w49a",
+  "version": "1.14.19w02a",
   "data": [
     {
       "name": "minecraft:air",
@@ -1318,6 +1318,16 @@
     {
       "name": "minecraft:furnace",
       "color": "#606060"
+    },
+    {
+      "name": "minecraft:campfire",
+      "color": "#4f4b44",
+      "variants": [
+        {
+          "blockstate": "lit:true",
+          "color": "#db9e3a"
+        }
+      ]
     },
     {
       "name": "minecraft:sign",
