@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.14.18w44a",
+  "version": "1.14.18w45a",
   "data": [
     {
       "name": "minecraft:air",
@@ -1378,6 +1378,12 @@
       "color": "#795f35",
       "transparent": true,
       "spawninside": true
+    },
+    {
+      "name": "minecraft:scaffolding",
+      "color": "#af8650",
+      "alpha": 0.95,
+      "transparent": true
     },
     {
       "name": "minecraft:rail",
