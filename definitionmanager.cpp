@@ -367,7 +367,7 @@ void DefinitionManager::loadDefinition(QString path) {
   if (path.endsWith(".json", Qt::CaseInsensitive)) {
     JSONData *def;
     QFile f(path);
-    f.open(QIODevice::ReadOnly);
+    if (!f.open(QIODevice::ReadOnly)) return;
     try {
       def = JSON::parse(f.readAll());
       f.close();

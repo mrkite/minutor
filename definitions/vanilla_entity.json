@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "entity",
-  "version": "1.13.18w15a",
+  "version": "1.14.19w07a",
   "data": [
     {
       "category": "Hostile",
@@ -104,6 +104,14 @@
           "id": "illusion_illager",
           "name": "Illusioner",
           "color": "#800080"
+        },
+        {
+          "id": "pillager",
+          "color": "DarkGray"
+        },
+        {
+          "id": "ravager",
+          "color": "DimGray"
         },
         {
           "id": "vex",
@@ -265,6 +273,10 @@
           "color": "#800080"
         },
         {
+          "id": "wandering_trader",
+          "color": "CornflowerBlue"
+        },
+        {
           "note": "old naming scheme until 1.10",
           "id": "VillagerGolem",
           "name": "Iron Golem",
@@ -303,6 +315,18 @@
         {
           "id": "pufferfish",
           "color": "Gold"
+        },
+        {
+          "id": "panda",
+          "color": "Black"
+        },
+        {
+          "id": "cat",
+          "color": "BurlyWood"
+        },
+        {
+          "id": "fox",
+          "color": "OrangeRed"
         }
       ]
     },
