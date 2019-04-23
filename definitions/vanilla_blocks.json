@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.14.18w43a",
+  "version": "1.14.18w44a",
   "data": [
     {
       "name": "minecraft:air",
@@ -1205,6 +1205,60 @@
     {
       "name": "minecraft:crafting_table",
       "color": "#6b472b"
+    },
+    {
+      "name": "minecraft:barrel",
+      "color": "#6c5132",
+      "variants": [
+        {
+          "blockstate": "facing:up",
+          "color": "#87653a"
+        },
+        {
+          "blockstate": "facing:down",
+          "color": "#7a5a34"
+        }
+      ]
+    },
+    {
+      "name": "minecraft:bell",
+      "color": "#fdeb6f"
+    },
+    {
+      "name": "minecraft:blast_furnace",
+      "color": "#515051"
+    },
+    {
+      "name": "minecraft:cartography_table",
+      "color": "#685743"
+    },
+    {
+      "name": "minecraft:fletching_table",
+      "color": "#c5b485"
+    },
+    {
+      "name": "minecraft:grindstone",
+      "color": "#8e8e8e"
+    },
+    {
+      "name": "minecraft:lectern",
+      "color": "#ae8a53"
+    },
+    {
+      "name": "minecraft:loom",
+      "color": "#8e775c"
+    },
+    {
+      "name": "minecraft:smithing_table",
+      "color": "#393b47"
+    },
+    {
+      "name": "minecraft:smoker",
+      "color": "#555351"
+    },
+    {
+      "name": "minecraft:stonecutter",
+      "color": "#7b776f"
     },
     {
       "name": "minecraft:immature_wheat",
