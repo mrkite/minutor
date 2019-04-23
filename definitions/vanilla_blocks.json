@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.14.19w02a",
+  "version": "1.14.19w03a",
   "data": [
     {
       "name": "minecraft:air",
@@ -1259,6 +1259,16 @@
     {
       "name": "minecraft:stonecutter",
       "color": "#7b776f"
+    },
+    {
+      "name": "minecraft:composter",
+      "color": "#996334",
+      "variants": [
+        {
+          "blockstate": "level:8",
+          "color": "#755d38"
+        }
+      ]
     },
     {
       "name": "minecraft:immature_wheat",
@@ -3545,7 +3555,7 @@
       ]
     },
     {
-      "name": "minecraft:sweet_berry_bush ",
+      "name": "minecraft:sweet_berry_bush",
       "color": "#444e33",
       "transparent": true,
       "variants": [
