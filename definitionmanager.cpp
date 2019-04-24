@@ -74,11 +74,18 @@ DefinitionManager::DefinitionManager(QWidget *parent) :
   QSettings settings;
   sorted = settings.value("packs").toList();
 
+  // clean old hashed files without extra seed
+  QString destdir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+  const QStringList old_hashed_list { "1050220429", "1241760321", "1443276275", "1798448990", "2422344665" };
+  for ( const auto& old_hashed_file : old_hashed_list  ) {
+    QString old_path = destdir + "/" + old_hashed_file + ".json";
+    QFile::remove(old_path);
+    sorted.removeOne(old_path);
+  }
+
   // copy over built-in definitions if necessary
-  QString defdir = QStandardPaths::writableLocation(
-      QStandardPaths::DataLocation);
   QDir dir;
-  dir.mkpath(defdir);
+  dir.mkpath(destdir);
   QDirIterator it(":/definitions", QDir::Files | QDir::Readable);
   while (it.hasNext()) {
     it.next();
@@ -196,6 +203,7 @@ void DefinitionManager::addPack() {
     refresh();
   }
 }
+
 void DefinitionManager::installJson(QString path, bool overwrite,
                                     bool install) {
   QString destdir = QStandardPaths::writableLocation(
@@ -218,7 +226,7 @@ void DefinitionManager::installJson(QString path, bool overwrite,
   QString key = def->at("name")->asString() + def->at("type")->asString();
   QString exeversion = def->at("version")->asString();
   delete def;
-  QString dest = destdir + "/" + QString("%1").arg(qHash(key)) + ".json";
+  QString dest = destdir + "/" + QString("%1").arg(qHash(key,42)) + ".json";
 
   // check if build in version is newer than version on disk
   if (QFile::exists(dest)) {
@@ -258,6 +266,7 @@ void DefinitionManager::installJson(QString path, bool overwrite,
       loadDefinition(dest);
   }
 }
+
 void DefinitionManager::installZip(QString path, bool overwrite,
                                    bool install) {
   QString destdir = QStandardPaths::writableLocation(
@@ -299,7 +308,7 @@ void DefinitionManager::installZip(QString path, bool overwrite,
 
   QString key = info->at("name")->asString() + info->at("type")->asString();
   delete info;
-  QString dest = destdir + "/" + QString("%1").arg(qHash(key)) + ".zip";
+  QString dest = destdir + "/" + QString("%1").arg(qHash(key,42)) + ".zip";
   if (!QFile::exists(dest) || overwrite) {
     if (QFile::exists(dest) && install)
       removeDefinition(dest);
@@ -315,6 +324,7 @@ void DefinitionManager::installZip(QString path, bool overwrite,
       loadDefinition(dest);
   }
 }
+
 void DefinitionManager::removePack() {
   // find selected pack
   if (definitions.contains(selected)) {
@@ -367,7 +377,7 @@ void DefinitionManager::loadDefinition(QString path) {
   if (path.endsWith(".json", Qt::CaseInsensitive)) {
     JSONData *def;
     QFile f(path);
-    f.open(QIODevice::ReadOnly);
+    if (!f.open(QIODevice::ReadOnly)) return;
     try {
       def = JSON::parse(f.readAll());
       f.close();
