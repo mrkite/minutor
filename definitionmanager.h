@@ -66,6 +66,7 @@ class DefinitionManager : public QWidget {
   QList<QCheckBox *>checks;
   void installJson(QString path, bool overwrite = true, bool install = true);
   void installZip(QString path, bool overwrite = true, bool install = true);
+  void checkAndRepair();
   void loadDefinition(QString path);
   void loadDefinition(JSONData *, int pack = -1);
   void removeDefinition(QString path);

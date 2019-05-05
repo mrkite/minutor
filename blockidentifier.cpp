@@ -256,6 +256,7 @@ void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent,
   uint hid = qHash(name);
   if (!block->blockstate.isEmpty())
     hid = qHash(name + ":" + block->blockstate);
+#ifdef _DEBUG
   if (blocks.contains(hid)) {
     // this will only trigger during development of vanilla_blocks.json
     // and prevents generating a wrong definition file
@@ -264,6 +265,7 @@ void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent,
                          name,
                          QMessageBox::Cancel, QMessageBox::Cancel);
   }
+#endif
   blocks.insert(hid, block);
   packs[pack].append(block);
 
