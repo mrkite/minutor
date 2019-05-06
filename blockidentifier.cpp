@@ -261,7 +261,7 @@ void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent,
     // and prevents generating a wrong definition file
     QMessageBox::warning((QWidget*)(NULL),
                          "Error loading Block definition: " + name,
-                         "Failed to add Block from definition file, as it might be a duplicate\nor generates the same hash than an already existing Block." ,
+                         "Failed to add Block from definition file, as it might be a duplicate\nor generates the same hash as an already existing Block." ,
                          QMessageBox::Cancel, QMessageBox::Cancel);
   }
   blocks.insert(hid, block);
