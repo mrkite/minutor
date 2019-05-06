@@ -256,16 +256,14 @@ void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent,
   uint hid = qHash(name);
   if (!block->blockstate.isEmpty())
     hid = qHash(name + ":" + block->blockstate);
-#ifdef _DEBUG
   if (blocks.contains(hid)) {
     // this will only trigger during development of vanilla_blocks.json
     // and prevents generating a wrong definition file
     QMessageBox::warning((QWidget*)(NULL),
-                         "Error hashing Block",
-                         name,
+                         "Error loading Block definition: " + name,
+                         "Failed to add Block from definition file, as it might be a duplicate\nor generates the same hash than an already existing Block." ,
                          QMessageBox::Cancel, QMessageBox::Cancel);
   }
-#endif
   blocks.insert(hid, block);
   packs[pack].append(block);
 
