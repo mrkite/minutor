@@ -260,8 +260,8 @@ void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent,
     // this will only trigger during development of vanilla_blocks.json
     // and prevents generating a wrong definition file
     QMessageBox::warning((QWidget*)(NULL),
-                         "Error hashing Block",
-                         name,
+                         "Error loading Block definition: " + name,
+                         "Failed to add Block from definition file, as it might be a duplicate\nor generates the same hash as an already existing Block." ,
                          QMessageBox::Cancel, QMessageBox::Cancel);
   }
   blocks.insert(hid, block);

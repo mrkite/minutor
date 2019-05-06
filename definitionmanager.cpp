@@ -71,28 +71,12 @@ DefinitionManager::DefinitionManager(QWidget *parent) :
   emit packSelected(false);
   setLayout(layout);
 
+  // check & repair definition files
+  this->checkAndRepair();
+
+  // we load the definitions in backwards order for priority
   QSettings settings;
   sorted = settings.value("packs").toList();
-
-  // clean old hashed files without extra seed
-  QString destdir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
-  const QStringList old_hashed_list { "1050220429", "1241760321", "1443276275", "1798448990", "2422344665" };
-  for ( const auto& old_hashed_file : old_hashed_list  ) {
-    QString old_path = destdir + "/" + old_hashed_file + ".json";
-    QFile::remove(old_path);
-    sorted.removeOne(old_path);
-  }
-
-  // copy over built-in definitions if necessary
-  QDir dir;
-  dir.mkpath(destdir);
-  QDirIterator it(":/definitions", QDir::Files | QDir::Readable);
-  while (it.hasNext()) {
-    it.next();
-    installJson(it.filePath(), false, false);
-  }
-  settings.setValue("packs", sorted);
-  // we load the definitions backwards for priority.
   for (int i = sorted.length() - 1; i >= 0; i--)
     loadDefinition(sorted[i].toString());
 
@@ -106,6 +90,40 @@ DefinitionManager::DefinitionManager(QWidget *parent) :
 
 DefinitionManager::~DefinitionManager() {}
 
+void DefinitionManager::checkAndRepair()
+{
+  QSettings settings;
+  QList<QVariant> known_packs = settings.value("packs").toList();
+
+  // in Minutor up to 2.2.0 we used hash without seed, which is incompatible to Qt5.12
+  // force clean old hashed files generated without an extra seed
+  // this assumes, that these hashes will never occur otherwise
+  QString destdir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+  const QStringList old_hashed_list { "1050220429", "1241760321", "1443276275", "1798448990", "2422344665" };
+  for ( const auto& old_hashed_file : old_hashed_list  ) {
+    QString old_path = destdir + "/" + old_hashed_file + ".json";
+    QFile::remove(old_path);
+    known_packs.removeOne(old_path);
+  }
+
+  // repair when definition is in settings, but file is missing
+  for (const auto& def: known_packs) {
+    if (!QFile::exists(def.toString()))
+      known_packs.removeOne(def.toString());
+  }
+
+  // copy over built-in definitions if necessary
+  QDir dir;
+  dir.mkpath(destdir);
+  QDirIterator it(":/definitions", QDir::Files | QDir::Readable);
+  while (it.hasNext()) {
+    it.next();
+    installJson(it.filePath(), false, false);
+  }
+
+  // store repaired list of definitions
+  settings.setValue("packs", known_packs);
+}
 
 void DefinitionManager::refresh() {
   table->clearContents();
