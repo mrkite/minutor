@@ -269,8 +269,10 @@ void DefinitionManager::installJson(QString path, bool overwrite,
 
   // import new definition (if file is not present)
   if (!QFile::exists(dest) || overwrite) {
-    if (QFile::exists(dest) && install)
+    if (QFile::exists(dest) && install) {
       removeDefinition(dest);
+      QFile::remove(dest);
+    }
     if (!QFile::copy(path, dest)) {
       QMessageBox::warning(this, tr("Couldn't install %1").arg(path),
                            tr("Copy error"),
