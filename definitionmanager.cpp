@@ -92,18 +92,32 @@ DefinitionManager::~DefinitionManager() {}
 
 void DefinitionManager::checkAndRepair()
 {
+  // create definition data folder on disk
+  QString destdir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+  QDir dir;
+  dir.mkpath(destdir);
+
+  // get known definition packs from application default settings storage
   QSettings settings;
   QList<QVariant> known_packs = settings.value("packs").toList();
 
   // in Minutor up to 2.2.0 we used hash without seed, which is incompatible to Qt5.12
   // force clean old hashed files generated without an extra seed
   // this assumes, that these hashes will never occur otherwise
-  QString destdir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
   const QStringList old_hashed_list { "1050220429", "1241760321", "1443276275", "1798448990", "2422344665" };
   for ( const auto& old_hashed_file : old_hashed_list  ) {
     QString old_path = destdir + "/" + old_hashed_file + ".json";
     QFile::remove(old_path);
     known_packs.removeOne(old_path);
+  }
+
+  // repair when definitions is on disk, but missing in settings
+  QDirIterator on_disk(destdir, QDir::Files | QDir::Readable);
+  while (on_disk.hasNext()) {
+    on_disk.next();
+    if (!known_packs.contains(on_disk.filePath())) {
+      known_packs.append(on_disk.filePath());
+    }
   }
 
   // repair when definition is in settings, but file is missing
@@ -113,13 +127,13 @@ void DefinitionManager::checkAndRepair()
   }
 
   // copy over built-in definitions if necessary
-  QDir dir;
-  dir.mkpath(destdir);
-  QDirIterator it(":/definitions", QDir::Files | QDir::Readable);
-  while (it.hasNext()) {
-    it.next();
-    installJson(it.filePath(), false, false);
+  QDirIterator build_in(":/definitions", QDir::Files | QDir::Readable);
+  while (build_in.hasNext()) {
+    build_in.next();
+    installJson(build_in.filePath(), false, false);
   }
+  // all changed definitions are now in sorted -> copy over
+  known_packs.append(sorted);
 
   // store repaired list of definitions
   settings.setValue("packs", known_packs);
