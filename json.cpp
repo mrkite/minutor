@@ -167,15 +167,18 @@ class JSONHelper {
   QString location() {
     int line = 1;
     int col = 0;
-    int cpos = pos;
-    bool doneCol = false;
-    while (cpos >= 0) {
-      if (data.at(cpos) == '\n') {
-        doneCol = true;
-        line++;
-      }
-      if (!doneCol) col++;
-      cpos--;
+    if (len > 0)
+    {
+        int cpos = pos;
+        bool doneCol = false;
+        while (cpos >= 0) {
+          if (data.at(cpos) == '\n') {
+            doneCol = true;
+            line++;
+          }
+          if (!doneCol) col++;
+          cpos--;
+        }
     }
     return QString("Line: %1, Offset: %2").arg(line).arg(col);
   }
