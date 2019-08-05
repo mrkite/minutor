@@ -5,12 +5,16 @@
 #include <assert.h>
 
 #include "./mapview.h"
+#include "./chunkcache.h"
 #include "./definitionmanager.h"
 #include "./blockidentifier.h"
 #include "./biomeidentifier.h"
 #include "./clamp.h"
 
-MapView::MapView(QWidget *parent) : QWidget(parent) {
+MapView::MapView(QWidget *parent)
+  : QWidget(parent)
+  , cache(ChunkCache::Instance())
+{
   depth = 255;
   scale = 1;
   zoom = 1.0;
@@ -361,6 +365,7 @@ void MapView::drawChunk(int x, int z) {
   uchar *src = placeholder;
   // fetch the chunk
   Chunk *chunk = cache.fetch(x, z);
+  if (chunk && !chunk->loaded) return;
 
   if (chunk && (chunk->renderedAt != depth ||
                 chunk->renderedFlags != flags)) {

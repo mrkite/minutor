@@ -94,7 +94,7 @@ class MapView : public QWidget {
   int scale;
   double zoom;
   int flags;
-  ChunkCache cache;
+  ChunkCache &cache;
   QImage image;
   DefinitionManager *dm;
   uchar placeholder[16 * 16 * 4];  // no chunk found placeholder

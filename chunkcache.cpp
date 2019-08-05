@@ -9,13 +9,13 @@
 #include <windows.h>
 #endif
 
-ChunkID::ChunkID(int x, int z) : x(x), z(z) {
+ChunkID::ChunkID(int cx, int cz) : cx(cx), cz(cz) {
 }
 bool ChunkID::operator==(const ChunkID &other) const {
-  return (other.x == x) && (other.z == z);
+  return (other.cx == cx) && (other.cz == cz);
 }
 uint qHash(const ChunkID &c) {
-  return (c.x << 16) ^ (c.z & 0xffff);  // safe way to hash a pair of integers
+  return (c.cx << 16) ^ (c.cz & 0xffff);  // safe way to hash a pair of integers
 }
 
 ChunkCache::ChunkCache() {
@@ -43,6 +43,11 @@ ChunkCache::ChunkCache() {
 ChunkCache::~ChunkCache() {
 }
 
+ChunkCache& ChunkCache::Instance() {
+  static ChunkCache singleton;
+  return singleton;
+}
+
 void ChunkCache::clear() {
   QThreadPool::globalInstance()->waitForDone();
   mutex.lock();
@@ -51,14 +56,27 @@ void ChunkCache::clear() {
 }
 
 void ChunkCache::setPath(QString path) {
+  if (this->path != path)
+    clear();
   this->path = path;
 }
-QString ChunkCache::getPath() {
+QString ChunkCache::getPath() const {
   return path;
 }
 
-Chunk *ChunkCache::fetch(int x, int z) {
-  ChunkID id(x, z);
+Chunk *ChunkCache::fetchCached(int cx, int cz) {
+  // try to get Chunk from Cache
+  ChunkID id(cx, cz);
+  mutex.lock();
+  Chunk *chunk = cache[id];   // const operation
+  mutex.unlock();
+
+  return chunk;
+}
+
+Chunk *ChunkCache::fetch(int cx, int cz) {
+  // try to get Chunk from Cache
+  ChunkID id(cx, cz);
   mutex.lock();
   Chunk *chunk = cache[id];   // const operation
   mutex.unlock();
@@ -74,23 +92,23 @@ Chunk *ChunkCache::fetch(int x, int z) {
   mutex.lock();
   cache.insert(id, chunk);    // non-const operation !
   mutex.unlock();
-  ChunkLoader *loader = new ChunkLoader(path, x, z, cache, &mutex);
+  ChunkLoader *loader = new ChunkLoader(path, cx, cz);
   connect(loader, SIGNAL(loaded(int, int)),
           this, SLOT(gotChunk(int, int)));
   QThreadPool::globalInstance()->start(loader);
   return NULL;
 }
 
-void ChunkCache::gotChunk(int x, int z) {
-  emit chunkLoaded(x, z);
+void ChunkCache::gotChunk(int cx, int cz) {
+  emit chunkLoaded(cx, cz);
 }
 
 void ChunkCache::routeStructure(QSharedPointer<GeneratedStructure> structure) {
   emit structureFound(structure);
 }
 
-void ChunkCache::adaptCacheToWindow(int x, int y) {
-  int chunks = ((x + 15) >> 4) * ((y + 15) >> 4);  // number of chunks visible
+void ChunkCache::adaptCacheToWindow(int wx, int wy) {
+  int chunks = ((wx + 15) >> 4) * ((wy + 15) >> 4);  // number of chunks visible
   chunks *= 1.10;  // add 10%
   cache.setMaxCost(qMin(chunks, maxcache));
 }
