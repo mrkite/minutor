@@ -59,6 +59,7 @@ class Chunk : public QObject {
   int chunkX;
   int chunkZ;
   friend class MapView;
+  friend class ChunkRenderer;
   friend class ChunkCache;
   friend class WorldSave;
 };

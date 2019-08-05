@@ -34,6 +34,7 @@ class Minutor : public QMainWindow {
 
  public:
   Minutor();
+  ~Minutor();
 
   void loadWorld(QDir path);
 

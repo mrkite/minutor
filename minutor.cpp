@@ -100,6 +100,12 @@ Minutor::Minutor() {
   emit worldLoaded(false);
 }
 
+Minutor::~Minutor() {
+  // wait for sheduled tasks
+  QThreadPool::globalInstance()->waitForDone();
+}
+
+
 void Minutor::openWorld() {
   QAction *action = qobject_cast<QAction*>(sender());
   if (action)
