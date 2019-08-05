@@ -13,6 +13,7 @@ ChunkLoader::~ChunkLoader() {
 }
 
 void ChunkLoader::run() {
+  // get coordinates of Region file
   int rx = x >> 5;
   int rz = z >> 5;
 
@@ -42,13 +43,17 @@ void ChunkLoader::run() {
     emit loaded(x, z);
     return;
   }
-  NBT nbt(raw);
+  // get existing Chunk entry from Cache
   ChunkID id(x, z);
-  mutex->lock();
-  Chunk *chunk = cache[id];
-  if (chunk)
+  //mutex->lock();
+  Chunk *chunk = cache[id];   // const operation
+  //mutex->unlock();
+  // parse Chunk data
+  // Chunk will be flagged "loaded" in a thread save way
+  if (chunk) {
+    NBT nbt(raw);
     chunk->load(nbt);
-  mutex->unlock();
+  }
   f.unmap(raw);
   f.close();
 

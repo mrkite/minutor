@@ -59,9 +59,9 @@ QString ChunkCache::getPath() {
 
 Chunk *ChunkCache::fetch(int x, int z) {
   ChunkID id(x, z);
-  mutex.lock();
-  Chunk *chunk = cache[id];
-  mutex.unlock();
+  //mutex.lock();
+  Chunk *chunk = cache[id];   // const operation
+  //mutex.unlock();
   if (chunk != NULL) {
     if (chunk->loaded)
       return chunk;
@@ -72,7 +72,7 @@ Chunk *ChunkCache::fetch(int x, int z) {
   connect(chunk, SIGNAL(structureFound(QSharedPointer<GeneratedStructure>)),
           this,  SLOT  (routeStructure(QSharedPointer<GeneratedStructure>)));
   mutex.lock();
-  cache.insert(id, chunk);
+  cache.insert(id, chunk);    // non-const operation !
   mutex.unlock();
   ChunkLoader *loader = new ChunkLoader(path, x, z, cache, &mutex);
   connect(loader, SIGNAL(loaded(int, int)),
