@@ -59,9 +59,9 @@ QString ChunkCache::getPath() {
 
 Chunk *ChunkCache::fetch(int x, int z) {
   ChunkID id(x, z);
-  //mutex.lock();
+  mutex.lock();
   Chunk *chunk = cache[id];   // const operation
-  //mutex.unlock();
+  mutex.unlock();
   if (chunk != NULL) {
     if (chunk->loaded)
       return chunk;

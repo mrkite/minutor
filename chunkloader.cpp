@@ -45,9 +45,9 @@ void ChunkLoader::run() {
   }
   // get existing Chunk entry from Cache
   ChunkID id(x, z);
-  //mutex->lock();
+  mutex->lock();
   Chunk *chunk = cache[id];   // const operation
-  //mutex->unlock();
+  mutex->unlock();
   // parse Chunk data
   // Chunk will be flagged "loaded" in a thread save way
   if (chunk) {
