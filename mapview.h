@@ -41,12 +41,13 @@ class MapView : public QWidget {
   BlockLocation *getLocation();
   void setDimension(QString path, int scale);
   void setFlags(int flags);
+  int  getFlags() const;
+  int  getDepth() const;
   void addOverlayItem(QSharedPointer<OverlayItem> item);
   void clearOverlayItems();
   void setVisibleOverlayItemTypes(const QSet<QString>& itemTypes);
 
   // public for saving the png
-  void renderChunk(Chunk *chunk);
   QString getWorldPath();
 
 

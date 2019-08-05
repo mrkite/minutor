@@ -25,6 +25,7 @@ HEADERS += \
     chunk.h \
     chunkcache.h \
     chunkloader.h \
+    chunkrenderer.h \
     definitionmanager.h \
     definitionupdater.h \
     dimensionidentifier.h \
@@ -53,6 +54,7 @@ SOURCES += \
     chunk.cpp \
     chunkcache.cpp \
     chunkloader.cpp \
+    chunkrenderer.cpp \
     definitionmanager.cpp \
     definitionupdater.cpp \
     dimensionidentifier.cpp \

@@ -51,6 +51,7 @@ class ChunkCache : public QObject {
   QCache<ChunkID, Chunk> cache;   // real Cache
   QMutex mutex;                   // Mutex for accessing the Cache
   int maxcache;                   // number of Chunks that fit into Cache
+  QThreadPool loaderThreadPool;   // extra thread pool for loading
 };
 
 #endif  // CHUNKCACHE_H_

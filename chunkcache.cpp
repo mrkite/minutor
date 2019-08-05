@@ -36,11 +36,16 @@ ChunkCache::ChunkCache() {
   cache.setMaxCost(chunks);
   maxcache = 2 * chunks;  // most chunks are less than half filled with sections
 
+  // determain optimal thread pool size for "loading"
+  // as this contains disk access, use less than number of cores
+  int tmax = loaderThreadPool.maxThreadCount();
+  loaderThreadPool.setMaxThreadCount(tmax / 2);
 
   qRegisterMetaType<QSharedPointer<GeneratedStructure>>("QSharedPointer<GeneratedStructure>");
 }
 
 ChunkCache::~ChunkCache() {
+  loaderThreadPool.waitForDone();
 }
 
 ChunkCache& ChunkCache::Instance() {
@@ -94,8 +99,8 @@ Chunk *ChunkCache::fetch(int cx, int cz) {
   mutex.unlock();
   ChunkLoader *loader = new ChunkLoader(path, cx, cz);
   connect(loader, SIGNAL(loaded(int, int)),
-          this, SLOT(gotChunk(int, int)));
-  QThreadPool::globalInstance()->start(loader);
+          this,   SLOT(gotChunk(int, int)));
+  loaderThreadPool.start(loader);
   return NULL;
 }
 

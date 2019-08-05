@@ -9,6 +9,7 @@
 
 #include "./worldsave.h"
 #include "./mapview.h"
+#include "./chunkrenderer.h"
 #include "zlib/zlib.h"
 
 WorldSave::WorldSave(QString filename, MapView *map,
@@ -292,13 +293,14 @@ void WorldSave::drawChunk(uchar *scanlines, int stride, int x, Chunk *chunk) {
   // calculate attenuation
   float attenuation = 1.0f;
   if (this->regionChecker && static_cast<int>(floor(chunk->chunkX / 32.0f) +
-                                  floor(chunk->chunkZ / 32.0f)) % 2 != 0)
+                                              floor(chunk->chunkZ / 32.0f)) % 2 != 0)
     attenuation *= 0.9f;
   if (this->chunkChecker && ((chunk->chunkX + chunk->chunkZ) % 2) != 0)
     attenuation *= 0.9f;
 
   // render chunk with current settings
-  map->renderChunk(chunk);
+  ChunkRenderer renderer(chunk->chunkX, chunk->chunkZ, map->getDepth(), map->getFlags());
+  renderer.renderChunk(chunk);
   // we can't memcpy each scanline because it's in BGRA format.
   int offset = x * 16 * 4 + 1;
   int ioffset = 0;
