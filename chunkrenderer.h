@@ -17,7 +17,7 @@ class ChunkRenderer : public QObject, public QRunnable {
   void run();
 
  public:  // public to allow usage from WorldSave
-  void ChunkRenderer::renderChunk(Chunk *chunk);
+  void renderChunk(Chunk *chunk);
 
  signals:
   void rendered(int cx, int cz);

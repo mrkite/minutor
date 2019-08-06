@@ -236,7 +236,7 @@ void Chunk::loadSection1519(ChunkSection *cs, const Tag *section) {
     for (int i = 0; i < 4096; i++) {
       cs->blocks[4095-i] = getBits(byteData, i*bitSize, bitSize);
     }
-    delete byteData;
+    delete[] byteData;
   } else {
     // set everything to 0 (minecraft:air)
     memset(cs->blocks, 0, sizeof(cs->blocks));
