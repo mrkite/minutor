@@ -23,12 +23,12 @@
 
 DefinitionManager::DefinitionManager(QWidget *parent) :
     QWidget(parent),
-    isUpdating(false),
-    dimensionManager(DimensionIdentifier::Instance()),
-    blockManager(BlockIdentifier::Instance()),
     biomeManager(BiomeIdentifier::Instance()),
+    blockManager(BlockIdentifier::Instance()),
+    dimensionManager(DimensionIdentifier::Instance()),
     entityManager(EntityIdentifier::Instance()),
-    flatteningConverter(FlatteningConverter::Instance())
+    flatteningConverter(FlatteningConverter::Instance()),
+    isUpdating(false)
 {
   setWindowFlags(Qt::Window);
   setWindowTitle(tr("Definitions"));
