@@ -6,6 +6,8 @@
 #include <QCache>
 #include "./chunk.h"
 
+// ChunkID is the key used to identify entries in the Cache
+// Chunks are identified by their coordinates (CX,CZ) but a single key is needed to access a map like structure
 class ChunkID {
  public:
   ChunkID(int cx, int cz);
@@ -14,6 +16,7 @@ class ChunkID {
  protected:
   int cx, cz;
 };
+
 
 class ChunkCache : public QObject {
   Q_OBJECT
@@ -32,8 +35,8 @@ class ChunkCache : public QObject {
   void clear();
   void setPath(QString path);
   QString getPath() const;
-  Chunk *fetch(int cx, int cz);         // fetch Chunk and load when not found
-  Chunk *fetchCached(int cx, int cz);   // fetch Chunk only if cached
+  QSharedPointer<Chunk> fetch(int cx, int cz);         // fetch Chunk and load when not found
+  QSharedPointer<Chunk> fetchCached(int cx, int cz);   // fetch Chunk only if cached
 
  signals:
   void chunkLoaded(int cx, int cz);
@@ -47,11 +50,11 @@ class ChunkCache : public QObject {
   void routeStructure(QSharedPointer<GeneratedStructure> structure);
 
  private:
-  QString path;                   // path to folder with region files
-  QCache<ChunkID, Chunk> cache;   // real Cache
-  QMutex mutex;                   // Mutex for accessing the Cache
-  int maxcache;                   // number of Chunks that fit into Cache
-  QThreadPool loaderThreadPool;   // extra thread pool for loading
+  QString path;                                   // path to folder with region files
+  QCache<ChunkID, QSharedPointer<Chunk>> cache;   // real Cache
+  QMutex mutex;                                   // Mutex for accessing the Cache
+  int maxcache;                                   // number of Chunks that fit into Cache
+  QThreadPool loaderThreadPool;                   // extra thread pool for loading
 };
 
 #endif  // CHUNKCACHE_H_

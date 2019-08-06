@@ -1,4 +1,4 @@
-/** Copyright 2014 Mc_Etlam */
+/** Copyright 2014 EtlamGit */
 #include <QPainter>
 #include "./entity.h"
 #include "./entityidentifier.h"

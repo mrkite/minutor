@@ -126,11 +126,11 @@ void WorldSave::run() {
       } else {
         uchar *raw = f.map(coffset * 4096, numSectors * 4096);
         NBT nbt(raw);
-        Chunk *chunk = new Chunk();
+        QSharedPointer<Chunk> chunk(new Chunk());
         chunk->load(nbt);
         f.unmap(raw);
         drawChunk(scanlines, width * 4 + 1, x - left, chunk);
-        delete chunk;
+        chunk.reset();
       }
       f.close();
     }
@@ -289,7 +289,7 @@ void WorldSave::blankChunk(uchar *scanlines, int stride, int x) {
     memset(scanlines + offset, 0, 16 * 4);
 }
 
-void WorldSave::drawChunk(uchar *scanlines, int stride, int x, Chunk *chunk) {
+void WorldSave::drawChunk(uchar *scanlines, int stride, int x, QSharedPointer<Chunk> chunk) {
   // calculate attenuation
   float attenuation = 1.0f;
   if (this->regionChecker && static_cast<int>(floor(chunk->chunkX / 32.0f) +

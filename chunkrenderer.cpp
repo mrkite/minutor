@@ -1,4 +1,4 @@
-/** Copyright (c) 2019, Mc_Etlam */
+/** Copyright (c) 2019, EtlamGit */
 
 #include "./chunk.h"
 #include "./chunkrenderer.h"
@@ -19,7 +19,7 @@ ChunkRenderer::ChunkRenderer(int cx, int cz, int y, int flags)
 
 void ChunkRenderer::run() {
   // get existing Chunk entry from Cache
-  Chunk *chunk = cache.fetchCached(cx, cz);
+  QSharedPointer<Chunk> chunk(cache.fetchCached(cx, cz));
   // render Chunk data
   if (chunk) {
     renderChunk(chunk);
@@ -27,7 +27,7 @@ void ChunkRenderer::run() {
   emit rendered(cx, cz);
 }
 
-void ChunkRenderer::renderChunk(Chunk *chunk) {
+void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
   int offset = 0;
   uchar *bits = chunk->image;
   uchar *depthbits = chunk->depth;

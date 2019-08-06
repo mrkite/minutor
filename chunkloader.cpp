@@ -4,11 +4,13 @@
 #include "./chunkcache.h"
 #include "./chunk.h"
 
+
 ChunkLoader::ChunkLoader(QString path, int cx, int cz)
   : path(path)
   , cx(cx), cz(cz)
   , cache(ChunkCache::Instance())
 {}
+
 ChunkLoader::~ChunkLoader()
 {}
 
@@ -44,7 +46,7 @@ void ChunkLoader::run() {
     return;
   }
   // get existing Chunk entry from Cache
-  Chunk *chunk = cache.fetchCached(cx, cz);
+  QSharedPointer<Chunk> chunk(cache.fetchCached(cx, cz));
   // parse Chunk data
   // Chunk will be flagged "loaded" in a thread save way
   if (chunk) {
