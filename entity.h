@@ -1,4 +1,4 @@
-/** Copyright 2014 Mc_Etlam */
+/** Copyright 2014 EtlamGit */
 #ifndef ENTITY_H_
 #define ENTITY_H_
 

@@ -1,4 +1,4 @@
-/** Copyright (c) 2019, Mc_Etlam */
+/** Copyright (c) 2019, EtlamGit */
 #ifndef CHUNKRENDERER_H
 #define CHUNKRENDERER_H
 
@@ -17,7 +17,7 @@ class ChunkRenderer : public QObject, public QRunnable {
   void run();
 
  public:  // public to allow usage from WorldSave
-  void renderChunk(Chunk *chunk);
+  void renderChunk(QSharedPointer<Chunk> chunk);
 
  signals:
   void rendered(int cx, int cz);

@@ -69,39 +69,43 @@ QString ChunkCache::getPath() const {
   return path;
 }
 
-Chunk *ChunkCache::fetchCached(int cx, int cz) {
+QSharedPointer<Chunk> ChunkCache::fetchCached(int cx, int cz) {
   // try to get Chunk from Cache
   ChunkID id(cx, cz);
   mutex.lock();
-  Chunk *chunk = cache[id];   // const operation
+  QSharedPointer<Chunk> * p_chunk(cache[id]);   // const operation
   mutex.unlock();
 
-  return chunk;
+  if (p_chunk != NULL )
+    return QSharedPointer<Chunk>(*p_chunk);
+  else
+    return QSharedPointer<Chunk>(NULL);  // we're loading this chunk, or it's blank.
 }
 
-Chunk *ChunkCache::fetch(int cx, int cz) {
+QSharedPointer<Chunk> ChunkCache::fetch(int cx, int cz) {
   // try to get Chunk from Cache
   ChunkID id(cx, cz);
   mutex.lock();
-  Chunk *chunk = cache[id];   // const operation
+  QSharedPointer<Chunk> * p_chunk(cache[id]);   // const operation
   mutex.unlock();
-  if (chunk != NULL) {
+  if (p_chunk != NULL ) {
+    QSharedPointer<Chunk> chunk(*p_chunk);
     if (chunk->loaded)
       return chunk;
-    return NULL;  // we're loading this chunk, or it's blank.
+    return QSharedPointer<Chunk>(NULL);  // we're loading this chunk, or it's blank.
   }
   // launch background process to load this chunk
-  chunk = new Chunk();
-  connect(chunk, SIGNAL(structureFound(QSharedPointer<GeneratedStructure>)),
-          this,  SLOT  (routeStructure(QSharedPointer<GeneratedStructure>)));
+  p_chunk = new QSharedPointer<Chunk>(new Chunk());
+  connect(p_chunk->data(), SIGNAL(structureFound(QSharedPointer<GeneratedStructure>)),
+          this,            SLOT  (routeStructure(QSharedPointer<GeneratedStructure>)));
   mutex.lock();
-  cache.insert(id, chunk);    // non-const operation !
+  cache.insert(id, p_chunk);    // non-const operation !
   mutex.unlock();
   ChunkLoader *loader = new ChunkLoader(path, cx, cz);
   connect(loader, SIGNAL(loaded(int, int)),
           this,   SLOT(gotChunk(int, int)));
   loaderThreadPool.start(loader);
-  return NULL;
+  return QSharedPointer<Chunk>(NULL);
 }
 
 void ChunkCache::gotChunk(int cx, int cz) {

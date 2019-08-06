@@ -1,4 +1,4 @@
-/** Copyright (c) 2014, Mc_Etlam */
+/** Copyright (c) 2014, EtlamGit */
 #include <QDebug>
 #include <assert.h>
 #include "./entityidentifier.h"
