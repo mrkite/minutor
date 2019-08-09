@@ -144,8 +144,8 @@ void MapView::mouseMoveEvent(QMouseEvent *event) {
     int centerblockx = floor(this->x);
     int centerblockz = floor(this->z);
 
-    int centerx = image.width() / 2;
-    int centery = image.height() / 2;
+    int centerx = imageChunks.width() / 2;
+    int centery = imageChunks.height() / 2;
 
     centerx -= (this->x - centerblockx) * zoom;
     centery -= (this->z - centerblockz) * zoom;
@@ -172,8 +172,8 @@ void MapView::mouseDoubleClickEvent(QMouseEvent *event) {
   int centerblockx = floor(this->x);
   int centerblockz = floor(this->z);
 
-  int centerx = image.width() / 2;
-  int centery = image.height() / 2;
+  int centerx = imageChunks.width() / 2;
+  int centery = imageChunks.height() / 2;
 
   centerx -= (this->x - centerblockx) * zoom;
   centery -= (this->z - centerblockz) * zoom;
@@ -270,24 +270,22 @@ void MapView::keyPressEvent(QKeyEvent *event) {
 }
 
 void MapView::resizeEvent(QResizeEvent *event) {
-  image = QImage(event->size(), QImage::Format_RGB32);
+  imageChunks   = QImage(event->size(), QImage::Format_RGB32);
+  imageOverlays = QImage(event->size(), QImage::Format_RGBA8888);
   redraw();
 }
 
 void MapView::paintEvent(QPaintEvent * /* event */) {
   QPainter p(this);
-  p.drawImage(QPoint(0, 0), image);
+  p.drawImage(QPoint(0, 0), imageChunks);
+  p.drawImage(QPoint(0, 0), imageOverlays);
   p.end();
 }
 
 void MapView::redraw() {
   if (!this->isEnabled()) {
     // blank
-    uchar *bits = image.bits();
-    int imgstride = image.bytesPerLine();
-    int imgoffset = 0;
-    for (int y = 0; y < image.height(); y++, imgoffset += imgstride)
-      memset(bits + imgoffset, 0xee, imgstride);
+    imageChunks.fill(0xeeeeee);
     update();
     return;
   }
@@ -298,8 +296,8 @@ void MapView::redraw() {
   int centerchunkx = floor(x / 16);
   int centerchunkz = floor(z / 16);
   // and the center of the screen
-  int centerx = image.width() / 2;
-  int centery = image.height() / 2;
+  int centerx = imageChunks.width() / 2;
+  int centery = imageChunks.height() / 2;
   // and align for panning
   centerx -= (x - centerchunkx * 16) * zoom;
   centery -= (z - centerchunkz * 16) * zoom;
@@ -307,17 +305,20 @@ void MapView::redraw() {
   int startx = centerchunkx - floor(centerx / chunksize) - 1;
   int startz = centerchunkz - floor(centery / chunksize) - 1;
   // and the dimensions of the screen in blocks
-  int blockswide = image.width() / chunksize + 3;
-  int blockstall = image.height() / chunksize + 3;
+  int blockswide = imageChunks.width() / chunksize + 3;
+  int blockstall = imageChunks.height() / chunksize + 3;
 
   for (int cz = startz; cz < startz + blockstall; cz++)
     for (int cx = startx; cx < startx + blockswide; cx++)
       drawChunk(cx, cz);
 
+  // clear the overlay layer
+  imageOverlays.fill(0);
+
   // add on the entity layer
-  QPainter canvas(&image);
-  double halfviewwidth = image.width() / 2 / zoom;
-  double halvviewheight = image.height() / 2 / zoom;
+  QPainter canvas(&imageOverlays);
+  double halfviewwidth  = imageOverlays.width() / 2 / zoom;
+  double halvviewheight = imageOverlays.height() / 2 / zoom;
   double x1 = x - halfviewwidth;
   double z1 = z - halvviewheight;
   double x2 = x + halfviewwidth;
@@ -392,8 +393,8 @@ void MapView::drawChunk(int x, int z) {
   int centerchunkx = floor(this->x / 16);
   int centerchunkz = floor(this->z / 16);
   // and the center chunk screen coordinates
-  int centerx = image.width() / 2;
-  int centery = image.height() / 2;
+  int centerx = imageChunks.width() / 2;
+  int centery = imageChunks.height() / 2;
   // which need to be shifted to account for panning inside that chunk
   centerx -= (this->x - centerchunkx * 16) * zoom;
   centery -= (this->z - centerchunkz * 16) * zoom;
@@ -404,8 +405,8 @@ void MapView::drawChunk(int x, int z) {
   centery += (z - centerchunkz) * chunksize;
 
   int srcoffset = 0;
-  uchar *bits = image.bits();
-  int imgstride = image.bytesPerLine();
+  uchar *bits   = imageChunks.bits();
+  int imgstride = imageChunks.bytesPerLine();
 
   int skipx = 0, skipy = 0;
   int blockwidth = chunksize, blockheight = chunksize;
@@ -419,10 +420,10 @@ void MapView::drawChunk(int x, int z) {
     centery = 0;
   }
   // or the other side, we need to trim
-  if (centerx + blockwidth > image.width())
-    blockwidth = image.width() - centerx;
-  if (centery + blockheight > image.height())
-    blockheight = image.height() - centery;
+  if (centerx + blockwidth > imageChunks.width())
+    blockwidth = imageChunks.width() - centerx;
+  if (centery + blockheight > imageChunks.height())
+    blockheight = imageChunks.height() - centery;
   if (blockwidth <= 0 || skipx >= blockwidth) return;
   int imgoffset = centerx * 4 + centery * imgstride;
   if (chunk)
@@ -511,6 +512,13 @@ void MapView::getToolTip(int x, int z) {
     hovertext += " (" + blockstate + ")";
   if (entityStr.length() > 0)
     hovertext += " - " + entityStr;
+
+#ifdef DEBUG
+  hovertext += " [Cache:"
+            + QString().number(this->cache.getCost()) + "/"
+            + QString().number(this->cache.getMaxCost()) + "]";
+#endif
+
   emit hoverTextChanged(hovertext);
 }
 

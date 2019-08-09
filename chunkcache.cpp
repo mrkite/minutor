@@ -69,6 +69,14 @@ QString ChunkCache::getPath() const {
   return path;
 }
 
+int ChunkCache::getCost() const {
+  return cache.totalCost();
+}
+
+int ChunkCache::getMaxCost() const {
+  return cache.maxCost();
+}
+
 QSharedPointer<Chunk> ChunkCache::fetchCached(int cx, int cz) {
   // try to get Chunk from Cache
   ChunkID id(cx, cz);
