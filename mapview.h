@@ -96,7 +96,8 @@ class MapView : public QWidget {
   double zoom;
   int flags;
   ChunkCache &cache;
-  QImage image;
+  QImage imageChunks;
+  QImage imageOverlays;
   DefinitionManager *dm;
   uchar placeholder[16 * 16 * 4];  // no chunk found placeholder
   QSet<QString> overlayItemTypes;

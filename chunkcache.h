@@ -37,6 +37,8 @@ class ChunkCache : public QObject {
   QString getPath() const;
   QSharedPointer<Chunk> fetch(int cx, int cz);         // fetch Chunk and load when not found
   QSharedPointer<Chunk> fetchCached(int cx, int cz);   // fetch Chunk only if cached
+  int getCost() const;
+  int getMaxCost() const;
 
  signals:
   void chunkLoaded(int cx, int cz);
