@@ -93,6 +93,10 @@ int main(int argc, char *argv[]) {
       minutor.setViewCavemode(true);
       continue;
     }
+    if (args[i] == "-sl" || args[i] == "--singlelayer")) {
+      minutor.setSingleLayer(true);
+      continue;
+    }
   }
 
   minutor.show();

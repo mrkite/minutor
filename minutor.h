@@ -48,6 +48,7 @@ class Minutor : public QMainWindow {
   void setViewCavemode(bool value);       // set View->Cave_Mode
   void setViewDepthshading(bool value);   // set View->Depth_Shading
   void setViewBiomeColors(bool value);    // set View->Biome_Colors
+  void setSingleLayer(bool value);        // set View->Single_Layer
   void setDepth(int value);               // set Depth-Slider
 
   MapView *getMapview() const;
@@ -101,7 +102,7 @@ private slots:
   QAction *openAct, *reloadAct, *saveAct, *exitAct;
   QAction *jumpSpawnAct;
   QList<QAction *>players;
-  QAction *lightingAct, *mobSpawnAct, *caveModeAct, *depthShadingAct, *biomeColorsAct;
+  QAction *lightingAct, *mobSpawnAct, *caveModeAct, *depthShadingAct, *biomeColorsAct, *singleLayerAct;
   QAction *manageDefsAct;
   QAction *refreshAct;
   QAction *aboutAct;
