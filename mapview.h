@@ -21,6 +21,7 @@ class MapView : public QWidget {
     flgCaveMode     = 4,
     flgDepthShading = 8,
     flgShowEntities = 16,
+    flgSingleLayer = 32,
     flgBiomeColors  = 64
   };
 
