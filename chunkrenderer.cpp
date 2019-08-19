@@ -42,8 +42,13 @@ void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
       int top = depth;
       if (top > chunk->highest)
         top = chunk->highest;
+      if (flags & flgSingleLayer)
+        top = depth;
       int highest = 0;
       for (int y = top; y >= 0; y--) {  // top->down
+        // perform a one deep scan in SingleLayer mode
+        if ((flags & flgSingleLayer) && (y < top))
+          break;
         int sec = y >> 4;
         ChunkSection *section = chunk->sections[sec];
         if (!section) {
