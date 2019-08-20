@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
   app.installTranslator(&translator);
 
   app.setApplicationName("Minutor");
-  app.setApplicationVersion("2.2.0");
+  app.setApplicationVersion("2.3.0");
   app.setOrganizationName("seancode");
 
   Minutor minutor;
@@ -93,7 +93,7 @@ int main(int argc, char *argv[]) {
       minutor.setViewCavemode(true);
       continue;
     }
-    if (args[i] == "-sl" || args[i] == "--singlelayer")) {
+    if (args[i] == "-sl" || args[i] == "--singlelayer") {
       minutor.setSingleLayer(true);
       continue;
     }
