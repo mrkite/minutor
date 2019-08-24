@@ -13,9 +13,9 @@ class BiomeInfo {
   // public methods
  public:
   BiomeInfo();
-  QColor getBiomeGrassColor  ( QColor blockcolor, int elevation );
-  QColor getBiomeFoliageColor( QColor blockcolor, int elevation );
-  QColor getBiomeWaterColor( QColor watercolor );
+  QColor getBiomeGrassColor  ( QColor blockcolor, int elevation ) const;
+  QColor getBiomeFoliageColor( QColor blockcolor, int elevation ) const;
+  QColor getBiomeWaterColor( QColor watercolor ) const;
 
   // public members
  public:
@@ -50,7 +50,7 @@ class BiomeIdentifier {
   int addDefinitions(JSONArray *, int pack = -1);
   void enableDefinitions(int id);
   void disableDefinitions(int id);
-  BiomeInfo &getBiome(int id);
+  const BiomeInfo &getBiome(int id) const;
 
 private:
   // singleton: prevent access to constructor and copyconstructor
