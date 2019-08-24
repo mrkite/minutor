@@ -118,7 +118,7 @@ QColor BiomeInfo::mixColor( QColor colorizer, QColor blockcolor )
 }
 
 
-QColor BiomeInfo::getBiomeGrassColor( QColor blockcolor, int elevation )
+QColor BiomeInfo::getBiomeGrassColor( QColor blockcolor, int elevation ) const
 {
   QColor colorizer;
   // remove variants from ID
@@ -148,7 +148,7 @@ QColor BiomeInfo::getBiomeGrassColor( QColor blockcolor, int elevation )
   return mixColor( colorizer, blockcolor );
 }
 
-QColor BiomeInfo::getBiomeFoliageColor( QColor blockcolor, int elevation )
+QColor BiomeInfo::getBiomeFoliageColor( QColor blockcolor, int elevation ) const
 {
   QColor colorizer;
   // remove variants from ID
@@ -167,7 +167,7 @@ QColor BiomeInfo::getBiomeFoliageColor( QColor blockcolor, int elevation )
   return mixColor( colorizer, blockcolor );
 }
 
-QColor BiomeInfo::getBiomeWaterColor( QColor watercolor )
+QColor BiomeInfo::getBiomeWaterColor( QColor watercolor ) const
 {
   if (this->enabledwatermodifier) {
     // calculate modified color components
@@ -201,8 +201,13 @@ BiomeIdentifier& BiomeIdentifier::Instance() {
   return singleton;
 }
 
-BiomeInfo &BiomeIdentifier::getBiome(int biome) {
-  QList<BiomeInfo*> &list = biomes[biome];
+const BiomeInfo &BiomeIdentifier::getBiome(int biome) const {
+  auto itr = biomes.find(biome);
+  if (itr == biomes.end())
+  {
+    return unknownBiome;
+  }
+  const QList<BiomeInfo*> &list = *itr;
   // search backwards for priority sorting to work
   for (int i = list.length() - 1; i >= 0; i--)
     if (list[i]->enabled)
