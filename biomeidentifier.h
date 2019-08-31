@@ -50,6 +50,7 @@ class BiomeIdentifier {
   int addDefinitions(JSONArray *, int pack = -1);
   void enableDefinitions(int id);
   void disableDefinitions(int id);
+  void updateBiomeDefinition();
   const BiomeInfo &getBiome(int id) const;
 
 private:
@@ -59,8 +60,8 @@ private:
   BiomeIdentifier(const BiomeIdentifier &);
   BiomeIdentifier &operator=(const BiomeIdentifier &);
 
-  QHash<int, QList<BiomeInfo*>> biomes;
-  QList<QList<BiomeInfo*> > packs;
+  QHash<int, BiomeInfo*>    biomes;   // consolidated Biome mapping
+  QList<QList<BiomeInfo*> > packs;    // raw data of all available packs
 };
 
 #endif  // BIOMEIDENTIFIER_H_
