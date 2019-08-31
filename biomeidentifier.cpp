@@ -305,8 +305,10 @@ void BiomeIdentifier::updateBiomeDefinition()
   biomes.clear();
 
   for (int pack = 0; pack < packs.length(); pack++)
-    for (int id = 0; id < packs[pack].length(); id++)
-      if (packs[pack][id]->enabled) {
-        biomes[id] = packs[pack][id];
+    for (int i = 0; i < packs[pack].length(); i++) {
+      BiomeInfo *bi = packs[pack][i];
+      if (bi->enabled) {
+        biomes[bi->id] = bi;
       }
+    }
 }
