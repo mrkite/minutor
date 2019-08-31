@@ -203,16 +203,11 @@ BiomeIdentifier& BiomeIdentifier::Instance() {
 
 const BiomeInfo &BiomeIdentifier::getBiome(int biome) const {
   auto itr = biomes.find(biome);
-  if (itr == biomes.end())
-  {
+  if (itr == biomes.end()) {
     return unknownBiome;
+  } else {
+    return *(*itr);
   }
-  const QList<BiomeInfo*> &list = *itr;
-  // search backwards for priority sorting to work
-  for (int i = list.length() - 1; i >= 0; i--)
-    if (list[i]->enabled)
-      return *list[i];
-  return unknownBiome;
 }
 
 void BiomeIdentifier::enableDefinitions(int pack) {
@@ -220,12 +215,14 @@ void BiomeIdentifier::enableDefinitions(int pack) {
   int len = packs[pack].length();
   for (int i = 0; i < len; i++)
     packs[pack][i]->enabled = true;
+  updateBiomeDefinition();
 }
 void BiomeIdentifier::disableDefinitions(int pack) {
   if (pack < 0) return;
   int len = packs[pack].length();
   for (int i = 0; i < len; i++)
     packs[pack][i]->enabled = false;
+  updateBiomeDefinition();
 }
 
 int BiomeIdentifier::addDefinitions(JSONArray *defs, int pack) {
@@ -295,9 +292,21 @@ int BiomeIdentifier::addDefinitions(JSONArray *defs, int pack) {
                               255*biome->alpha );
     }
 
-    biomes[id].append(biome);
     packs[pack].append(biome);
   }
 
+  updateBiomeDefinition();
   return pack;
+}
+
+void BiomeIdentifier::updateBiomeDefinition()
+{
+  // start from scratch
+  biomes.clear();
+
+  for (int pack = 0; pack < packs.length(); pack++)
+    for (int id = 0; id < packs[pack].length(); id++)
+      if (packs[pack][id]->enabled) {
+        biomes[id] = packs[pack][id];
+      }
 }
