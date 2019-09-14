@@ -188,20 +188,20 @@ class JSONHelper {
   QString data;
 };
 
-JSONData *JSON::parse(const QString data) {
+std::unique_ptr<JSONData> JSON::parse(const QString data) {
   JSONHelper reader(data);
   Token type = reader.nextToken();
   switch (type) {
     case TokenObject:  // hash
-      return new JSONObject(reader);
+      return std::make_unique<JSONObject>(reader);
     case TokenArray:  // array
-      return new JSONArray(reader);
+      return std::make_unique<JSONArray>(reader);
     default:
       throw JSONParseException("Doesn't start with object or array",
                                reader.location());
       break;
   }
-  return NULL;
+  return nullptr;
 }
 static JSONData Null;
 JSONData::JSONData() {
