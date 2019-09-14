@@ -447,6 +447,9 @@ void DefinitionManager::loadDefinition(QString path) {
       d.id = entityManager.addDefinitions(
           dynamic_cast<JSONArray*>(def->at("data")));
       d.type = Definition::Entity;
+    } else {
+      delete def;
+      return; // unknown type
     }
     definitions.insert(path, d);
     delete def;
