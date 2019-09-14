@@ -118,7 +118,7 @@ QColor BiomeInfo::mixColor( QColor colorizer, QColor blockcolor )
 }
 
 
-QColor BiomeInfo::getBiomeGrassColor( QColor blockcolor, int elevation )
+QColor BiomeInfo::getBiomeGrassColor( QColor blockcolor, int elevation ) const
 {
   QColor colorizer;
   // remove variants from ID
@@ -148,7 +148,7 @@ QColor BiomeInfo::getBiomeGrassColor( QColor blockcolor, int elevation )
   return mixColor( colorizer, blockcolor );
 }
 
-QColor BiomeInfo::getBiomeFoliageColor( QColor blockcolor, int elevation )
+QColor BiomeInfo::getBiomeFoliageColor( QColor blockcolor, int elevation ) const
 {
   QColor colorizer;
   // remove variants from ID
@@ -167,7 +167,7 @@ QColor BiomeInfo::getBiomeFoliageColor( QColor blockcolor, int elevation )
   return mixColor( colorizer, blockcolor );
 }
 
-QColor BiomeInfo::getBiomeWaterColor( QColor watercolor )
+QColor BiomeInfo::getBiomeWaterColor( QColor watercolor ) const
 {
   if (this->enabledwatermodifier) {
     // calculate modified color components
@@ -201,13 +201,13 @@ BiomeIdentifier& BiomeIdentifier::Instance() {
   return singleton;
 }
 
-BiomeInfo &BiomeIdentifier::getBiome(int biome) {
-  QList<BiomeInfo*> &list = biomes[biome];
-  // search backwards for priority sorting to work
-  for (int i = list.length() - 1; i >= 0; i--)
-    if (list[i]->enabled)
-      return *list[i];
-  return unknownBiome;
+const BiomeInfo &BiomeIdentifier::getBiome(int biome) const {
+  auto itr = biomes.find(biome);
+  if (itr == biomes.end()) {
+    return unknownBiome;
+  } else {
+    return *(*itr);
+  }
 }
 
 void BiomeIdentifier::enableDefinitions(int pack) {
@@ -215,12 +215,14 @@ void BiomeIdentifier::enableDefinitions(int pack) {
   int len = packs[pack].length();
   for (int i = 0; i < len; i++)
     packs[pack][i]->enabled = true;
+  updateBiomeDefinition();
 }
 void BiomeIdentifier::disableDefinitions(int pack) {
   if (pack < 0) return;
   int len = packs[pack].length();
   for (int i = 0; i < len; i++)
     packs[pack][i]->enabled = false;
+  updateBiomeDefinition();
 }
 
 int BiomeIdentifier::addDefinitions(JSONArray *defs, int pack) {
@@ -290,9 +292,23 @@ int BiomeIdentifier::addDefinitions(JSONArray *defs, int pack) {
                               255*biome->alpha );
     }
 
-    biomes[id].append(biome);
     packs[pack].append(biome);
   }
 
+  updateBiomeDefinition();
   return pack;
+}
+
+void BiomeIdentifier::updateBiomeDefinition()
+{
+  // start from scratch
+  biomes.clear();
+
+  for (int pack = 0; pack < packs.length(); pack++)
+    for (int i = 0; i < packs[pack].length(); i++) {
+      BiomeInfo *bi = packs[pack][i];
+      if (bi->enabled) {
+        biomes[bi->id] = bi;
+      }
+    }
 }

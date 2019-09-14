@@ -21,6 +21,7 @@ class MapView : public QWidget {
     flgCaveMode     = 4,
     flgDepthShading = 8,
     flgShowEntities = 16,
+    flgSingleLayer = 32,
     flgBiomeColors  = 64
   };
 
@@ -41,12 +42,13 @@ class MapView : public QWidget {
   BlockLocation *getLocation();
   void setDimension(QString path, int scale);
   void setFlags(int flags);
+  int  getFlags() const;
+  int  getDepth() const;
   void addOverlayItem(QSharedPointer<OverlayItem> item);
   void clearOverlayItems();
   void setVisibleOverlayItemTypes(const QSet<QString>& itemTypes);
 
   // public for saving the png
-  void renderChunk(Chunk *chunk);
   QString getWorldPath();
 
 
@@ -94,8 +96,9 @@ class MapView : public QWidget {
   int scale;
   double zoom;
   int flags;
-  ChunkCache cache;
-  QImage image;
+  ChunkCache &cache;
+  QImage imageChunks;
+  QImage imageOverlays;
   DefinitionManager *dm;
   uchar placeholder[16 * 16 * 4];  // no chunk found placeholder
   QSet<QString> overlayItemTypes;

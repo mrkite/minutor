@@ -1,4 +1,4 @@
-/** Copyright (c) 2014, Mc_Etlam */
+/** Copyright (c) 2014, EtlamGit */
 #ifndef ENTITYIDENTIFIER_H_
 #define ENTITYIDENTIFIER_H_
 

@@ -100,6 +100,12 @@ Minutor::Minutor() {
   emit worldLoaded(false);
 }
 
+Minutor::~Minutor() {
+  // wait for sheduled tasks
+  QThreadPool::globalInstance()->waitForDone();
+}
+
+
 void Minutor::openWorld() {
   QAction *action = qobject_cast<QAction*>(sender());
   if (action)
@@ -255,6 +261,11 @@ void Minutor::setDepth(int value) {
   depth->setValue(value);
 }
 
+void Minutor::setSingleLayer(bool value) {
+  singleLayerAct->setChecked(value);
+  toggleFlags();
+}
+
 void Minutor::toggleFlags() {
   int flags = 0;
 
@@ -263,6 +274,7 @@ void Minutor::toggleFlags() {
   if (caveModeAct->isChecked())     flags |= MapView::flgCaveMode;
   if (depthShadingAct->isChecked()) flags |= MapView::flgDepthShading;
   if (biomeColorsAct->isChecked())  flags |= MapView::flgBiomeColors;
+  if (singleLayerAct->isChecked())  flags |= MapView::flgSingleLayer;
   mapview->setFlags(flags);
 
   QSet<QString> overlayTypes;
@@ -376,7 +388,14 @@ void Minutor::createActions() {
   biomeColorsAct->setStatusTip(tr("Toggle draw biome colors or block colors"));
   connect(biomeColorsAct, SIGNAL(triggered()),
           this,           SLOT(toggleFlags()));
-
+  
+  singleLayerAct = new QAction(tr("&singlelayer"), this);
+  singleLayerAct->setCheckable(true);
+  //singleLayerAct->setShortcut(tr("Ctrl+L"));
+  singleLayerAct->setStatusTip(tr("Toggle single layer on/off"));
+  connect(singleLayerAct, SIGNAL(triggered()),
+          this,           SLOT(toggleFlags()));
+  
   caveModeAct = new QAction(tr("&Cave Mode"), this);
   caveModeAct->setCheckable(true);
   caveModeAct->setShortcut(tr("Ctrl+C"));
@@ -510,6 +529,7 @@ void Minutor::createMenus() {
   viewMenu->addAction(caveModeAct);
   viewMenu->addAction(depthShadingAct);
   viewMenu->addAction(biomeColorsAct);
+  viewMenu->addAction(singleLayerAct);
   // [View->Overlay]
   structureOverlayMenu = viewMenu->addMenu(tr("&Structure Overlay"));
   entityOverlayMenu    = viewMenu->addMenu(tr("&Entity Overlay"));

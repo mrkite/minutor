@@ -25,7 +25,7 @@ class WorldSave : public QObject, public QRunnable {
 
  private:
   void blankChunk(uchar *scanlines, int stride, int x);
-  void drawChunk(uchar *scanlines, int stride, int x, Chunk *chunk);
+  void drawChunk(uchar *scanlines, int stride, int x, QSharedPointer<Chunk> chunk);
 
   QString filename;
   MapView *map;

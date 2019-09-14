@@ -4,26 +4,25 @@
 
 #include <QObject>
 #include <QRunnable>
-class Chunk;
-class ChunkID;
-class QMutex;
+#include "chunkcache.h"
 
 class ChunkLoader : public QObject, public QRunnable {
   Q_OBJECT
 
  public:
-  ChunkLoader(QString path, int x, int z, const QCache<ChunkID, Chunk> &cache,
-              QMutex *mutex);
+  ChunkLoader(QString path, int cx, int cz);
   ~ChunkLoader();
+
  signals:
-  void loaded(int x, int z);
+  void loaded(int cx, int cz);
+
  protected:
   void run();
+
  private:
   QString path;
-  int x, z;
-  const QCache<ChunkID, Chunk> &cache;
-  QMutex *mutex;
+  int     cx, cz;
+  ChunkCache &cache;
 };
 
 #endif  // CHUNKLOADER_H_
