@@ -167,15 +167,18 @@ class JSONHelper {
   QString location() {
     int line = 1;
     int col = 0;
-    int cpos = pos;
-    bool doneCol = false;
-    while (cpos >= 0) {
-      if (data.at(cpos) == '\n') {
-        doneCol = true;
-        line++;
-      }
-      if (!doneCol) col++;
-      cpos--;
+    if (len > 0)
+    {
+        int cpos = pos;
+        bool doneCol = false;
+        while (cpos >= 0) {
+          if (data.at(cpos) == '\n') {
+            doneCol = true;
+            line++;
+          }
+          if (!doneCol) col++;
+          cpos--;
+        }
     }
     return QString("Line: %1, Offset: %2").arg(line).arg(col);
   }
@@ -185,20 +188,20 @@ class JSONHelper {
   QString data;
 };
 
-JSONData *JSON::parse(const QString data) {
+std::unique_ptr<JSONData> JSON::parse(const QString data) {
   JSONHelper reader(data);
   Token type = reader.nextToken();
   switch (type) {
     case TokenObject:  // hash
-      return new JSONObject(reader);
+      return std::make_unique<JSONObject>(reader);
     case TokenArray:  // array
-      return new JSONArray(reader);
+      return std::make_unique<JSONArray>(reader);
     default:
       throw JSONParseException("Doesn't start with object or array",
                                reader.location());
       break;
   }
-  return NULL;
+  return nullptr;
 }
 static JSONData Null;
 JSONData::JSONData() {
