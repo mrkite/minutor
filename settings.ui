@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>242</height>
+    <height>370</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -79,6 +79,29 @@
          <widget class="QCheckBox" name="checkBox_AutoUpdate">
           <property name="text">
            <string>Auto-check for updates (every 7 days)</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="groupBox_experimental">
+       <property name="title">
+        <string>Experimental or unstable features</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_5">
+        <item>
+         <widget class="QCheckBox" name="checkBox_fine_zoom">
+          <property name="text">
+           <string>Fine zoom steps (recommended for zoom-out)</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="checkBox_zoom_out">
+          <property name="text">
+           <string>Zoom-out functionality (needs much RAM)</string>
           </property>
          </widget>
         </item>

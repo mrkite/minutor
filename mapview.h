@@ -87,8 +87,7 @@ class MapView : public QWidget {
   void getToolTip(int x, int z);
   int getY(int x, int z);
   QList<QSharedPointer<OverlayItem>> getItems(int x, int y, int z);
-  double getZoom() const;
-  void adjustZoom(double rate);
+  void adjustZoom(double steps);
 
   static const int CAVE_DEPTH = 16;  // maximum depth caves are searched in cave mode
   float caveshade[CAVE_DEPTH];
@@ -96,7 +95,7 @@ class MapView : public QWidget {
   int depth;
   double x, z;
   int scale;
-  double zoom_internal;
+  double zoom;
   int flags;
   ChunkCache &cache;
   QImage imageChunks;
