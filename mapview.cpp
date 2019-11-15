@@ -426,6 +426,8 @@ void MapView::drawChunk(int x, int z) {
   QRectF targetRect(centerx, centery, chunksize, chunksize);
 
   QPainter canvas(&imageChunks);
+  if (this->zoom < 1.0)
+      canvas.setRenderHint(QPainter::SmoothPixmapTransform);
   canvas.drawImage(targetRect, srcImage);
 }
 
