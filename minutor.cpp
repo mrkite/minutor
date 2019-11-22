@@ -275,6 +275,7 @@ void Minutor::toggleFlags() {
   if (depthShadingAct->isChecked()) flags |= MapView::flgDepthShading;
   if (biomeColorsAct->isChecked())  flags |= MapView::flgBiomeColors;
   if (singleLayerAct->isChecked())  flags |= MapView::flgSingleLayer;
+  if (seaGroundAct->isChecked())    flags |= MapView::flgSeaGround;
   mapview->setFlags(flags);
 
   QSet<QString> overlayTypes;
@@ -403,6 +404,13 @@ void Minutor::createActions() {
   connect(caveModeAct, SIGNAL(triggered()),
           this,        SLOT(toggleFlags()));
 
+  seaGroundAct = new QAction(tr("Sea Gro&und Mode"), this);
+  seaGroundAct->setCheckable(true);
+  seaGroundAct->setShortcut(tr("Ctrl+U"));
+  seaGroundAct->setStatusTip(tr("Toggle sea ground mode on/off"));
+  connect(seaGroundAct, SIGNAL(triggered()),
+          this,           SLOT(toggleFlags()));
+
   jumpToAct = new QAction(tr("&Jump To"), this);
   jumpToAct->setShortcut(tr("Ctrl+G"));
   jumpToAct->setStatusTip(tr("Jump to a location"));
@@ -529,6 +537,7 @@ void Minutor::createMenus() {
   viewMenu->addAction(caveModeAct);
   viewMenu->addAction(depthShadingAct);
   viewMenu->addAction(biomeColorsAct);
+  viewMenu->addAction(seaGroundAct);
   viewMenu->addAction(singleLayerAct);
   // [View->Overlay]
   structureOverlayMenu = viewMenu->addMenu(tr("&Structure Overlay"));

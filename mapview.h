@@ -16,13 +16,14 @@ class MapView : public QWidget {
  public:
   /// Values for the individual flags
   enum {
-    flgLighting     = 1,
-    flgMobSpawn     = 2,
-    flgCaveMode     = 4,
-    flgDepthShading = 8,
-    flgShowEntities = 16,
-    flgSingleLayer = 32,
-    flgBiomeColors  = 64
+    flgLighting     = 1 << 0,
+    flgMobSpawn     = 1 << 1,
+    flgCaveMode     = 1 << 2,
+    flgDepthShading = 1 << 3,
+    flgShowEntities = 1 << 4,
+    flgSingleLayer  = 1 << 5,
+    flgBiomeColors  = 1 << 6,
+    flgSeaGround    = 1 << 7
   };
 
   typedef struct {
