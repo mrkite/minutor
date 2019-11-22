@@ -471,6 +471,8 @@ void MapView::getToolTip(int x, int z) {
       // -> we continue downwards
       auto & block = BlockIdentifier::Instance().getBlockInfo(pdata.hid);
       if (block.alpha == 0.0) continue;
+      if (flags & MapView::flgSeaGround && block.isLiquid()) continue;
+
       // list all Block States
       for (auto key : pdata.properties.keys()) {
         blockstate += key;

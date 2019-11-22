@@ -102,7 +102,7 @@ private slots:
   QAction *openAct, *reloadAct, *saveAct, *exitAct;
   QAction *jumpSpawnAct;
   QList<QAction *>players;
-  QAction *lightingAct, *mobSpawnAct, *caveModeAct, *depthShadingAct, *biomeColorsAct, *singleLayerAct;
+  QAction *lightingAct, *mobSpawnAct, *caveModeAct, *depthShadingAct, *biomeColorsAct, *singleLayerAct, *seaGroundAct;
   QAction *manageDefsAct;
   QAction *refreshAct;
   QAction *aboutAct;
