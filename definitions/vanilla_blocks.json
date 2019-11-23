@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.14.19w03a",
+  "version": "1.15.19w34a",
   "data": [
     {
       "name": "minecraft:air",
@@ -3921,15 +3921,13 @@
       "name": "minecraft:kelp",
       "color": "#578c2d",
       "alpha": 0.3,
-      "transparent": true,
-      "spawninside": true
+      "transparent": true
     },
     {
       "name": "minecraft:kelp_plant",
       "color": "#57822b",
       "alpha": 0.3,
-      "transparent": true,
-      "spawninside": true
+      "transparent": true
     },
     {
       "name": "minecraft:dried_kelp_block",
@@ -4128,6 +4126,14 @@
     {
       "name": "minecraft:jigsaw",
       "color": "#504651"
+    },
+    {
+      "name": "minecraft:bee_nest",
+      "color": "#caa14c"
+    },
+    {
+      "name": "minecraft:beehive",
+      "color": "#b49259"
     }
   ],
   "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_blocks.json"

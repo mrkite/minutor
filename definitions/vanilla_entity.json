@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "entity",
-  "version": "1.14.19w29",
+  "version": "1.15.19w34a",
   "data": [
     {
       "category": "Hostile",
@@ -210,6 +210,10 @@
           "color": "Khaki"
         },
         {
+          "id": "trader_llama",
+          "color": "Khaki"
+        },
+        {
           "id": "Pig",
           "color": "#ff00ff"
         },
@@ -327,6 +331,10 @@
         {
           "id": "fox",
           "color": "OrangeRed"
+        },
+        {
+          "id": "bee",
+          "color": "GoldenRod"
         }
       ]
     },
