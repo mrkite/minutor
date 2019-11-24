@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.15.19w34a",
+  "version": "1.15.19w41a",
   "data": [
     {
       "name": "minecraft:air",
@@ -4134,6 +4134,14 @@
     {
       "name": "minecraft:beehive",
       "color": "#b49259"
+    },
+    {
+      "name": "minecraft:honey_block",
+      "color": "#fcba34"
+    },
+    {
+      "name": "minecraft:honeycomb_block",
+      "color": "#e5941f"
     }
   ],
   "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_blocks.json"
