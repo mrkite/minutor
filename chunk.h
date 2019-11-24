@@ -37,7 +37,11 @@ class Chunk : public QObject {
   ~Chunk();
   void load(const NBT &nbt);
 
- signals:
+  qint32 get_biome(int x, int z);
+  qint32 get_biome(int x, int y, int z);
+  qint32 get_biome(int offset);
+
+signals:
   void structureFound(QSharedPointer<GeneratedStructure> structure);
 
  protected:
@@ -47,13 +51,14 @@ class Chunk : public QObject {
 
   typedef QMap<QString, QSharedPointer<OverlayItem>> EntityMap;
 
-  quint32 biomes[16*16];
+  int version;
+  qint32 biomes[16 * 16 * 4];
   int highest;
   ChunkSection *sections[16];
   int renderedAt;
   int renderedFlags;
   bool loaded;
-  uchar image[16 * 16 * 4];  // cached render
+  uchar image[16 * 16 * 4];  // cached render: RGBA for 16*16 Blocks
   uchar depth[16 * 16];
   EntityMap entities;
   int chunkX;

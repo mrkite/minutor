@@ -37,8 +37,6 @@ void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
       // initialize color
       uchar r = 0, g = 0, b = 0;
       double alpha = 0.0;
-      // get Biome
-      auto &biome = BiomeIdentifier::Instance().getBiome(chunk->biomes[offset]);
       int top = depth;
       if (top > chunk->highest)
         top = chunk->highest;
@@ -84,6 +82,8 @@ void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
 //        if (light < 0) light = 0;
 //        if (light > 15) light = 15;
 
+        // get Biome
+        auto &biome = BiomeIdentifier::Instance().getBiome(chunk->get_biome(x,y,z));
         // get current block color
         QColor blockcolor = block.colors[15];  // get the color from Block definition
         if (block.biomeWater()) {

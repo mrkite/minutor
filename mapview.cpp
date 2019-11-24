@@ -458,10 +458,10 @@ void MapView::getToolTip(int x, int z) {
   if (chunk) {
     int top = qMin(depth, chunk->highest);
     for (y = top; y >= 0; y--) {
-      int sec = y >> 4;
-      ChunkSection *section = chunk->sections[sec];
+      int section_idx = y >> 4;
+      ChunkSection *section = chunk->sections[section_idx];
       if (!section) {
-        y = (sec << 4) - 1;  // skip entire section
+        y = (section_idx << 4) - 1;  // skip entire section
         continue;
       }
       // get information about block
@@ -483,7 +483,8 @@ void MapView::getToolTip(int x, int z) {
       blockstate.chop(1);
       break;
     }
-    auto &bi = BiomeIdentifier::Instance().getBiome(chunk->biomes[(x & 0xf) + (z & 0xf) * 16]);
+    int biome_code = chunk->get_biome((x & 0xf), y, (z & 0xf));
+    auto &bi = BiomeIdentifier::Instance().getBiome(biome_code);
     biome = bi.name;
 
     // count Entity of each display type
@@ -515,7 +516,7 @@ void MapView::getToolTip(int x, int z) {
   if (entityStr.length() > 0)
     hovertext += " - " + entityStr;
 
-#ifdef DEBUG
+#if defined(DEBUG) || defined(_DEBUG) || defined(QT_DEBUG)
   hovertext += " [Cache:"
             + QString().number(this->cache.getCost()) + "/"
             + QString().number(this->cache.getMaxCost()) + "]";
