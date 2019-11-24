@@ -257,13 +257,18 @@ void Minutor::setViewBiomeColors(bool value) {
   toggleFlags();
 }
 
-void Minutor::setDepth(int value) {
-  depth->setValue(value);
+void Minutor::setViewSeaGroundMode(bool value) {
+  seaGroundAct->setChecked(value);
+  toggleFlags();
 }
 
-void Minutor::setSingleLayer(bool value) {
+void Minutor::setViewSingleLayer(bool value) {
   singleLayerAct->setChecked(value);
   toggleFlags();
+}
+
+void Minutor::setDepth(int value) {
+  depth->setValue(value);
 }
 
 void Minutor::toggleFlags() {
@@ -274,8 +279,8 @@ void Minutor::toggleFlags() {
   if (caveModeAct->isChecked())     flags |= MapView::flgCaveMode;
   if (depthShadingAct->isChecked()) flags |= MapView::flgDepthShading;
   if (biomeColorsAct->isChecked())  flags |= MapView::flgBiomeColors;
-  if (singleLayerAct->isChecked())  flags |= MapView::flgSingleLayer;
   if (seaGroundAct->isChecked())    flags |= MapView::flgSeaGround;
+  if (singleLayerAct->isChecked())  flags |= MapView::flgSingleLayer;
   mapview->setFlags(flags);
 
   QSet<QString> overlayTypes;
@@ -352,7 +357,7 @@ void Minutor::createActions() {
   connect(exitAct, SIGNAL(triggered()),
           this,    SLOT(close()));
 
-  // [View]
+  // [View->Jump]
   jumpSpawnAct = new QAction(tr("Jump to &Spawn"), this);
   jumpSpawnAct->setShortcut(tr("F1"));
   jumpSpawnAct->setStatusTip(tr("Jump to world spawn"));
@@ -361,12 +366,35 @@ void Minutor::createActions() {
   connect(this,         SIGNAL(worldLoaded(bool)),
           jumpSpawnAct, SLOT(setEnabled(bool)));
 
+  jumpToAct = new QAction(tr("&Jump To"), this);
+  jumpToAct->setShortcut(tr("F2"));
+  jumpToAct->setStatusTip(tr("Jump to a location"));
+  connect(jumpToAct, SIGNAL(triggered()),
+          jumpTo,    SLOT(show()));
+  connect(this,      SIGNAL(worldLoaded(bool)),
+          jumpToAct, SLOT(setEnabled(bool)));
 
+
+  // [View->Modes]
   lightingAct = new QAction(tr("&Lighting"), this);
   lightingAct->setCheckable(true);
   lightingAct->setShortcut(tr("Ctrl+L"));
   lightingAct->setStatusTip(tr("Toggle lighting on/off"));
   connect(lightingAct, SIGNAL(triggered()),
+          this,        SLOT(toggleFlags()));
+
+  mobSpawnAct = new QAction(tr("&Mob spawning"), this);
+  mobSpawnAct->setCheckable(true);
+  mobSpawnAct->setShortcut(tr("Ctrl+M"));
+  mobSpawnAct->setStatusTip(tr("Toggle show mob spawning on/off"));
+  connect(mobSpawnAct, SIGNAL(triggered()),
+          this,        SLOT(toggleFlags()));
+
+  caveModeAct = new QAction(tr("&Cave Mode"), this);
+  caveModeAct->setCheckable(true);
+  caveModeAct->setShortcut(tr("Ctrl+C"));
+  caveModeAct->setStatusTip(tr("Toggle cave mode on/off"));
+  connect(caveModeAct, SIGNAL(triggered()),
           this,        SLOT(toggleFlags()));
 
   depthShadingAct = new QAction(tr("&Depth shading"), this);
@@ -376,13 +404,6 @@ void Minutor::createActions() {
   connect(depthShadingAct, SIGNAL(triggered()),
           this,            SLOT(toggleFlags()));
 
-  mobSpawnAct = new QAction(tr("&Mob spawning"), this);
-  mobSpawnAct->setCheckable(true);
-  mobSpawnAct->setShortcut(tr("Ctrl+M"));
-  mobSpawnAct->setStatusTip(tr("Toggle show mob spawning on/off"));
-  connect(mobSpawnAct, SIGNAL(triggered()),
-          this,        SLOT(toggleFlags()));
-
   biomeColorsAct = new QAction(tr("&Biome Colors"), this);
   biomeColorsAct->setCheckable(true);
   biomeColorsAct->setShortcut(tr("Ctrl+B"));
@@ -390,48 +411,32 @@ void Minutor::createActions() {
   connect(biomeColorsAct, SIGNAL(triggered()),
           this,           SLOT(toggleFlags()));
   
-  singleLayerAct = new QAction(tr("&singlelayer"), this);
-  singleLayerAct->setCheckable(true);
-  //singleLayerAct->setShortcut(tr("Ctrl+L"));
-  singleLayerAct->setStatusTip(tr("Toggle single layer on/off"));
-  connect(singleLayerAct, SIGNAL(triggered()),
-          this,           SLOT(toggleFlags()));
-  
-  caveModeAct = new QAction(tr("&Cave Mode"), this);
-  caveModeAct->setCheckable(true);
-  caveModeAct->setShortcut(tr("Ctrl+C"));
-  caveModeAct->setStatusTip(tr("Toggle cave mode on/off"));
-  connect(caveModeAct, SIGNAL(triggered()),
-          this,        SLOT(toggleFlags()));
-
-  seaGroundAct = new QAction(tr("Sea Gro&und Mode"), this);
+  seaGroundAct = new QAction(tr("Sea &Ground Mode"), this);
   seaGroundAct->setCheckable(true);
-  seaGroundAct->setShortcut(tr("Ctrl+U"));
+  seaGroundAct->setShortcut(tr("Ctrl+G"));
   seaGroundAct->setStatusTip(tr("Toggle sea ground mode on/off"));
   connect(seaGroundAct, SIGNAL(triggered()),
           this,           SLOT(toggleFlags()));
 
-  jumpToAct = new QAction(tr("&Jump To"), this);
-  jumpToAct->setShortcut(tr("Ctrl+G"));
-  jumpToAct->setStatusTip(tr("Jump to a location"));
-  connect(jumpToAct, SIGNAL(triggered()),
-          jumpTo,    SLOT(show()));
-  connect(this,      SIGNAL(worldLoaded(bool)),
-          jumpToAct, SLOT(setEnabled(bool)));
+  singleLayerAct = new QAction(tr("Single Layer"), this);
+  singleLayerAct->setCheckable(true);
+  //singleLayerAct->setShortcut(tr("Ctrl+L"));  // both S and L are already used
+  singleLayerAct->setStatusTip(tr("Toggle single layer on/off"));
+  connect(singleLayerAct, SIGNAL(triggered()),
+          this,           SLOT(toggleFlags()));
 
-  // [View->Entity Overlay]
-
-  manageDefsAct = new QAction(tr("Manage &Definitions..."), this);
-  manageDefsAct->setStatusTip(tr("Manage block and biome definitions"));
-  connect(manageDefsAct, SIGNAL(triggered()),
-          dm,            SLOT(show()));
-
+  // [View->Others]
   refreshAct = new QAction(tr("Refresh"), this);
   refreshAct->setShortcut(tr("F2"));
   refreshAct->setStatusTip(tr("Reloads all chunks, "
                               "but keeps the same position / dimension"));
   connect(refreshAct, SIGNAL(triggered()),
           mapview,    SLOT(clearCache()));
+
+  manageDefsAct = new QAction(tr("Manage &Definitions..."), this);
+  manageDefsAct->setStatusTip(tr("Manage block and biome definitions"));
+  connect(manageDefsAct, SIGNAL(triggered()),
+          dm,            SLOT(show()));
 
   // [Help]
   aboutAct = new QAction(tr("&About"), this);
@@ -531,6 +536,7 @@ void Minutor::createMenus() {
   jumpMenu->setEnabled(false);
   dimMenu = viewMenu->addMenu(tr("&Dimension"));
   dimMenu->setEnabled(false);
+  // [View->Modes]
   viewMenu->addSeparator();
   viewMenu->addAction(lightingAct);
   viewMenu->addAction(mobSpawnAct);
@@ -540,16 +546,16 @@ void Minutor::createMenus() {
   viewMenu->addAction(seaGroundAct);
   viewMenu->addAction(singleLayerAct);
   // [View->Overlay]
+  viewMenu->addSeparator();
   structureOverlayMenu = viewMenu->addMenu(tr("&Structure Overlay"));
   entityOverlayMenu    = viewMenu->addMenu(tr("&Entity Overlay"));
   populateEntityOverlayMenu();
 
   viewMenu->addSeparator();
   viewMenu->addAction(refreshAct);
-  viewMenu->addSeparator();
   viewMenu->addAction(manageDefsAct);
 
-  menuBar()->addSeparator();
+  //menuBar()->addSeparator();
 
   // [Help]
   helpMenu = menuBar()->addMenu(tr("&Help"));
