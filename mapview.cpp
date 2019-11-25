@@ -131,6 +131,26 @@ void MapView::clearCache() {
   redraw();
 }
 
+void MapView::adjustZoom(double steps)
+{
+  const bool allowZoomOut = QSettings().value("zoomout", false).toBool();
+
+  const double zoomMin = allowZoomOut ? 0.20 : 1.0;
+  const double zoomMax = 20.0;
+
+  const bool useFineZoomStrategy = QSettings().value("finezoom", false).toBool();
+
+  if (useFineZoomStrategy) {
+    zoom *= pow(1.3, steps);
+  }
+  else {
+    zoom = floor(zoom + steps);
+  }
+
+  if (zoom < zoomMin) zoom = zoomMin;
+  if (zoom > zoomMax) zoom = zoomMax;
+}
+
 static int lastMouseX = -1, lastMouseY = -1;
 static bool dragging = false;
 void MapView::mousePressEvent(QMouseEvent *event) {
@@ -199,9 +219,7 @@ void MapView::wheelEvent(QWheelEvent *event) {
     // change depth
     emit demandDepthChange(event->delta() / 120);
   } else {  // change zoom
-    zoom += floor(event->delta() / 90.0);
-    if (zoom < 1.0) zoom = 1.0;
-    if (zoom > 20.0) zoom = 20.0;
+    adjustZoom( event->delta() / 90.0 );
     redraw();
   }
 }
@@ -246,14 +264,12 @@ void MapView::keyPressEvent(QKeyEvent *event) {
       break;
     case Qt::Key_PageUp:
     case Qt::Key_Q:
-      zoom++;
-      if (zoom > 20.0) zoom = 20.0;
+      adjustZoom(1);
       redraw();
       break;
     case Qt::Key_PageDown:
     case Qt::Key_E:
-      zoom--;
-      if (zoom < 1.0) zoom = 1.0;
+      adjustZoom(-1);
       redraw();
       break;
     case Qt::Key_Home:
@@ -393,8 +409,8 @@ void MapView::drawChunk(int x, int z) {
   int centerchunkx = floor(this->x / 16);
   int centerchunkz = floor(this->z / 16);
   // and the center chunk screen coordinates
-  int centerx = imageChunks.width() / 2;
-  int centery = imageChunks.height() / 2;
+  double centerx = imageChunks.width() / 2;
+  double centery = imageChunks.height() / 2;
   // which need to be shifted to account for panning inside that chunk
   centerx -= (this->x - centerchunkx * 16) * zoom;
   centery -= (this->z - centerchunkz * 16) * zoom;
@@ -404,43 +420,15 @@ void MapView::drawChunk(int x, int z) {
   centerx += (x - centerchunkx) * chunksize;
   centery += (z - centerchunkz) * chunksize;
 
-  int srcoffset = 0;
-  uchar *bits   = imageChunks.bits();
-  int imgstride = imageChunks.bytesPerLine();
+  const uchar* srcImageData = chunk ? chunk->image : placeholder;
+  QImage srcImage(srcImageData, 16, 16, QImage::Format_RGB32);
 
-  int skipx = 0, skipy = 0;
-  int blockwidth = chunksize, blockheight = chunksize;
-  // now if we're off the screen we need to crop
-  if (centerx < 0) {
-    skipx = -centerx;
-    centerx = 0;
-  }
-  if (centery < 0) {
-    skipy = -centery;
-    centery = 0;
-  }
-  // or the other side, we need to trim
-  if (centerx + blockwidth > imageChunks.width())
-    blockwidth = imageChunks.width() - centerx;
-  if (centery + blockheight > imageChunks.height())
-    blockheight = imageChunks.height() - centery;
-  if (blockwidth <= 0 || skipx >= blockwidth) return;
-  int imgoffset = centerx * 4 + centery * imgstride;
-  if (chunk)
-    src = chunk->image;
-  // blit (or scale blit)
-  for (int z = skipy; z < blockheight; z++, imgoffset += imgstride) {
-    srcoffset = floor(z / zoom) * 16 * 4;
-    if (zoom == 1.0) {
-      memcpy(bits + imgoffset, src + srcoffset + skipx * 4,
-             (blockwidth - skipx) * 4);
-    } else {
-      int xofs = 0;
-      for (int x = skipx; x < blockwidth; x++, xofs += 4)
-        memcpy(bits + imgoffset + xofs, src + srcoffset +
-               static_cast<int>(floor(x / zoom) * 4), 4);
-    }
-  }
+  QRectF targetRect(centerx, centery, chunksize, chunksize);
+
+  QPainter canvas(&imageChunks);
+  if (this->zoom < 1.0)
+      canvas.setRenderHint(QPainter::SmoothPixmapTransform);
+  canvas.drawImage(targetRect, srcImage);
 }
 
 void MapView::getToolTip(int x, int z) {
