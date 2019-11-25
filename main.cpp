@@ -81,6 +81,10 @@ int main(int argc, char *argv[]) {
       minutor.setViewMobspawning(true);
       continue;
     }
+    if (args[i] == "-C" || args[i] == "--cavemode") {
+      minutor.setViewCavemode(true);
+      continue;
+    }
     if (args[i] == "-D" || args[i] == "--depthshading") {
       minutor.setViewDepthshading(true);
       continue;
@@ -89,12 +93,12 @@ int main(int argc, char *argv[]) {
       minutor.setViewBiomeColors(true);
       continue;
     }
-    if (args[i] == "-C" || args[i] == "--cavemode") {
-      minutor.setViewCavemode(true);
+    if (args[i] == "-G" || args[i] == "--seaground") {
+      minutor.setViewSeaGroundMode(true);
       continue;
     }
     if (args[i] == "-sl" || args[i] == "--singlelayer") {
-      minutor.setSingleLayer(true);
+      minutor.setViewSingleLayer(true);
       continue;
     }
   }
