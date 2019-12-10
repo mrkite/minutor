@@ -55,9 +55,9 @@ ChunkCache& ChunkCache::Instance() {
 
 void ChunkCache::clear() {
   QThreadPool::globalInstance()->waitForDone();
-  mutex.lock();
+
+  QMutexLocker guard(&mutex);
   cache.clear();
-  mutex.unlock();
 }
 
 void ChunkCache::setPath(QString path) {
@@ -80,9 +80,9 @@ int ChunkCache::getMaxCost() const {
 QSharedPointer<Chunk> ChunkCache::fetchCached(int cx, int cz) {
   // try to get Chunk from Cache
   ChunkID id(cx, cz);
-  mutex.lock();
+
+  QMutexLocker guard(&mutex);
   QSharedPointer<Chunk> * p_chunk(cache[id]);   // const operation
-  mutex.unlock();
 
   if (p_chunk != NULL )
     return QSharedPointer<Chunk>(*p_chunk);
@@ -93,22 +93,26 @@ QSharedPointer<Chunk> ChunkCache::fetchCached(int cx, int cz) {
 QSharedPointer<Chunk> ChunkCache::fetch(int cx, int cz) {
   // try to get Chunk from Cache
   ChunkID id(cx, cz);
-  mutex.lock();
-  QSharedPointer<Chunk> * p_chunk(cache[id]);   // const operation
-  mutex.unlock();
-  if (p_chunk != NULL ) {
-    QSharedPointer<Chunk> chunk(*p_chunk);
-    if (chunk->loaded)
-      return chunk;
-    return QSharedPointer<Chunk>(NULL);  // we're loading this chunk, or it's blank.
+  {
+    QMutexLocker guard(&mutex);
+    QSharedPointer<Chunk> * p_chunk(cache[id]);   // const operation
+    if (p_chunk != NULL ) {
+      QSharedPointer<Chunk> chunk(*p_chunk);
+      if (chunk->loaded)
+        return chunk;
+      return QSharedPointer<Chunk>(NULL);  // we're loading this chunk, or it's blank.
+    }
   }
+
   // launch background process to load this chunk
-  p_chunk = new QSharedPointer<Chunk>(new Chunk());
+  QSharedPointer<Chunk> * p_chunk = new QSharedPointer<Chunk>(new Chunk());
   connect(p_chunk->data(), SIGNAL(structureFound(QSharedPointer<GeneratedStructure>)),
           this,            SLOT  (routeStructure(QSharedPointer<GeneratedStructure>)));
-  mutex.lock();
-  cache.insert(id, p_chunk);    // non-const operation !
-  mutex.unlock();
+
+  {
+    QMutexLocker guard(&mutex);
+    cache.insert(id, p_chunk);    // non-const operation !
+  }
   ChunkLoader *loader = new ChunkLoader(path, cx, cz);
   connect(loader, SIGNAL(loaded(int, int)),
           this,   SLOT(gotChunk(int, int)));
@@ -127,5 +131,7 @@ void ChunkCache::routeStructure(QSharedPointer<GeneratedStructure> structure) {
 void ChunkCache::adaptCacheToWindow(int wx, int wy) {
   int chunks = ((wx + 15) >> 4) * ((wy + 15) >> 4);  // number of chunks visible
   chunks *= 1.10;  // add 10%
+
+  QMutexLocker guard(&mutex);
   cache.setMaxCost(qMin(chunks, maxcache));
 }
