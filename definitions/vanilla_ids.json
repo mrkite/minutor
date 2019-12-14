@@ -7,7 +7,7 @@
       "id": 0,
       "name": "Air",
       "color": "#ffffff",
-      "alpha": 0.0,
+      "alpha": 0,
       "transparent": true,
       "spawninside": true
     },
@@ -791,7 +791,7 @@
       "name": "Oak Stairs",
       "color": "#9f844d",
       "transparent": true,
-      "mask" : 4,
+      "mask": 4,
       "variants": [
         {
           "data": 4,
@@ -938,7 +938,7 @@
       "name": "Cobblestone Stairs",
       "color": "#565656",
       "transparent": true,
-      "mask" : 4,
+      "mask": 4,
       "variants": [
         {
           "data": 4,
@@ -1459,7 +1459,7 @@
       "name": "Brick Stairs",
       "color": "#7c4536",
       "transparent": true,
-      "mask" : 4,
+      "mask": 4,
       "variants": [
         {
           "data": 4,
@@ -1474,7 +1474,7 @@
       "name": "Stone Brick Stairs",
       "color": "#727272",
       "transparent": true,
-      "mask" : 4,
+      "mask": 4,
       "variants": [
         {
           "data": 4,
@@ -1512,7 +1512,7 @@
       "name": "Nether Brick Stairs",
       "color": "#381a1f",
       "transparent": true,
-      "mask" : 4,
+      "mask": 4,
       "variants": [
         {
           "data": 4,
@@ -1743,7 +1743,7 @@
       "name": "Sandstone Stairs",
       "color": "#e9e0b3",
       "transparent": true,
-      "mask" : 4,
+      "mask": 4,
       "variants": [
         {
           "data": 4,
@@ -1788,7 +1788,7 @@
       "name": "Spruce Stairs",
       "color": "#664f2f",
       "transparent": true,
-      "mask" : 4,
+      "mask": 4,
       "variants": [
         {
           "data": 4,
@@ -1803,7 +1803,7 @@
       "name": "Birch Stairs",
       "color": "#d7cb8d",
       "transparent": true,
-      "mask" : 4,
+      "mask": 4,
       "variants": [
         {
           "data": 4,
@@ -1818,7 +1818,7 @@
       "name": "Jungle Stairs",
       "color": "#b1805c",
       "transparent": true,
-      "mask" : 4,
+      "mask": 4,
       "variants": [
         {
           "data": 4,
@@ -2042,12 +2042,12 @@
         {
           "data": 4,
           "name": "Slightly Damaged Anvil",
-          "flatname": "minecraft:chipped_anvil",
+          "flatname": "minecraft:chipped_anvil"
         },
         {
           "data": 8,
           "name": "Very Damaged Anvil",
-          "flatname": "minecraft:damaged_anvil",
+          "flatname": "minecraft:damaged_anvil"
         }
       ]
     },
@@ -2154,7 +2154,7 @@
       "name": "Quartz Stairs",
       "color": "#dfdacf",
       "transparent": true,
-      "mask" : 4,
+      "mask": 4,
       "variants": [
         {
           "data": 4,
@@ -2379,7 +2379,7 @@
       "name": "Acacia Stairs",
       "color": "#a15730",
       "transparent": true,
-      "mask" : 4,
+      "mask": 4,
       "variants": [
         {
           "data": 4,
@@ -2394,7 +2394,7 @@
       "name": "Dark Oak Stairs",
       "color": "#492f17",
       "transparent": true,
-      "mask" : 4,
+      "mask": 4,
       "variants": [
         {
           "data": 4,
@@ -2414,7 +2414,7 @@
       "id": 166,
       "name": "Barrier",
       "color": "#000000",
-      "alpha": 0.0
+      "alpha": 0
     },
     {
       "id": 167,
@@ -2587,13 +2587,13 @@
           "data": 8,
           "name": "Large Flower (top part)",
           "color": "#ffffff",
-          "alpha": 0.0
+          "alpha": 0
         },
         {
           "data": 10,
           "name": "Large Flower (top part)",
           "color": "#ffffff",
-          "alpha": 0.0
+          "alpha": 0
         }
       ]
     },
@@ -2641,7 +2641,7 @@
       "name": "Red Sandstone Stairs",
       "color": "#a6551e",
       "transparent": true,
-      "mask" : 4,
+      "mask": 4,
       "variants": [
         {
           "data": 4,
@@ -2821,7 +2821,7 @@
       "name": "Purpur Stairs",
       "color": "#a67aa6",
       "transparent": true,
-      "mask" : 4,
+      "mask": 4,
       "variants": [
         {
           "data": 4,
@@ -2940,7 +2940,7 @@
       "id": 217,
       "name": "Structure Void",
       "color": "#ffffff",
-      "alpha": 0.0,
+      "alpha": 0,
       "transparent": true,
       "spawninside": true
     },
