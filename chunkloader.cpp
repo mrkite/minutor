@@ -25,9 +25,17 @@ void ChunkLoader::run() {
     emit loaded(cx, cz);
     return;
   }
+
+  const int headerSize = 4096;
+
+  if (f.size() < headerSize) {
+    return; // file header not yet fully written by minecraft
+  }
+
   // map header into memory
-  uchar *header = f.map(0, 4096);
+  uchar *header = f.map(0, headerSize);
   int offset = 4 * ((cx & 31) + (cz & 31) * 32);
+
   int coffset = (header[offset] << 16) | (header[offset + 1] << 8) |
       header[offset + 2];
   int numSectors = header[offset+3];
@@ -39,7 +47,14 @@ void ChunkLoader::run() {
     return;
   }
 
-  uchar *raw = f.map(coffset * 4096, numSectors * 4096);
+  const int chunkStart = coffset * 4096;
+  const int chunkSize = numSectors * 4096;
+
+  if (f.size() < (chunkStart + chunkSize)) {
+    return; // chunk not yet fully written by minecraft
+  }
+
+  uchar *raw = f.map(chunkStart, chunkSize);
   if (raw == NULL) {
     f.close();
     emit loaded(cx, cz);
