@@ -29,6 +29,7 @@ void ChunkLoader::run() {
   const int headerSize = 4096;
 
   if (f.size() < headerSize) {
+    emit loaded(cx, cz);
     return; // file header not yet fully written by minecraft
   }
 
@@ -51,6 +52,7 @@ void ChunkLoader::run() {
   const int chunkSize = numSectors * 4096;
 
   if (f.size() < (chunkStart + chunkSize)) {
+    emit loaded(cx, cz);
     return; // chunk not yet fully written by minecraft
   }
 
