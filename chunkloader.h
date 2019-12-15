@@ -23,6 +23,8 @@ class ChunkLoader : public QObject, public QRunnable {
   QString path;
   int     cx, cz;
   ChunkCache &cache;
+
+  void loadNbt();
 };
 
 #endif  // CHUNKLOADER_H_

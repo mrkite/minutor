@@ -15,6 +15,12 @@ ChunkLoader::~ChunkLoader()
 {}
 
 void ChunkLoader::run() {
+  loadNbt();
+  emit loaded(cx, cz);
+}
+
+void ChunkLoader::loadNbt()
+{
   // get coordinates of Region file
   int rx = cx >> 5;
   int rz = cz >> 5;
@@ -22,14 +28,12 @@ void ChunkLoader::run() {
   QFile f(path + "/region/r." + QString::number(rx) + "." +
           QString::number(rz) + ".mca");
   if (!f.open(QIODevice::ReadOnly)) {  // no chunks in this region
-    emit loaded(cx, cz);
     return;
   }
 
   const int headerSize = 4096;
 
   if (f.size() < headerSize) {
-    emit loaded(cx, cz);
     return; // file header not yet fully written by minecraft
   }
 
@@ -44,7 +48,6 @@ void ChunkLoader::run() {
 
   if (coffset == 0) {  // no chunk
     f.close();
-    emit loaded(cx, cz);
     return;
   }
 
@@ -52,14 +55,12 @@ void ChunkLoader::run() {
   const int chunkSize = numSectors * 4096;
 
   if (f.size() < (chunkStart + chunkSize)) {
-    emit loaded(cx, cz);
     return; // chunk not yet fully written by minecraft
   }
 
   uchar *raw = f.map(chunkStart, chunkSize);
   if (raw == NULL) {
     f.close();
-    emit loaded(cx, cz);
     return;
   }
   // get existing Chunk entry from Cache
@@ -72,6 +73,4 @@ void ChunkLoader::run() {
   }
   f.unmap(raw);
   f.close();
-
-  emit loaded(cx, cz);
 }
