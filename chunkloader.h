@@ -13,6 +13,8 @@ class ChunkLoader : public QObject, public QRunnable {
   ChunkLoader(QString path, int cx, int cz);
   ~ChunkLoader();
 
+  static bool loadNbt(QString path, int cx, int cz, QSharedPointer<Chunk> chunk);
+
  signals:
   void loaded(int cx, int cz);
 
@@ -23,8 +25,6 @@ class ChunkLoader : public QObject, public QRunnable {
   QString path;
   int     cx, cz;
   ChunkCache &cache;
-
-  void loadNbt();
 };
 
 #endif  // CHUNKLOADER_H_
