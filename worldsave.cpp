@@ -102,20 +102,22 @@ void WorldSave::run() {
   strm.opaque = Z_NULL;
   deflateInit2(&strm, 6, Z_DEFLATED, 15, 8, Z_DEFAULT_STRATEGY);
 
-  // create a temporary Chunk for PNG processing
-  QSharedPointer<Chunk> chunk(new Chunk());
-
   double maximum = (bottom + 1 - top) * (right + 1 - left);
   double step = 0.0;
   for (int cz = top; cz <= bottom; cz++) {
     for (int cx = left; cx <= right; cx++, step += 1.0) {
       emit progress(tr("Rendering world"), step / maximum);
 
+      // create a temporary Chunk for PNG processing
+      QSharedPointer<Chunk> chunk(new Chunk());
+
       if (ChunkLoader::loadNbt(path, cx, cz, chunk)) {
         drawChunk(scanlines, width * 4 + 1, cx - left, chunk);
       } else {
         blankChunk(scanlines, width * 4 + 1, cx - left);
       }
+      // cleanup memory resources
+      chunk.reset();
     }
     // write out scanlines to disk
     strm.avail_in = insize;
@@ -127,7 +129,6 @@ void WorldSave::run() {
       writeChunk(&png, "IDAT", (const char *)compressed, (outsize - strm.avail_out));
     } while (strm.avail_out == 0);
   }
-  chunk.reset();
   deflateEnd(&strm);
   delete [] scanlines;
   delete [] compressed;
