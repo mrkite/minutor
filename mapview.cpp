@@ -15,10 +15,11 @@
 MapView::MapView(QWidget *parent)
   : QWidget(parent)
   , cache(ChunkCache::Instance())
+  , depth(255)
+  , scale(1)      // overworld coordinate mapping
+  , zoomIndex(0)  // 1:1
 {
-  depth = 255;
-  scale = 1;
-  zoom = 1.0;
+  adjustZoom(0, false);
   connect(&cache, SIGNAL(chunkLoaded(int, int)),
           this,   SLOT  (chunkUpdated(int, int)));
   connect(&cache, SIGNAL(structureFound(QSharedPointer<GeneratedStructure>)),
@@ -131,24 +132,42 @@ void MapView::clearCache() {
   redraw();
 }
 
-void MapView::adjustZoom(double steps)
+void MapView::adjustZoom(double steps, bool allowZoomOut)
 {
-  const bool allowZoomOut = QSettings().value("zoomout", false).toBool();
+  zoomIndex += steps;
 
-  const double zoomMin = allowZoomOut ? 0.20 : 1.0;
-  const double zoomMax = 20.0;
+  // use Fibonacci numbers to get natural zoom behaviour
+  const float zoomTable[] = {1, 2, 3, 5, 8, 13, 21, 34, 55, 89};
+  const int zoomMin = allowZoomOut ? -4 : 0;
+  const int zoomMax = (sizeof(zoomTable) / sizeof(float)) -1;
 
-  const bool useFineZoomStrategy = QSettings().value("finezoom", false).toBool();
+  if (zoomIndex < zoomMin) zoomIndex = zoomMin;
+  if (zoomIndex > zoomMax) zoomIndex = zoomMax;
 
-  if (useFineZoomStrategy) {
-    zoom *= pow(1.3, steps);
-  }
-  else {
-    zoom = floor(zoom + steps);
-  }
+  // determine minimal zoomed value that is allowed
+  // with current window size and available pyhiscal memory
+  bool restrictZoom = true;
+  int maxchunks = cache.getMemoryMax();
+  int chunks    = cache.getCacheMax();
+  do {
+    // apply new zoom
+    if (zoomIndex < 0)
+      zoom = 1 / pow(2.0, -zoomIndex);
+    else
+      zoom = zoomTable[zoomIndex];
 
-  if (zoom < zoomMin) zoom = zoomMin;
-  if (zoom > zoomMax) zoom = zoomMax;
+    // check
+    int ppc = ceil(16*zoom);
+    int cx = (imageChunks.width() +ppc-1) / ppc;
+    int cz = (imageChunks.height()+ppc-1) / ppc;
+    chunks = 1.2 * (cx * cz);
+    if (chunks <= maxchunks)
+      restrictZoom = false; // everything matches
+    else
+      zoomIndex++;          // restrict zoom
+  } while (restrictZoom);
+
+  cache.setCacheMaxSize(chunks);
 }
 
 static int lastMouseX = -1, lastMouseY = -1;
@@ -215,11 +234,16 @@ void MapView::mouseDoubleClickEvent(QMouseEvent *event) {
 }
 
 void MapView::wheelEvent(QWheelEvent *event) {
-  if ((event->modifiers() & Qt::ShiftModifier) == Qt::ShiftModifier) {
+  if   ((event->modifiers() & Qt::ShiftModifier) == Qt::ShiftModifier) {
     // change depth
     emit demandDepthChange(event->delta() / 120);
-  } else {  // change zoom
-    adjustZoom( event->delta() / 90.0 );
+  } if ((event->modifiers() & Qt::ControlModifier) == Qt::ControlModifier) {
+    // allow change zoom also to zoom OUT
+    adjustZoom( event->delta() / 120.0, true );
+    redraw();
+  } else {
+    // normal change zoom
+    adjustZoom( event->delta() / 120.0, false );
     redraw();
   }
 }
@@ -227,18 +251,18 @@ void MapView::wheelEvent(QWheelEvent *event) {
 void MapView::keyPressEvent(QKeyEvent *event) {
   // default: 16 blocks / 1 chunk
   float stepSize = 16.0;
+  bool allowZoomOut = false;
 
-  if ((event->modifiers() & Qt::ShiftModifier) == Qt::ShiftModifier) {
+  if        ((event->modifiers() & Qt::ShiftModifier) == Qt::ShiftModifier) {
     // 1 block for fine tuning
     stepSize = 1.0;
-  }
-  else if ((event->modifiers() & Qt::AltModifier) == Qt::AltModifier) {
+  } else if ((event->modifiers() & Qt::AltModifier) == Qt::AltModifier) {
     // 8 chunks
     stepSize = 128.0;
-    if ((event->modifiers() & Qt::ControlModifier) == Qt::ControlModifier) {
-      // 32 chunks / 1 Region
-      stepSize = 512.0;
-    }
+  } else if ((event->modifiers() & Qt::ControlModifier) == Qt::ControlModifier) {
+    // 32 chunks / 1 Region
+    stepSize = 512.0;
+    allowZoomOut = true;
   }
 
   switch (event->key()) {
@@ -264,12 +288,12 @@ void MapView::keyPressEvent(QKeyEvent *event) {
       break;
     case Qt::Key_PageUp:
     case Qt::Key_Q:
-      adjustZoom(1);
+      adjustZoom(1, allowZoomOut);
       redraw();
       break;
     case Qt::Key_PageDown:
     case Qt::Key_E:
-      adjustZoom(-1);
+      adjustZoom(-1, allowZoomOut);
       redraw();
       break;
     case Qt::Key_Home:
@@ -286,8 +310,12 @@ void MapView::keyPressEvent(QKeyEvent *event) {
 }
 
 void MapView::resizeEvent(QResizeEvent *event) {
+  // adapt size of rendered images
   imageChunks   = QImage(event->size(), QImage::Format_RGB32);
   imageOverlays = QImage(event->size(), QImage::Format_RGBA8888);
+  // restrict zoom and adapt ChunkCache
+  adjustZoom(0, true);
+  // redraw everything
   redraw();
 }
 
@@ -506,8 +534,9 @@ void MapView::getToolTip(int x, int z) {
 
 #if defined(DEBUG) || defined(_DEBUG) || defined(QT_DEBUG)
   hovertext += " [Cache:"
-            + QString().number(this->cache.getCost()) + "/"
-            + QString().number(this->cache.getMaxCost()) + "]";
+            + QString().number(this->cache.getCacheUsage()) + "/"
+            + QString().number(this->cache.getCacheMax()) + "]";
+  hovertext += " Zoom:" + QString().number(zoomIndex);
 #endif
 
   emit hoverTextChanged(hovertext);

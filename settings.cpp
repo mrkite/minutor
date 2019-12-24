@@ -41,8 +41,6 @@ Settings::Settings(QWidget *parent) : QDialog(parent) {
   }
   autoUpdate = info.value("autoupdate", true).toBool();
   verticalDepth = info.value("verticaldepth", true).toBool();
-  fineZoom = info.value("finezoom", false).toBool();
-  zoomOut = info.value("zoomout", false).toBool();
 
   // Set the UI to the current settings' values:
   m_ui.checkBox_AutoUpdate->setChecked(autoUpdate);
@@ -50,8 +48,6 @@ Settings::Settings(QWidget *parent) : QDialog(parent) {
   m_ui.lineEdit_Location->setDisabled(useDefault);
   m_ui.checkBox_DefaultLocation->setChecked(useDefault);
   m_ui.checkBox_VerticalDepth->setChecked(verticalDepth);
-  m_ui.checkBox_fine_zoom->setChecked(fineZoom);
-  m_ui.checkBox_zoom_out->setChecked(zoomOut);
 }
 
 QString Settings::getDefaultLocation()
@@ -106,21 +102,5 @@ void Settings::toggleVerticalDepth(bool value) {
   verticalDepth = value;
   QSettings info;
   info.setValue("verticaldepth", value);
-  emit settingsUpdated();
-}
-
-void Settings::on_checkBox_zoom_out_toggled(bool checked)
-{
-  zoomOut = checked;
-  QSettings info;
-  info.setValue("zoomout", checked);
-  emit settingsUpdated();
-}
-
-void Settings::on_checkBox_fine_zoom_toggled(bool checked)
-{
-  fineZoom = checked;
-  QSettings info;
-  info.setValue("finezoom", checked);
   emit settingsUpdated();
 }
