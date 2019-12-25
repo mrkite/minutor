@@ -160,14 +160,15 @@ void MapView::adjustZoom(double steps, bool allowZoomOut)
     int ppc = ceil(16*zoom);
     int cx = (imageChunks.width() +ppc-1) / ppc;
     int cz = (imageChunks.height()+ppc-1) / ppc;
-    chunks = 1.2 * (cx * cz);
-    if (chunks <= maxchunks)
-      restrictZoom = false; // everything matches
+    chunks = cx * cz;
+    if ((1.2 * chunks) <= maxchunks)
+      restrictZoom = false; // everything matches with a low margin of 20%
     else
       zoomIndex++;          // restrict zoom
   } while (restrictZoom);
 
-  cache.setCacheMaxSize(chunks);
+  // we try to set higher margin than above (100%)!
+  cache.setCacheMaxSize(2.0 * chunks);
 }
 
 static int lastMouseX = -1, lastMouseY = -1;
@@ -234,10 +235,13 @@ void MapView::mouseDoubleClickEvent(QMouseEvent *event) {
 }
 
 void MapView::wheelEvent(QWheelEvent *event) {
-  if   ((event->modifiers() & Qt::ShiftModifier) == Qt::ShiftModifier) {
+  Qt::KeyboardModifier modifier4DepthSlider = Qt::KeyboardModifier(QSettings().value("modifier4DepthSlider", Qt::ShiftModifier).toUInt());
+  Qt::KeyboardModifier modifier4ZoomOut     = Qt::KeyboardModifier(QSettings().value("modifier4ZoomOut",     Qt::ControlModifier).toUInt());
+
+  if ((event->modifiers() & modifier4DepthSlider) == modifier4DepthSlider) {
     // change depth
     emit demandDepthChange(event->delta() / 120);
-  } if ((event->modifiers() & Qt::ControlModifier) == Qt::ControlModifier) {
+  } else if ((event->modifiers() & modifier4ZoomOut) == modifier4ZoomOut) {
     // allow change zoom also to zoom OUT
     adjustZoom( event->delta() / 120.0, true );
     redraw();
