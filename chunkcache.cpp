@@ -3,6 +3,7 @@
 #include "./chunkcache.h"
 #include "./chunkloader.h"
 
+
 #if defined(__unix__) || defined(__unix) || defined(unix)
 #include <unistd.h>
 #elif defined(_WIN32) || defined(WIN32)
@@ -19,22 +20,32 @@ uint qHash(const ChunkID &c) {
 }
 
 ChunkCache::ChunkCache() {
-  int chunks = 10000;  // 10% more than 1920x1200 blocks
+  const int sizeChunkMax     = sizeof(Chunk) + 16 * sizeof(ChunkSection);  // all sections contain Blocks
+  const int sizeChunkTypical = sizeof(Chunk) + 6 * sizeof(ChunkSection);   // world generation is average Y=64..128
+
+  // default: 10% more than 1920x1200 blocks
+  int chunks = 10000;
+  maxcache = chunks;
+
+  // try to determine available pysical memory based on operation system we are running on
 #if defined(__unix__) || defined(__unix) || defined(unix)
 #ifdef _SC_AVPHYS_PAGES
   auto pages = sysconf(_SC_AVPHYS_PAGES);
   auto page_size = sysconf(_SC_PAGE_SIZE);
-  chunks = (pages*page_size) / (sizeof(Chunk) + 16*sizeof(ChunkSection));
+  DWORDLONG available = (pages*page_size);
+  chunks   = available / sizeChunkMax;
+  maxcache = available / sizeChunkTypical;  // most chunks are less filled with sections
 #endif
 #elif defined(_WIN32) || defined(WIN32)
   MEMORYSTATUSEX status;
   status.dwLength = sizeof(status);
   GlobalMemoryStatusEx(&status);
   DWORDLONG available = qMin(status.ullAvailPhys, status.ullAvailVirtual);
-  chunks = available / (sizeof(Chunk) + 16 * sizeof(ChunkSection));
+  chunks   = available / sizeChunkMax;
+  maxcache = available / sizeChunkTypical;  // most chunks are less filled with sections
 #endif
+  // we start the Cache based on worst case calculation
   cache.setMaxCost(chunks);
-  maxcache = 2 * chunks;  // most chunks are less than half filled with sections
 
   // determain optimal thread pool size for "loading"
   // as this contains disk access, use less than number of cores
@@ -69,12 +80,16 @@ QString ChunkCache::getPath() const {
   return path;
 }
 
-int ChunkCache::getCost() const {
+int ChunkCache::getCacheUsage() const {
   return cache.totalCost();
 }
 
-int ChunkCache::getMaxCost() const {
+int ChunkCache::getCacheMax() const {
   return cache.maxCost();
+}
+
+int ChunkCache::getMemoryMax() const {
+  return maxcache;
 }
 
 QSharedPointer<Chunk> ChunkCache::fetchCached(int cx, int cz) {
@@ -128,10 +143,8 @@ void ChunkCache::routeStructure(QSharedPointer<GeneratedStructure> structure) {
   emit structureFound(structure);
 }
 
-void ChunkCache::adaptCacheToWindow(int wx, int wy) {
-  int chunks = ((wx + 15) >> 4) * ((wy + 15) >> 4);  // number of chunks visible
-  chunks *= 1.10;  // add 10%
-
+void ChunkCache::setCacheMaxSize(int chunks) {
   QMutexLocker guard(&mutex);
-  cache.setMaxCost(qMin(chunks, maxcache));
+  // we never decrease Cache size, and never exceed physical memory
+  cache.setMaxCost(std::max<int>(cache.maxCost(), std::min<int>(chunks, maxcache)));
 }

@@ -37,15 +37,16 @@ class ChunkCache : public QObject {
   QString getPath() const;
   QSharedPointer<Chunk> fetch(int cx, int cz);         // fetch Chunk and load when not found
   QSharedPointer<Chunk> fetchCached(int cx, int cz);   // fetch Chunk only if cached
-  int getCost() const;
-  int getMaxCost() const;
+  int getCacheUsage() const;
+  int getCacheMax() const;
+  int getMemoryMax() const;
 
  signals:
   void chunkLoaded(int cx, int cz);
   void structureFound(QSharedPointer<GeneratedStructure> structure);
 
  public slots:
-  void adaptCacheToWindow(int wx, int wy);
+  void setCacheMaxSize(int chunks);
 
  private slots:
   void gotChunk(int cx, int cz);
@@ -55,7 +56,7 @@ class ChunkCache : public QObject {
   QString path;                                   // path to folder with region files
   QCache<ChunkID, QSharedPointer<Chunk>> cache;   // real Cache
   QMutex mutex;                                   // Mutex for accessing the Cache
-  int maxcache;                                   // number of Chunks that fit into Cache
+  int maxcache;                                   // number of Chunks that fit into memory
   QThreadPool loaderThreadPool;                   // extra thread pool for loading
 };
 
