@@ -32,7 +32,7 @@ ChunkCache::ChunkCache() {
 #ifdef _SC_AVPHYS_PAGES
   auto pages = sysconf(_SC_AVPHYS_PAGES);
   auto page_size = sysconf(_SC_PAGE_SIZE);
-  DWORDLONG available = (pages*page_size);
+  quint64 available = (pages*page_size);
   chunks   = available / sizeChunkMax;
   maxcache = available / sizeChunkTypical;  // most chunks are less filled with sections
 #endif
