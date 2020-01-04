@@ -425,10 +425,15 @@ void MapView::drawChunk(int x, int z) {
   QSharedPointer<Chunk> chunk(cache.fetch(x, z));
   if (chunk && !chunk->loaded) return;
 
+  if (chunk && chunk->rendering) return;
+
   if (chunk && (chunk->renderedAt != depth ||
                 chunk->renderedFlags != flags)) {
     //renderChunk(chunk);
+    chunk->rendering = true;
     ChunkRenderer *renderer = new ChunkRenderer(x, z, depth, flags);
+    connect(renderer, &ChunkRenderer::rendered,
+            [chunk](int, int) { chunk->rendering = false; });
     connect(renderer, SIGNAL(rendered(int, int)),
             this,     SLOT(chunkUpdated(int, int)));
     QThreadPool::globalInstance()->start(renderer);
