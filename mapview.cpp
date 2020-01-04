@@ -420,7 +420,6 @@ void MapView::drawChunk(int x, int z) {
   if (!this->isEnabled())
     return;
 
-  uchar *src = placeholder;
   // fetch the chunk
   QSharedPointer<Chunk> chunk(cache.fetch(x, z));
   if (chunk && !chunk->loaded) return;
