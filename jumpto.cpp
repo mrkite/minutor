@@ -6,7 +6,6 @@ JumpTo::JumpTo(QWidget *parent) : QDialog(parent), ui(new Ui::JumpTo)
 {
   ui->setupUi(this);
 
-  setWindowTitle(tr("Location"));
   readSettings();
 
   mapview = ((Minutor*)parent)->getMapview();
@@ -107,17 +106,4 @@ void JumpTo::on_pushButton_Get_clicked()
   ui->spinBox_Block_X->setValue(location->x);
   ui->spinBox_Block_Y->setValue(location->y);
   ui->spinBox_Block_Z->setValue(location->z);
-}
-
-void JumpTo::on_checkBox_Sync_stateChanged(int state)
-{
-  Q_UNUSED(state);
-  ui->pushButton_Get->setEnabled(!ui->checkBox_Sync->isChecked());
-}
-
-void JumpTo::on_checkBox_Use_Y_stateChanged(int state)
-{
-  Q_UNUSED(state);
-  ui->spinBox_Block_Y->setEnabled(ui->checkBox_Use_Y->isChecked());
-  ui->spinBox_Chunk_Y->setEnabled(ui->checkBox_Use_Y->isChecked());
 }

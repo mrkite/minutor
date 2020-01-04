@@ -28,8 +28,6 @@ private slots:
   void on_spinBox_Region_Z_valueChanged(int value);
   void on_pushButton_Jump_clicked();
   void on_pushButton_Get_clicked();
-  void on_checkBox_Sync_stateChanged(int state);
-  void on_checkBox_Use_Y_stateChanged(int state);
   void updateValues(int x, int y, int z);
 
 private:
