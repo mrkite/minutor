@@ -14,10 +14,10 @@
 
 MapView::MapView(QWidget *parent)
   : QWidget(parent)
-  , cache(ChunkCache::Instance())
   , depth(255)
   , scale(1)      // overworld coordinate mapping
   , zoomIndex(0)  // 1:1
+  , cache(ChunkCache::Instance())
 {
   adjustZoom(0, false);
   connect(&cache, SIGNAL(chunkLoaded(int, int)),
