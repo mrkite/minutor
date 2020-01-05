@@ -6,40 +6,58 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>290</width>
-    <height>181</height>
+    <width>326</width>
+    <height>161</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Location</string>
   </property>
-  <widget class="QWidget" name="verticalLayoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>9</x>
-     <y>9</y>
-     <width>270</width>
-     <height>181</height>
-    </rect>
-   </property>
-   <layout class="QVBoxLayout" name="verticalLayout">
-    <property name="spacing">
-     <number>0</number>
-    </property>
-    <item>
-     <widget class="QGroupBox" name="groupBox_Blocks">
-      <property name="title">
-       <string>Block</string>
-      </property>
-      <widget class="QSpinBox" name="spinBox_Block_X">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>16</y>
-         <width>80</width>
-         <height>20</height>
-        </rect>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QGridLayout" name="gridLayout" columnstretch="0,2,1,2">
+     <item row="0" column="1">
+      <widget class="QLabel" name="label_X">
+       <property name="text">
+        <string>X</string>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QLabel" name="label_Y">
+       <property name="text">
+        <string>Y</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QLabel" name="label_Z">
+       <property name="text">
+        <string>Z</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_Block">
+       <property name="text">
+        <string>Block</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QSpinBox" name="spinBox_Block_X">
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
@@ -53,15 +71,9 @@
         <number>30000128</number>
        </property>
       </widget>
+     </item>
+     <item row="1" column="2">
       <widget class="QSpinBox" name="spinBox_Block_Y">
-       <property name="geometry">
-        <rect>
-         <x>120</x>
-         <y>16</y>
-         <width>40</width>
-         <height>20</height>
-        </rect>
-       </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
@@ -75,15 +87,9 @@
         <number>255</number>
        </property>
       </widget>
+     </item>
+     <item row="1" column="3">
       <widget class="QSpinBox" name="spinBox_Block_Z">
-       <property name="geometry">
-        <rect>
-         <x>180</x>
-         <y>16</y>
-         <width>80</width>
-         <height>20</height>
-        </rect>
-       </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
@@ -97,61 +103,19 @@
         <number>30000128</number>
        </property>
       </widget>
-      <widget class="QLabel" name="label_Block_X">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>16</y>
-         <width>10</width>
-         <height>20</height>
-        </rect>
-       </property>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_Chunk">
        <property name="text">
-        <string>X</string>
+        <string>Chunk</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
       </widget>
-      <widget class="QLabel" name="label_Block_Y">
-       <property name="geometry">
-        <rect>
-         <x>110</x>
-         <y>16</y>
-         <width>10</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Y</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_Block_Z">
-       <property name="geometry">
-        <rect>
-         <x>170</x>
-         <y>16</y>
-         <width>10</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Z</string>
-       </property>
-      </widget>
-     </widget>
-    </item>
-    <item>
-     <widget class="QGroupBox" name="groupBox_Chunks">
-      <property name="title">
-       <string>Chunk</string>
-      </property>
+     </item>
+     <item row="2" column="1">
       <widget class="QSpinBox" name="spinBox_Chunk_X">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>16</y>
-         <width>80</width>
-         <height>20</height>
-        </rect>
-       </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
@@ -165,41 +129,9 @@
         <number>1875008</number>
        </property>
       </widget>
-      <widget class="QLabel" name="label_Chunk_X">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>16</y>
-         <width>10</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>X</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_Chunk_Z">
-       <property name="geometry">
-        <rect>
-         <x>170</x>
-         <y>16</y>
-         <width>10</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Z</string>
-       </property>
-      </widget>
+     </item>
+     <item row="2" column="2">
       <widget class="QSpinBox" name="spinBox_Chunk_Y">
-       <property name="geometry">
-        <rect>
-         <x>120</x>
-         <y>16</y>
-         <width>40</width>
-         <height>20</height>
-        </rect>
-       </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
@@ -213,15 +145,9 @@
         <number>15</number>
        </property>
       </widget>
+     </item>
+     <item row="2" column="3">
       <widget class="QSpinBox" name="spinBox_Chunk_Z">
-       <property name="geometry">
-        <rect>
-         <x>180</x>
-         <y>16</y>
-         <width>80</width>
-         <height>20</height>
-        </rect>
-       </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
@@ -235,35 +161,19 @@
         <number>1875008</number>
        </property>
       </widget>
-      <widget class="QLabel" name="label_Chunk_Y">
-       <property name="geometry">
-        <rect>
-         <x>110</x>
-         <y>16</y>
-         <width>10</width>
-         <height>20</height>
-        </rect>
-       </property>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_Region">
        <property name="text">
-        <string>Y</string>
+        <string>Region</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
       </widget>
-     </widget>
-    </item>
-    <item>
-     <widget class="QGroupBox" name="groupBox_Regions">
-      <property name="title">
-       <string>Region</string>
-      </property>
+     </item>
+     <item row="3" column="1">
       <widget class="QSpinBox" name="spinBox_Region_X">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>16</y>
-         <width>80</width>
-         <height>20</height>
-        </rect>
-       </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
@@ -277,63 +187,9 @@
         <number>58594</number>
        </property>
       </widget>
-      <widget class="QLabel" name="label_Region_Z">
-       <property name="geometry">
-        <rect>
-         <x>170</x>
-         <y>16</y>
-         <width>10</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Z</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_Region_X">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>16</y>
-         <width>10</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>X</string>
-       </property>
-      </widget>
-      <widget class="QSpinBox" name="spinBox_Region_Z">
-       <property name="geometry">
-        <rect>
-         <x>180</x>
-         <y>16</y>
-         <width>80</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-       <property name="accelerated">
-        <bool>true</bool>
-       </property>
-       <property name="minimum">
-        <number>-58594</number>
-       </property>
-       <property name="maximum">
-        <number>58594</number>
-       </property>
-      </widget>
+     </item>
+     <item row="3" column="2">
       <widget class="QCheckBox" name="checkBox_Use_Y">
-       <property name="geometry">
-        <rect>
-         <x>110</x>
-         <y>16</y>
-         <width>50</width>
-         <height>20</height>
-        </rect>
-       </property>
        <property name="toolTip">
         <string>Respect Y values</string>
        </property>
@@ -344,48 +200,36 @@
         <bool>true</bool>
        </property>
       </widget>
-     </widget>
-    </item>
-    <item>
-     <widget class="QWidget" name="widget" native="true">
-      <widget class="QPushButton" name="pushButton_Jump">
-       <property name="geometry">
-        <rect>
-         <x>170</x>
-         <y>5</y>
-         <width>100</width>
-         <height>23</height>
-        </rect>
+     </item>
+     <item row="3" column="3">
+      <widget class="QSpinBox" name="spinBox_Region_Z">
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
-       <property name="text">
-        <string>Jump to location</string>
-       </property>
-       <property name="default">
+       <property name="accelerated">
         <bool>true</bool>
        </property>
-      </widget>
-      <widget class="QPushButton" name="pushButton_Get">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>5</y>
-         <width>100</width>
-         <height>23</height>
-        </rect>
+       <property name="minimum">
+        <number>-58594</number>
        </property>
+       <property name="maximum">
+        <number>58594</number>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="pushButton_Get">
        <property name="text">
         <string>Get location</string>
        </property>
       </widget>
+     </item>
+     <item>
       <widget class="QCheckBox" name="checkBox_Sync">
-       <property name="geometry">
-        <rect>
-         <x>102</x>
-         <y>7</y>
-         <width>70</width>
-         <height>20</height>
-        </rect>
-       </property>
        <property name="toolTip">
         <string>Update values through map movement</string>
        </property>
@@ -393,10 +237,20 @@
         <string>Sync map</string>
        </property>
       </widget>
-     </widget>
-    </item>
-   </layout>
-  </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_Jump">
+       <property name="text">
+        <string>Jump to location</string>
+       </property>
+       <property name="default">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
  </widget>
  <tabstops>
   <tabstop>spinBox_Block_X</tabstop>
@@ -413,5 +267,70 @@
   <tabstop>pushButton_Jump</tabstop>
  </tabstops>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>checkBox_Use_Y</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>label_Y</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>170</x>
+     <y>103</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>166</x>
+     <y>15</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_Use_Y</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>spinBox_Block_Y</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>187</x>
+     <y>107</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>180</x>
+     <y>45</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_Use_Y</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>spinBox_Chunk_Y</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>204</x>
+     <y>107</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>198</x>
+     <y>75</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_Sync</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>pushButton_Get</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>136</x>
+     <y>139</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>83</x>
+     <y>139</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
