@@ -58,6 +58,7 @@ signals:
   int renderedAt;
   int renderedFlags;
   bool loaded;
+  bool rendering;
   uchar image[16 * 16 * 4];  // cached render: RGBA for 16*16 Blocks
   uchar depth[16 * 16];
   EntityMap entities;

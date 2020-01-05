@@ -22,9 +22,10 @@ quint16 getBits(const unsigned char *data, int pos, int n) {
 
 
 Chunk::Chunk()
-  : loaded(false)
-  , version(0)
+  : version(0)
   , highest(0)
+  , loaded(false)
+  , rendering(false)
 {}
 
 Chunk::~Chunk() {
