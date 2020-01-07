@@ -2,28 +2,30 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>BuildMachineOSBuild</key>
-	<string>11E53</string>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>English</string>
+	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>Minutor</string>
 	<key>CFBundleExecutable</key>
-	<string>minutor</string>
+	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFile</key>
-	<string>icon.icns</string>
+	<string>${ASSETCATALOG_COMPILER_APPICON_NAME}</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.seancode.minutor</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>minutor</string>
+	<string>Minutor</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.0</string>
-	<key>CFBundleSignature</key>
-	<string>????</string>
+	<string>2.3.0</string>
 	<key>CFBundleVersion</key>
-	<string>2.0</string>
+	<string>2.3.0</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>${MACOSX_DEPLOYMENT_TARGET}.0</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>© 2013-2020 Sean Kasun</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 </dict>
