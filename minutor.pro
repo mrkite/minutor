@@ -1,7 +1,5 @@
 TEMPLATE = app
 TARGET = minutor
-DEPENDPATH += .
-INCLUDEPATH += .
 CONFIG += c++14
 QT += widgets network
 QMAKE_INFO_PLIST = minutor.plist
