@@ -1,6 +1,6 @@
 /** Copyright (c) 2013, Sean Kasun */
+#include <zlib.h>
 #include "./zipreader.h"
-#include "zlib/zlib.h"
 
 ZipReader::ZipReader(const QString filename) : f(filename) {
 }

@@ -15,8 +15,6 @@ macx:ICON=icon.icns
 
 # Input
 HEADERS += \
-    zlib/zlib.h \
-    zlib/zconf.h \
     labelledslider.h \
     biomeidentifier.h \
     blockidentifier.h \
@@ -74,7 +72,22 @@ SOURCES += \
     flatteningconverter.cpp
 RESOURCES = minutor.qrc
 
-win32:SOURCES += zlib/adler32.c \
+win32 {
+HEADERS += \
+    zlib/crc32.h \
+    zlib/deflate.h \
+    zlib/gzguts.h \
+    zlib/inffast.h \
+    zlib/inffixed.h \
+    zlib/inflate.h \
+    zlib/inftrees.h \
+    zlib/trees.h \
+    zlib/zconf.h \
+    zlib/zlib.h \
+    zlib/zutil.h
+
+SOURCES += \
+    zlib/adler32.c \
     zlib/compress.c \
     zlib/crc32.c \
     zlib/deflate.c \
@@ -89,6 +102,9 @@ win32:SOURCES += zlib/adler32.c \
     zlib/trees.c \
     zlib/uncompr.c \
     zlib/zutil.c
+
+INCLUDEPATH += zlib
+}
 
 desktopfile.path = /usr/share/applications
 desktopfile.files = minutor.desktop
