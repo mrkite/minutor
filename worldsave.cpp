@@ -7,11 +7,11 @@
  make less-than-optimal PNGs.
  */
 
+#include <zlib.h>
 #include "./worldsave.h"
 #include "./mapview.h"
 #include "./chunkloader.h"
 #include "./chunkrenderer.h"
-#include "zlib/zlib.h"
 
 WorldSave::WorldSave(QString filename, MapView *map,
                      bool regionChecker, bool chunkChecker,

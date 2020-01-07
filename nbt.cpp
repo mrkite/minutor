@@ -1,11 +1,11 @@
 /** Copyright (c) 2013, Sean Kasun */
+#include <zlib.h>
 #include <QFile>
 #include <QByteArray>
 #include <QDebug>
 #include <QStringList>
 
 #include "./nbt.h"
-#include "zlib/zlib.h"
 
 // this handles decoding the gzipped level.dat
 NBT::NBT(const QString level) {
