@@ -5,18 +5,7 @@
 #include <QObject>
 #include <QCache>
 #include "./chunk.h"
-
-// ChunkID is the key used to identify entries in the Cache
-// Chunks are identified by their coordinates (CX,CZ) but a single key is needed to access a map like structure
-class ChunkID {
- public:
-  ChunkID(int cx, int cz);
-  bool operator==(const ChunkID &) const;
-  friend uint qHash(const ChunkID &);
- protected:
-  int cx, cz;
-};
-
+#include "./chunkid.h"
 
 class ChunkCache : public QObject {
   Q_OBJECT
