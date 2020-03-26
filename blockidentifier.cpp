@@ -112,6 +112,11 @@ bool BlockIdentifier::hasBlockInfo(uint hid) {
   return blocks.contains(hid);
 }
 
+QList<quint32> BlockIdentifier::getKnownIds() const
+{
+    return blocks.keys();
+}
+
 void BlockIdentifier::enableDefinitions(int pack) {
   if (pack < 0) return;
   int len = packs[pack].length();

@@ -483,7 +483,7 @@ void MapView::getToolTip(int x, int z) {
     int top = qMin(depth, chunk->highest);
     for (y = top; y >= 0; y--) {
       int section_idx = y >> 4;
-      ChunkSection *section = chunk->sections[section_idx];
+      const ChunkSection *section = chunk->sections[section_idx];
       if (!section) {
         y = (section_idx << 4) - 1;  // skip entire section
         continue;
