@@ -15,6 +15,7 @@ macx:ICON=icon.icns
 
 # Input
 HEADERS += \
+    chunkid.h \
     labelledslider.h \
     biomeidentifier.h \
     blockidentifier.h \

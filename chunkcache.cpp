@@ -10,15 +10,6 @@
 #include <windows.h>
 #endif
 
-ChunkID::ChunkID(int cx, int cz) : cx(cx), cz(cz) {
-}
-bool ChunkID::operator==(const ChunkID &other) const {
-  return (other.cx == cx) && (other.cz == cz);
-}
-uint qHash(const ChunkID &c) {
-  return (c.cx << 16) ^ (c.cz & 0xffff);  // safe way to hash a pair of integers
-}
-
 ChunkCache::ChunkCache() {
   const int sizeChunkMax     = sizeof(Chunk) + 16 * sizeof(ChunkSection);  // all sections contain Blocks
   const int sizeChunkTypical = sizeof(Chunk) + 6 * sizeof(ChunkSection);   // world generation is average Y=64..128
