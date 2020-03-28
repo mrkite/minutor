@@ -50,6 +50,9 @@ class Chunk : public QObject {
 
   uint getBlockHid(int x, int y, int z) const;
 
+  int getChunkX() const { return chunkX; }
+  int getChunkZ() const { return chunkZ; }
+
 signals:
   void structureFound(QSharedPointer<GeneratedStructure> structure);
 

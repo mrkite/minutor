@@ -8,6 +8,10 @@ class ChunkID {
   ChunkID(int cx, int cz);
   bool operator==(const ChunkID &) const;
   friend unsigned int qHash(const ChunkID &);
+
+  int getX() const { return cx; }
+  int getZ() const { return cz; }
+
  protected:
   int cx, cz;
 };

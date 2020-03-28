@@ -4,6 +4,13 @@
 #include "./entityidentifier.h"
 #include "./nbt.h"
 
+Entity::Entity(const Point &positionInfo)
+    : extraColor(QColor::fromRgb(0,255,0))
+    , pos(positionInfo)
+{
+
+}
+
 QSharedPointer<OverlayItem> Entity::TryParse(const Tag* tag) {
   EntityIdentifier& ei = EntityIdentifier::Instance();
 
