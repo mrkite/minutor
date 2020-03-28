@@ -28,6 +28,9 @@ class MapView : public QWidget {
   typedef struct {
     float x, y, z;
     int scale;
+    QVector3D getPos3D() const {
+      return QVector3D(x,y,z);
+    }
   } BlockLocation;
 
   explicit MapView(QWidget *parent = 0);
