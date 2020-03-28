@@ -141,8 +141,6 @@ void Chunk::load(const NBT &nbt) {
     }
   }
 
-  loaded = true;
-
   // parse Entities
   if (level->has("Entities")) {
     auto entitylist = level->at("Entities");
@@ -156,6 +154,13 @@ void Chunk::load(const NBT &nbt) {
 
   // check for the highest block in this chunk
   // todo: use highmap from stored NBT data
+  findHighestBlock();
+
+  loaded = true; // needs to be at the end!
+}
+
+void Chunk::findHighestBlock()
+{
   for (int i = 15; i >= 0; i--) {
     if (this->sections[i]) {
       for (int j = 4095; j >= 0; j--) {
@@ -307,7 +312,6 @@ void Chunk::loadSection1519(ChunkSection *cs, const Tag *section) {
     memcpy(cs->blockLight, section->at("BlockLight")->toByteArray(), 2048);
   }
 }
-
 
 const PaletteEntry & ChunkSection::getPaletteEntry(int x, int y, int z) const {
   int xoffset = (x & 0x0f);
