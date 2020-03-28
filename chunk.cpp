@@ -6,6 +6,19 @@
 #include "./flatteningconverter.h"
 #include "./blockidentifier.h"
 
+template<typename _ValueT>
+inline void* safeMemCpy(void* __dest, const std::vector<_ValueT>& __src, size_t __len)
+{
+  const size_t src_data_size = (sizeof(_ValueT) * __src.size());
+    if (__len > src_data_size)
+    {
+      __len = src_data_size; // this happens sometimes and I guess its then actually a bug in the load() implementation. But this way it at least doesn't crash randomly.
+    }
+
+    return memcpy(__dest, &__src[0], __len);
+}
+
+
 quint16 getBits(const unsigned char *data, int pos, int n) {
 //  quint16 result = 0;
   int arrIndex = pos/8;
@@ -90,10 +103,10 @@ void Chunk::load(const NBT &nbt) {
     if (biomes) {  // Biomes is a Tag_Int_Array
       if ((this->version >= 2203)) {
         // raw copy Biome data
-        memcpy(this->biomes, biomes->toIntArray(), sizeof(int)*1024);
+        safeMemCpy(this->biomes, biomes->toIntArray(), sizeof(int)*1024);
       } else if ((this->version >= 1519)) {
         // raw copy Biome data
-        memcpy(this->biomes, biomes->toIntArray(), sizeof(int)*256);
+        safeMemCpy(this->biomes, biomes->toIntArray(), sizeof(int)*256);
       }
     } else {  // Biomes is not a Tag_Int_Array
       const Tag_Byte_Array * biomes = dynamic_cast<const Tag_Byte_Array*>(level->at("Biomes"));
@@ -224,9 +237,9 @@ void Chunk::loadSection1343(ChunkSection *cs, const Tag *section) {
   // copy raw data
   quint8 blocks[4096];
   quint8 data[2048];
-  memcpy(blocks, section->at("Blocks")->toByteArray(), 4096);
-  memcpy(data,   section->at("Data")->toByteArray(),   2048);
-  memcpy(cs->blockLight, section->at("BlockLight")->toByteArray(), 2048);
+  safeMemCpy(blocks, section->at("Blocks")->toByteArray(), 4096);
+  safeMemCpy(data,   section->at("Data")->toByteArray(),   2048);
+  safeMemCpy(cs->blockLight, section->at("BlockLight")->toByteArray(), 2048);
 
   // convert old BlockID + data into virtual ID
   for (int i = 0; i < 4096; i++) {
@@ -292,7 +305,7 @@ void Chunk::loadSection1519(ChunkSection *cs, const Tag *section) {
     auto raw = section->at("BlockStates")->toLongArray();
     int blockStatesLength = section->at("BlockStates")->length();
     unsigned char *byteData = new unsigned char[8*blockStatesLength];
-    memcpy(byteData, raw, 8*blockStatesLength);
+    safeMemCpy(byteData, raw, 8*blockStatesLength);
     std::reverse(byteData, byteData+(8*blockStatesLength));
     int bitSize = (blockStatesLength)*64/4096;
     for (int i = 0; i < 4096; i++) {
@@ -306,10 +319,10 @@ void Chunk::loadSection1519(ChunkSection *cs, const Tag *section) {
 
     // copy Light data
 //  if (section->has("SkyLight")) {
-//    memcpy(cs->skyLight, section->at("SkyLight")->toByteArray(), 2048);
+//    safeMemCpy(cs->skyLight, section->at("SkyLight")->toByteArray(), 2048);
 //  }
   if (section->has("BlockLight")) {
-    memcpy(cs->blockLight, section->at("BlockLight")->toByteArray(), 2048);
+    safeMemCpy(cs->blockLight, section->at("BlockLight")->toByteArray(), 2048);
   }
 }
 
