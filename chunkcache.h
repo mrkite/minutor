@@ -7,6 +7,12 @@
 #include "./chunk.h"
 #include "./chunkid.h"
 
+enum class CacheState {
+  uncached,
+  uncached_loading,
+  cached // still can be nullptr when empty
+};
+
 class ChunkCache : public QObject {
   Q_OBJECT
 
@@ -26,6 +32,8 @@ class ChunkCache : public QObject {
   QString getPath() const;
   QSharedPointer<Chunk> fetch(int cx, int cz);         // fetch Chunk and load when not found
   QSharedPointer<Chunk> fetchCached(int cx, int cz);   // fetch Chunk only if cached
+  CacheState getCached(const ChunkID& id, QSharedPointer<Chunk>& chunk_out);    // fetch Chunk only if cached, can tell if just not loaded or empty
+  QSharedPointer<Chunk> getChunkSynchronously(const ChunkID& id);         // get chunk if cached directly, or load it in a synchronous blocking way
   int getCacheUsage() const;
   int getCacheMax() const;
   int getMemoryMax() const;
@@ -47,6 +55,8 @@ class ChunkCache : public QObject {
   QMutex mutex;                                   // Mutex for accessing the Cache
   int maxcache;                                   // number of Chunks that fit into memory
   QThreadPool loaderThreadPool;                   // extra thread pool for loading
+
+  CacheState getCached_intern(const ChunkID& id, QSharedPointer<Chunk>& chunk_out);
 };
 
 #endif  // CHUNKCACHE_H_
