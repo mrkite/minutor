@@ -127,6 +127,11 @@ QString MapView::getWorldPath() {
   return cache.getPath();
 }
 
+void MapView::updateSearchResultPositions(const QVector<QSharedPointer<OverlayItem> > &searchResults)
+{
+  currentSearchResults = searchResults;
+}
+
 void MapView::clearCache() {
   cache.clear();
   redraw();
@@ -401,19 +406,30 @@ void MapView::redraw() {
     }
   }
 
+  const OverlayItem::Cuboid viewingCuboid(OverlayItem::Point(x1 - 1, 0, z1 - 1),
+                                      OverlayItem::Point(x2 + 1, depth, z2 + 1));
+
   // draw the generated structures
   for (auto &type : overlayItemTypes) {
-    for (auto &item : overlayItems[type]) {
-      if (item->intersects(OverlayItem::Point(x1 - 1, 0, z1 - 1),
-                           OverlayItem::Point(x2 + 1, depth, z2 + 1))) {
-        item->draw(x1, z1, zoom, &canvas);
-      }
-    }
+    drawOverlayItems(overlayItems[type], viewingCuboid, x1, z1, canvas);
   }
+
+  drawOverlayItems(currentSearchResults, viewingCuboid, x1, z1, canvas);
 
   emit(coordinatesChanged(x, depth, z));
 
   update();
+}
+
+
+template<typename ListT>
+void MapView::drawOverlayItems(const ListT &list, const OverlayItem::Cuboid& cuboid, double x1, double z1, QPainter& canvas)
+{
+  for (auto &item : list) {
+    if (item->intersects(cuboid)) {
+      item->draw(x1, z1, zoom, &canvas);
+    }
+  }
 }
 
 void MapView::drawChunk(int x, int z) {

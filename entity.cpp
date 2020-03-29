@@ -51,10 +51,10 @@ QSharedPointer<OverlayItem> Entity::TryParse(const Tag* tag) {
 }
 
 
-bool Entity::intersects(const Point& min, const Point& max) const {
-  return min.x <= pos.x && max.x >= pos.x &&
-      min.y <= pos.y && max.y >= pos.y &&
-      min.z <= pos.z && max.z >= pos.z;
+bool Entity::intersects(const OverlayItem::Cuboid& cuboid) const {
+  return cuboid.min.x <= pos.x && cuboid.max.x >= pos.x &&
+         cuboid.min.y <= pos.y && cuboid.max.y >= pos.y &&
+         cuboid.min.z <= pos.z && cuboid.max.z >= pos.z;
 }
 
 void Entity::draw(double offsetX, double offsetZ, double scale,

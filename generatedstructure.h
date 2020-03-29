@@ -15,7 +15,7 @@ class GeneratedStructure: public OverlayItem {
   static QList<QSharedPointer<GeneratedStructure>> tryParseChunk(const Tag* tag);
   static QList<QSharedPointer<GeneratedStructure>> tryParseFeatures(QVariant &maybeFeatureMap);
 
-  virtual bool intersects(const Point& min, const Point& max) const;
+  virtual bool intersects(const Cuboid &cuboid) const;
   virtual void draw(double offsetX, double offsetZ, double scale,
                    QPainter *canvas) const;
   virtual Point midpoint() const;
