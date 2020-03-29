@@ -6,16 +6,16 @@
 #include "./flatteningconverter.h"
 #include "./blockidentifier.h"
 
-template<typename _ValueT>
-inline void* safeMemCpy(void* __dest, const std::vector<_ValueT>& __src, size_t __len)
+template<typename ValueT>
+inline void* safeMemCpy(void* dest, const std::vector<ValueT>& srcVec, size_t length)
 {
-  const size_t src_data_size = (sizeof(_ValueT) * __src.size());
-    if (__len > src_data_size)
+  const size_t src_data_size = (sizeof(ValueT) * srcVec.size());
+    if (length > src_data_size)
     {
-      __len = src_data_size; // this happens sometimes and I guess its then actually a bug in the load() implementation. But this way it at least doesn't crash randomly.
+      length = src_data_size; // this happens sometimes and I guess its then actually a bug in the load() implementation. But this way it at least doesn't crash randomly.
     }
 
-    return memcpy(__dest, &__src[0], __len);
+    return memcpy(dest, &srcVec[0], length);
 }
 
 
