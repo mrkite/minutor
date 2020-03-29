@@ -1,7 +1,7 @@
 TEMPLATE = app
 TARGET = minutor
 CONFIG += c++14
-QT += widgets network
+QT += widgets network concurrent
 QMAKE_INFO_PLIST = minutor.plist
 unix:LIBS += -lz
 win32:RC_FILE += winicon.rc
@@ -16,6 +16,8 @@ macx:ICON=icon.icns
 # Input
 HEADERS += \
     chunkid.h \
+    chunkmath.h \
+    entityevaluator.h \
     labelledslider.h \
     biomeidentifier.h \
     blockidentifier.h \
@@ -35,6 +37,15 @@ HEADERS += \
     nbt.h \
     overlayitem.h \
     properties.h \
+    propertietreecreator.h \
+    range.h \
+    rectangleinnertoouteriterator.h \
+    searchblockpluginwidget.h \
+    searchchunkswidget.h \
+    searchentitypluginwidget.h \
+    searchplugininterface.h \
+    searchresultwidget.h \
+    searchtextwidget.h \
     settings.h \
     village.h \
     worldsave.h \
@@ -45,6 +56,7 @@ HEADERS += \
     flatteningconverter.h \
     paletteentry.h
 SOURCES += \
+    entityevaluator.cpp \
     labelledslider.cpp \
     biomeidentifier.cpp \
     blockidentifier.cpp \
@@ -64,6 +76,12 @@ SOURCES += \
     minutor.cpp \
     nbt.cpp \
     properties.cpp \
+    propertietreecreator.cpp \
+    searchblockpluginwidget.cpp \
+    searchchunkswidget.cpp \
+    searchentitypluginwidget.cpp \
+    searchresultwidget.cpp \
+    searchtextwidget.cpp \
     settings.cpp \
     village.cpp \
     worldsave.cpp \
@@ -116,6 +134,12 @@ INSTALLS += desktopfile pixmapfile target
 
 FORMS += \
     properties.ui \
+    searchblockpluginwidget.ui \
+    searchchunkswidget.ui \
+    searchentitypluginwidget.ui \
+    searchresultwidget.ui \
+    searchtextwidget.ui \
+    searchtextwidget.ui \
     settings.ui \
     jumpto.ui \
     pngexport.ui

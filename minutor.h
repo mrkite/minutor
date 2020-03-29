@@ -7,6 +7,7 @@
 #include <QVariant>
 #include <QSharedPointer>
 #include <QSet>
+#include <QVector3D>
 
 class QAction;
 class QActionGroup;
@@ -22,6 +23,8 @@ class WorldSave;
 class Properties;
 class OverlayItem;
 class JumpTo;
+class SearchChunksWidget;
+class SearchPluginI;
 
 class Location {
  public:
@@ -75,10 +78,19 @@ private slots:
   void addOverlayItemType(QString type, QColor color, QString dimension = "");
   void showProperties(QVariant props);
 
- signals:
+  void searchBlock();
+  void searchEntity();
+
+  void triggerJumpToPosition(QVector3D pos);
+
+  void updateSearchResultPositions(QVector<QSharedPointer<OverlayItem> >);
+
+signals:
   void worldLoaded(bool isLoaded);
 
  private:
+  SearchChunksWidget* prepareSearchForm(const QSharedPointer<SearchPluginI> &searchPlugin);
+
   void createActions();
   void createMenus();
   void createStatusBar();
@@ -98,6 +110,7 @@ private slots:
   QMenu *viewMenu, *jumpMenu, *dimMenu;
   QMenu *helpMenu;
   QMenu *structureOverlayMenu, *entityOverlayMenu;
+  QMenu *searchMenu;
 
   QList<QAction *>worlds;
   QAction *openAct, *reloadAct, *saveAct, *exitAct;
@@ -112,6 +125,8 @@ private slots:
   QAction *jumpToAct;
   QList<QAction*> structureActions;
   QList<QAction*> entityActions;
+  QAction *searchEntityAction;
+  QAction *searchBlockAction;
 
   // loaded world data
   QList<Location> locations;
