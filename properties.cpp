@@ -1,5 +1,6 @@
 /** Copyright 2014 Rian Shelley */
 #include <QRegularExpression>
+#include <QVector3D>
 #include "./properties.h"
 #include "./ui_properties.h"
 
@@ -7,7 +8,9 @@
 Properties::Properties(QWidget *parent) : QDialog(parent),
     ui(new Ui::Properties) {
   ui->setupUi(this);
+}
 
+PropertieTreeCreator::PropertieTreeCreator() {
   summary.insert("", "{id} ({Pos.[0]}, {Pos.[1]}, {Pos.[2]})");
   summary.insert("Pos", "({[0]}, {[1]}, {[2]})");
   summary.insert("Attributes[]", "{Name} = {Base}");
@@ -17,23 +20,22 @@ Properties::~Properties() {
   delete ui;
 }
 
+
 template <class IterableT>
-void Properties::ParseIterable(QTreeWidgetItem* node, const IterableT& seq) {
+void PropertieTreeCreator::ParseIterable(QTreeWidgetItem* node, const IterableT& seq) {
   typename IterableT::const_iterator it, itEnd = seq.end();
   for (it = seq.begin(); it != itEnd; ++it) {
     QTreeWidgetItem* child = new QTreeWidgetItem();
     child->setData(0, Qt::DisplayRole, it.key());
     child->setData(1, Qt::DisplayRole, GetSummary(it.key(), it.value()));
     CreateTree(child, it.value());
-    if (node)
-      node->addChild(child);
-    else
-      ui->propertyView->addTopLevelItem(child);
+    node->addChild(child);
   }
 }
 
+
 template <class IterableT>
-void Properties::ParseList(QTreeWidgetItem* node, const IterableT& seq) {
+void PropertieTreeCreator::ParseList(QTreeWidgetItem* node, const IterableT& seq) {
   typename IterableT::const_iterator it, itEnd = seq.end();
   int i = 0;
   // skip 1 sized arrays
@@ -53,14 +55,10 @@ void Properties::ParseList(QTreeWidgetItem* node, const IterableT& seq) {
       child->setData(1, Qt::DisplayRole, GetSummary(key, *it));
       CreateTree(child, *it);
 
-      if (node)
-        node->addChild(child);
-      else
-        ui->propertyView->addTopLevelItem(child);
+      node->addChild(child);
     }
   }
 }
-
 
 void Properties::DisplayProperties(QVariant p) {
   // get current property
@@ -75,13 +73,13 @@ void Properties::DisplayProperties(QVariant p) {
   // only support QVariantMap or QVariantHash at this level
   switch (p.type()) {
     case QMetaType::QVariantMap:
-      ParseIterable(NULL, p.toMap());
+      treeCreator.ParseIterable(ui->propertyView->invisibleRootItem(), p.toMap());
       break;
     case QMetaType::QVariantHash:
-      ParseIterable(NULL, p.toHash());
+      treeCreator.ParseIterable(ui->propertyView->invisibleRootItem(), p.toHash());
       break;
     case QMetaType::QVariantList:
-      ParseList(NULL, p.toList());
+      treeCreator.ParseList(ui->propertyView->invisibleRootItem(), p.toList());
       break;
     default:
       qWarning("Trying to display scalar value as a property");
@@ -101,7 +99,8 @@ void Properties::DisplayProperties(QVariant p) {
 }
 
 
-void Properties::CreateTree(QTreeWidgetItem* node, const QVariant& v) {
+
+void PropertieTreeCreator::CreateTree(QTreeWidgetItem* node, const QVariant& v) {
   switch (v.type()) {
     case QMetaType::QVariantMap:
       ParseIterable(node, v.toMap());
@@ -155,7 +154,7 @@ QString EvaluateSubExpression(const QString& subexpr, const QVariant& v) {
   return "";
 }
 
-QString Properties::GetSummary(const QString& key, const QVariant& v) {
+QString PropertieTreeCreator::GetSummary(const QString& key, const QVariant& v) {
   QString ret;
   QMap<QString, QString>::const_iterator it = summary.find(key);
   if (it != summary.end()) {
