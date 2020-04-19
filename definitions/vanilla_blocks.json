@@ -4261,10 +4261,6 @@
     {
       "name": "minecraft:weeping_vines",
       "color": "#690100"
-    },
-    {
-      "name": "minecraft:weeping_vines",
-      "color": "#85100c"
     }
   ],
   "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_blocks.json"
