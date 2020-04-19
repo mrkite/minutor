@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "biome",
-  "version": "1.14.18w43a",
+  "version": "1.16.20w06a",
   "data": [
     {
       "id": 0,
@@ -59,7 +59,7 @@
     },
     {
       "id": 8,
-      "name": "Nether",
+      "name": "Nether Wastes",
       "color": "#ff0000",
       "temperature": 2.0,
       "humidity": 0.0
@@ -508,6 +508,27 @@
       "color": "#3b470a",
       "temperature": 0.95,
       "humidity": 0.9
+    },
+    {
+      "id": 170,
+      "name": "Soul Sand Valley",
+      "color": "#522921",
+      "temperature": 2.0,
+      "humidity": 0.0
+    },
+    {
+      "id": 171,
+      "name": "Crimson Forest",
+      "color": "#dd0808",
+      "temperature": 2.0,
+      "humidity": 0.0
+    },
+    {
+      "id": 172,
+      "name": "Warped Forest",
+      "color": "#49907b",
+      "temperature": 2.0,
+      "humidity": 0.0
     }
   ],
   "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_biomes.json"

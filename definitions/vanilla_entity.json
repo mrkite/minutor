@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "entity",
-  "version": "1.15.19w34a",
+  "version": "1.16.20w06a",
   "data": [
     {
       "category": "Hostile",
@@ -160,6 +160,10 @@
         {
           "id": "phantom",
           "color": "MidnightBlue"
+        },
+        {
+          "id": "hoglin",
+          "color": "DarkSalmon"
         }
       ]
     },

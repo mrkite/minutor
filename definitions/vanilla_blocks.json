@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.15.19w41a",
+  "version": "1.16.20w06a",
   "data": [
     {
       "name": "minecraft:air",
@@ -1532,16 +1532,23 @@
       "canprovidepower": true,
       "variants": [
         {
-          "blockstate": "powered:true",
+          "blockstate": "lit:true",
           "color": "#ff4c29"
         }
       ]
     },
     {
       "name": "minecraft:redstone_wall_torch",
-      "color": "#fd0000",
+      "color": "#5d3f26",
       "transparent": true,
-      "canprovidepower": true
+      "canprovidepower": true,
+      "variants": [
+        {
+          "blockstate": "lit:true",
+          "color": "#ff4c29"
+        }
+      ]
+
     },
     {
       "name": "minecraft:stone_button",
@@ -4142,6 +4149,122 @@
     {
       "name": "minecraft:honeycomb_block",
       "color": "#e5941f"
+    },
+    {
+      "name": "minecraft:ancient_debris",
+      "color": "#5f423a"
+    },
+    {
+      "name": "minecraft:basalt",
+      "color": "#515156"
+    },
+    {
+      "name": "minecraft:netherite_block",
+      "color": "#433d40"
+    },
+    {
+      "name": "minecraft:crimson_fungus",
+      "color": "#8d2c1e"
+    },
+    {
+      "name": "minecraft:warped_fungus",
+      "color": "#4a6d58"
+    },
+    {
+      "name": "minecraft:crimson_nylium",
+      "color": "#831f1f"
+    },
+    {
+      "name": "minecraft:warped_nylium",
+      "color": "#2b7265"
+    },
+    {
+      "name": "minecraft:crimson_planks",
+      "color": "#653147"
+    },
+    {
+      "name": "minecraft:warped_planks",
+      "color": "#2b6963"
+    },
+    {
+      "name": "minecraft:crimson_roots",
+      "color": "#7e082a"
+    },
+    {
+      "name": "minecraft:warped_roots",
+      "color": "#148a7c"
+    },
+    {
+      "name": "minecraft:potted_crimson_roots",
+      "color": "#7e082a"
+    },
+    {
+      "name": "minecraft:potted_warped_roots",
+      "color": "#148a7c"
+    },
+    {
+      "name": "minecraft:crimson_sign",
+      "color": "#653147"
+    },
+    {
+      "name": "minecraft:warped_sign",
+      "color": "#2b6963"
+    },
+    {
+      "name": "minecraft:crimson_stem",
+      "color": "#6c344b"
+    },
+    {
+      "name": "minecraft:warped_stem",
+      "color": "#396868"
+    },
+    {
+      "name": "minecraft:stripped_crimson_stem",
+      "color": "#7a3853"
+    },
+    {
+      "name": "minecraft:stripped_warped_stem",
+      "color": "#34817c"
+    },
+    {
+      "name": "minecraft:nether_sprouts",
+      "color": "#149785"
+    },
+    {
+      "name": "minecraft:shroomlight",
+      "color": "#f19347"
+    },
+    {
+      "name": "minecraft:soul_fire",
+      "color": "#6d735a"
+    },
+    {
+      "name": "minecraft:soul_fire_lantern",
+      "color": "#486373"
+    },
+    {
+      "name": "minecraft:soul_fire_torch",
+      "color": "#6d735a"
+    },
+    {
+      "name": "minecraft:soul_fire_wall_torch",
+      "color": "#6d735a"
+    },
+    {
+      "name": "minecraft:soul_soil",
+      "color": "#4c3a2f"
+    },
+    {
+      "name": "minecraft:warped_wart_block",
+      "color": "#177879"
+    },
+    {
+      "name": "minecraft:weeping_vines",
+      "color": "#690100"
+    },
+    {
+      "name": "minecraft:weeping_vines",
+      "color": "#85100c"
     }
   ],
   "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_blocks.json"
