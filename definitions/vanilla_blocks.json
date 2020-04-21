@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.16.20w09a",
+  "version": "1.16.20w10a",
   "data": [
     {
       "name": "minecraft:air",
@@ -4269,6 +4269,22 @@
     {
       "name": "minecraft:target",
       "color": "#e2aa9e"
+    },
+    {
+      "name": "minecraft:crimson_hyphae",
+      "color": "#6c344b"
+    },
+    {
+      "name": "minecraft:stripped_crimson_hyphae",
+      "color": "#7a3853"
+    },
+    {
+      "name": "minecraft:warped_hyphae",
+      "color": "#396868"
+    },
+    {
+      "name": "minecraft:stripped_warped_hyphae",
+      "color": "#34817c"
     }
   ],
   "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_blocks.json"
