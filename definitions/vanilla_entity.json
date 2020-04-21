@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "entity",
-  "version": "1.16.20w06a",
+  "version": "1.16.20w07a",
   "data": [
     {
       "category": "Hostile",
@@ -164,6 +164,10 @@
         {
           "id": "hoglin",
           "color": "DarkSalmon"
+        },
+        {
+          "id": "piglin",
+          "color": "Gold"
         }
       ]
     },
@@ -322,7 +326,7 @@
         },
         {
           "id": "pufferfish",
-          "color": "Gold"
+          "color": "DarkGoldenRod"
         },
         {
           "id": "panda",
@@ -351,12 +355,12 @@
           "id": "XPOrb",
           "name": "XP Orb",
           "catcolor": "GreenYellow",
-          "color": "Gold"
+          "color": "Yellow"
         },
         {
           "id": "xp_orb",
           "catcolor": "GreenYellow",
-          "color": "Gold"
+          "color": "Yellow"
         },
         {
           "note": "old naming scheme until 1.10",
