@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.16.20w06a",
+  "version": "1.16.20w09a",
   "data": [
     {
       "name": "minecraft:air",
@@ -4261,6 +4261,14 @@
     {
       "name": "minecraft:weeping_vines",
       "color": "#690100"
+    },
+    {
+      "name": "minecraft:crying_obsidian",
+      "color": "#210a3c"
+    },
+    {
+      "name": "minecraft:target",
+      "color": "#e2aa9e"
     }
   ],
   "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_blocks.json"
