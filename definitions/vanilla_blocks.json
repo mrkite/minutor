@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.16.20w10a",
+  "version": "1.16.20w12a",
   "data": [
     {
       "name": "minecraft:air",
@@ -4297,6 +4297,14 @@
     {
       "name": "minecraft:twisting_vines_plant",
       "color": "#14887a"
+    },
+    {
+      "name": "minecraft:polished_basalt",
+      "color": "#636365"
+    },
+    {
+      "name": "minecraft:respawn_anchor",
+      "color": "#4b1a90"
     }
   ],
   "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_blocks.json"
