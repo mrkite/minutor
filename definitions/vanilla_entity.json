@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "entity",
-  "version": "1.16.20w07a",
+  "version": "1.16.20w13a",
   "data": [
     {
       "category": "Hostile",
@@ -343,6 +343,10 @@
         {
           "id": "bee",
           "color": "GoldenRod"
+        },
+        {
+          "id": "strider",
+          "color": "FireBrick"
         }
       ]
     },

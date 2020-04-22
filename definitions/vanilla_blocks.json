@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.16.20w12a",
+  "version": "1.16.20w13a",
   "data": [
     {
       "name": "minecraft:air",
@@ -4305,6 +4305,10 @@
     {
       "name": "minecraft:respawn_anchor",
       "color": "#4b1a90"
+    },
+    {
+      "name": "minecraft:lodestone",
+      "color": "#939599"
     }
   ],
   "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_blocks.json"
