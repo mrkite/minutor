@@ -4285,6 +4285,18 @@
     {
       "name": "minecraft:stripped_warped_hyphae",
       "color": "#34817c"
+    },
+    {
+      "name": "minecraft:nether_gold_ore",
+      "color": "#fcee4b"
+    },
+    {
+      "name": "minecraft:twisting_vines",
+      "color": "#148f7c"
+    },
+    {
+      "name": "minecraft:twisting_vines_plant",
+      "color": "#14887a"
     }
   ],
   "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_blocks.json"
