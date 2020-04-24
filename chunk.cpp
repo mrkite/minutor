@@ -41,6 +41,7 @@ Chunk::~Chunk() {
         delete sections[i];
         sections[i] = NULL;
       }
+    loaded = false;
   }
 }
 
@@ -244,7 +245,7 @@ void Chunk::loadSection1343(ChunkSection *cs, const Tag *section) {
   cs->palette = FlatteningConverter::Instance().getPalette();
 }
 
-// Chunk format after "The Flattening" version 1509
+// Chunk format after "The Flattening" version 1519
 void Chunk::loadSection1519(ChunkSection *cs, const Tag *section) {
   BlockIdentifier &bi = BlockIdentifier::Instance();
   // decode Palette to be able to map BlockStates
@@ -282,18 +283,36 @@ void Chunk::loadSection1519(ChunkSection *cs, const Tag *section) {
   }
 
   // map BlockStates to BlockData
-  // todo: bit fidling looks very complicated -> find easier code
   if (section->has("BlockStates")) {
-    auto raw = section->at("BlockStates")->toLongArray();
+    auto blockStates = section->at("BlockStates")->toLongArray();
     int blockStatesLength = section->at("BlockStates")->length();
-    unsigned char *byteData = new unsigned char[8*blockStatesLength];
-    memcpy(byteData, raw, 8*blockStatesLength);
-    std::reverse(byteData, byteData+(8*blockStatesLength));
     int bitSize = (blockStatesLength)*64/4096;
-    for (int i = 0; i < 4096; i++) {
-      cs->blocks[4095-i] = getBits(byteData, i*bitSize, bitSize);
+
+    if (this->version < 2529) {
+      // compact BlockStates
+      // todo: bit fidling looks very complicated -> find easier code
+      unsigned char *byteData = new unsigned char[8*blockStatesLength];
+      memcpy(byteData, blockStates, 8*blockStatesLength);
+      std::reverse(byteData, byteData+(8*blockStatesLength));
+      for (int i = 0; i < 4096; i++) {
+        cs->blocks[4095-i] = getBits(byteData, i*bitSize, bitSize);
+      }
+      delete[] byteData;
+    } else {
+      // "optimized for loading" BlockStates since 1.16.20w17a
+      int bitMask = (1 << bitSize)-1;
+      int bsCnt  = 0;  // counter for 64bit words
+      int bitCnt = 0;  // counter for bits
+      for (int i = 0; i < 4096; i++) {
+        uint64_t blockState = blockStates[bsCnt];
+        cs->blocks[i] = (blockState >> bitCnt) & bitMask;
+        bitCnt += bitSize;
+        if (bitCnt+bitSize > 64) {
+          bsCnt++;
+          bitCnt = 0;
+        }
+      }
     }
-    delete[] byteData;
   } else {
     // set everything to 0 (minecraft:air)
     memset(cs->blocks, 0, sizeof(cs->blocks));
