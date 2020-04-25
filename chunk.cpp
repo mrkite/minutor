@@ -333,12 +333,20 @@ const PaletteEntry & ChunkSection::getPaletteEntry(int x, int y, int z) const {
   int xoffset = (x & 0x0f);
   int yoffset = (y & 0x0f) << 8;
   int zoffset = z << 4;
-  return palette[blocks[xoffset + yoffset + zoffset]];
+  int blockid = blocks[xoffset + yoffset + zoffset];
+  if (blockid < paletteLength)
+    return palette[blockid];
+  else
+    return palette[0];
 }
 
 const PaletteEntry & ChunkSection::getPaletteEntry(int offset, int y) const {
   int yoffset = (y & 0x0f) << 8;
-  return palette[blocks[offset + yoffset]];
+  int blockid = blocks[offset + yoffset];
+  if (blockid < paletteLength)
+    return palette[blockid];
+  else
+    return palette[0];
 }
 
 //quint8 ChunkSection::getSkyLight(int x, int y, int z) {
