@@ -1,24 +1,10 @@
 /** Copyright (c) 2013, Sean Kasun */
 
-#include <algorithm>
+#include <algorithm>    // std::max
 
 #include "./chunk.h"
 #include "./flatteningconverter.h"
 #include "./blockidentifier.h"
-
-quint16 getBits(const unsigned char *data, int pos, int n) {
-//  quint16 result = 0;
-  int arrIndex = pos/8;
-  int bitIndex = pos%8;
-  quint32 loc =
-    data[arrIndex]   << 24 |
-    data[arrIndex+1] << 16 |
-    data[arrIndex+2] << 8  |
-    data[arrIndex+3];
-
-  return ((loc >> (32-bitIndex-n)) & ((1 << n) -1));
-}
-
 
 
 Chunk::Chunk()
@@ -286,23 +272,38 @@ void Chunk::loadSection1519(ChunkSection *cs, const Tag *section) {
   if (section->has("BlockStates")) {
     auto blockStates = section->at("BlockStates")->toLongArray();
     int blockStatesLength = section->at("BlockStates")->length();
-    int bitSize = (blockStatesLength)*64/4096;
+    int bsCnt  = 0;  // counter for 64bit words
+    int bitCnt = 0;  // counter for bits
 
     if (this->version < 2529) {
       // compact BlockStates
-      // todo: bit fidling looks very complicated -> find easier code
-      unsigned char *byteData = new unsigned char[8*blockStatesLength];
-      memcpy(byteData, blockStates, 8*blockStatesLength);
-      std::reverse(byteData, byteData+(8*blockStatesLength));
       for (int i = 0; i < 4096; i++) {
-        cs->blocks[4095-i] = getBits(byteData, i*bitSize, bitSize);
+        int bitSize = (blockStatesLength)*64/4096;
+        int bitMask = (1 << bitSize)-1;
+        if (bitCnt+bitSize <= 64) {
+          // bits fit into current word
+          uint64_t blockState = blockStates[bsCnt];
+          cs->blocks[i] = (blockState >> bitCnt) & bitMask;
+          bitCnt += bitSize;
+          if (bitCnt == 64) {
+            bitCnt = 0;
+            bsCnt++;
+          }
+        } else {
+          // bits are spread accross two words
+          uint64_t blockState1 = blockStates[bsCnt++];
+          uint64_t blockState2 = blockStates[bsCnt];
+          uint32_t block = (blockState1 >> bitCnt) & bitMask;
+          bitCnt += bitSize;
+          bitCnt -= 64;
+          block += (blockState2 << (bitSize - bitCnt)) & bitMask;
+          cs->blocks[i] = block;
+        }
       }
-      delete[] byteData;
     } else {
       // "optimized for loading" BlockStates since 1.16.20w17a
+      int bitSize = std::max(4, int(ceil(log2(cs->paletteLength))));
       int bitMask = (1 << bitSize)-1;
-      int bsCnt  = 0;  // counter for 64bit words
-      int bitCnt = 0;  // counter for bits
       for (int i = 0; i < 4096; i++) {
         uint64_t blockState = blockStates[bsCnt];
         cs->blocks[i] = (blockState >> bitCnt) & bitMask;
