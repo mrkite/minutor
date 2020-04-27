@@ -6,6 +6,17 @@
 #include "./flatteningconverter.h"
 #include "./blockidentifier.h"
 
+template<typename ValueT>
+inline void* safeMemCpy(void* dest, const std::vector<ValueT>& srcVec, size_t length)
+{
+  const size_t src_data_size = (sizeof(ValueT) * srcVec.size());
+    if (length > src_data_size)
+    {
+      length = src_data_size; // this happens sometimes and I guess its then actually a bug in the load() implementation. But this way it at least doesn't crash randomly.
+    }
+
+    return memcpy(dest, &srcVec[0], length);
+}
 
 Chunk::Chunk()
   : version(0)
@@ -77,10 +88,10 @@ void Chunk::load(const NBT &nbt) {
     if (biomes) {  // Biomes is a Tag_Int_Array
       if ((this->version >= 2203)) {
         // raw copy Biome data
-        memcpy(this->biomes, biomes->toIntArray(), sizeof(int)*1024);
+        safeMemCpy(this->biomes, biomes->toIntArray(), sizeof(int)*1024);
       } else if ((this->version >= 1519)) {
         // raw copy Biome data
-        memcpy(this->biomes, biomes->toIntArray(), sizeof(int)*256);
+        safeMemCpy(this->biomes, biomes->toIntArray(), sizeof(int)*256);
       }
     } else {  // Biomes is not a Tag_Int_Array
       const Tag_Byte_Array * biomes = dynamic_cast<const Tag_Byte_Array*>(level->at("Biomes"));
@@ -128,8 +139,6 @@ void Chunk::load(const NBT &nbt) {
     }
   }
 
-  loaded = true;
-
   // parse Entities
   if (level->has("Entities")) {
     auto entitylist = level->at("Entities");
@@ -143,6 +152,13 @@ void Chunk::load(const NBT &nbt) {
 
   // check for the highest block in this chunk
   // todo: use highmap from stored NBT data
+  findHighestBlock();
+
+  loaded = true; // needs to be at the end!
+}
+
+void Chunk::findHighestBlock()
+{
   for (int i = 15; i >= 0; i--) {
     if (this->sections[i]) {
       for (int j = 4095; j >= 0; j--) {
@@ -206,9 +222,9 @@ void Chunk::loadSection1343(ChunkSection *cs, const Tag *section) {
   // copy raw data
   quint8 blocks[4096];
   quint8 data[2048];
-  memcpy(blocks, section->at("Blocks")->toByteArray(), 4096);
-  memcpy(data,   section->at("Data")->toByteArray(),   2048);
-  memcpy(cs->blockLight, section->at("BlockLight")->toByteArray(), 2048);
+  safeMemCpy(blocks, section->at("Blocks")->toByteArray(), 4096);
+  safeMemCpy(data,   section->at("Data")->toByteArray(),   2048);
+  safeMemCpy(cs->blockLight, section->at("BlockLight")->toByteArray(), 2048);
 
   // convert old BlockID + data into virtual ID
   for (int i = 0; i < 4096; i++) {
@@ -321,13 +337,12 @@ void Chunk::loadSection1519(ChunkSection *cs, const Tag *section) {
 
     // copy Light data
 //  if (section->has("SkyLight")) {
-//    memcpy(cs->skyLight, section->at("SkyLight")->toByteArray(), 2048);
+//    safeMemCpy(cs->skyLight, section->at("SkyLight")->toByteArray(), 2048);
 //  }
   if (section->has("BlockLight")) {
-    memcpy(cs->blockLight, section->at("BlockLight")->toByteArray(), 2048);
+    safeMemCpy(cs->blockLight, section->at("BlockLight")->toByteArray(), 2048);
   }
 }
-
 
 const PaletteEntry & ChunkSection::getPaletteEntry(int x, int y, int z) const {
   int xoffset = (x & 0x0f);

@@ -127,17 +127,20 @@ double Tag::toDouble() const {
   qWarning() << "Unhandled toDouble";
   return 0.0;
 }
-const quint8 *Tag::toByteArray() const {
+const std::vector<quint8>& Tag::toByteArray() const {
   qWarning() << "Unhandled toByteArray";
-  return NULL;
+  static const std::vector<quint8> dummy;
+  return dummy;
 }
-const qint32 *Tag::toIntArray() const {
+const std::vector<qint32>& Tag::toIntArray() const {
   qWarning() << "Unhandled toIntArray";
-  return NULL;
+  static const std::vector<qint32> dummy;
+  return dummy;
 }
-const qint64 *Tag::toLongArray() const {
+const std::vector<qint64>& Tag::toLongArray() const {
   qWarning() << "Unhandled toLongArray";
-  return NULL;
+  static const std::vector<qint64> dummy;
+  return dummy;
 }
 const QVariant Tag::getData() const {
   qWarning() << "Unhandled getData";
@@ -273,25 +276,24 @@ const QString Tag_Double::toString() const {
 
 Tag_Byte_Array::Tag_Byte_Array(TagDataStream *s) {
   len = s->r32();
-  data = s->r(len);
+  s->r(len, data);
 }
 Tag_Byte_Array::~Tag_Byte_Array() {
-  delete[] data;
 }
 int Tag_Byte_Array::length() const {
   return len;
 }
-const quint8 *Tag_Byte_Array::toByteArray() const {
+const std::vector<quint8> &Tag_Byte_Array::toByteArray() const {
   return data;
 }
 
 const QVariant Tag_Byte_Array::getData() const {
-  return QByteArray(reinterpret_cast<const char*>(data), len);
+  return QByteArray(reinterpret_cast<const char*>(&data[0]), len);
 }
 
 const QString Tag_Byte_Array::toString() const {
   try {
-    return QString::fromLatin1(reinterpret_cast<const char *>(data));
+    return QString::fromLatin1(reinterpret_cast<const char *>(&data[0]));
   } catch(...) {}
 
   return "<Binary data>";
@@ -435,14 +437,13 @@ const QVariant Tag_Compound::getData() const {
 
 Tag_Int_Array::Tag_Int_Array(TagDataStream *s) {
   len = s->r32();
-  data = new qint32[len];
+  data.resize(len);
   for (int i = 0; i < len; i++)
     data[i] = s->r32();
 }
 Tag_Int_Array::~Tag_Int_Array() {
-  delete[] data;
 }
-const qint32 *Tag_Int_Array::toIntArray() const {
+const std::vector<qint32>& Tag_Int_Array::toIntArray() const {
   return data;
 }
 int Tag_Int_Array::length() const {
@@ -472,14 +473,13 @@ const QVariant Tag_Int_Array::getData() const {
 
 Tag_Long_Array::Tag_Long_Array(TagDataStream *s) {
   len = s->r32();
-  data = new qint64[len];
+  data.resize(len);
   for (int i = 0; i < len; i++)
     data[i] = s->r64();
 }
 Tag_Long_Array::~Tag_Long_Array() {
-  delete[] data;
 }
-const qint64 *Tag_Long_Array::toLongArray() const {
+const std::vector<qint64> &Tag_Long_Array::toLongArray() const {
   return data;
 }
 int Tag_Long_Array::length() const {
@@ -533,12 +533,11 @@ quint64 TagDataStream::r64() {
   r |= r32();
   return r;
 }
-quint8 *TagDataStream::r(int len) {
+void TagDataStream::r(int len, std::vector<quint8>& data_out) {
   // you need to free anything read with this
-  quint8 *r = new quint8[len];
-  memcpy(r, data + pos, len);
+  data_out.resize(len);
+  memcpy(&data_out[0], data + pos, len);
   pos += len;
-  return r;
 }
 QString TagDataStream::utf8(int len) {
   int old = pos;

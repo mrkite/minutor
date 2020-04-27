@@ -16,7 +16,7 @@ class TagDataStream {
   quint16 r16();
   quint32 r32();
   quint64 r64();
-  quint8 *r(int len);
+  void r(int len, std::vector<quint8> &data_out);
   QString utf8(int len);
   void skip(int len);
  private:
@@ -35,9 +35,9 @@ class Tag {
   virtual const QString toString() const;
   virtual qint32 toInt() const;
   virtual double toDouble() const;
-  virtual const quint8 *toByteArray() const;
-  virtual const qint32 *toIntArray() const;
-  virtual const qint64 *toLongArray() const;
+  virtual const std::vector<quint8> &toByteArray() const;
+  virtual const std::vector<qint32> &toIntArray() const;
+  virtual const std::vector<qint64> &toLongArray() const;
   virtual const QVariant getData() const;
 };
 
@@ -126,11 +126,11 @@ class Tag_Byte_Array : public Tag {
   explicit Tag_Byte_Array(TagDataStream *s);
   ~Tag_Byte_Array();
   int length() const;
-  const quint8 *toByteArray() const;
+  const std::vector<quint8>& toByteArray() const override;
   virtual const QString toString() const;
   virtual const QVariant getData() const;
  private:
-  const quint8 *data;
+  std::vector<quint8> data;
   int len;
 };
 
@@ -172,12 +172,12 @@ class Tag_Int_Array : public Tag {
   explicit Tag_Int_Array(TagDataStream *s);
   ~Tag_Int_Array();
   int length() const;
-  const qint32 *toIntArray() const;
+  const std::vector<qint32>& toIntArray() const override;
   virtual const QString toString() const;
   virtual const QVariant getData() const;
  private:
   int len;
-  qint32 *data;
+  std::vector<qint32> data;
 };
 
 class Tag_Long_Array : public Tag {
@@ -185,12 +185,12 @@ class Tag_Long_Array : public Tag {
   explicit Tag_Long_Array(TagDataStream *s);
   ~Tag_Long_Array();
   int length() const;
-  const qint64 *toLongArray() const;
+  const std::vector<qint64>& toLongArray() const override;
   virtual const QString toString() const;
   virtual const QVariant getData() const;
  private:
   int len;
-  qint64 *data;
+  std::vector<qint64> data;
 };
 
 #endif  // NBT_H_

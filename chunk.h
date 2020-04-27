@@ -78,6 +78,9 @@ signals:
   friend class ChunkRenderer;
   friend class ChunkCache;
   friend class WorldSave;
+
+private:
+  void findHighestBlock();
 };
 
 #endif  // CHUNK_H_
