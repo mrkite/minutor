@@ -87,28 +87,45 @@ QSharedPointer<Chunk> ChunkCache::fetchCached(int cx, int cz) {
   // try to get Chunk from Cache
   ChunkID id(cx, cz);
 
-  QMutexLocker guard(&mutex);
-  QSharedPointer<Chunk> * p_chunk(cache[id]);   // const operation
+  QSharedPointer<Chunk> chunk;
+  getCached(id, chunk);
+  return chunk;
+}
 
-  if (p_chunk != NULL )
-    return QSharedPointer<Chunk>(*p_chunk);
-  else
-    return QSharedPointer<Chunk>(NULL);  // we're loading this chunk, or it's blank.
+CacheState ChunkCache::getCached(const ChunkID &id, QSharedPointer<Chunk> &chunk_out)
+{
+  QMutexLocker guard(&mutex);
+  return getCached_intern(id, chunk_out);
+}
+
+CacheState ChunkCache::getCached_intern(const ChunkID &id, QSharedPointer<Chunk> &chunk_out)
+{
+  QSharedPointer<Chunk> * p_chunk = cache[id];   // const operation
+  if (!p_chunk)
+  {
+    return CacheState::uncached;
+  }
+
+  chunk_out = (*p_chunk);
+
+  if (!chunk_out)
+    return CacheState::cached; // cached - but not existing and thus empty
+
+  if (!chunk_out->loaded)
+    return CacheState::uncached_loading;
+
+  return CacheState::cached;
 }
 
 QSharedPointer<Chunk> ChunkCache::fetch(int cx, int cz) {
   // try to get Chunk from Cache
   ChunkID id(cx, cz);
-  {
-    QMutexLocker guard(&mutex);
-    QSharedPointer<Chunk> * p_chunk(cache[id]);   // const operation
-    if (p_chunk != NULL ) {
-      QSharedPointer<Chunk> chunk(*p_chunk);
-      if (chunk->loaded)
-        return chunk;
-      return QSharedPointer<Chunk>(NULL);  // we're loading this chunk, or it's blank.
-    }
-  }
+  QSharedPointer<Chunk> chunk;
+  const CacheState state = getCached(id, chunk);
+  if (state == CacheState::cached)
+    return chunk;
+  else if (state == CacheState::uncached_loading)
+    return QSharedPointer<Chunk>(); // already loading, return nullptr
 
   // launch background process to load this chunk
   QSharedPointer<Chunk> * p_chunk = new QSharedPointer<Chunk>(new Chunk());
@@ -124,6 +141,36 @@ QSharedPointer<Chunk> ChunkCache::fetch(int cx, int cz) {
           this,   SLOT(gotChunk(int, int)));
   loaderThreadPool.start(loader);
   return QSharedPointer<Chunk>(NULL);
+}
+
+QSharedPointer<Chunk> ChunkCache::getChunkSynchronously(const ChunkID& id)
+{
+  QSharedPointer<Chunk> chunk;
+  bool hasFreeSpaceInCache = false;
+  {
+    QMutexLocker guard(&mutex);
+    hasFreeSpaceInCache = (cache.totalCost() < cache.maxCost() * 0.9);
+
+    const CacheState state = getCached_intern(id, chunk);
+    if (state == CacheState::cached)
+      return chunk;
+  }
+
+  // sychronously load
+  chunk = QSharedPointer<Chunk>::create();
+
+  if (!ChunkLoader::loadNbt(path, id.getX(), id.getZ(), chunk))
+  {
+    return QSharedPointer<Chunk>();
+  }
+
+  if (hasFreeSpaceInCache && chunk->loaded) // only cache in case of lot of memory to not degrade drawing performance
+  {
+    QMutexLocker guard(&mutex);
+    cache.insert(id, new QSharedPointer<Chunk>(chunk));
+  }
+
+  return chunk;
 }
 
 void ChunkCache::gotChunk(int cx, int cz) {

@@ -25,8 +25,16 @@
 #include "./village.h"
 #include "./jumpto.h"
 #include "./pngexport.h"
+#include "./searchchunkswidget.h"
+#include "./searchentitypluginwidget.h"
+#include "./searchblockpluginwidget.h"
+#include "./searchresultwidget.h"
 
-Minutor::Minutor() {
+Minutor::Minutor()
+  : searchMenu(nullptr)
+  , searchEntityAction(nullptr)
+  , searchBlockAction(nullptr)
+{
   mapview = new MapView;
   connect(mapview, SIGNAL(hoverTextChanged(QString)),
           statusBar(), SLOT(showMessage(QString)));
@@ -454,6 +462,12 @@ void Minutor::createActions() {
   updatesAct->setStatusTip(tr("Check for updated packs"));
   connect(updatesAct, SIGNAL(triggered()),
           dm,         SLOT(checkForUpdates()));
+
+  searchEntityAction = new QAction(tr("Search entity"), this);
+  connect(searchEntityAction, SIGNAL(triggered()), this, SLOT(searchEntity()));
+
+  searchBlockAction = new QAction(tr("Search block"), this);
+  connect(searchBlockAction, SIGNAL(triggered()), this, SLOT(searchBlock()));
 }
 
 // actionName will be modified, a "&" is added
@@ -556,6 +570,11 @@ void Minutor::createMenus() {
   viewMenu->addAction(manageDefsAct);
 
   //menuBar()->addSeparator();
+
+  // [Search]
+  searchMenu = menuBar()->addMenu(tr("&Search"));
+  searchMenu->addAction(searchEntityAction);
+  searchMenu->addAction(searchBlockAction);
 
   // [Help]
   helpMenu = menuBar()->addMenu(tr("&Help"));
@@ -760,6 +779,50 @@ void Minutor::showProperties(QVariant props) {
     propView->DisplayProperties(props);
     propView->show();
   }
+}
+
+SearchChunksWidget* Minutor::prepareSearchForm(const QSharedPointer<SearchPluginI>& searchPlugin) {
+  SearchChunksWidget* form = new SearchChunksWidget(searchPlugin);
+
+  form->setAttribute(Qt::WA_DeleteOnClose);
+
+  const auto currentLocation = mapview->getLocation();
+  form->setSearchCenter(currentLocation->x, currentLocation->y, currentLocation->z);
+
+  connect(mapview, SIGNAL(coordinatesChanged(int,int,int)),
+          form, SLOT(setSearchCenter(int,int,int))
+          );
+
+  connect(form, SIGNAL(jumpTo(QVector3D)),
+          this, SLOT(triggerJumpToPosition(QVector3D))
+          );
+
+  connect(form, SIGNAL(updateSearchResultPositions(QVector<QSharedPointer<OverlayItem> >)),
+          this, SLOT(updateSearchResultPositions(QVector<QSharedPointer<OverlayItem> >))
+          );
+
+  return form;
+}
+
+void Minutor::searchBlock() {
+  auto searchPlugin = QSharedPointer<SearchBlockPluginWidget>::create();
+  auto searchBlockForm = prepareSearchForm(searchPlugin);
+  searchBlockForm->showNormal();
+}
+
+void Minutor::searchEntity() {
+  auto searchPlugin = QSharedPointer<SearchEntityPluginWidget>::create();
+  auto searchEntityForm = prepareSearchForm(searchPlugin);
+  searchEntityForm->showNormal();
+}
+
+void Minutor::triggerJumpToPosition(QVector3D pos) {
+  mapview->setLocation(pos.x(), pos.y(), pos.z(), true, false);
+}
+
+void Minutor::updateSearchResultPositions(QVector<QSharedPointer<OverlayItem> > items) {
+  mapview->updateSearchResultPositions(items);
+  mapview->redraw();
 }
 
 void Minutor::loadStructures(const QDir &dataPath) {

@@ -28,6 +28,9 @@ class MapView : public QWidget {
   typedef struct {
     float x, y, z;
     int scale;
+    QVector3D getPos3D() const {
+      return QVector3D(x,y,z);
+    }
   } BlockLocation;
 
   explicit MapView(QWidget *parent = 0);
@@ -50,6 +53,8 @@ class MapView : public QWidget {
 
   // public for saving the png
   QString getWorldPath();
+
+  void updateSearchResultPositions(const QVector<QSharedPointer<OverlayItem> > &searchResults);
 
 
  public slots:
@@ -89,6 +94,9 @@ class MapView : public QWidget {
   QList<QSharedPointer<OverlayItem>> getItems(int x, int y, int z);
   void adjustZoom(double steps, bool allowZoomOut);
 
+  template<typename ListT>
+  void drawOverlayItems(const ListT& list, const OverlayItem::Cuboid& cuboid, double x1, double z1, QPainter& canvas);
+
   static const int CAVE_DEPTH = 16;  // maximum depth caves are searched in cave mode
   float caveshade[CAVE_DEPTH];
 
@@ -106,6 +114,8 @@ class MapView : public QWidget {
   QSet<QString> overlayItemTypes;
   QMap<QString, QList<QSharedPointer<OverlayItem>>> overlayItems;
   BlockLocation currentLocation;
+
+  QVector<QSharedPointer<OverlayItem> > currentSearchResults;
 };
 
 #endif  // MAPVIEW_H_
