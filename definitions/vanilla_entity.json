@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "entity",
-  "version": "1.15.19w34a",
+  "version": "1.16.20w14a",
   "data": [
     {
       "category": "Hostile",
@@ -160,6 +160,18 @@
         {
           "id": "phantom",
           "color": "MidnightBlue"
+        },
+        {
+          "id": "hoglin",
+          "color": "DarkSalmon"
+        },
+        {
+          "id": "zoglin",
+          "color": "LightPink"
+        },
+        {
+          "id": "piglin",
+          "color": "Gold"
         }
       ]
     },
@@ -318,7 +330,7 @@
         },
         {
           "id": "pufferfish",
-          "color": "Gold"
+          "color": "DarkGoldenRod"
         },
         {
           "id": "panda",
@@ -335,6 +347,10 @@
         {
           "id": "bee",
           "color": "GoldenRod"
+        },
+        {
+          "id": "strider",
+          "color": "FireBrick"
         }
       ]
     },
@@ -347,12 +363,12 @@
           "id": "XPOrb",
           "name": "XP Orb",
           "catcolor": "GreenYellow",
-          "color": "Gold"
+          "color": "Yellow"
         },
         {
           "id": "xp_orb",
           "catcolor": "GreenYellow",
-          "color": "Gold"
+          "color": "Yellow"
         },
         {
           "note": "old naming scheme until 1.10",

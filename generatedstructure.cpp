@@ -97,11 +97,10 @@ GeneratedStructure::tryParseFeatures(QVariant &maybeFeatureMap) {
   return ret;
 }
 
-bool GeneratedStructure::intersects(const Point& min,
-                                    const Point& max) const {
-  return min.x <= p2.x && p1.x <= max.x &&
-         min.y <= p2.y && p1.y <= max.y &&
-         min.z <= p2.z && p1.z <= max.z;
+bool GeneratedStructure::intersects(const OverlayItem::Cuboid& cuboid) const {
+  return cuboid.min.x <= p2.x && p1.x <= cuboid.max.x &&
+         cuboid.min.y <= p2.y && p1.y <= cuboid.max.y &&
+         cuboid.min.z <= p2.z && p1.z <= cuboid.max.z;
 }
 
 void GeneratedStructure::draw(double offsetX, double offsetZ, double scale,
