@@ -1,24 +1,10 @@
 /** Copyright (c) 2013, Sean Kasun */
 
-#include <algorithm>
+#include <algorithm>    // std::max
 
 #include "./chunk.h"
 #include "./flatteningconverter.h"
 #include "./blockidentifier.h"
-
-quint16 getBits(const unsigned char *data, int pos, int n) {
-//  quint16 result = 0;
-  int arrIndex = pos/8;
-  int bitIndex = pos%8;
-  quint32 loc =
-    data[arrIndex]   << 24 |
-    data[arrIndex+1] << 16 |
-    data[arrIndex+2] << 8  |
-    data[arrIndex+3];
-
-  return ((loc >> (32-bitIndex-n)) & ((1 << n) -1));
-}
-
 
 
 Chunk::Chunk()
@@ -41,6 +27,7 @@ Chunk::~Chunk() {
         delete sections[i];
         sections[i] = NULL;
       }
+    loaded = false;
   }
 }
 
@@ -244,7 +231,7 @@ void Chunk::loadSection1343(ChunkSection *cs, const Tag *section) {
   cs->palette = FlatteningConverter::Instance().getPalette();
 }
 
-// Chunk format after "The Flattening" version 1509
+// Chunk format after "The Flattening" version 1519
 void Chunk::loadSection1519(ChunkSection *cs, const Tag *section) {
   BlockIdentifier &bi = BlockIdentifier::Instance();
   // decode Palette to be able to map BlockStates
@@ -282,18 +269,51 @@ void Chunk::loadSection1519(ChunkSection *cs, const Tag *section) {
   }
 
   // map BlockStates to BlockData
-  // todo: bit fidling looks very complicated -> find easier code
   if (section->has("BlockStates")) {
-    auto raw = section->at("BlockStates")->toLongArray();
+    auto blockStates = section->at("BlockStates")->toLongArray();
     int blockStatesLength = section->at("BlockStates")->length();
-    unsigned char *byteData = new unsigned char[8*blockStatesLength];
-    memcpy(byteData, raw, 8*blockStatesLength);
-    std::reverse(byteData, byteData+(8*blockStatesLength));
-    int bitSize = (blockStatesLength)*64/4096;
-    for (int i = 0; i < 4096; i++) {
-      cs->blocks[4095-i] = getBits(byteData, i*bitSize, bitSize);
+    int bsCnt  = 0;  // counter for 64bit words
+    int bitCnt = 0;  // counter for bits
+
+    if (this->version < 2529) {
+      // compact BlockStates
+      for (int i = 0; i < 4096; i++) {
+        int bitSize = (blockStatesLength)*64/4096;
+        int bitMask = (1 << bitSize)-1;
+        if (bitCnt+bitSize <= 64) {
+          // bits fit into current word
+          uint64_t blockState = blockStates[bsCnt];
+          cs->blocks[i] = (blockState >> bitCnt) & bitMask;
+          bitCnt += bitSize;
+          if (bitCnt == 64) {
+            bitCnt = 0;
+            bsCnt++;
+          }
+        } else {
+          // bits are spread accross two words
+          uint64_t blockState1 = blockStates[bsCnt++];
+          uint64_t blockState2 = blockStates[bsCnt];
+          uint32_t block = (blockState1 >> bitCnt) & bitMask;
+          bitCnt += bitSize;
+          bitCnt -= 64;
+          block += (blockState2 << (bitSize - bitCnt)) & bitMask;
+          cs->blocks[i] = block;
+        }
+      }
+    } else {
+      // "optimized for loading" BlockStates since 1.16.20w17a
+      int bitSize = std::max(4, int(ceil(log2(cs->paletteLength))));
+      int bitMask = (1 << bitSize)-1;
+      for (int i = 0; i < 4096; i++) {
+        uint64_t blockState = blockStates[bsCnt];
+        cs->blocks[i] = (blockState >> bitCnt) & bitMask;
+        bitCnt += bitSize;
+        if (bitCnt+bitSize > 64) {
+          bsCnt++;
+          bitCnt = 0;
+        }
+      }
     }
-    delete[] byteData;
   } else {
     // set everything to 0 (minecraft:air)
     memset(cs->blocks, 0, sizeof(cs->blocks));
@@ -313,12 +333,20 @@ const PaletteEntry & ChunkSection::getPaletteEntry(int x, int y, int z) const {
   int xoffset = (x & 0x0f);
   int yoffset = (y & 0x0f) << 8;
   int zoffset = z << 4;
-  return palette[blocks[xoffset + yoffset + zoffset]];
+  int blockid = blocks[xoffset + yoffset + zoffset];
+  if (blockid < paletteLength)
+    return palette[blockid];
+  else
+    return palette[0];
 }
 
 const PaletteEntry & ChunkSection::getPaletteEntry(int offset, int y) const {
   int yoffset = (y & 0x0f) << 8;
-  return palette[blocks[offset + yoffset]];
+  int blockid = blocks[offset + yoffset];
+  if (blockid < paletteLength)
+    return palette[blockid];
+  else
+    return palette[0];
 }
 
 //quint8 ChunkSection::getSkyLight(int x, int y, int z) {
