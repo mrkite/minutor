@@ -29,7 +29,7 @@ Chunk::~Chunk() {
   if (loaded) {
     for (int i = 0; i < 16; i++)
       if (sections[i]) {
-        if (sections[i]->paletteLength > 0) {
+        if ((!sections[i]->paletteIsShared) && (sections[i]->paletteLength > 0)) {
           delete[] sections[i]->palette;
         }
         sections[i]->paletteLength = 0;
@@ -243,8 +243,9 @@ void Chunk::loadSection1343(ChunkSection *cs, const Tag *section) {
   }
 
   // link to Converter palette
-  cs->paletteLength = 0;
+  cs->paletteLength = FlatteningConverter::Instance().paletteLength;
   cs->palette = FlatteningConverter::Instance().getPalette();
+  cs->paletteIsShared = true;
 }
 
 // Chunk format after "The Flattening" version 1519
@@ -343,6 +344,12 @@ void Chunk::loadSection1519(ChunkSection *cs, const Tag *section) {
     safeMemCpy(cs->blockLight, section->at("BlockLight")->toByteArray(), 2048);
   }
 }
+
+
+ChunkSection::ChunkSection()
+  : paletteLength(0)
+  , paletteIsShared(false)  // only the "old" converted format is using one shared palette
+{}
 
 const PaletteEntry & ChunkSection::getPaletteEntry(int x, int y, int z) const {
   int xoffset = (x & 0x0f);
