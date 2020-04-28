@@ -18,6 +18,7 @@ public:
   void disableDefinitions(int id);
 //  const BlockData * getPalette();
   PaletteEntry * getPalette();
+  const static int paletteLength = 16*256;  // 4 bit data + 8 bit ID
 
 private:
   // singleton: prevent access to constructor and copyconstructor
@@ -27,7 +28,7 @@ private:
   FlatteningConverter &operator=(const FlatteningConverter &);
 
   void parseDefinition(JSONObject *block, int *parentID, int pack);
-  PaletteEntry palette[16*256];  // 4 bit data + 8 bit ID
+  PaletteEntry palette[paletteLength];
 //  QList<QList<BlockInfo*> > packs;
 };
 

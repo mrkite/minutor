@@ -14,6 +14,8 @@
 
 class ChunkSection {
  public:
+  ChunkSection();
+
   const PaletteEntry & getPaletteEntry(int x, int y, int z) const;
   const PaletteEntry & getPaletteEntry(int offset, int y) const;
   quint8 getSkyLight(int x, int y, int z);
@@ -23,6 +25,7 @@ class ChunkSection {
 
   PaletteEntry *palette;
   int        paletteLength;
+  bool       paletteIsShared;
 
   quint16 blocks[16*16*16];
 //quint8  skyLight[16*16*16/2];   // not needed in Minutor
