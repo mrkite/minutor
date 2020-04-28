@@ -8,7 +8,6 @@
 
 #include <QVariant>
 #include <QTreeWidgetItem>
-#include <boost/noncopyable.hpp>
 #include <QtConcurrent/QtConcurrent>
 
 SearchChunksWidget::SearchChunksWidget(QSharedPointer<SearchPluginI> searchPlugin_, QWidget *parent)
