@@ -3,6 +3,7 @@
 #define PALETTEENTRY_H_
 
 #include <QString>
+#include <QVariant>
 #include <QMap>
 
 class PaletteEntry {
