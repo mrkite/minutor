@@ -1,6 +1,8 @@
 #include "searchresultwidget.h"
 #include "ui_searchresultwidget.h"
 
+#include <cmath>
+
 #include "properties.h"
 
 Q_DECLARE_METATYPE(SearchResultItem);
