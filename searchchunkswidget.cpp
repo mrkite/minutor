@@ -108,9 +108,8 @@ void SearchChunksWidget::AsyncSearch::searchLoadedChunk_async(const QSharedPoint
     results = searchExistingChunk_async(chunk);
   }
 
-  QMetaObject::invokeMethod(&parent, [&parent = parent, results](){
-    parent.displayResultsOfSingleChunk(results);
-  });
+  QMetaObject::invokeMethod(&parent, "displayResultsOfSingleChunk", Qt::QueuedConnection,
+                            Q_ARG(QSharedPointer<SearchPluginI::ResultListT>, results));
 }
 
 QSharedPointer<SearchPluginI::ResultListT> SearchChunksWidget::AsyncSearch::searchExistingChunk_async(const QSharedPointer<Chunk>& chunk)
