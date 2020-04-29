@@ -139,7 +139,6 @@ FORMS += \
     searchentitypluginwidget.ui \
     searchresultwidget.ui \
     searchtextwidget.ui \
-    searchtextwidget.ui \
     settings.ui \
     jumpto.ui \
     pngexport.ui
