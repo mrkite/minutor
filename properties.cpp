@@ -26,13 +26,13 @@ void Properties::DisplayProperties(QVariant p) {
 
   // only support QVariantMap or QVariantHash at this level
   switch (p.type()) {
-    case QMetaType::QVariantMap:
+    case QVariant::Map:
       treeCreator.ParseIterable(ui->propertyView->invisibleRootItem(), p.toMap());
       break;
-    case QMetaType::QVariantHash:
+    case QVariant::Hash:
       treeCreator.ParseIterable(ui->propertyView->invisibleRootItem(), p.toHash());
       break;
-    case QMetaType::QVariantList:
+    case QVariant::List:
       treeCreator.ParseList(ui->propertyView->invisibleRootItem(), p.toList());
       break;
     default:

@@ -46,20 +46,20 @@ GeneratedStructure::tryParseFeatures(QVariant &maybeFeatureMap) {
   QList<QSharedPointer<GeneratedStructure>> ret;
 
   // check if we got a map
-  if ((QMetaType::Type)maybeFeatureMap.type() == QMetaType::QVariantMap) {
+  if (maybeFeatureMap.type() == QVariant::Map) {
     // convert it to a real map
     QMap<QString, QVariant> featureMap = maybeFeatureMap.toMap();
 
     // loop over all elements in feature map
     for (auto &feature : featureMap) {
       // check if the element is also a map
-      if ((QMetaType::Type)feature.type() == QMetaType::QVariantMap) {
+      if (feature.type() == QVariant::Map) {
         // convert it to a real map
         QMap<QString, QVariant> featureProperties = feature.toMap();
         // check for required properties
         if (featureProperties.contains("id") &&
             featureProperties.contains("BB") &&
-            (QMetaType::Type)featureProperties["BB"].type() == QMetaType::QVariantList ) {
+            featureProperties["BB"].type() == QVariant::List ) {
           // parse id
           QString id = featureProperties["id"].toString();
           // parse Bounding Box

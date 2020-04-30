@@ -51,13 +51,13 @@ void PropertieTreeCreator::ParseList(QTreeWidgetItem* node, const IterableT& seq
 
 void PropertieTreeCreator::CreateTree(QTreeWidgetItem* node, const QVariant& v) {
   switch (v.type()) {
-    case QMetaType::QVariantMap:
+    case QVariant::Map:
       ParseIterable(node, v.toMap());
       break;
-    case QMetaType::QVariantHash:
+    case QVariant::Hash:
       ParseIterable(node, v.toHash());
       break;
-    case QMetaType::QVariantList:
+    case QVariant::List:
       ParseList(node, v.toList());
       break;
     default:
@@ -70,7 +70,7 @@ void PropertieTreeCreator::CreateTree(QTreeWidgetItem* node, const QVariant& v) 
 QString EvaluateSubExpression(const QString& subexpr, const QVariant& v) {
   if (subexpr.size() == 0) {
     // limit the displayed decimal places
-    if ((QMetaType::Type)v.type() == QMetaType::Double) {
+    if (v.type() == QVariant::Double) {
       return QString::number(v.toDouble(), 'f', 2);
     }
     return v.toString();
@@ -79,7 +79,7 @@ QString EvaluateSubExpression(const QString& subexpr, const QVariant& v) {
     if (rightbracket > 0) {
       bool ok = false;
       int index = subexpr.mid(1, rightbracket-1).toInt(&ok);
-      if (ok && (QMetaType::Type)v.type() == QMetaType::QVariantList) {
+      if (ok && v.type() == QVariant::List) {
         return EvaluateSubExpression(subexpr.mid(rightbracket + 1),
                                      v.toList().at(index));
       }
@@ -87,12 +87,12 @@ QString EvaluateSubExpression(const QString& subexpr, const QVariant& v) {
   } else {
     int dot = subexpr.indexOf('.');
     QString key = subexpr.mid(0, dot);
-    if ((QMetaType::Type)v.type() == QMetaType::QVariantHash) {
+    if (v.type() == QVariant::Hash) {
       QHash<QString, QVariant> h = v.toHash();
       QHash<QString, QVariant>::const_iterator it = h.find(key);
       if (it != h.end())
         return EvaluateSubExpression(subexpr.mid(key.length() + 1), *it);
-    } else if ((QMetaType::Type)v.type() == QMetaType::QVariantMap) {
+    } else if (v.type() == QVariant::Map) {
       QMap<QString, QVariant> h = v.toMap();
       QMap<QString, QVariant>::const_iterator it = h.find(key);
       if (it != h.end())
@@ -122,9 +122,9 @@ QString PropertieTreeCreator::GetSummary(const QString& key, const QVariant& v) 
       }
       ret.replace(pattern, evaluated);
     }
-  } else if ((QMetaType::Type)v.type() == QMetaType::QVariantList) {
+  } else if (v.type() == QVariant::List) {
     ret = QString("(%1 items)").arg(v.toList().size());
-  } else if ((QMetaType::Type)v.type() == QMetaType::QVariantMap) {
+  } else if (v.type() == QVariant::Map) {
     ret = GetSummary("", v);
   }
   return ret;
