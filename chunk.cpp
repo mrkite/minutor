@@ -29,7 +29,7 @@ Chunk::~Chunk() {
   if (loaded) {
     for (int i = 0; i < 16; i++)
       if (sections[i]) {
-        if ((!sections[i]->paletteIsShared) && (sections[i]->paletteLength > 0)) {
+        if (!(sections[i]->paletteIsShared) && (sections[i]->paletteLength > 0)) {
           delete[] sections[i]->palette;
         }
         sections[i]->paletteLength = 0;
@@ -255,6 +255,7 @@ void Chunk::loadSection1519(ChunkSection *cs, const Tag *section) {
   if (section->has("Palette")) {
     auto rawPalette = section->at("Palette");
     cs->paletteLength = rawPalette->length();
+    cs->paletteIsShared = false;
     cs->palette = new PaletteEntry[cs->paletteLength];
     for (int j = 0; j < rawPalette->length(); j++) {
       // get name and hash it to hid
@@ -342,12 +343,16 @@ void Chunk::loadSection1519(ChunkSection *cs, const Tag *section) {
 //  }
   if (section->has("BlockLight")) {
     safeMemCpy(cs->blockLight, section->at("BlockLight")->toByteArray(), 2048);
+  } else {
+    memset(cs->blockLight, 0, sizeof(cs->blockLight));
   }
 }
 
 
+// ChunkSection
 ChunkSection::ChunkSection()
-  : paletteLength(0)
+  : palette(NULL)
+  , paletteLength(0)
   , paletteIsShared(false)  // only the "old" converted format is using one shared palette
 {}
 
@@ -355,7 +360,7 @@ const PaletteEntry & ChunkSection::getPaletteEntry(int x, int y, int z) const {
   int xoffset = (x & 0x0f);
   int yoffset = (y & 0x0f) << 8;
   int zoffset = z << 4;
-  int blockid = blocks[xoffset + yoffset + zoffset];
+  quint16 blockid = blocks[xoffset + yoffset + zoffset];
   if (blockid < paletteLength)
     return palette[blockid];
   else
@@ -364,7 +369,7 @@ const PaletteEntry & ChunkSection::getPaletteEntry(int x, int y, int z) const {
 
 const PaletteEntry & ChunkSection::getPaletteEntry(int offset, int y) const {
   int yoffset = (y & 0x0f) << 8;
-  int blockid = blocks[offset + yoffset];
+  quint16 blockid = blocks[offset + yoffset];
   if (blockid < paletteLength)
     return palette[blockid];
   else
