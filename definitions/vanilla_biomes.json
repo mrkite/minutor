@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "biome",
-  "version": "1.16.20w06a",
+  "version": "1.16.20w15a",
   "data": [
     {
       "id": 0,
@@ -527,6 +527,13 @@
       "id": 172,
       "name": "Warped Forest",
       "color": "#49907b",
+      "temperature": 2.0,
+      "humidity": 0.0
+    },
+    {
+      "id": 173,
+      "name": "Basalt Deltas",
+      "color": "#403636",
       "temperature": 2.0,
       "humidity": 0.0
     }

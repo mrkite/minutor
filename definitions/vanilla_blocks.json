@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.16.20w13a",
+  "version": "1.16.20w15a",
   "data": [
     {
       "name": "minecraft:air",
@@ -4263,6 +4263,10 @@
       "color": "#690100"
     },
     {
+      "name": "minecraft:weeping_vines_plant",
+      "color": "#85100c"
+    },
+    {
       "name": "minecraft:crying_obsidian",
       "color": "#210a3c"
     },
@@ -4309,6 +4313,90 @@
     {
       "name": "minecraft:lodestone",
       "color": "#939599"
+    },
+    {
+      "name": "minecraft:blackstone",
+      "color": "#2a242a"
+    },
+    {
+      "name": "minecraft:blackstone_slab",
+      "color": "#2c242b"
+    },
+    {
+      "name": "minecraft:blackstone_stairs",
+      "color": "#272126"
+    },
+    {
+      "name": "minecraft:blackstone_wall",
+      "color": "#2a242a"
+    },
+    {
+      "name": "minecraft:polished_blackstone",
+      "color": "#353139"
+    },
+    {
+      "name": "minecraft:polished_blackstone_slab",
+      "color": "#37333b"
+    },
+    {
+      "name": "minecraft:polished_blackstone_stairs",
+      "color": "#322e36"
+    },
+    {
+      "name": "minecraft:polished_blackstone_wall",
+      "color": "#353139"
+    },
+    {
+      "name": "minecraft:polished_blackstone_button",
+      "color": "#353139"
+    },
+    {
+      "name": "minecraft:polished_blackstone_pressure_plate",
+      "color": "#353139"
+    },
+    {
+      "name": "minecraft:polished_blackstone_bricks",
+      "color": "#2f2930"
+    },
+    {
+      "name": "minecraft:polished_blackstone_brick_slab",
+      "color": "#312b32"
+    },
+    {
+      "name": "minecraft:polished_blackstone_brick_stairs",
+      "color": "#2c262d"
+    },
+    {
+      "name": "minecraft:polished_blackstone_brick_wall",
+      "color": "#2f2930"
+    },
+    {
+      "name": "minecraft:cracked_polished_blackstone_bricks",
+      "color": "#2c262c"
+    },
+    {
+      "name": "minecraft:chiseled_polished_blackstone",
+      "color": "#363139"
+    },
+    {
+      "name": "minecraft:gilded_blackstone",
+      "color": "#392c27"
+    },
+    {
+      "name": "minecraft:chiseled_nether_bricks",
+      "color": "#2f181c"
+    },
+    {
+      "name": "minecraft:cracked_nether_bricks",
+      "color": "#281418"
+    },
+    {
+      "name": "minecraft:quartz_bricks",
+      "color": "#ebe5de"
+    },
+    {
+      "name": "minecraft:soul_campfire",
+      "color": "#2a242a"
     }
   ],
   "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_blocks.json"
