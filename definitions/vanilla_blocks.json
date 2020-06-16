@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.16.20w16a",
+  "version": "1.16.20w17a",
   "data": [
     {
       "name": "minecraft:air",
@@ -2281,6 +2281,16 @@
       "transparent": true
     },
     {
+      "name": "minecraft:potted_crimson_fungus",
+      "color": "#8d2c1e",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:potted_warped_fungus",
+      "color": "#4a6d58",
+      "transparent": true
+    },
+    {
       "name": "minecraft:carrots",
       "color": "#158002",
       "transparent": true,
@@ -4198,46 +4208,40 @@
       "color": "#433d40"
     },
     {
-      "name": "minecraft:crimson_fungus",
-      "color": "#8d2c1e"
-    },
-    {
-      "name": "minecraft:warped_fungus",
-      "color": "#4a6d58"
-    },
-    {
       "name": "minecraft:crimson_nylium",
       "color": "#831f1f"
     },
     {
-      "name": "minecraft:warped_nylium",
-      "color": "#2b7265"
-    },
-    {
-      "name": "minecraft:crimson_planks",
-      "color": "#653147"
-    },
-    {
-      "name": "minecraft:warped_planks",
-      "color": "#2b6963"
+      "name": "minecraft:crimson_fungus",
+      "color": "#8d2c1e"
     },
     {
       "name": "minecraft:crimson_roots",
       "color": "#7e082a"
     },
     {
-      "name": "minecraft:warped_roots",
-      "color": "#148a7c"
+      "name": "minecraft:crimson_stem",
+      "color": "#6c344b"
     },
     {
-      "name": "minecraft:crimson_door",
-      "color": "#70364e",
-      "transparent": true
+      "name": "minecraft:stripped_crimson_stem",
+      "color": "#7a3853"
     },
     {
-      "name": "minecraft:warped_door",
-      "color": "#2d7d76",
-      "transparent": true
+      "name": "minecraft:crimson_planks",
+      "color": "#653147"
+    },
+    {
+      "name": "minecraft:crimson_slab",
+      "color": "#653147"
+    },
+    {
+      "name": "minecraft:crimson_pressure_plate",
+      "color": "#653147"
+    },
+    {
+      "name": "minecraft:crimson_fence",
+      "color": "#653147"
     },
     {
       "name": "minecraft:crimson_trapdoor",
@@ -4245,8 +4249,20 @@
       "transparent": true
     },
     {
-      "name": "minecraft:warped_trapdoor",
-      "color": "#2f7870",
+      "name": "minecraft:crimson_fence_gate",
+      "color": "#653147"
+    },
+    {
+      "name": "minecraft:crimson_stairs",
+      "color": "#653147"
+    },
+    {
+      "name": "minecraft:crimson_button",
+      "color": "#653147"
+    },
+    {
+      "name": "minecraft:crimson_door",
+      "color": "#70364e",
       "transparent": true
     },
     {
@@ -4258,28 +4274,70 @@
       "color": "#653147"
     },
     {
-      "name": "minecraft:warped_sign",
-      "color": "#2b6963"
+      "name": "minecraft:warped_nylium",
+      "color": "#2b7265"
     },
     {
-      "name": "minecraft:warped_wall_sign",
-      "color": "#2b6963"
+      "name": "minecraft:warped_fungus",
+      "color": "#4a6d58"
     },
     {
-      "name": "minecraft:crimson_stem",
-      "color": "#6c344b"
+      "name": "minecraft:warped_roots",
+      "color": "#148a7c"
     },
     {
       "name": "minecraft:warped_stem",
       "color": "#396868"
     },
     {
-      "name": "minecraft:stripped_crimson_stem",
-      "color": "#7a3853"
-    },
-    {
       "name": "minecraft:stripped_warped_stem",
       "color": "#34817c"
+    },
+    {
+      "name": "minecraft:warped_planks",
+      "color": "#2b6963"
+    },
+    {
+      "name": "minecraft:warped_slab",
+      "color": "#2b6963"
+    },
+    {
+      "name": "minecraft:warped_pressure_plate",
+      "color": "#2b6963"
+    },
+    {
+      "name": "minecraft:warped_fence",
+      "color": "#2b6963"
+    },
+    {
+      "name": "minecraft:warped_trapdoor",
+      "color": "#2f7870",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:warped_fence_gate",
+      "color": "#2b6963"
+    },
+    {
+      "name": "minecraft:warped_stairs",
+      "color": "#2b6963"
+    },
+    {
+      "name": "minecraft:warped_button",
+      "color": "#2b6963"
+    },
+    {
+      "name": "minecraft:warped_door",
+      "color": "#2d7d76",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:warped_sign",
+      "color": "#2b6963"
+    },
+    {
+      "name": "minecraft:warped_wall_sign",
+      "color": "#2b6963"
     },
     {
       "name": "minecraft:nether_sprouts",
@@ -4294,15 +4352,15 @@
       "color": "#6d735a"
     },
     {
-      "name": "minecraft:soul_fire_lantern",
+      "name": "minecraft:soul_lantern",
       "color": "#486373"
     },
     {
-      "name": "minecraft:soul_fire_torch",
+      "name": "minecraft:soul_torch",
       "color": "#6d735a"
     },
     {
-      "name": "minecraft:soul_fire_wall_torch",
+      "name": "minecraft:soul_wall_torch",
       "color": "#6d735a"
     },
     {
