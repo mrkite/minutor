@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.16.20w15a",
+  "version": "1.16.20w16a",
   "data": [
     {
       "name": "minecraft:air",
@@ -2147,103 +2147,138 @@
     },
     {
       "name": "minecraft:potted_dandelion",
-      "color": "#f1f902"
+      "color": "#f1f902",
+      "transparent": true
     },
     {
       "name": "minecraft:potted_poppy",
-      "color": "#910205"
+      "color": "#910205",
+      "transparent": true
     },
     {
       "name": "minecraft:potted_blue_orchid",
-      "color": "#29aefb"
+      "color": "#29aefb",
+      "transparent": true
     },
     {
       "name": "minecraft:potted_allium",
-      "color": "#b865fb"
+      "color": "#b865fb",
+      "transparent": true
     },
     {
       "name": "minecraft:potted_azure_bluet",
-      "color": "#e4eaf2"
+      "color": "#e4eaf2",
+      "transparent": true
     },
     {
       "name": "minecraft:potted_red_tulip",
-      "color": "#d33a17"
+      "color": "#d33a17",
+      "transparent": true
     },
     {
       "name": "minecraft:potted_orange_tulip",
-      "color": "#de731f"
+      "color": "#de731f",
+      "transparent": true
     },
     {
       "name": "minecraft:potted_white_tulip",
-      "color": "#e7e7e7"
+      "color": "#e7e7e7",
+      "transparent": true
     },
     {
       "name": "minecraft:potted_pink_tulip",
-      "color": "#eabeea"
+      "color": "#eabeea",
+      "transparent": true
     },
     {
       "name": "minecraft:potted_oxeye_daisy",
-      "color": "#eae6ad"
+      "color": "#eae6ad",
+      "transparent": true
     },
     {
       "name": "minecraft:potted_cornflower",
-      "color": "#466aeb"
+      "color": "#466aeb",
+      "transparent": true
     },
     {
       "name": "minecraft:potted_wither_rose",
-      "color": "#42352e"
+      "color": "#42352e",
+      "transparent": true
     },
     {
       "name": "minecraft:potted_lily_of_the_valley",
-      "color": "#ffffff"
+      "color": "#ffffff",
+      "transparent": true
     },
     {
       "name": "minecraft:potted_oak_sapling",
-      "color": "#408f2f"
+      "color": "#408f2f",
+      "transparent": true
     },
     {
       "name": "minecraft:potted_spruce_sapling",
-      "color": "#395a39"
+      "color": "#395a39",
+      "transparent": true
     },
     {
       "name": "minecraft:potted_birch_sapling",
-      "color": "#cfe3ba"
+      "color": "#cfe3ba",
+      "transparent": true
     },
     {
       "name": "minecraft:potted_jungle_sapling",
-      "color": "#2c6c18"
+      "color": "#2c6c18",
+      "transparent": true
     },
     {
       "name": "minecraft:potted_acacia_sapling",
-      "color": "#946428"
+      "color": "#946428",
+      "transparent": true
     },
     {
       "name": "minecraft:potted_dark_oak_sapling",
-      "color": "#315e05"
+      "color": "#315e05",
+      "transparent": true
     },
     {
       "name": "minecraft:potted_fern",
-      "color": "#315e05"
+      "color": "#315e05",
+      "transparent": true
     },
     {
       "name": "minecraft:potted_dead_bush",
-      "color": "#946428"
+      "color": "#946428",
+      "transparent": true
     },
     {
       "name": "minecraft:potted_red_mushroom",
-      "color": "#9a171c"
+      "color": "#9a171c",
+      "transparent": true
     },
     {
       "name": "minecraft:potted_brown_mushroom",
-      "color": "#725643"
+      "color": "#725643",
+      "transparent": true
     },
     {
       "name": "minecraft:potted_cactus",
-      "color": "#128a20"
+      "color": "#128a20",
+      "transparent": true
     },
     {
       "name": "minecraft:potted_bamboo",
-      "color": "#5c5924"
+      "color": "#5c5924",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:potted_crimson_roots",
+      "color": "#7e082a",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:potted_warped_roots",
+      "color": "#148a7c",
+      "transparent": true
     },
     {
       "name": "minecraft:carrots",
@@ -4195,19 +4230,39 @@
       "color": "#148a7c"
     },
     {
-      "name": "minecraft:potted_crimson_roots",
-      "color": "#7e082a"
+      "name": "minecraft:crimson_door",
+      "color": "#70364e",
+      "transparent": true
     },
     {
-      "name": "minecraft:potted_warped_roots",
-      "color": "#148a7c"
+      "name": "minecraft:warped_door",
+      "color": "#2d7d76",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:crimson_trapdoor",
+      "color": "#683348",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:warped_trapdoor",
+      "color": "#2f7870",
+      "transparent": true
     },
     {
       "name": "minecraft:crimson_sign",
       "color": "#653147"
     },
     {
+      "name": "minecraft:crimson_wall_sign",
+      "color": "#653147"
+    },
+    {
       "name": "minecraft:warped_sign",
+      "color": "#2b6963"
+    },
+    {
+      "name": "minecraft:warped_wall_sign",
       "color": "#2b6963"
     },
     {
@@ -4397,6 +4452,12 @@
     {
       "name": "minecraft:soul_campfire",
       "color": "#2a242a"
+    },
+    {
+      "name": "minecraft:chain",
+      "color": "#333a4a",
+      "alpha": 0.5,
+      "transparent": true
     }
   ],
   "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_blocks.json"
