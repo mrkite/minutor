@@ -4233,7 +4233,7 @@
     },
     {
       "name": "minecraft:crimson_slab",
-      "color": "#653147"
+      "color": "#6a334a"
     },
     {
       "name": "minecraft:crimson_pressure_plate",
@@ -4254,7 +4254,7 @@
     },
     {
       "name": "minecraft:crimson_stairs",
-      "color": "#653147"
+      "color": "#5f2e43"
     },
     {
       "name": "minecraft:crimson_button",
@@ -4299,7 +4299,7 @@
     },
     {
       "name": "minecraft:warped_slab",
-      "color": "#2b6963"
+      "color": "#2d6e67"
     },
     {
       "name": "minecraft:warped_pressure_plate",
@@ -4320,7 +4320,7 @@
     },
     {
       "name": "minecraft:warped_stairs",
-      "color": "#2b6963"
+      "color": "#28635e"
     },
     {
       "name": "minecraft:warped_button",
