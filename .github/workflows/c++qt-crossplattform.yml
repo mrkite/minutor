@@ -1,0 +1,93 @@
+name: C++ Qt CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        name: [ubuntu-16.04, ubuntu-18.04, ubuntu-20.04, macos-5.9, macos-5.12, windows-5.9, windows-5.12]
+        include:
+          - name: ubuntu-16.04
+            os: ubuntu-16.04
+            qt: '5.5'
+            artifact: minutor
+          - name: ubuntu-18.04
+            os: ubuntu-18.04
+            qt: '5.9.5'
+            artifact: minutor
+          - name: ubuntu-20.04
+            os: ubuntu-20.04
+            qt: '5.12.8'
+            artifact: minutor
+          - name: macos-5.9
+            os: macos-latest
+            qt: '5.9.9'
+            artifact: minutor.app
+          - name: macos-5.12
+            os: macos-latest
+            qt: '5.12.8'
+            artifact: minutor.app
+          - name: windows-5.9
+            os: windows-latest
+            qt: '5.9.9'
+            vcvars: '"C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvarsall.bat" x64 -vcvars_ver=14.16'
+            artifact: release/minutor.exe
+          - name: windows-5.12
+            os: windows-latest
+            qt: '5.12.8'
+            vcvars: '"C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvarsall.bat" x64 -vcvars_ver=14.16'
+            artifact: release/minutor.exe
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Cache Qt
+      id: cache-qt
+      uses: actions/cache@v2
+      with:
+        path: ${{ runner.workspace }}/Qt
+        key: ${{ runner.os }}-QtCache-${{ matrix.qt }}
+
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v2
+      with:
+        version: ${{ matrix.qt }}
+        target: 'desktop'
+        cached: ${{ steps.cache-qt.outputs.cache-hit }}
+
+    - name: Create BUILD folder
+      run: |
+        mkdir ../build
+    
+    - name: Build (Windows)
+      if: matrix.os == 'windows-latest'
+      working-directory: ../build
+      shell: cmd
+      run: |
+        call ${{ matrix.vcvars }}
+        qmake ${{ github.workspace }}/minutor.pro
+        nmake
+  
+    - name: Build (others)
+      if: matrix.os != 'windows-latest'
+      working-directory: ../build
+      run: |
+        qmake ${{ github.workspace }}/minutor.pro
+        make
+      env:
+        # only needed for Ubuntu-16.04
+        LD_LIBRARY_PATH: '${{ runner.workspace }}/Qt/5.5/gcc_64/lib'
+   
+    - name: Archive build result
+      uses: actions/upload-artifact@v2
+      with:
+        name: Binary ${{ matrix.name }}
+        path: ${{ runner.workspace }}/build/${{ matrix.artifact }}
