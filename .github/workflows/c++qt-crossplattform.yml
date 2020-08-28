@@ -30,11 +30,11 @@ jobs:
           - name: macos-5.9
             os: macos-latest
             qt: '5.9.9'
-            artifact: minutor.app
+            artifact: minutor.dmg
           - name: macos-5.12
             os: macos-latest
             qt: '5.12.8'
-            artifact: minutor.app
+            artifact: minutor.dmg
           - name: windows-5.9
             os: windows-latest
             qt: '5.9.9'
@@ -85,7 +85,13 @@ jobs:
       env:
         # only needed for Ubuntu-16.04
         LD_LIBRARY_PATH: '${{ runner.workspace }}/Qt/5.5/gcc_64/lib'
-   
+
+    - name: Deploy Qt (macOS)
+      if: matrix.os == 'macos-latest'
+      working-directory: ../build
+      run: |
+        macdeployqt minutor.app -codesign=- -dmg
+
     - name: Archive build result
       uses: actions/upload-artifact@v2
       with:
