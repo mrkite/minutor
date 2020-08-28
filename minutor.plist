@@ -7,9 +7,9 @@
 	<key>CFBundleDisplayName</key>
 	<string>Minutor</string>
 	<key>CFBundleExecutable</key>
-	<string>${EXECUTABLE_NAME}</string>
+	<string>@EXECUTABLE@</string>
 	<key>CFBundleIconFile</key>
-	<string>${ASSETCATALOG_COMPILER_APPICON_NAME}</string>
+	<string>@ICON@</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.seancode.minutor</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -22,8 +22,6 @@
 	<string>2.3.0</string>
 	<key>CFBundleVersion</key>
 	<string>2.3.0</string>
-	<key>LSMinimumSystemVersion</key>
-	<string>${MACOSX_DEPLOYMENT_TARGET}.0</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>© 2013-2020 Sean Kasun</string>
 	<key>NSPrincipalClass</key>
