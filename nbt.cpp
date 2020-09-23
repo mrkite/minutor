@@ -276,7 +276,9 @@ const QString Tag_Double::toString() const {
 
 Tag_Byte_Array::Tag_Byte_Array(TagDataStream *s) {
   len = s->r32();
-  s->r(len, data);
+  if (len) {
+    s->r(len, data);
+  }
 }
 Tag_Byte_Array::~Tag_Byte_Array() {
 }
