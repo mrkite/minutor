@@ -52,21 +52,14 @@ void FlatteningConverter::parseDefinition(
         JSONObject *b,
         int *parentID,
         int pack) {
-
-  // get the ancient block ID
-  int bid, data(0);
-  if (parentID == NULL) {
-    bid = b->at("id")->asNumber();
-  } else {
-    bid = *parentID;
-    data = b->at("data")->asNumber();
-    bid |= data << 8;
-  }
-
   // try to translate old block name into new flatname
   QString flatname;
   if (b->has("name")) {
-    flatname = "minecraft:" + b->at("name")->asString().toLower().replace(" ", "_");
+    flatname = b->at("name")->asString().toLower().replace(" ", "_");
+    // Put in minecraft: namespace if not in another (e.g., mod) one
+    if (flatname.indexOf(':') == -1) {
+        flatname = "minecraft:" + flatname;
+    }
   } else if (parentID != NULL) {
     flatname = palette[*parentID].name;
   } else {
@@ -77,12 +70,25 @@ void FlatteningConverter::parseDefinition(
   if (b->has("flatname"))
     flatname = b->at("flatname")->asString();
 
+  // get the ancient block ID
+  int bid, data(0);
+  if (parentID == NULL) {
+    bid = b->at("id")->asNumber();
+  } else {
+    bid = *parentID;
+    data = b->at("data")->asNumber();
+    // Shift enough to never overlap 0-4095 range
+    bid |= data << 12;
+  }
+
   palette[bid].name = flatname;
   palette[bid].hid  = qHash(palette[bid].name);
   if ((parentID == NULL) && (data == 0)) {
     // spread main block type for data == 0
+    // Spread values must be spaced by 4096 to not collide
+    // with non-spread IDs.
     for (int d=1; d<16; d++) {
-      int sid = bid | (d<<8);
+      int sid = bid | (d<<12);
       palette[sid].name = flatname;
       palette[sid].hid  = palette[bid].hid;
     }
@@ -105,11 +111,14 @@ void FlatteningConverter::parseDefinition(
       parseDefinition(dynamic_cast<JSONObject *>(variants->at(j)), &bid, pack);
     }
     // spread variants in masked bid
+    // Variants must be spaced at least 4096 apart to ensure
+    // no collisions with non-variant IDs (e.g., from mods)
     for (int j = vlen; j < 16; j++) {
-      int id  = bid | (j << 8);
-      int mid = bid | ((j & mask) << 8);
+      int id  = bid | (j << 12);
+      int mid = bid | ((j & mask) << 12);
       palette[id].name = palette[mid].name;
       palette[id].hid  = palette[mid].hid;
     }
+
   }
 }
