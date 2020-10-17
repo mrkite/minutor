@@ -85,6 +85,7 @@ BlockIdentifier::BlockIdentifier() {
   for (int i = 0; i < 16; i++)
     unknownBlock.colors[i] = 0xff00ff;
   unknownBlock.alpha = 1.0;
+  // TODO: Hoist string literal into named constant
   unknownBlock.setName("Unknown Block");
 }
 

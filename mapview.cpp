@@ -507,6 +507,18 @@ void MapView::getToolTip(int x, int z) {
       // get information about block
       const PaletteEntry & pdata = section->getPaletteEntry(offset, y);
       name = pdata.name;
+
+      // For unknown legacy block IDs, add the legacy ID to the displayed name.
+      // TODO: Hoist "Unknown Block" literal into constant
+      if (name == "Unknown Block" && pdata.properties.contains(PaletteEntry::legacyBlockIdProperty)) {
+        uint fullLegacyBlockId = pdata.properties[PaletteEntry::legacyBlockIdProperty].toUInt();
+        // Legacy IDs with internal values > 4096 are virtual IDs with
+        // higher-order bits encoding the data.
+        uint baseLegacyBlockId = fullLegacyBlockId & 4095;
+        uint legacyData = fullLegacyBlockId >> 12;
+        QString displayName = QStringLiteral("Unknown [%1:%2]").arg(baseLegacyBlockId).arg(legacyData);
+        name = displayName;
+      }
       // in case of fully transparent blocks (meaning air)
       // -> we continue downwards
       auto & block = BlockIdentifier::Instance().getBlockInfo(pdata.hid);
@@ -515,6 +527,10 @@ void MapView::getToolTip(int x, int z) {
 
       // list all Block States
       for (auto key : pdata.properties.keys()) {
+        // If needed, legacyBlockId is already encoded into the display name.
+        if (key == PaletteEntry::legacyBlockIdProperty) {
+          continue;
+        }
         blockstate += key;
         blockstate += ":";
         blockstate += pdata.properties[key].toString();

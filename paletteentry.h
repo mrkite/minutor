@@ -11,6 +11,9 @@ class PaletteEntry {
   uint    hid;   // we use hashed name as ID
   QString name;
   QMap<QString, QVariant> properties;
+
+  // Property used to store a legacy block ID
+  static const QString legacyBlockIdProperty;
 };
 
 #endif  // PALETTEENTRY_H_
