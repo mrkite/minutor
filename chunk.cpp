@@ -230,7 +230,8 @@ void Chunk::loadSection1343(ChunkSection *cs, const Tag *section) {
   for (int i = 0; i < 4096; i++) {
     int d = data[i>>1];         // get raw data (two nibbles)
     if (i & 1) d >>= 4;         // get one nibble of data
-    cs->blocks[i] = blocks[i] | ((d & 0x0f) << 8);
+    // Shift enough so virtual IDs never overlap 0-4095 range
+    cs->blocks[i] = blocks[i] | ((d & 0x0f) << 12);
   }
 
   // parse optional "Add" part for higher block IDs in mod packs

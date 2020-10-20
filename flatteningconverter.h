@@ -18,7 +18,7 @@ public:
   void disableDefinitions(int id);
 //  const BlockData * getPalette();
   PaletteEntry * getPalette();
-  const static int paletteLength = 16*256;  // 4 bit data + 8 bit ID
+  const static int paletteLength = 16*4096;  // 4 bit data + 12 bit ID (4096)
 
 private:
   // singleton: prevent access to constructor and copyconstructor
