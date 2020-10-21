@@ -83,7 +83,9 @@ void Chunk::load(const NBT &nbt) {
   chunkZ = level->at("zPos")->toInt();
 
   // load Biome data
-  if (level->has("Biomes")) {
+  // Partially-generated chunks may have an empty Biomes tag. Trying to extract
+  // the Biomes data will cause a crash.
+  if (level->has("Biomes") && level->at("Biomes") && level->at("Biomes")->length()) {
     const Tag_Int_Array * biomes = dynamic_cast<const Tag_Int_Array*>(level->at("Biomes"));
     if (biomes) {  // Biomes is a Tag_Int_Array
       if ((this->version >= 2203)) {
