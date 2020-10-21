@@ -7,9 +7,22 @@
 #include "./flatteningconverter.h"
 #include "./json.h"
 
+const QString PaletteEntry::legacyBlockIdProperty = "lbid";
 
+FlatteningConverter::FlatteningConverter() {
+  // To ensure that unknown legacy (pre-flattening) block IDs
+  // are shown as unknown, and to track their legacy ID to
+  // help definition pack creators, prepopulate the palette array.
 
-FlatteningConverter::FlatteningConverter() {}
+  // TODO: Hoist "Unknown Block" literal into constant
+  QString unknownBlockName = "Unknown Block";
+  uint unknownBlockHID = qHash(unknownBlockName);
+  for (int idx = 0; idx < paletteLength; idx++) {
+    palette[idx].hid = unknownBlockHID;
+    palette[idx].name = unknownBlockName;
+    palette[idx].properties[PaletteEntry::legacyBlockIdProperty] = idx;
+  }
+}
 
 FlatteningConverter::~FlatteningConverter() {}
 
