@@ -24,6 +24,19 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="saveSearchResults">
+       <property name="maximumSize">
+        <size>
+         <width>122</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Save to file...</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QCheckBox" name="check_display_all">
        <property name="text">
         <string>display all on map</string>

@@ -1,6 +1,9 @@
 #include "searchresultwidget.h"
 #include "ui_searchresultwidget.h"
 
+#include <QMessageBox>
+#include <QTextStream>
+#include <QtWidgets/QFileDialog>
 #include <cmath>
 
 #include "properties.h"
@@ -140,4 +143,62 @@ void SearchResultWidget::updateStatusText()
                               .arg(pointOfInterest.y())
                               .arg(pointOfInterest.z())
                               .arg(ui->treeWidget->topLevelItemCount()));
+}
+
+void SearchResultWidget::on_saveSearchResults_clicked() {
+  QFileDialog saveFileDialog(this);
+  saveFileDialog.setDefaultSuffix("tsv");
+  QString saveFilename = saveFileDialog.getSaveFileName(
+        this, tr("Save search results as tab separated values"),
+        QString(), "Tab separated files (*.tsv)");
+
+  if (saveFilename.isEmpty()) {
+    return;
+  }
+
+  QString delim = "\t";
+
+  // Ensure filename suffix.
+  QFile f(saveFilename);
+  QFileInfo fileInfo(f);
+  if (fileInfo.suffix().isEmpty()) {
+    saveFilename.append(".tsv");
+    f.setFileName(saveFilename);
+  }
+
+  // Save current search data to file.
+  if (!f.open(QFile::WriteOnly | QFile::Truncate)) {
+    QMessageBox errMsgBox(this);
+    QString s = QStringLiteral("Error opening file %1").arg(saveFilename);
+    errMsgBox.setText(s);
+    errMsgBox.exec();
+    return;
+  }
+  QTextStream ts(&f);
+
+  // Write header.
+  const QTreeWidgetItem *header = ui->treeWidget->headerItem();
+  int nCol = header->columnCount();
+  for (int col = 0; col < nCol - 1; col++) {
+    ts << header->text(col) << delim;
+  }
+  ts << header->text(nCol - 1) << "\n";
+
+  QTreeWidgetItemIterator iter(ui->treeWidget);
+  // Write the data as it appears in the search results widget.
+  // TODO: Consider adding structure to output data based on the
+  // nature of the search/search results.
+  while (*iter) {
+    // Write columns separated by delimiters.
+    int nCol = (*iter)->columnCount();
+    for (int col = 0; col < nCol - 1; col++) {
+      ts << (*iter)->text(col) << delim;
+    }
+    // Write last column and start a new line
+    ts << (*iter)->text(nCol - 1) << "\n";
+    ++iter;
+  }
+
+  f.flush();
+  f.close();
 }
