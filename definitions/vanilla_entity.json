@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "entity",
-  "version": "1.16.20w27a",
+  "version": "1.16.20w27a2",
   "data": [
     {
       "category": "Hostile",
@@ -154,7 +154,12 @@
           "color": "#008000"
         },
         {
+          "note": "old name until 1.15",
           "id": "zombie_pigman",
+          "color": "#008000"
+        },
+        {
+          "id": "zombified_piglin",
           "color": "#008000"
         },
         {
@@ -171,11 +176,11 @@
         },
         {
           "id": "piglin",
-          "color": "Gold"
+          "color": "DarkGoldenRod"
         },
         {
           "id": "piglin_brute",
-          "color": "GoldenRod"
+          "color": "Gold"
         }
       ]
     },
