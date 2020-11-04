@@ -24,6 +24,10 @@ class Entity: public OverlayItem {
  protected:
   Entity() {}
 
+  static void TryParseMemory(const QMap<QString, QVariant> &memories,
+                             const QString memory,
+                             Point &poi, bool &flag);
+
  private:
   QColor extraColor;
   Point pos;

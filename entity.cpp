@@ -49,29 +49,13 @@ QSharedPointer<OverlayItem> Entity::TryParse(const Tag* tag) {
         if (brain.contains("memories")) {
           QMap<QString, QVariant> memories = brain["memories"].toMap();
           // home is location of bed
-          if (memories.contains("minecraft:home")) {
-            auto home  = memories["minecraft:home"].toMap();
-            auto value = home["value"].toMap();
-            auto pos   = value["pos"].toList();
-            entity->posB = Point(pos[0].toDouble(), pos[1].toDouble(), pos[2].toDouble());
-            entity->hasExtraB = true;
-          }
+          TryParseMemory(memories, "minecraft:home",               entity->posB, entity->hasExtraB);
+
           // location of job site
-          if (memories.contains("minecraft:job_site")) {
-            auto job   = memories["minecraft:job_site"].toMap();
-            auto value = job["value"].toMap();
-            auto pos   = value["pos"].toList();
-            entity->posR = Point(pos[0].toDouble(), pos[1].toDouble(), pos[2].toDouble());
-            entity->hasExtraR = true;
-          }
-          // location of potential job site
-          if (memories.contains("minecraft:potential_job_site")) {
-            auto job   = memories["minecraft:potential_job_site"].toMap();
-            auto value = job["value"].toMap();
-            auto pos   = value["pos"].toList();
-            entity->posR = Point(pos[0].toDouble(), pos[1].toDouble(), pos[2].toDouble());
-            entity->hasExtraR = true;
-          }
+          TryParseMemory(memories, "minecraft:job_site",           entity->posR, entity->hasExtraR);
+          TryParseMemory(memories, "minecraft:potential_job_site", entity->posR, entity->hasExtraR);
+
+          // meeting point is location of bell
         }
       }
 
@@ -79,6 +63,26 @@ QSharedPointer<OverlayItem> Entity::TryParse(const Tag* tag) {
     }
   }
   return ret;
+}
+
+// static
+void Entity::TryParseMemory(const QMap<QString, QVariant> &memories,
+                            const QString memory,
+                            Point &poi, bool &flag) {
+  if (memories.contains(memory)) {
+    QMap<QString, QVariant> location = memories[memory].toMap();
+    QList<QVariant> pos;
+    if (location.contains("value")) {
+      QMap<QString, QVariant> value = location["value"].toMap();
+      pos = value["pos"].toList();
+    } else if (location.contains("pos")) {
+      pos = location["pos"].toList();
+    } else return;
+    poi.x = pos[0].toInt();
+    poi.y = pos[1].toInt();
+    poi.z = pos[2].toInt();
+    flag  = true;
+  }
 }
 
 
