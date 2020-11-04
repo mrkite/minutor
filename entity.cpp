@@ -7,9 +7,9 @@
 Entity::Entity(const Point &positionInfo)
     : extraColor(QColor::fromRgb(0,255,0))
     , pos(positionInfo)
-{
-
-}
+    , hasExtraR(false)
+    , hasExtraB(false)
+{}
 
 QSharedPointer<OverlayItem> Entity::TryParse(const Tag* tag) {
   EntityIdentifier& ei = EntityIdentifier::Instance();
@@ -17,10 +17,8 @@ QSharedPointer<OverlayItem> Entity::TryParse(const Tag* tag) {
   QSharedPointer<OverlayItem> ret;
   auto pos = tag->at("Pos");
   if (pos && pos != &NBT::Null) {
-    Entity* entity = new Entity();
-    entity->pos.x = pos->at(0)->toDouble();
-    entity->pos.y = pos->at(1)->toDouble();
-    entity->pos.z = pos->at(2)->toDouble();
+    Point p(pos->at(0)->toDouble(), pos->at(1)->toDouble(), pos->at(2)->toDouble());
+    Entity* entity = new Entity(p);
     auto id = tag->at("id");
     if (id && id != &NBT::Null) {
       QString type = id->toString().toLower().remove("minecraft:");
@@ -44,6 +42,39 @@ QSharedPointer<OverlayItem> Entity::TryParse(const Tag* tag) {
       entity->setColor(info.brushColor);
       entity->setExtraColor(info.penColor);
       entity->setProperties(props);
+
+      // parse POI of villagers / PiglinBrutes
+      if (props.contains("Brain")) {
+        QMap<QString, QVariant> brain = props["Brain"].toMap();
+        if (brain.contains("memories")) {
+          QMap<QString, QVariant> memories = brain["memories"].toMap();
+          // home is location of bed
+          if (memories.contains("minecraft:home")) {
+            auto home  = memories["minecraft:home"].toMap();
+            auto value = home["value"].toMap();
+            auto pos   = value["pos"].toList();
+            entity->posB = Point(pos[0].toDouble(), pos[1].toDouble(), pos[2].toDouble());
+            entity->hasExtraB = true;
+          }
+          // location of job site
+          if (memories.contains("minecraft:job_site")) {
+            auto job   = memories["minecraft:job_site"].toMap();
+            auto value = job["value"].toMap();
+            auto pos   = value["pos"].toList();
+            entity->posR = Point(pos[0].toDouble(), pos[1].toDouble(), pos[2].toDouble());
+            entity->hasExtraR = true;
+          }
+          // location of potential job site
+          if (memories.contains("minecraft:potential_job_site")) {
+            auto job   = memories["minecraft:potential_job_site"].toMap();
+            auto value = job["value"].toMap();
+            auto pos   = value["pos"].toList();
+            entity->posR = Point(pos[0].toDouble(), pos[1].toDouble(), pos[2].toDouble());
+            entity->hasExtraR = true;
+          }
+        }
+      }
+
       ret.reset(entity);
     }
   }
@@ -61,6 +92,41 @@ void Entity::draw(double offsetX, double offsetZ, double scale,
                   QPainter *canvas) const {
   QPoint center((pos.x - offsetX) * scale,
                 (pos.z - offsetZ) * scale);
+
+  if (hasExtraB) {
+    QPoint extraPos((posB.x+0.5 - offsetX) * scale,
+                    (posB.z+0.5 - offsetZ) * scale);
+
+    QColor extraColor = QColor(0,0,255);
+    extraColor.setAlpha(128);
+    QPen pen = canvas->pen();
+    pen.setColor(extraColor);
+    pen.setWidth(2);
+    canvas->setPen(pen);
+    extraColor.setAlpha(192);
+    canvas->setBrush(extraColor);
+
+    canvas->drawLine(center, extraPos);
+    canvas->drawEllipse(extraPos, RADIUS/2, RADIUS/2);
+  }
+
+  if (hasExtraR) {
+    QPoint extraPos((posR.x+0.5 - offsetX) * scale,
+                    (posR.z+0.5 - offsetZ) * scale);
+
+    QColor extraColor = QColor(255,0,0);
+    extraColor.setAlpha(128);
+    QPen pen = canvas->pen();
+    pen.setColor(extraColor);
+    pen.setWidth(2);
+    canvas->setPen(pen);
+    extraColor.setAlpha(192);
+    canvas->setBrush(extraColor);
+
+    canvas->drawLine(center, extraPos);
+    canvas->drawEllipse(extraPos, RADIUS/2, RADIUS/2);
+
+  }
 
   QColor penColor = extraColor;
   penColor.setAlpha(192);

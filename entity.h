@@ -28,6 +28,13 @@ class Entity: public OverlayItem {
   QColor extraColor;
   Point pos;
   QString display;
+
+  // optional job location
+  bool  hasExtraR;
+  Point posR;
+  // optional home location
+  bool  hasExtraB;
+  Point posB;
 };
 
 #endif  // ENTITY_H_
