@@ -28,6 +28,17 @@ class Entity: public OverlayItem {
   QColor extraColor;
   Point pos;
   QString display;
+
+  // optional POI location(s)
+  struct POI {
+    explicit POI(int x = 0, int z = 0): x(x), z(z) {}
+    explicit POI(const QVector3D& pos3D): x(pos3D.x()), z(pos3D.z()) {}
+    double x, z;
+    QColor color;
+  };
+  QList<POI> poiList;
+
+  void tryParseMemory(const QMap<QString, QVariant> &memories, const QString memory, QColor color);
 };
 
 #endif  // ENTITY_H_
