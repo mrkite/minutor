@@ -53,6 +53,8 @@ private slots:
 
   void on_check_display_all_stateChanged(int arg1);
 
+  void on_saveSearchResults_clicked();
+
 private:
   Ui::SearchResultWidget *ui;
 
