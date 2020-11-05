@@ -7,8 +7,6 @@
 Entity::Entity(const Point &positionInfo)
     : extraColor(QColor::fromRgb(0,255,0))
     , pos(positionInfo)
-    , hasExtraR(false)
-    , hasExtraB(false)
 {}
 
 QSharedPointer<OverlayItem> Entity::TryParse(const Tag* tag) {
@@ -49,13 +47,14 @@ QSharedPointer<OverlayItem> Entity::TryParse(const Tag* tag) {
         if (brain.contains("memories")) {
           QMap<QString, QVariant> memories = brain["memories"].toMap();
           // home is location of bed
-          TryParseMemory(memories, "minecraft:home",               entity->posB, entity->hasExtraB);
+          entity->tryParseMemory(memories, "minecraft:home",               QColor(0,0,255));
 
           // location of job site
-          TryParseMemory(memories, "minecraft:job_site",           entity->posR, entity->hasExtraR);
-          TryParseMemory(memories, "minecraft:potential_job_site", entity->posR, entity->hasExtraR);
+          entity->tryParseMemory(memories, "minecraft:job_site",           QColor(255,0,0));
+          entity->tryParseMemory(memories, "minecraft:potential_job_site", QColor(255,0,0));
 
           // meeting point is location of bell
+          entity->tryParseMemory(memories, "minecraft:meeting_point",      QColor(255,255,0));
         }
       }
 
@@ -65,10 +64,9 @@ QSharedPointer<OverlayItem> Entity::TryParse(const Tag* tag) {
   return ret;
 }
 
-// static
-void Entity::TryParseMemory(const QMap<QString, QVariant> &memories,
+void Entity::tryParseMemory(const QMap<QString, QVariant> &memories,
                             const QString memory,
-                            Point &poi, bool &flag) {
+                            QColor color) {
   if (memories.contains(memory)) {
     QMap<QString, QVariant> location = memories[memory].toMap();
     QList<QVariant> pos;
@@ -78,10 +76,9 @@ void Entity::TryParseMemory(const QMap<QString, QVariant> &memories,
     } else if (location.contains("pos")) {
       pos = location["pos"].toList();
     } else return;
-    poi.x = pos[0].toInt();
-    poi.y = pos[1].toInt();
-    poi.z = pos[2].toInt();
-    flag  = true;
+    POI p(pos[0].toInt(), pos[2].toInt());
+    p.color = color;
+    this->poiList.append(p);
   }
 }
 
@@ -97,39 +94,26 @@ void Entity::draw(double offsetX, double offsetZ, double scale,
   QPoint center((pos.x - offsetX) * scale,
                 (pos.z - offsetZ) * scale);
 
-  if (hasExtraB) {
-    QPoint extraPos((posB.x+0.5 - offsetX) * scale,
-                    (posB.z+0.5 - offsetZ) * scale);
-
-    QColor extraColor = QColor(0,0,255);
-    extraColor.setAlpha(128);
+  foreach( POI p, poiList ) {
+    // location of POI
+    QPoint poiPos((p.x+0.5 - offsetX) * scale,
+                  (p.z+0.5 - offsetZ) * scale);
+    // line
+    QColor penColor = p.color; // or use extraColor ?
+    penColor.setAlpha(128);
     QPen pen = canvas->pen();
-    pen.setColor(extraColor);
+    pen.setColor(penColor);
     pen.setWidth(2);
     canvas->setPen(pen);
-    extraColor.setAlpha(192);
-    canvas->setBrush(extraColor);
-
-    canvas->drawLine(center, extraPos);
-    canvas->drawEllipse(extraPos, RADIUS/2, RADIUS/2);
-  }
-
-  if (hasExtraR) {
-    QPoint extraPos((posR.x+0.5 - offsetX) * scale,
-                    (posR.z+0.5 - offsetZ) * scale);
-
-    QColor extraColor = QColor(255,0,0);
-    extraColor.setAlpha(128);
-    QPen pen = canvas->pen();
-    pen.setColor(extraColor);
+    canvas->drawLine(center, poiPos);
+    // POI dot
+    QColor poiColor = p.color;
+    poiColor.setAlpha(192);
+    pen.setColor(poiColor);
     pen.setWidth(2);
     canvas->setPen(pen);
-    extraColor.setAlpha(192);
-    canvas->setBrush(extraColor);
-
-    canvas->drawLine(center, extraPos);
-    canvas->drawEllipse(extraPos, RADIUS/2, RADIUS/2);
-
+    canvas->setBrush(poiColor);
+    canvas->drawEllipse(poiPos, RADIUS/2, RADIUS/2);
   }
 
   QColor penColor = extraColor;
