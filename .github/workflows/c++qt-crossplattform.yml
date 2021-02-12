@@ -62,7 +62,7 @@ jobs:
     - name: Create BUILD folder
       run: |
         mkdir ../build
-    
+
     - name: Build (Windows)
       if: matrix.os == 'windows-latest'
       working-directory: ../build
@@ -71,7 +71,7 @@ jobs:
         call ${{ matrix.vcvars }}
         qmake ${{ github.workspace }}/minutor.pro
         nmake
-  
+
     - name: Build (others)
       if: matrix.os != 'windows-latest'
       working-directory: ../build
