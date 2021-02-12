@@ -33,7 +33,21 @@ bool ChunkLoader::loadNbt(QString path, int cx, int cz, QSharedPointer<Chunk> ch
   int rx = cx >> 5;
   int rz = cz >> 5;
 
-  QFile f(path + "/region/r." + QString::number(rx) + "." + QString::number(rz) + ".mca");
+  QString filename;
+
+  filename = path + "/region/r." + QString::number(rx) + "." + QString::number(rz) + ".mca";
+  bool result = loadNbtHelper(filename, cx, cz, chunk, ChunkLoader::MAIN_MAP_DATA);
+
+  filename = path + "/entities/r." + QString::number(rx) + "." + QString::number(rz) + ".mca";
+  loadNbtHelper(filename, cx, cz, chunk, ChunkLoader::SEPARATED_ENTITIES);
+
+  return result;
+}
+
+bool ChunkLoader::loadNbtHelper(QString filename, int cx, int cz, QSharedPointer<Chunk> chunk, int loadtype)
+{
+  QFile f(filename);
+
   if (!f.open(QIODevice::ReadOnly)) {
     // no chunks in this region (region file not present at all)
     return false;
@@ -76,7 +90,12 @@ bool ChunkLoader::loadNbt(QString path, int cx, int cz, QSharedPointer<Chunk> ch
   // parse Chunk data
   // Chunk will be flagged "loaded" in a thread save way
   NBT nbt(raw);
-  chunk->load(nbt);
+  switch (loadtype) {
+    case ChunkLoader::MAIN_MAP_DATA:
+      chunk->load(nbt);
+    case ChunkLoader::SEPARATED_ENTITIES:
+      chunk->loadEntities(nbt);
+  }
   f.unmap(raw);
   f.close();
 

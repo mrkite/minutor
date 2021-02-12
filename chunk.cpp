@@ -159,6 +159,21 @@ void Chunk::load(const NBT &nbt) {
   loaded = true; // needs to be at the end!
 }
 
+void Chunk::loadEntities(const NBT &nbt) {
+  // parse Entities in extra folder (1.17+)
+  if (version >= 2681) {
+    if (nbt.has("Entities")) {
+      auto entitylist = nbt.at("Entities");
+      int numEntities = entitylist->length();
+      for (int i = 0; i < numEntities; ++i) {
+        auto e = Entity::TryParse(entitylist->at(i));
+        if (e)
+          entities.insertMulti(e->type(), e);
+      }
+    }
+  }
+}
+
 void Chunk::findHighestBlock()
 {
   for (int i = 15; i >= 0; i--) {
