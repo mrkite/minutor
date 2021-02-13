@@ -13,12 +13,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        name: [ubuntu-16.04, ubuntu-18.04, ubuntu-20.04, macos-5.9, macos-5.12, windows-5.9, windows-5.12]
+        name: [ubuntu-18.04, ubuntu-20.04, macos-5.9, macos-5.12, windows-5.9, windows-5.12]
         include:
-          - name: ubuntu-16.04
-            os: ubuntu-16.04
-            qt: '5.5'
-            artifact: minutor
           - name: ubuntu-18.04
             os: ubuntu-18.04
             qt: '5.9.5'
@@ -82,9 +78,6 @@ jobs:
       run: |
         qmake ${{ github.workspace }}/minutor.pro
         make
-      env:
-        # only needed for Ubuntu-16.04
-        LD_LIBRARY_PATH: '${{ runner.workspace }}/Qt/5.5/gcc_64/lib'
 
     - name: Deploy Qt (macOS)
       if: matrix.os == 'macos-latest'
