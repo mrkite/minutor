@@ -375,7 +375,7 @@ void Minutor::createActions() {
           jumpSpawnAct, SLOT(setEnabled(bool)));
 
   jumpToAct = new QAction(tr("&Jump To"), this);
-  jumpToAct->setShortcut(tr("F2"));
+  jumpToAct->setShortcut(tr("CTRL+J"));
   jumpToAct->setStatusTip(tr("Jump to a location"));
   connect(jumpToAct, SIGNAL(triggered()),
           jumpTo,    SLOT(show()));
