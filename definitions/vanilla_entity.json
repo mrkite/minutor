@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "entity",
-  "version": "1.16.20w27a2",
+  "version": "1.17.21w13a",
   "data": [
     {
       "category": "Hostile",
@@ -360,6 +360,18 @@
         {
           "id": "strider",
           "color": "FireBrick"
+        },
+        {
+          "id": "axolotl",
+          "color": "LightPink"
+        },
+        {
+          "id": "glow_squid",
+          "color": "Aquamarine"
+        },
+        {
+          "id": "goat",
+          "color": "Beige"
         }
       ]
     },
