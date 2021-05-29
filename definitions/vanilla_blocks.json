@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.16.20w17a",
+  "version": "1.17.20w45a",
   "data": [
     {
       "name": "minecraft:air",
@@ -1638,6 +1638,91 @@
     },
     {
       "name": "minecraft:cake",
+      "color": "#e5cecf",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:candle_cake",
+      "color": "#e5cecf",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:white_candle_cake",
+      "color": "#e5cecf",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:orange_candle_cake",
+      "color": "#e5cecf",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:magenta_candle_cake",
+      "color": "#e5cecf",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:light_blue_candle_cake",
+      "color": "#e5cecf",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:yellow_candle_cake",
+      "color": "#e5cecf",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:lime_candle_cake",
+      "color": "#e5cecf",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:pink_candle_cake",
+      "color": "#e5cecf",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:gray_candle_cake",
+      "color": "#e5cecf",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:light_gray_candle_cake",
+      "color": "#e5cecf",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:cyan_candle_cake",
+      "color": "#e5cecf",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:purple_candle_cake",
+      "color": "#e5cecf",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:blue_candle_cake",
+      "color": "#e5cecf",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:brown_candle_cake",
+      "color": "#e5cecf",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:green_candle_cake",
+      "color": "#e5cecf",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:red_candle_cake",
+      "color": "#e5cecf",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:black_candle_cake",
       "color": "#e5cecf",
       "transparent": true
     },
@@ -4516,6 +4601,312 @@
       "color": "#333a4a",
       "alpha": 0.5,
       "transparent": true
+    },
+    {
+      "name": "minecraft:small_amethyst_bud",
+      "color": "#8463c0",
+      "alpha": 0.4,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:medium_amethyst_bud",
+      "color": "#9e78ca",
+      "alpha": 0.5,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:large_amethyst_bud",
+      "color": "#a17ecb",
+      "alpha": 0.6,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:amethyst_cluster",
+      "color": "#a47fcf",
+      "alpha": 0.7,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:amethyst_block",
+      "color": "#8662bf"
+    },
+    {
+      "name": "minecraft:budding_amethyst",
+      "color": "#8460bb"
+    },
+    {
+      "name": "minecraft:calcite",
+      "color": "#dfe0dd"
+    },
+    {
+      "name": "minecraft:candle",
+      "color": "#e8c999",
+      "alpha": 0.3,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:white_candle",
+      "color": "#d2d9da",
+      "alpha": 0.3,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:orange_candle",
+      "color": "#db6409",
+      "alpha": 0.3,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:magenta_candle",
+      "color": "#a12e99",
+      "alpha": 0.3,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:light_blue_candle",
+      "color": "#238ac5",
+      "alpha": 0.3,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:yellow_candle",
+      "color": "#d1a532",
+      "alpha": 0.3,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:lime_candle",
+      "color": "#62ac17",
+      "alpha": 0.3,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:pink_candle",
+      "color": "#d0668e",
+      "alpha": 0.3,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:gray_candle",
+      "color": "#505e61",
+      "alpha": 0.3,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:light_gray_candle",
+      "color": "#767970",
+      "alpha": 0.3,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:cyan_candle",
+      "color": "#117c7c",
+      "alpha": 0.3,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:purple_candle",
+      "color": "#69229f",
+      "alpha": 0.3,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:blue_candle",
+      "color": "#394ca1",
+      "alpha": 0.3,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:brown_candle",
+      "color": "#704629",
+      "alpha": 0.3,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:green_candle",
+      "color": "#496015",
+      "alpha": 0.3,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:red_candle",
+      "color": "#992724",
+      "alpha": 0.3,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:black_candle",
+      "color": "#26253a",
+      "alpha": 0.3,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:copper_block",
+      "color": "#c06c50"
+    },
+    {
+      "name": "minecraft:exposed_copper",
+      "color": "#a17e68"
+    },
+    {
+      "name": "minecraft:weathered_copper",
+      "color": "#6c996e"
+    },
+    {
+      "name": "minecraft:oxidized_copper",
+      "color": "#52a385"
+    },
+    {
+      "name": "minecraft:cut_copper",
+      "color": "#bf6b51"
+    },
+    {
+      "name": "minecraft:cut_copper_stairs",
+      "color": "#b5654c"
+    },
+    {
+      "name": "minecraft:cut_copper_slab",
+      "color": "#c87055"
+    },
+    {
+      "name": "minecraft:double_cut_copper_slab",
+      "color": "#c87055"
+    },
+    {
+      "name": "minecraft:exposed_cut_copper",
+      "color": "#9b7a65"
+    },
+    {
+      "name": "minecraft:exposed_cut_copper_stairs",
+      "color": "#987762"
+    },
+    {
+      "name": "minecraft:exposed_cut_copper_slab",
+      "color": "#a9846d"
+    },
+    {
+      "name": "minecraft:double_exposed_cut_copper_slab",
+      "color": "#a9846d"
+    },
+    {
+      "name": "minecraft:weathered_cut_copper",
+      "color": "#6d916c"
+    },
+    {
+      "name": "minecraft:weathered_cut_copper_stairs",
+      "color": "#669168"
+    },
+    {
+      "name": "minecraft:weathered_cut_copper_slab",
+      "color": "#71a073"
+    },
+    {
+      "name": "minecraft:double_weathered_cut_copper_slab",
+      "color": "#71a073"
+    },
+    {
+      "name": "minecraft:oxidized_cut_copper",
+      "color": "#509a7e"
+    },
+    {
+      "name": "minecraft:oxidized_cut_copper_stairs",
+      "color": "#4d9a7e"
+    },
+    {
+      "name": "minecraft:oxidized_cut_copper_slab",
+      "color": "#56ab8b"
+    },
+    {
+      "name": "minecraft:double_oxidized_cut_copper_slab",
+      "color": "#56ab8b"
+    },
+    {
+      "name": "minecraft:waxed_cut_copper",
+      "color": "#bf6b51"
+    },
+    {
+      "name": "minecraft:waxed_cut_copper_stairs",
+      "color": "#b5654c"
+    },
+    {
+      "name": "minecraft:waxed_cut_copper_slab",
+      "color": "#c87055"
+    },
+    {
+      "name": "minecraft:waxed_double_cut_copper_slab",
+      "color": "#c87055"
+    },
+    {
+      "name": "minecraft:waxed_exposed_cut_copper",
+      "color": "#9b7a65"
+    },
+    {
+      "name": "minecraft:waxed_exposed_cut_copper_stairs",
+      "color": "#987762"
+    },
+    {
+      "name": "minecraft:waxed_exposed_cut_copper_slab",
+      "color": "#a9846d"
+    },
+    {
+      "name": "minecraft:waxed_double_exposed_cut_copper_slab",
+      "color": "#a9846d"
+    },
+    {
+      "name": "minecraft:waxed_weathered_cut_copper",
+      "color": "#6d916c"
+    },
+    {
+      "name": "minecraft:waxed_weathered_cut_copper_stairs",
+      "color": "#669168"
+    },
+    {
+      "name": "minecraft:waxed_weathered_cut_copper_slab",
+      "color": "#71a073"
+    },
+    {
+      "name": "minecraft:waxed_double_weathered_cut_copper_slab",
+      "color": "#71a073"
+    },
+    {
+      "name": "minecraft:waxed_oxidized_cut_copper",
+      "color": "#509a7e"
+    },
+    {
+      "name": "minecraft:waxed_oxidized_cut_copper_stairs",
+      "color": "#4d9a7e"
+    },
+    {
+      "name": "minecraft:waxed_oxidized_cut_copper_slab",
+      "color": "#56ab8b"
+    },
+    {
+      "name": "minecraft:waxed_double_oxidized_cut_copper_slab",
+      "color": "#56ab8b"
+    },
+    {
+      "name": "minecraft:copper_ore",
+      "color": "#9e7564"
+    },
+    {
+      "name": "minecraft:deepslate_copper_ore",
+      "color": "#8e6454"
+    },
+    {
+      "name": "minecraft:lightning_rod",
+      "color": "#c56f53",
+      "alpha": 0.3,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:tinted_glass",
+      "color": "#ffff00",
+      "alpha": 0.8,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:tuff",
+      "color": "#6c6d67"
     }
   ],
   "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_blocks.json"
