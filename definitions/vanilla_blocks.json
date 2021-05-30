@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.17.20w45a",
+  "version": "1.17.20w46a",
   "data": [
     {
       "name": "minecraft:air",
@@ -2111,6 +2111,21 @@
     {
       "name": "minecraft:cauldron",
       "color": "#474747",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:lava_cauldron",
+      "color": "#8d502c",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:powder_snow_cauldron",
+      "color": "#9fa2a2",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:water_cauldron",
+      "color": "#343b79",
       "transparent": true
     },
     {
@@ -4907,6 +4922,10 @@
     {
       "name": "minecraft:tuff",
       "color": "#6c6d67"
+    },
+    {
+      "name": "minecraft:powder_snow",
+      "color": "#f8fdfd"
     }
   ],
   "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_blocks.json"
