@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.17.20w46a",
+  "version": "1.17.20w48a",
   "data": [
     {
       "name": "minecraft:air",
@@ -4926,6 +4926,16 @@
     {
       "name": "minecraft:powder_snow",
       "color": "#f8fdfd"
+    },
+    {
+      "name": "minecraft:dripstone_block",
+      "color": "#866c5d"
+    },
+    {
+      "name": "minecraft:pointed_dripstone",
+      "color": "#866c5d",
+      "alpha": 0.7,
+      "transparent": true
     }
   ],
   "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_blocks.json"
