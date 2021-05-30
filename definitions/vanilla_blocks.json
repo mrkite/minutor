@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.17.20w48a",
+  "version": "1.17.20w49a",
   "data": [
     {
       "name": "minecraft:air",
@@ -4935,6 +4935,11 @@
       "name": "minecraft:pointed_dripstone",
       "color": "#866c5d",
       "alpha": 0.7,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:sculk_sensor",
+      "color": "#074654",
       "transparent": true
     }
   ],
