@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "entity",
-  "version": "1.17.21w13a",
+  "version": "1.17.21w13a2",
   "data": [
     {
       "category": "Hostile",
@@ -515,6 +515,11 @@
         },
         {
           "id": "item_frame",
+          "catcolor": "Violet",
+          "color": "Seashell"
+        },
+        {
+          "id": "glow_item_frame",
           "catcolor": "Violet",
           "color": "Seashell"
         },

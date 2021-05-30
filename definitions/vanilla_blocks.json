@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.17.20w49a",
+  "version": "1.17.21w03a",
   "data": [
     {
       "name": "minecraft:air",
@@ -1396,6 +1396,7 @@
     {
       "name": "minecraft:ladder",
       "color": "#795f35",
+      "alpha": 0.3,
       "transparent": true,
       "spawninside": true
     },
@@ -2028,6 +2029,7 @@
     {
       "name": "minecraft:vine",
       "color": "#6f6f6f",
+      "alpha": 0.3,
       "transparent": true,
       "spawninside": true,
       "biomeFoliage": true
@@ -4941,6 +4943,13 @@
       "name": "minecraft:sculk_sensor",
       "color": "#074654",
       "transparent": true
+    },
+    {
+      "name": "minecraft:glow_lichen",
+      "color": "#70837a",
+      "alpha": 0.3,
+      "transparent": true,
+      "spawninside": true
     }
   ],
   "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_blocks.json"
