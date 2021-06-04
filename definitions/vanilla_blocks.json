@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.17.21w03a",
+  "version": "1.17.21w05a",
   "data": [
     {
       "name": "minecraft:air",
@@ -252,6 +252,12 @@
       "variants": [
         {
           "blockstate": "type:top",
+          "transparent": false,
+          "rendercube": true
+        },
+        {
+          "blockstate": "type:double",
+          "transparent": false,
           "rendercube": true
         }
       ]
@@ -3728,7 +3734,13 @@
       ]
     },
     {
+      "comment": "old name before 1.17",
       "name": "minecraft:grass_path",
+      "color": "#967d47"
+    },
+    {
+      "comment": "renamed with 1.17",
+      "name": "minecraft:dirt_path",
       "color": "#967d47"
     },
     {
@@ -4950,6 +4962,94 @@
       "alpha": 0.3,
       "transparent": true,
       "spawninside": true
+    },
+    {
+      "name": "minecraft:azalea",
+      "color": "#667d30",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:flowering_azalea",
+      "color": "#707a40",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:azalea_leaves",
+      "color": "#5a732c",
+      "transparent": true,
+      "rendercube": true
+    },
+    {
+      "name": "minecraft:flowering_azalea_leaves",
+      "color": "#646f3d",
+      "transparent": true,
+      "rendercube": true
+    },
+    {
+      "name": "minecraft:cave_vines",
+      "color": "#5a6d29",
+      "alpha": 0.7,
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "berries:true",
+          "color": "#69712a",
+        }
+      ]
+    },
+    {
+      "name": "minecraft:cave_vines_plant",
+      "color": "#586626",
+      "alpha": 0.7,
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "berries:true",
+          "color": "#696b29",
+        }
+      ]
+    },
+    {
+      "name": "minecraft:small_dripleaf",
+      "color": "#5f782e",
+      "transparent": true,
+      "alpha": 0.9
+    },
+    {
+      "name": "minecraft:big_dripleaf",
+      "color": "#708e34",
+      "transparent": true,
+      "alpha": 0.9
+    },
+    {
+      "name": "minecraft:big_dripleaf_stem",
+      "color": "#5b732e",
+      "transparent": true,
+      "alpha": 0.7
+    },
+    {
+      "name": "minecraft:hanging_roots",
+      "color": "#a1735c",
+      "transparent": true,
+      "alpha": 0.7
+    },
+    {
+      "name": "minecraft:moss_block",
+      "color": "#596e2d"
+    },
+    {
+      "name": "minecraft:moss_carpet",
+      "color": "#596e2d",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:rooted_dirt",
+      "color": "#90684d"
+    },
+    {
+      "name": "minecraft:spore_blossom",
+      "color": "#cf619f",
+      "transparent": true
     }
   ],
   "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_blocks.json"
