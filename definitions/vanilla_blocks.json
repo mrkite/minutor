@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.17.21w05a",
+  "version": "1.17.21w08a",
   "data": [
     {
       "name": "minecraft:air",
@@ -4850,6 +4850,22 @@
       "color": "#56ab8b"
     },
     {
+      "name": "minecraft:waxed_copper_block",
+      "color": "#c06c50"
+    },
+    {
+      "name": "minecraft:waxed_exposed_copper",
+      "color": "#a17e68"
+    },
+    {
+      "name": "minecraft:waxed_weathered_copper",
+      "color": "#6c996e"
+    },
+    {
+      "name": "minecraft:waxed_oxidized_copper",
+      "color": "#52a385"
+    },
+    {
       "name": "minecraft:waxed_cut_copper",
       "color": "#bf6b51"
     },
@@ -5050,6 +5066,166 @@
       "name": "minecraft:spore_blossom",
       "color": "#cf619f",
       "transparent": true
+    },
+    {
+      "name": "minecraft:deepslate",
+      "color": "#575759"
+    },
+    {
+      "name": "minecraft:cobbled_deepslate",
+      "color": "#4d4d51"
+    },
+    {
+      "name": "minecraft:cobbled_deepslate_slab",
+      "color": "#505055",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "transparent": false,
+          "rendercube": true
+        },
+        {
+          "blockstate": "type:double",
+          "transparent": false,
+          "rendercube": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:cobbled_deepslate_stairs",
+      "color": "#49494c",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "rendercube": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:cobbled_deepslate_wall",
+      "color": "#4d4d51",
+      "alpha": 0.7,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:polished_deepslate",
+      "color": "#484949"
+    },
+    {
+      "name": "minecraft:polished_deepslate_slab",
+      "color": "#4b4c4c",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "transparent": false,
+          "rendercube": true
+        },
+        {
+          "blockstate": "type:double",
+          "transparent": false,
+          "rendercube": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:polished_deepslate_stairs",
+      "color": "#444545",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "rendercube": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:polished_deepslate_wall",
+      "color": "#484949",
+      "alpha": 0.7,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:deepslate_bricks",
+      "color": "#474747"
+    },
+    {
+      "name": "minecraft:deepslate_brick_slab",
+      "color": "#4a4a4a",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "transparent": false,
+          "rendercube": true
+        },
+        {
+          "blockstate": "type:double",
+          "transparent": false,
+          "rendercube": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:deepslate_brick_stairs",
+      "color": "#434343",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "rendercube": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:deepslate_brick_wall",
+      "color": "#474747",
+      "alpha": 0.7,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:deepslate_tiles",
+      "color": "#373737"
+    },
+    {
+      "name": "minecraft:deepslate_tile_slab",
+      "color": "#444444",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "transparent": false,
+          "rendercube": true
+        },
+        {
+          "blockstate": "type:double",
+          "transparent": false,
+          "rendercube": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:deepslate_tile_stairs",
+      "color": "#3d3d3d",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "rendercube": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:deepslate_tile_wall",
+      "color": "#373737",
+      "alpha": 0.7,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:smooth_basalt",
+      "color": "#49484e"
     }
   ],
   "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_blocks.json"
