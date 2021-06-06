@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.17.21w13a",
+  "version": "1.17.21w15a",
   "data": [
     {
       "name": "minecraft:air",
@@ -26,6 +26,13 @@
     },
     {
       "name": "minecraft:light",
+      "color": "#ffffff",
+      "alpha": 0,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
+      "name": "minecraft:structure_void",
       "color": "#ffffff",
       "alpha": 0,
       "transparent": true,
@@ -416,11 +423,19 @@
       "color": "#fcee4b"
     },
     {
+      "name": "minecraft:raw_gold_block",
+      "color": "#fcee4b"
+    },
+    {
       "name": "minecraft:iron_ore",
       "color": "#af8e77"
     },
     {
       "name": "minecraft:deepslate_iron_ore",
+      "color": "#af8e77"
+    },
+    {
+      "name": "minecraft:raw_iron_block",
       "color": "#af8e77"
     },
     {
@@ -3852,13 +3867,6 @@
       ]
     },
     {
-      "name": "minecraft:structure_void",
-      "color": "#ffffff",
-      "alpha": 0,
-      "transparent": true,
-      "spawninside": true
-    },
-    {
       "name": "minecraft:observer",
       "color": "#616161"
     },
@@ -4975,6 +4983,10 @@
     {
       "name": "minecraft:deepslate_copper_ore",
       "color": "#8e6454"
+    },
+    {
+      "name": "minecraft:raw_copper_block",
+      "color": "#9e7564"
     },
     {
       "name": "minecraft:lightning_rod",
