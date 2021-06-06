@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.17.21w08a",
+  "version": "1.17.21w10a",
   "data": [
     {
       "name": "minecraft:air",
@@ -405,11 +405,23 @@
       "color": "#fcee4b"
     },
     {
+      "name": "minecraft:deepslate_gold_ore",
+      "color": "#fcee4b"
+    },
+    {
       "name": "minecraft:iron_ore",
       "color": "#af8e77"
     },
     {
+      "name": "minecraft:deepslate_iron_ore",
+      "color": "#af8e77"
+    },
+    {
       "name": "minecraft:coal_ore",
+      "color": "#454545"
+    },
+    {
+      "name": "minecraft:deepslate_coal_ore",
       "color": "#454545"
     },
     {
@@ -638,6 +650,10 @@
     },
     {
       "name": "minecraft:lapis_ore",
+      "color": "#1b43ad"
+    },
+    {
+      "name": "minecraft:deepslate_lapis_ore",
       "color": "#1b43ad"
     },
     {
@@ -1205,6 +1221,10 @@
       "color": "#5decf5"
     },
     {
+      "name": "minecraft:deepslate_diamond_ore",
+      "color": "#5decf5"
+    },
+    {
       "name": "minecraft:diamond_block",
       "color": "#62dbd6"
     },
@@ -1530,6 +1550,10 @@
     },
     {
       "name": "minecraft:redstone_ore",
+      "color": "#8f0303"
+    },
+    {
+      "name": "minecraft:deepslate_redstone_ore",
       "color": "#8f0303"
     },
     {
@@ -1896,6 +1920,10 @@
       "color": "#777777"
     },
     {
+      "name": "minecraft:infested_deepslate",
+      "color": "#575759"
+    },
+    {
       "name": "minecraft:stone_bricks",
       "color": "#7a7a7a"
     },
@@ -2184,6 +2212,10 @@
     },
     {
       "name": "minecraft:emerald_ore",
+      "color": "#17dd62"
+    },
+    {
+      "name": "minecraft:deepslate_emerald_ore",
       "color": "#17dd62"
     },
     {
@@ -5072,6 +5104,10 @@
       "color": "#575759"
     },
     {
+      "name": "minecraft:chiseled_deepslate",
+      "color": "#363637"
+    },
+    {
       "name": "minecraft:cobbled_deepslate",
       "color": "#4d4d51"
     },
@@ -5152,6 +5188,10 @@
       "color": "#474747"
     },
     {
+      "name": "minecraft:cracked_deepslate_bricks",
+      "color": "#414141"
+    },
+    {
       "name": "minecraft:deepslate_brick_slab",
       "color": "#4a4a4a",
       "transparent": true,
@@ -5188,6 +5228,10 @@
     {
       "name": "minecraft:deepslate_tiles",
       "color": "#373737"
+    },
+    {
+      "name": "minecraft:cracked_deepslate_tiles",
+      "color": "#353535"
     },
     {
       "name": "minecraft:deepslate_tile_slab",
