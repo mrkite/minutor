@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.17.21w15a",
+  "version": "1.17.pre1",
   "data": [
     {
       "name": "minecraft:air",
@@ -2450,6 +2450,16 @@
     {
       "name": "minecraft:potted_warped_fungus",
       "color": "#4a6d58",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:potted_azalea_bush",
+      "color": "#667d30",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:potted_flowering_azalea_bush",
+      "color": "#707a40",
       "transparent": true
     },
     {
