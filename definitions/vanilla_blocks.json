@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.17.21w10a",
+  "version": "1.17.21w13a",
   "data": [
     {
       "name": "minecraft:air",
@@ -19,6 +19,13 @@
     },
     {
       "name": "minecraft:void_air",
+      "color": "#ffffff",
+      "alpha": 0,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
+      "name": "minecraft:light",
       "color": "#ffffff",
       "alpha": 0,
       "transparent": true,
