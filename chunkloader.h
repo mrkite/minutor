@@ -13,7 +13,13 @@ class ChunkLoader : public QObject, public QRunnable {
   ChunkLoader(QString path, int cx, int cz);
   ~ChunkLoader();
 
+  enum CHUNKLOAD_TYPE {
+    MAIN_MAP_DATA      = 0,
+    SEPARATED_ENTITIES = 1
+  };
+
   static bool loadNbt(QString path, int cx, int cz, QSharedPointer<Chunk> chunk);
+  static bool loadNbtHelper(QString filename, int cx, int cz, QSharedPointer<Chunk> chunk, int loadtype);
 
  signals:
   void loaded(int cx, int cz);

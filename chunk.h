@@ -40,6 +40,7 @@ class Chunk : public QObject {
   Chunk();
   ~Chunk();
   void load(const NBT &nbt);
+  void loadEntities(const NBT &nbt);
 
   typedef QMap<QString, QSharedPointer<OverlayItem>> EntityMap;
 
