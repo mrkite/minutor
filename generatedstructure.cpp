@@ -56,40 +56,81 @@ GeneratedStructure::tryParseFeatures(QVariant &maybeFeatureMap) {
       if ((QMetaType::Type)feature.type() == QMetaType::QVariantMap) {
         // convert it to a real map
         QMap<QString, QVariant> featureProperties = feature.toMap();
+
         // check for required properties
-        if (featureProperties.contains("id") &&
-            featureProperties.contains("BB") &&
-            (QMetaType::Type)featureProperties["BB"].type() == QMetaType::QVariantList ) {
+        if (featureProperties.contains("id") && featureProperties["id"].toString() != "INVALID") {
           // parse id
           QString id = featureProperties["id"].toString();
-          // parse Bounding Box
-          QList<QVariant> bb = featureProperties["BB"].toList();
-          if (bb.size() == 6) {
-            GeneratedStructure* structure = new GeneratedStructure();
-            structure->setBounds(
-              Point(bb[0].toInt(), bb[1].toInt(), bb[2].toInt()),
-              Point(bb[3].toInt(), bb[4].toInt(), bb[5].toInt()));
-            structure->setType("Structure." + id);
-            structure->setDisplay(id);
-            structure->setProperties(featureProperties);
 
-            // base the color on a hash of its type
-            int    hue = qHash(id) % 360;
-            QColor color;
-            color.setHsv(hue, 255, 255, 64);
-            structure->setColor(color);
+          GeneratedStructure* structure = new GeneratedStructure();
+          structure->setType("Structure." + id);
+          structure->setDisplay(id);
+          structure->setProperties(featureProperties);
 
-            // this will have to be maintained if new structures are added
-            // that are appearing only a some Dimensions
-            if (structure->type() == "Structure.Fortress") {
-              structure->setDimension("nether");
-            } else if (structure->type() == "Structure.EndCity") {
-              structure->setDimension("end");
-            } else {
-              structure->setDimension("overworld");
-            }
-            ret.append( QSharedPointer<GeneratedStructure>(structure) );
+          // base the color on a hash of its type
+          int    hue = qHash(id) % 360;
+          QColor color;
+          color.setHsv(hue, 255, 255, 64);
+          structure->setColor(color);
+
+          // this will have to be maintained if new structures are added
+          // that are appearing only a some Dimensions
+          if (structure->type() == "Structure.Fortress") {
+            structure->setDimension("nether");
+          } else if (structure->type() == "Structure.EndCity") {
+            structure->setDimension("end");
+          } else {
+            structure->setDimension("overworld");
           }
+
+          // get covered area
+          int minX = INT_MAX;
+          int minY = INT_MAX;
+          int minZ = INT_MAX;
+          int maxX = INT_MIN;
+          int maxY = INT_MIN;
+          int maxZ = INT_MIN;
+          // covered area is given directly in feature (<1.17)
+          if (featureProperties.contains("BB") &&
+              (QMetaType::Type)featureProperties["BB"].type() == QMetaType::QVariantList ) {
+            // parse Bounding Box
+            QList<QVariant> bb = featureProperties["BB"].toList();
+            if (bb.size() == 6) {
+              minX = bb[0].toInt();
+              minY = bb[1].toInt();
+              minZ = bb[2].toInt();
+              maxX = bb[3].toInt();
+              maxY = bb[4].toInt();
+              maxZ = bb[5].toInt();
+            }
+          } else {
+            // covered area is given in Children only (starting with 1.17)
+            if (featureProperties.contains("Children")) {
+              // loop over all elements in Children
+              auto children = featureProperties["Children"];
+              if ((QMetaType::Type)children.type() == QMetaType::QVariantList)
+                for (auto &child : children.toList()) {
+                  if ( (QMetaType::Type)child.type() == QMetaType::QVariantMap ) {
+                    QMap<QString, QVariant> childMap = child.toMap();
+                    if (childMap.contains("BB") &&
+                        ( QMetaType::Type)childMap["BB"].type() == QMetaType::QVariantList ) {
+                      QList<QVariant> bb = childMap["BB"].toList();
+                      if (bb.size() == 6) {
+                        minX = std::min<int>(minX, bb[0].toInt());
+                        minY = std::min<int>(minY, bb[1].toInt());
+                        minZ = std::min<int>(minZ, bb[2].toInt());
+                        maxX = std::max<int>(maxX, bb[3].toInt());
+                        maxY = std::max<int>(maxY, bb[4].toInt());
+                        maxZ = std::max<int>(maxZ, bb[5].toInt());
+                      }
+                    }
+                  }
+                }
+            }
+          }
+
+          structure->setBounds( Point(minX, minY, minZ), Point(maxX, maxY, maxZ));
+          ret.append( QSharedPointer<GeneratedStructure>(structure) );
         }
       }
     }
