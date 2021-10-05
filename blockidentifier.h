@@ -55,6 +55,7 @@ class BlockInfo {
   bool    rendernormal;
   bool    providepower;
   bool    spawninside;
+  bool    spawnontop;   // special override used for Slabs/Stairs
   QColor  colors[16];
 
  private:

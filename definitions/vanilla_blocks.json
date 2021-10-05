@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.17.pre1",
+  "version": "1.17.pre2",
   "data": [
     {
       "name": "minecraft:air",
@@ -49,7 +49,11 @@
       "variants": [
         {
           "blockstate": "type:top",
-          "rendercube": true
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
         }
       ]
     },
@@ -60,7 +64,7 @@
       "variants": [
         {
           "blockstate": "half:top",
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -75,7 +79,11 @@
       "variants": [
         {
           "blockstate": "type:top",
-          "rendercube": true
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
         }
       ]
     },
@@ -86,7 +94,7 @@
       "variants": [
         {
           "blockstate": "half:top",
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -107,7 +115,11 @@
       "variants": [
         {
           "blockstate": "type:top",
-          "rendercube": true
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
         }
       ]
     },
@@ -118,7 +130,7 @@
       "variants": [
         {
           "blockstate": "half:top",
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -133,7 +145,11 @@
       "variants": [
         {
           "blockstate": "type:top",
-          "rendercube": true
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
         }
       ]
     },
@@ -144,7 +160,7 @@
       "variants": [
         {
           "blockstate": "half:top",
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -165,7 +181,11 @@
       "variants": [
         {
           "blockstate": "type:top",
-          "rendercube": true
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
         }
       ]
     },
@@ -176,7 +196,7 @@
       "variants": [
         {
           "blockstate": "half:top",
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -191,7 +211,11 @@
       "variants": [
         {
           "blockstate": "type:top",
-          "rendercube": true
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
         }
       ]
     },
@@ -202,7 +226,7 @@
       "variants": [
         {
           "blockstate": "half:top",
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -223,7 +247,11 @@
       "variants": [
         {
           "blockstate": "type:top",
-          "rendercube": true
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
         }
       ]
     },
@@ -234,7 +262,7 @@
       "variants": [
         {
           "blockstate": "half:top",
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -266,13 +294,11 @@
       "variants": [
         {
           "blockstate": "type:top",
-          "transparent": false,
-          "rendercube": true
+          "spawnontop": true
         },
         {
           "blockstate": "type:double",
-          "transparent": false,
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -283,7 +309,7 @@
       "variants": [
         {
           "blockstate": "half:top",
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -697,7 +723,11 @@
       "variants": [
         {
           "blockstate": "type:top",
-          "rendercube": true
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
         }
       ]
     },
@@ -708,7 +738,7 @@
       "variants": [
         {
           "blockstate": "half:top",
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -733,7 +763,11 @@
       "variants": [
         {
           "blockstate": "type:top",
-          "rendercube": true
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
         }
       ]
     },
@@ -744,7 +778,7 @@
       "variants": [
         {
           "blockstate": "half:top",
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -1130,7 +1164,11 @@
       "variants": [
         {
           "blockstate": "type:top",
-          "rendercube": true
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
         }
       ]
     },
@@ -1141,7 +1179,7 @@
       "variants": [
         {
           "blockstate": "half:top",
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -1171,7 +1209,11 @@
       "variants": [
         {
           "blockstate": "type:top",
-          "rendercube": true
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
         }
       ]
     },
@@ -1182,7 +1224,7 @@
       "variants": [
         {
           "blockstate": "half:top",
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -1224,7 +1266,7 @@
       "variants": [
         {
           "blockstate": "half:top",
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -1956,7 +1998,11 @@
       "variants": [
         {
           "blockstate": "type:top",
-          "rendercube": true
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
         }
       ]
     },
@@ -1967,7 +2013,7 @@
       "variants": [
         {
           "blockstate": "half:top",
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -1988,7 +2034,11 @@
       "variants": [
         {
           "blockstate": "type:top",
-          "rendercube": true
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
         }
       ]
     },
@@ -1999,7 +2049,7 @@
       "variants": [
         {
           "blockstate": "half:top",
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -2121,7 +2171,11 @@
       "variants": [
         {
           "blockstate": "type:top",
-          "rendercube": true
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
         }
       ]
     },
@@ -2132,7 +2186,7 @@
       "variants": [
         {
           "blockstate": "half:top",
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -2268,7 +2322,7 @@
       "variants": [
         {
           "blockstate": "half:top",
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -2279,7 +2333,7 @@
       "variants": [
         {
           "blockstate": "half:top",
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -2290,7 +2344,7 @@
       "variants": [
         {
           "blockstate": "half:top",
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -2722,7 +2776,7 @@
       "variants": [
         {
           "blockstate": "half:top",
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -2909,7 +2963,7 @@
       "variants": [
         {
           "blockstate": "half:top",
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -2920,7 +2974,7 @@
       "variants": [
         {
           "blockstate": "half:top",
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -2949,7 +3003,11 @@
       "variants": [
         {
           "blockstate": "type:top",
-          "rendercube": true
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
         }
       ]
     },
@@ -2960,7 +3018,7 @@
       "variants": [
         {
           "blockstate": "half:top",
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -2981,7 +3039,11 @@
       "variants": [
         {
           "blockstate": "type:top",
-          "rendercube": true
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
         }
       ]
     },
@@ -2992,7 +3054,7 @@
       "variants": [
         {
           "blockstate": "half:top",
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -3007,7 +3069,11 @@
       "variants": [
         {
           "blockstate": "type:top",
-          "rendercube": true
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
         }
       ]
     },
@@ -3018,7 +3084,7 @@
       "variants": [
         {
           "blockstate": "half:top",
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -3343,7 +3409,11 @@
       "variants": [
         {
           "blockstate": "type:top",
-          "rendercube": true
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
         }
       ]
     },
@@ -3354,7 +3424,7 @@
       "variants": [
         {
           "blockstate": "half:top",
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -3379,7 +3449,11 @@
       "variants": [
         {
           "blockstate": "type:top",
-          "rendercube": true
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
         }
       ]
     },
@@ -3390,7 +3464,7 @@
       "variants": [
         {
           "blockstate": "half:top",
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -3401,7 +3475,11 @@
       "variants": [
         {
           "blockstate": "type:top",
-          "rendercube": true
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
         }
       ]
     },
@@ -3412,7 +3490,11 @@
       "variants": [
         {
           "blockstate": "type:top",
-          "rendercube": true
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
         }
       ]
     },
@@ -3423,7 +3505,11 @@
       "variants": [
         {
           "blockstate": "type:top",
-          "rendercube": true
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
         }
       ]
     },
@@ -3434,7 +3520,11 @@
       "variants": [
         {
           "blockstate": "type:top",
-          "rendercube": true
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
         }
       ]
     },
@@ -3445,7 +3535,11 @@
       "variants": [
         {
           "blockstate": "type:top",
-          "rendercube": true
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
         }
       ]
     },
@@ -3456,7 +3550,11 @@
       "variants": [
         {
           "blockstate": "type:top",
-          "rendercube": true
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
         }
       ]
     },
@@ -3467,7 +3565,11 @@
       "variants": [
         {
           "blockstate": "type:top",
-          "rendercube": true
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
         }
       ]
     },
@@ -3478,7 +3580,11 @@
       "variants": [
         {
           "blockstate": "type:top",
-          "rendercube": true
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
         }
       ]
     },
@@ -3489,7 +3595,11 @@
       "variants": [
         {
           "blockstate": "type:top",
-          "rendercube": true
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
         }
       ]
     },
@@ -3504,7 +3614,7 @@
       "variants": [
         {
           "blockstate": "half:top",
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -3515,7 +3625,11 @@
       "variants": [
         {
           "blockstate": "type:top",
-          "rendercube": true
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
         }
       ]
     },
@@ -3530,7 +3644,11 @@
       "variants": [
         {
           "blockstate": "type:top",
-          "rendercube": true
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
         }
       ]
     },
@@ -3541,7 +3659,7 @@
       "variants": [
         {
           "blockstate": "half:top",
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -3556,7 +3674,11 @@
       "variants": [
         {
           "blockstate": "type:top",
-          "rendercube": true
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
         }
       ]
     },
@@ -3567,7 +3689,7 @@
       "variants": [
         {
           "blockstate": "half:top",
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -3582,7 +3704,7 @@
       "variants": [
         {
           "blockstate": "half:top",
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -3593,7 +3715,11 @@
       "variants": [
         {
           "blockstate": "type:top",
-          "rendercube": true
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
         }
       ]
     },
@@ -3723,7 +3849,7 @@
       "variants": [
         {
           "blockstate": "half:top",
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -3738,7 +3864,11 @@
       "variants": [
         {
           "blockstate": "type:top",
-          "rendercube": true
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
         }
       ]
     },
@@ -3749,7 +3879,7 @@
       "variants": [
         {
           "blockstate": "half:top",
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -3845,7 +3975,11 @@
       "variants": [
         {
           "blockstate": "type:top",
-          "rendercube": true
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
         }
       ]
     },
@@ -3856,7 +3990,7 @@
       "variants": [
         {
           "blockstate": "half:top",
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -4404,7 +4538,18 @@
     },
     {
       "name": "minecraft:crimson_slab",
-      "color": "#6a334a"
+      "color": "#6a334a",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:crimson_pressure_plate",
@@ -4425,7 +4570,14 @@
     },
     {
       "name": "minecraft:crimson_stairs",
-      "color": "#5f2e43"
+      "color": "#5f2e43",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:crimson_button",
@@ -4470,7 +4622,18 @@
     },
     {
       "name": "minecraft:warped_slab",
-      "color": "#2d6e67"
+      "color": "#2d6e67",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:warped_pressure_plate",
@@ -4491,7 +4654,14 @@
     },
     {
       "name": "minecraft:warped_stairs",
-      "color": "#28635e"
+      "color": "#28635e",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:warped_button",
@@ -4604,11 +4774,29 @@
     },
     {
       "name": "minecraft:blackstone_slab",
-      "color": "#2c242b"
+      "color": "#2c242b",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:blackstone_stairs",
-      "color": "#272126"
+      "color": "#272126",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:blackstone_wall",
@@ -4620,11 +4808,29 @@
     },
     {
       "name": "minecraft:polished_blackstone_slab",
-      "color": "#37333b"
+      "color": "#37333b",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:polished_blackstone_stairs",
-      "color": "#322e36"
+      "color": "#322e36",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:polished_blackstone_wall",
@@ -4644,11 +4850,29 @@
     },
     {
       "name": "minecraft:polished_blackstone_brick_slab",
-      "color": "#312b32"
+      "color": "#312b32",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:polished_blackstone_brick_stairs",
-      "color": "#2c262d"
+      "color": "#2c262d",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:polished_blackstone_brick_wall",
@@ -4848,15 +5072,44 @@
     },
     {
       "name": "minecraft:cut_copper_stairs",
-      "color": "#b5654c"
+      "color": "#b5654c",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:cut_copper_slab",
-      "color": "#c87055"
+      "color": "#c87055",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:double_cut_copper_slab",
-      "color": "#c87055"
+      "color": "#c87055",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:exposed_cut_copper",
@@ -4864,15 +5117,44 @@
     },
     {
       "name": "minecraft:exposed_cut_copper_stairs",
-      "color": "#987762"
+      "color": "#987762",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:exposed_cut_copper_slab",
-      "color": "#a9846d"
+      "color": "#a9846d",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:double_exposed_cut_copper_slab",
-      "color": "#a9846d"
+      "color": "#a9846d",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:weathered_cut_copper",
@@ -4880,15 +5162,44 @@
     },
     {
       "name": "minecraft:weathered_cut_copper_stairs",
-      "color": "#669168"
+      "color": "#669168",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:weathered_cut_copper_slab",
-      "color": "#71a073"
+      "color": "#71a073",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:double_weathered_cut_copper_slab",
-      "color": "#71a073"
+      "color": "#71a073",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:oxidized_cut_copper",
@@ -4896,15 +5207,44 @@
     },
     {
       "name": "minecraft:oxidized_cut_copper_stairs",
-      "color": "#4d9a7e"
+      "color": "#4d9a7e",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:oxidized_cut_copper_slab",
-      "color": "#56ab8b"
+      "color": "#56ab8b",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:double_oxidized_cut_copper_slab",
-      "color": "#56ab8b"
+      "color": "#56ab8b",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:waxed_copper_block",
@@ -4928,15 +5268,44 @@
     },
     {
       "name": "minecraft:waxed_cut_copper_stairs",
-      "color": "#b5654c"
+      "color": "#b5654c",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:waxed_cut_copper_slab",
-      "color": "#c87055"
+      "color": "#c87055",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:waxed_double_cut_copper_slab",
-      "color": "#c87055"
+      "color": "#c87055",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:waxed_exposed_cut_copper",
@@ -4944,15 +5313,44 @@
     },
     {
       "name": "minecraft:waxed_exposed_cut_copper_stairs",
-      "color": "#987762"
+      "color": "#987762",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:waxed_exposed_cut_copper_slab",
-      "color": "#a9846d"
+      "color": "#a9846d",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:waxed_double_exposed_cut_copper_slab",
-      "color": "#a9846d"
+      "color": "#a9846d",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:waxed_weathered_cut_copper",
@@ -4960,15 +5358,44 @@
     },
     {
       "name": "minecraft:waxed_weathered_cut_copper_stairs",
-      "color": "#669168"
+      "color": "#669168",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:waxed_weathered_cut_copper_slab",
-      "color": "#71a073"
+      "color": "#71a073",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:waxed_double_weathered_cut_copper_slab",
-      "color": "#71a073"
+      "color": "#71a073",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:waxed_oxidized_cut_copper",
@@ -4976,15 +5403,44 @@
     },
     {
       "name": "minecraft:waxed_oxidized_cut_copper_stairs",
-      "color": "#4d9a7e"
+      "color": "#4d9a7e",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:waxed_oxidized_cut_copper_slab",
-      "color": "#56ab8b"
+      "color": "#56ab8b",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:waxed_double_oxidized_cut_copper_slab",
-      "color": "#56ab8b"
+      "color": "#56ab8b",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:copper_ore",
@@ -5147,13 +5603,11 @@
       "variants": [
         {
           "blockstate": "type:top",
-          "transparent": false,
-          "rendercube": true
+          "spawnontop": true
         },
         {
           "blockstate": "type:double",
-          "transparent": false,
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -5164,7 +5618,7 @@
       "variants": [
         {
           "blockstate": "half:top",
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -5185,13 +5639,11 @@
       "variants": [
         {
           "blockstate": "type:top",
-          "transparent": false,
-          "rendercube": true
+          "spawnontop": true
         },
         {
           "blockstate": "type:double",
-          "transparent": false,
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -5202,7 +5654,7 @@
       "variants": [
         {
           "blockstate": "half:top",
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -5227,13 +5679,11 @@
       "variants": [
         {
           "blockstate": "type:top",
-          "transparent": false,
-          "rendercube": true
+          "spawnontop": true
         },
         {
           "blockstate": "type:double",
-          "transparent": false,
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -5244,7 +5694,7 @@
       "variants": [
         {
           "blockstate": "half:top",
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -5269,13 +5719,11 @@
       "variants": [
         {
           "blockstate": "type:top",
-          "transparent": false,
-          "rendercube": true
+          "spawnontop": true
         },
         {
           "blockstate": "type:double",
-          "transparent": false,
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },
@@ -5286,7 +5734,7 @@
       "variants": [
         {
           "blockstate": "half:top",
-          "rendercube": true
+          "spawnontop": true
         }
       ]
     },

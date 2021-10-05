@@ -17,6 +17,11 @@ BlockInfo::BlockInfo()
   , rendernormal(true)
   , providepower(false)
   , spawninside(false)
+  , spawnontop(false)
+  , bedrock(false)
+  , hopper(false)
+  , snow(false)
+  , water(false)
   , grass(false)
   , foliage(false) {}
 
@@ -33,8 +38,9 @@ bool BlockInfo::isLiquid() const {
 }
 
 bool BlockInfo::doesBlockHaveSolidTopSurface() const {
-  if (this->isOpaque() && this->renderAsNormalBlock()) return true;
+  if (this->spawnontop) return true;  // shortcut for normal opaque Blocks and top Slabs/Stairs
   if (this->hopper) return true;
+  if (this->isOpaque() && this->renderAsNormalBlock()) return true;
   return false;
 }
 
@@ -173,22 +179,32 @@ void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent,
     block->blockstate = b->at("blockstate")->asString();
 
   if (b->has("transparent")) {
+    // default setting for a transparent Block
     block->transparent = b->at("transparent")->asBool();
-    block->rendernormal = false;  // for most cases except the following
-    if (b->has("rendercube"))
-      block->rendernormal = b->at("rendercube")->asBool();
-    block->spawninside = false;  // for most cases except the following
-    if (b->has("spawninside"))
-      block->spawninside = b->at("spawninside")->asBool();
+    block->rendernormal = false;
+    block->spawninside = false;
+    block->spawnontop = false;
   } else if (parent != NULL) {
+    // copy parent attributes as default
     block->transparent = parent->transparent;
     block->rendernormal = parent->rendernormal;
     block->spawninside = parent->spawninside;
+    block->spawnontop = parent->spawnontop;
   } else {
+    // default setting for opaque Block
     block->transparent = false;
     block->rendernormal = true;
     block->spawninside = false;
+    block->spawnontop = true;
   }
+  // override these attributes when explicitly given
+  if (b->has("rendercube"))
+    block->rendernormal = b->at("rendercube")->asBool();
+  if (b->has("spawninside"))
+    block->spawninside = b->at("spawninside")->asBool();
+  if (b->has("spawnontop"))
+    block->spawnontop = b->at("spawnontop")->asBool();
+
 
   // generic attributes
   if (b->has("liquid"))
