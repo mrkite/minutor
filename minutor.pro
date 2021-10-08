@@ -35,6 +35,8 @@ HEADERS += \
     mapview.h \
     minutor.h \
     nbt.h \
+    nbt_tag.h \
+    nbt_tagdatastream.h \
     overlayitem.h \
     properties.h \
     propertietreecreator.h \
@@ -75,6 +77,8 @@ SOURCES += \
     mapview.cpp \
     minutor.cpp \
     nbt.cpp \
+    nbt_tag.cpp \
+    nbt_tagdatastream.cpp \
     properties.cpp \
     propertietreecreator.cpp \
     searchblockpluginwidget.cpp \
