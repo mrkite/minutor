@@ -3,13 +3,13 @@
 #include <zlib.h>
 #include <QFile>
 
-#include "./nbt.h"
+#include "nbt.h"
 
 
 // this handles decoding the gzipped level.dat
-NBT::NBT(const QString level) {
-  root = &NBT::Null;  // just in case we die
-
+NBT::NBT(const QString level)
+  : root(&NBT::Null)  // just in case we die
+{
   QFile f(level);
   f.open(QIODevice::ReadOnly);
   QByteArray data = f.readAll();
@@ -43,9 +43,9 @@ NBT::NBT(const QString level) {
 }
 
 // this handles decoding a compressed() section of a region file
-NBT::NBT(const uchar *chunk) {
-  root = &NBT::Null;  // just in case
-
+NBT::NBT(const uchar *chunk)
+  : root(&NBT::Null)  // just in case we die
+{
   // find chunk size
   int length = (chunk[0] << 24) | (chunk[1] << 16) | (chunk[2] << 8) |
       chunk[3];

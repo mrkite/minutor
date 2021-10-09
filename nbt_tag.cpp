@@ -14,7 +14,7 @@ Tag::~Tag() {
 }
 
 int Tag::length() const {
-  qWarning() << "Unhandled length";
+  qWarning() << "Tag::length unhandled in base class";
   return 0;
 }
 
@@ -31,40 +31,40 @@ const Tag *Tag::at(int /* idx */) const {
 }
 
 const QString Tag::toString() const {
-  qWarning() << "Unhandled toString";
+  qWarning() << "Tag::toString unhandled in base class";
   return "";
 }
 
 qint32 Tag::toInt() const {
-  qWarning() << "Unhandled toInt";
+  qWarning() << "Tag::toInt unhandled in base class";
   return 0;
 }
 
 double Tag::toDouble() const {
-  qWarning() << "Unhandled toDouble";
+  qWarning() << "Tag::toDouble unhandled in base class";
   return 0.0;
 }
 
 const std::vector<quint8>& Tag::toByteArray() const {
-  qWarning() << "Unhandled toByteArray";
+  qWarning() << "Tag:: toByteArray unhandled in base class";
   static const std::vector<quint8> dummy;
   return dummy;
 }
 
 const std::vector<qint32>& Tag::toIntArray() const {
-  qWarning() << "Unhandled toIntArray";
+  qWarning() << "Tag::toIntArray unhandled in base class";
   static const std::vector<qint32> dummy;
   return dummy;
 }
 
 const std::vector<qint64>& Tag::toLongArray() const {
-  qWarning() << "Unhandled toLongArray";
+  qWarning() << "Tag::toLongArray unhandled in base class";
   static const std::vector<qint64> dummy;
   return dummy;
 }
 
 const QVariant Tag::getData() const {
-  qWarning() << "Unhandled getData";
+  qWarning() << "tag::getData unhandled in base class";
   return QVariant();
 }
 
@@ -120,8 +120,13 @@ const QVariant Tag_Short::getData() const {
 Tag_Int::Tag_Int(TagDataStream *s) {
   data = s->r32();
 }
+
 qint32 Tag_Int::toInt() const {
   return data;
+}
+
+unsigned int Tag_Int::toUInt() const {
+  return (unsigned int)data;
 }
 
 const QString Tag_Int::toString() const {
@@ -210,9 +215,6 @@ Tag_Byte_Array::Tag_Byte_Array(TagDataStream *s) {
   }
 }
 
-Tag_Byte_Array::~Tag_Byte_Array() {
-}
-
 int Tag_Byte_Array::length() const {
   return len;
 }
@@ -266,18 +268,19 @@ Tag_List::Tag_List(TagDataStream *s) {
     return;
 
   switch (type) {
-    case  1: setListData<Tag_Byte>(&data, len, s); break;
-    case  2: setListData<Tag_Short>(&data, len, s); break;
-    case  3: setListData<Tag_Int>(&data, len, s); break;
-    case  4: setListData<Tag_Long>(&data, len, s); break;
-    case  5: setListData<Tag_Float>(&data, len, s); break;
-    case  6: setListData<Tag_Double>(&data, len, s); break;
-    case  7: setListData<Tag_Byte_Array>(&data, len, s); break;
-    case  8: setListData<Tag_String>(&data, len, s); break;
-    case  9: setListData<Tag_List>(&data, len, s); break;
-    case 10: setListData<Tag_Compound>(&data, len, s); break;
-    case 11: setListData<Tag_Int_Array>(&data, len, s); break;
-    case 12: setListData<Tag_Long_Array>(&data, len, s); break;
+    case Tag::TAG_END:        /* should be sorted out as len==0 */ break;
+    case Tag::TAG_BYTE:       setListData<Tag_Byte>(&data, len, s); break;
+    case Tag::TAG_SHORT:      setListData<Tag_Short>(&data, len, s); break;
+    case Tag::TAG_INT:        setListData<Tag_Int>(&data, len, s); break;
+    case Tag::TAG_LONG:       setListData<Tag_Long>(&data, len, s); break;
+    case Tag::TAG_FLOAT:      setListData<Tag_Float>(&data, len, s); break;
+    case Tag::TAG_DOUBLE:     setListData<Tag_Double>(&data, len, s); break;
+    case Tag::TAG_BYTE_ARRAY: setListData<Tag_Byte_Array>(&data, len, s); break;
+    case Tag::TAG_STRING:     setListData<Tag_String>(&data, len, s); break;
+    case Tag::TAG_LIST:       setListData<Tag_List>(&data, len, s); break;
+    case Tag::TAG_COMPOUND:   setListData<Tag_Compound>(&data, len, s); break;
+    case Tag::TAG_INT_ARRAY:  setListData<Tag_Int_Array>(&data, len, s); break;
+    case Tag::TAG_LONG_ARRAY: setListData<Tag_Long_Array>(&data, len, s); break;
     default: throw "Unknown type";
   }
 }
@@ -325,18 +328,18 @@ Tag_Compound::Tag_Compound(TagDataStream *s) {
     QString key = s->utf8(len);
     Tag *child;
     switch (type) {
-      case  1: child = new Tag_Byte(s); break;
-      case  2: child = new Tag_Short(s); break;
-      case  3: child = new Tag_Int(s); break;
-      case  4: child = new Tag_Long(s); break;
-      case  5: child = new Tag_Float(s); break;
-      case  6: child = new Tag_Double(s); break;
-      case  7: child = new Tag_Byte_Array(s); break;
-      case  8: child = new Tag_String(s); break;
-      case  9: child = new Tag_List(s); break;
-      case 10: child = new Tag_Compound(s); break;
-      case 11: child = new Tag_Int_Array(s); break;
-      case 12: child = new Tag_Long_Array(s); break;
+      case Tag::TAG_BYTE:       child = new Tag_Byte(s); break;
+      case Tag::TAG_SHORT:      child = new Tag_Short(s); break;
+      case Tag::TAG_INT:        child = new Tag_Int(s); break;
+      case Tag::TAG_LONG:       child = new Tag_Long(s); break;
+      case Tag::TAG_FLOAT:      child = new Tag_Float(s); break;
+      case Tag::TAG_DOUBLE:     child = new Tag_Double(s); break;
+      case Tag::TAG_BYTE_ARRAY: child = new Tag_Byte_Array(s); break;
+      case Tag::TAG_STRING:     child = new Tag_String(s); break;
+      case Tag::TAG_LIST:       child = new Tag_List(s); break;
+      case Tag::TAG_COMPOUND:   child = new Tag_Compound(s); break;
+      case Tag::TAG_INT_ARRAY:  child = new Tag_Int_Array(s); break;
+      case Tag::TAG_LONG_ARRAY: child = new Tag_Long_Array(s); break;
       default: throw "Unknown tag";
     }
     children[key] = child;
@@ -386,9 +389,6 @@ Tag_Int_Array::Tag_Int_Array(TagDataStream *s) {
     data[i] = s->r32();
 }
 
-Tag_Int_Array::~Tag_Int_Array() {
-}
-
 const std::vector<qint32>& Tag_Int_Array::toIntArray() const {
   return data;
 }
@@ -424,9 +424,6 @@ Tag_Long_Array::Tag_Long_Array(TagDataStream *s) {
   data.resize(len);
   for (int i = 0; i < len; i++)
     data[i] = s->r64();
-}
-
-Tag_Long_Array::~Tag_Long_Array() {
 }
 
 const std::vector<qint64> &Tag_Long_Array::toLongArray() const {
