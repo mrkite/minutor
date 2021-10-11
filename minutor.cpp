@@ -323,6 +323,10 @@ void Minutor::viewDimension(const DimensionInfo &dim) {
       action->setVisible(false);
     }
   }
+
+  // todo: this a good place to change depth slider or adjust default Y when dimension is activated
+
+  // clear current map & update scale
   mapview->setDimension(dim.path, dim.scale);
 }
 
@@ -642,16 +646,24 @@ void Minutor::loadWorld(QDir path) {
   currentWorld = path;
 
   NBT level(path.filePath("level.dat"));
-
   auto data = level.at("Data");
+
   // add level name to window title
   setWindowTitle(qApp->applicationName() + " - " +
                  data->at("LevelName")->toString());
-  // save world spawn
+
+  // get maximum build height
+  if (data->has("DataVersion") && data->at("DataVersion")->toInt() >= 2800 ) {
+    depth->setRange(0-64, 255+64);
+  } else
+    depth->setRange(0, 255);
+
+
+  // Jump to: world spawn
   jumpSpawnAct->setData(locations.count());
   locations.append(Location(data->at("SpawnX")->toDouble(),
                             data->at("SpawnZ")->toDouble()));
-  // show saved players
+  // Jump to: known players
   if (path.cd("playerdata") || path.cd("players")) {
     QDirIterator it(path.absolutePath(), {"*.dat"}, QDir::Files);
     bool hasPlayers = false;
@@ -742,6 +754,8 @@ void Minutor::loadWorld(QDir path) {
 
   // show dimensions
   DimensionIdentifier::Instance().getDimensions(path, dimMenu, this);
+
+  // finalize
   emit worldLoaded(true);
   mapview->setLocation(locations.first().x, locations.first().z);
   toggleFlags();

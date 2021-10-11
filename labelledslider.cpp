@@ -6,6 +6,8 @@ LabelledSlider::LabelledSlider(Qt::Orientation orientation, QWidget *parent) :
   QWidget(parent) {
   slider = new MSlider(orientation);
   slider->setRange(0, 255);
+  slider->setTickInterval(64);
+  slider->setTickPosition(QSlider::TicksBelow);
 
   label = new QLabel();
   label->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
@@ -41,6 +43,12 @@ void LabelledSlider::setValue(int v) {
 // public slot
 void LabelledSlider::changeValue(int v) {
   slider->setValue(slider->value() + v);
+}
+
+// public slot
+void LabelledSlider::setRange(int minVal, int maxVal)
+{
+  slider->setRange(minVal, maxVal);
 }
 
 // private slot
