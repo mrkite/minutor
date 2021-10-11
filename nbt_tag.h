@@ -160,6 +160,7 @@ class Tag_Compound : public Tag {
 
   bool           has(const QString key) const override;
   const Tag *    at(const QString key) const override;
+  int            length() const override;
   const QString  toString() const override;
   const QVariant getData() const override;
  private:
