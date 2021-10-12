@@ -65,6 +65,12 @@ int Chunk::get_biome(int x, int y, int z) {
 }
 
 int Chunk::get_biome(int offset) {
+#if defined(DEBUG) || defined(_DEBUG) || defined(QT_DEBUG)
+  if ((offset < 0) || ((unsigned long long)(offset) > sizeof(this->biomes) / sizeof(int))) {
+    qWarning() << "Biome index out of range!";
+    return 0;
+  }
+#endif
   return this->biomes[offset];
 }
 
@@ -88,13 +94,9 @@ void Chunk::load(const NBT &nbt) {
   if (level->has("Biomes") && level->at("Biomes") && level->at("Biomes")->length()) {
     const Tag_Int_Array * biomes = dynamic_cast<const Tag_Int_Array*>(level->at("Biomes"));
     if (biomes) {  // Biomes is a Tag_Int_Array
-      if ((this->version >= 2203)) {
-        // raw copy Biome data
-        safeMemCpy(this->biomes, biomes->toIntArray(), sizeof(int)*1024);
-      } else if ((this->version >= 1519)) {
-        // raw copy Biome data
-        safeMemCpy(this->biomes, biomes->toIntArray(), sizeof(int)*256);
-      }
+      // raw copy Biome data
+      std::size_t len = std::min(sizeof(this->biomes), (sizeof(int)*biomes->length()));
+      safeMemCpy(this->biomes, biomes->toIntArray(), len);
     } else {  // Biomes is not a Tag_Int_Array
       const Tag_Byte_Array * biomes = dynamic_cast<const Tag_Byte_Array*>(level->at("Biomes"));
       // convert quint8 to quint32
