@@ -28,8 +28,10 @@ class SearchPluginI;
 
 class Location {
  public:
-  Location(double x, double z) : x(x), z(z) {}
+  Location(double x, double z, QString dim) : x(x), z(z), dimension(dim) {}
+  Location(double x, double z) : x(x), z(z), dimension("minecraft:Overworld") {}
   double x, z;
+  QString dimension;
 };
 
 class Minutor : public QMainWindow {
@@ -115,7 +117,7 @@ signals:
   QList<QAction *>worlds;
   QAction *openAct, *reloadAct, *saveAct, *exitAct;
   QAction *jumpSpawnAct;
-  QList<QAction *>players;
+  QList<QAction *>playerActions;
   QAction *lightingAct, *mobSpawnAct, *caveModeAct, *depthShadingAct, *biomeColorsAct, *singleLayerAct, *seaGroundAct;
   QAction *manageDefsAct;
   QAction *refreshAct;
@@ -129,7 +131,7 @@ signals:
   QAction *searchBlockAction;
 
   // loaded world data
-  QList<Location> locations;
+  QList<Location> locations;  // data of player related locations in this world
   DefinitionManager *dm;
   Settings *settings;
   JumpTo *jumpTo;
