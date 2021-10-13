@@ -8,6 +8,7 @@
 #include <QSharedPointer>
 #include <QSet>
 #include <QVector3D>
+#include <QtNetwork/QNetworkReply>
 
 class QAction;
 class QActionGroup;
@@ -29,7 +30,7 @@ class SearchPluginI;
 class Location {
  public:
   Location(double x, double z, QString dim) : x(x), z(z), dimension(dim) {}
-  Location(double x, double z) : x(x), z(z), dimension("minecraft:Overworld") {}
+  Location(double x, double z) : x(x), z(z), dimension("minecraft:overworld") {}
   double x, z;
   QString dimension;
 };
@@ -65,6 +66,7 @@ private slots:
   void closeWorld();
   void reload();
   void save();
+  void updatePlayerCache(QNetworkReply*);
 
   void jumpToLocation();
   void viewDimension(const DimensionInfo &dim);
@@ -136,6 +138,7 @@ signals:
   Settings *settings;
   JumpTo *jumpTo;
   QDir currentWorld;
+  QNetworkAccessManager qnam;
 
   QSet<QString> overlayItemTypes;
   Properties * propView;

@@ -10,6 +10,8 @@
 #include <QProgressDialog>
 #include <QDir>
 #include <QRegExp>
+#include <QtNetwork/QNetworkRequest>
+#include <QtNetwork/QNetworkReply>
 #include "./minutor.h"
 #include "./mapview.h"
 #include "./labelledslider.h"
@@ -659,12 +661,30 @@ void Minutor::loadWorld(QDir path) {
         hasPlayers = true;
         NBT player(it.filePath());
 
-        // player name
+        // player name from file name (old)
         QString playerName = it.fileInfo().completeBaseName();
-        QRegExp id("[0-9a-z]{8,8}\\-[0-9a-z]{4,4}\\-[0-9a-z]{4,4}"
-                   "\\-[0-9a-z]{4,4}\\-[0-9a-z]{12,12}");
-        if (id.exactMatch(playerName)) {
-          playerName = QString("Player %1").arg(playerActions.length());
+        if (path.dirName() == "playerdata") {
+          // player name via UUID
+          QRegExp id("[0-9a-z]{8,8}\\-[0-9a-z]{4,4}\\-[0-9a-z]{4,4}"
+                     "\\-[0-9a-z]{4,4}\\-[0-9a-z]{12,12}");
+          if (id.exactMatch(playerName)) {
+            QSettings settings;
+            if (settings.contains("PlayerCache/"+playerName)) {
+              playerName = settings.value("PlayerCache/"+playerName, playerName).toString();
+            } else if (playerName[14]=='4') {
+              // only version 4 UUIDs can be resolved at Mojang API
+              // trigger HTTPS request to get player name
+              QString url = playerName;
+              url = "https://api.mojang.com/user/profiles/" + url.remove('-') + "/names";
+
+              QNetworkRequest request;
+              request.setUrl(QUrl(url));
+              request.setRawHeader("User-Agent", "Minutor");
+              connect(&this->qnam, &QNetworkAccessManager::finished,
+                      this,        &Minutor::updatePlayerCache);
+              this->qnam.get(request);
+            }
+          } else continue;
         }
 
         // current position of player
@@ -725,6 +745,32 @@ void Minutor::loadWorld(QDir path) {
   emit worldLoaded(true);
   mapview->setLocation(locations.first().x, locations.first().z);
   toggleFlags();
+}
+
+void Minutor::updatePlayerCache(QNetworkReply* reply) {
+  auto response = reply->readAll();
+  if (response.length() > 0) {
+    // we got a response
+    auto json = JSON::parse(QString(response));
+    if (json->length() > 0) {
+      // at least one entry available, last one is the current one
+      JSONData* name0 = json->at(json->length()-1);
+      if (name0->has("name")) {
+        // reconstruct player UUID
+        QString playerUUID = reply->url().path().mid(15, 32);
+        playerUUID.insert(20, '-');
+        playerUUID.insert(16, '-');
+        playerUUID.insert(12, '-');
+        playerUUID.insert(8, '-');
+        // store in player cache
+        QSettings settings;
+        QString playerName = name0->at("name")->asString();
+        settings.setValue("PlayerCache/"+playerUUID, playerName);
+      }
+    }
+  }
+
+  reply->deleteLater();
 }
 
 void Minutor::rescanWorlds() {
