@@ -361,6 +361,10 @@ const Tag *Tag_Compound::at(const QString key) const {
   return children[key];
 }
 
+int Tag_Compound::length() const {
+  return children.size();
+}
+
 const QString Tag_Compound::toString() const {
   QStringList ret;
   ret << "{\n";

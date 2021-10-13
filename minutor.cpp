@@ -10,6 +10,8 @@
 #include <QProgressDialog>
 #include <QDir>
 #include <QRegExp>
+#include <QtNetwork/QNetworkRequest>
+#include <QtNetwork/QNetworkReply>
 #include "./minutor.h"
 #include "./mapview.h"
 #include "./labelledslider.h"
@@ -213,11 +215,11 @@ void Minutor::saveFinished() {
 void Minutor::closeWorld() {
   // clear jump menu
   locations.clear();
-  for (int i = 0; i < players.size(); i++) {
-    jumpMenu->removeAction(players[i]);
-    delete players[i];
+  for (int i = 0; i < playerActions.size(); i++) {
+    jumpMenu->removeAction(playerActions[i]);
+    delete playerActions[i];
   }
-  players.clear();
+  playerActions.clear();
   jumpMenu->setEnabled(false);
   // clear dimensions menu
   DimensionIdentifier::Instance().removeDimensions(dimMenu);
@@ -232,6 +234,11 @@ void Minutor::jumpToLocation() {
   QAction *action = qobject_cast<QAction*>(sender());
   if (action) {
     Location loc = locations[action->data().toInt()];
+    if ((loc.dimension == "minecraft:the_nether") && (this->dimMenu[0].isEnabled())) {
+      // dimMenu[0] defaults to Overworld
+      loc.x *= 8;
+      loc.z *= 8;
+    }
     mapview->setLocation(loc.x, loc.z);
   }
 }
@@ -646,48 +653,84 @@ void Minutor::loadWorld(QDir path) {
                             data->at("SpawnZ")->toDouble()));
   // show saved players
   if (path.cd("playerdata") || path.cd("players")) {
-    QDirIterator it(path);
+    QDirIterator it(path.absolutePath(), {"*.dat"}, QDir::Files);
     bool hasPlayers = false;
     while (it.hasNext()) {
       it.next();
       if (it.fileInfo().isFile()) {
         hasPlayers = true;
         NBT player(it.filePath());
+
+        // player name from file name (old)
+        QString playerName = it.fileInfo().completeBaseName();
+        if (path.dirName() == "playerdata") {
+          // player name via UUID
+          QRegExp id("[0-9a-z]{8,8}\\-[0-9a-z]{4,4}\\-[0-9a-z]{4,4}"
+                     "\\-[0-9a-z]{4,4}\\-[0-9a-z]{12,12}");
+          if (id.exactMatch(playerName)) {
+            QSettings settings;
+            if (settings.contains("PlayerCache/"+playerName)) {
+              playerName = settings.value("PlayerCache/"+playerName, playerName).toString();
+            } else if (playerName[14]=='4') {
+              // only version 4 UUIDs can be resolved at Mojang API
+              // trigger HTTPS request to get player name
+              QString url = playerName;
+              url = "https://api.mojang.com/user/profiles/" + url.remove('-') + "/names";
+
+              QNetworkRequest request;
+              request.setUrl(QUrl(url));
+              request.setRawHeader("User-Agent", "Minutor");
+              connect(&this->qnam, &QNetworkAccessManager::finished,
+                      this,        &Minutor::updatePlayerCache);
+              this->qnam.get(request);
+            }
+          } else continue;
+        }
+
+        // current position of player
         auto pos = player.at("Pos");
         double posX = pos->at(0)->toDouble();
         double posZ = pos->at(2)->toDouble();
+        // current dimension
+        QString dimension;
         auto dim = player.at("Dimension");
-        if (dim && (dim->toInt() == -1)) {
-          posX *= 8;
-          posZ *= 8;
+        if (dynamic_cast<const Tag_Int*>(dim)) {
+          // in very old versions this was an Tag_Int
+          switch (dim->toInt()) {
+            case -1: dimension = "minecraft:the_nether"; break;
+            case +1: dimension = "minecraft:the_end"; break;
+            default: dimension = "minecraft:overworld";
+          }
+        } if (dynamic_cast<const Tag_String*>(dim)) {
+          // now dimension is given as string
+          dimension = dim->toString();
         }
-        QString playerName = it.fileInfo().completeBaseName();
-        QRegExp id("[0-9a-z]{8,8}\\-[0-9a-z]{4,4}\\-[0-9a-z]{4,4}"
-                   "\\-[0-9a-z]{4,4}\\-[0-9a-z]{12,12}");
-        if (id.exactMatch(playerName)) {
-          playerName = QString("Player %1").arg(players.length());
-        }
-
         QAction *p = new QAction(this);
         p->setText(playerName);
         p->setData(locations.count());
-        locations.append(Location(posX, posZ));
+        locations.append(Location(posX, posZ, dimension));
         connect(p, SIGNAL(triggered()),
                 this, SLOT(jumpToLocation()));
-        players.append(p);
-        if (player.has("SpawnX")) {  // player has a bed
+        playerActions.append(p);
+
+        // spawn location (bed)
+        if (player.has("SpawnX")) {
+          dimension = "minecraft:overworld";
+          if (player.has("SpawnDimension"))
+            dimension = player.at("SpawnDimension")->toString();
           p = new QAction(this);
           p->setText(playerName+"'s Bed");
           p->setData(locations.count());
           locations.append(Location(player.at("SpawnX")->toDouble(),
-                                    player.at("SpawnZ")->toDouble()));
+                                    player.at("SpawnZ")->toDouble(),
+                                    dimension));
           connect(p, SIGNAL(triggered()),
                   this, SLOT(jumpToLocation()));
-          players.append(p);
+          playerActions.append(p);
         }
       }
     }
-    jumpMenu->addActions(players);
+    jumpMenu->addActions(playerActions);
     jumpMenu->setEnabled(hasPlayers);
     path.cdUp();
   }
@@ -702,6 +745,32 @@ void Minutor::loadWorld(QDir path) {
   emit worldLoaded(true);
   mapview->setLocation(locations.first().x, locations.first().z);
   toggleFlags();
+}
+
+void Minutor::updatePlayerCache(QNetworkReply* reply) {
+  auto response = reply->readAll();
+  if (response.length() > 0) {
+    // we got a response
+    auto json = JSON::parse(QString(response));
+    if (json->length() > 0) {
+      // at least one entry available, last one is the current one
+      JSONData* name0 = json->at(json->length()-1);
+      if (name0->has("name")) {
+        // reconstruct player UUID
+        QString playerUUID = reply->url().path().mid(15, 32);
+        playerUUID.insert(20, '-');
+        playerUUID.insert(16, '-');
+        playerUUID.insert(12, '-');
+        playerUUID.insert(8, '-');
+        // store in player cache
+        QSettings settings;
+        QString playerName = name0->at("name")->asString();
+        settings.setValue("PlayerCache/"+playerUUID, playerName);
+      }
+    }
+  }
+
+  reply->deleteLater();
 }
 
 void Minutor::rescanWorlds() {

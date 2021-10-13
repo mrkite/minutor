@@ -8,6 +8,7 @@
 #include <QSharedPointer>
 #include <QSet>
 #include <QVector3D>
+#include <QtNetwork/QNetworkReply>
 
 class QAction;
 class QActionGroup;
@@ -28,8 +29,10 @@ class SearchPluginI;
 
 class Location {
  public:
-  Location(double x, double z) : x(x), z(z) {}
+  Location(double x, double z, QString dim) : x(x), z(z), dimension(dim) {}
+  Location(double x, double z) : x(x), z(z), dimension("minecraft:overworld") {}
   double x, z;
+  QString dimension;
 };
 
 class Minutor : public QMainWindow {
@@ -63,6 +66,7 @@ private slots:
   void closeWorld();
   void reload();
   void save();
+  void updatePlayerCache(QNetworkReply*);
 
   void jumpToLocation();
   void viewDimension(const DimensionInfo &dim);
@@ -115,7 +119,7 @@ signals:
   QList<QAction *>worlds;
   QAction *openAct, *reloadAct, *saveAct, *exitAct;
   QAction *jumpSpawnAct;
-  QList<QAction *>players;
+  QList<QAction *>playerActions;
   QAction *lightingAct, *mobSpawnAct, *caveModeAct, *depthShadingAct, *biomeColorsAct, *singleLayerAct, *seaGroundAct;
   QAction *manageDefsAct;
   QAction *refreshAct;
@@ -129,11 +133,12 @@ signals:
   QAction *searchBlockAction;
 
   // loaded world data
-  QList<Location> locations;
+  QList<Location> locations;  // data of player related locations in this world
   DefinitionManager *dm;
   Settings *settings;
   JumpTo *jumpTo;
   QDir currentWorld;
+  QNetworkAccessManager qnam;
 
   QSet<QString> overlayItemTypes;
   Properties * propView;
