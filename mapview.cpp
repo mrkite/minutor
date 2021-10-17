@@ -539,8 +539,8 @@ void MapView::getToolTip(int x, int z) {
       blockstate.chop(1);
       break;
     }
-    int biome_code = chunk->get_biome((x & 0xf), y, (z & 0xf));
-    auto &bi = BiomeIdentifier::Instance().getBiome(biome_code);
+    int biomeID = chunk->getBiomeID((x & 0xf), y, (z & 0xf));
+    auto &bi = BiomeIdentifier::Instance().getBiome(biomeID);
     biome = bi.name;
 
     // count Entity of each display type

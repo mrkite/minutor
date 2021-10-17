@@ -83,7 +83,7 @@ void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
 //        if (light > 15) light = 15;
 
         // get Biome
-        auto &biome = BiomeIdentifier::Instance().getBiome(chunk->get_biome(x,y,z));
+        auto &biome = BiomeIdentifier::Instance().getBiome(chunk->getBiomeID(x,y,z));
         // get current block color
         QColor blockcolor = block.colors[15];  // get the color from Block definition
         if (block.biomeWater()) {

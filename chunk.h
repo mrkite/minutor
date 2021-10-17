@@ -18,18 +18,25 @@ class ChunkSection {
 
   const PaletteEntry & getPaletteEntry(int x, int y, int z) const;
   const PaletteEntry & getPaletteEntry(int offset, int y) const;
-  quint8 getSkyLight(int x, int y, int z);
-  quint8 getSkyLight(int offset, int y);
+  const PaletteEntry & getPaletteEntry(int offset) const;
+  quint8 getBiome(int x, int y, int z) const;
+  quint8 getBiome(int offset, int y) const;
+  quint8 getBiome(int offset) const;
+  //quint8 getSkyLight(int x, int y, int z);
+  //quint8 getSkyLight(int offset, int y);
+  //quint8 getSkyLight(int offset);
   quint8 getBlockLight(int x, int y, int z) const;
   quint8 getBlockLight(int offset, int y) const;
+  quint8 getBlockLight(int offset) const;
 
-  PaletteEntry *palette;
-  int        paletteLength;
-  bool       paletteIsShared;
+  PaletteEntry *blockPalette;
+  int        blockPaletteLength;
+  bool       blockPaletteIsShared;
 
-  quint16 blocks[16*16*16];
+  quint16 blocks[16*16*16];       // index into blockPalette for each Block
+  quint8  biomes[16*16*4];        // key into BiomeIdentifer for each 4x4x4 volume of Blocks defining the Biome
 //quint8  skyLight[16*16*16/2];   // not needed in Minutor
-  quint8  blockLight[16*16*16/2];
+  quint8  blockLight[16*16*16/2]; // light value for each Block
 };
 
 
@@ -42,42 +49,39 @@ class Chunk : public QObject {
   void load(const NBT &nbt);
   void loadEntities(const NBT &nbt);
 
-  typedef QMap<QString, QSharedPointer<OverlayItem>> EntityMap;
-
-  qint32 get_biome(int x, int z);
-  qint32 get_biome(int x, int y, int z);
-  qint32 get_biome(int offset);
-
-  const EntityMap& getEntityMap() const;
+  int getChunkX() const { return chunkX; }
+  int getChunkZ() const { return chunkZ; }
 
   const ChunkSection* getSectionByY(int y) const;
 
-  uint getBlockHid(int x, int y, int z) const;
+  uint   getBlockHID(int x, int y, int z) const;
+  qint32 getBiomeID(int x, int y, int z) const;
 
-  int getChunkX() const { return chunkX; }
-  int getChunkZ() const { return chunkZ; }
+  typedef QMap<QString, QSharedPointer<OverlayItem>> EntityMap;
+  const EntityMap& getEntityMap() const;
 
 signals:
   void structureFound(QSharedPointer<GeneratedStructure> structure);
 
  protected:
-  void loadSection1343(ChunkSection *cs, const Tag *section);
-  void loadSection1519(ChunkSection *cs, const Tag *section);
+  void loadSection1343(ChunkSection * cs, const Tag * section);
+  void loadSection1519(ChunkSection * cs, const Tag * section);
+  void loadSection2800(ChunkSection * cs, const Tag * section);
 
-
-  int version;
-  qint32 biomes[16 * 16 * 4];
-  int highest;
-  std::array<ChunkSection*, 16> sections;
-  int renderedAt;
-  int renderedFlags;
+  int  chunkX;
+  int  chunkZ;
+  int  version;
+  int  highest;
+  int  renderedAt;
+  int  renderedFlags;
   bool loaded;
   bool rendering;
-  uchar image[16 * 16 * 4];  // cached render: RGBA for 16*16 Blocks
-  uchar depth[16 * 16];
+
+  std::array<ChunkSection*, 16> sections;
+  qint32 biomes[16 * 16 * 4];
+  uchar  image[16 * 16 * 4];  // cached render: RGBA for 16*16 Blocks
+  uchar  depth[16 * 16];
   EntityMap entities;
-  int chunkX;
-  int chunkZ;
   friend class MapView;
   friend class ChunkRenderer;
   friend class ChunkCache;
@@ -85,6 +89,10 @@ signals:
 
 private:
   void findHighestBlock();
+  void loadSection_decodeBlockPalette(ChunkSection * cs, const Tag * paletteTag);
+  void loadSection_createDummyPalette(ChunkSection * cs);
+  void loadSection_loadBlockStates(ChunkSection *cs, const Tag * blockStateTag);
+
 };
 
 #endif  // CHUNK_H_
