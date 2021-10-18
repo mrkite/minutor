@@ -65,7 +65,8 @@ void BlockInfo::setName(const QString & newname) {
   hopper  = this->name.contains("Hopper", Qt::CaseInsensitive);
   snow    = this->name.contains("Snow", Qt::CaseInsensitive);
   // precompute biome based watercolormodifier
-  water   = this->name.contains("Water", Qt::CaseInsensitive);
+  water   = this->name.contains("Water", Qt::CaseInsensitive)
+         || this->name.contains("Bubble_Column", Qt::CaseInsensitive);
 }
 
 const QString & BlockInfo::getName() { return name; }

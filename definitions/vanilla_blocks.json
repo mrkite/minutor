@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.17.pre2",
+  "version": "1.17.pre3",
   "data": [
     {
       "name": "minecraft:air",
@@ -404,14 +404,14 @@
     },
     {
       "name": "minecraft:flowing_water",
-      "color": "#2233a9",
+      "color": "#a9a9a9",
       "alpha": 0.53,
       "transparent": true,
       "liquid": true
     },
     {
       "name": "minecraft:water",
-      "color": "#212fab",
+      "color": "#b1b1b1",
       "alpha": 0.53,
       "transparent": true,
       "liquid": true
@@ -940,15 +940,13 @@
       "name": "minecraft:seagrass",
       "color": "#337f08",
       "alpha": 0.3,
-      "transparent": true,
-      "spawninside": true
+      "transparent": true
     },
     {
       "name": "minecraft:tall_seagrass",
       "color": "#3b8b0e",
       "alpha": 0.3,
-      "transparent": true,
-      "spawninside": true
+      "transparent": true
     },
     {
       "name": "minecraft:piston",
@@ -2237,7 +2235,7 @@
     },
     {
       "name": "minecraft:water_cauldron",
-      "color": "#343b79",
+      "color": "#474747",
       "transparent": true
     },
     {
@@ -4288,14 +4286,14 @@
     },
     {
       "name": "minecraft:dried_kelp_block",
-      "color": "#323b27",
-      "alpha": 0.3,
-      "transparent": true,
-      "spawninside": true
+      "color": "#323b27"
     },
     {
       "name": "minecraft:turtle_egg",
-      "color": "#e4e3c0"
+      "color": "#e4e3c0",
+      "alpha": 0.3,
+      "transparent": true,
+      "spawninside": true
     },
     {
       "name": "minecraft:brain_coral",
@@ -4459,7 +4457,9 @@
     },
     {
       "name": "minecraft:sea_pickle",
-      "color": "#5a6128"
+      "color": "#5a6128",
+      "alpha": 0.3,
+      "transparent": true
     },
     {
       "name": "minecraft:blue_ice",
@@ -4471,7 +4471,7 @@
     },
     {
       "name": "minecraft:bubble_column",
-      "color": "#2335b1",
+      "color": "#a9a9a9",
       "alpha": 0.53,
       "transparent": true,
       "liquid": true

@@ -1,18 +1,19 @@
 {
   "name": "Vanilla",
   "type": "biome",
-  "version": "1.16.20w15a",
+  "version": "1.17",
   "data": [
     {
       "id": 0,
       "name": "Ocean",
       "color": "#000070",
-      "watermodifier": "#e0cce6"
+      "watermodifier": "#3f76e4"
     },
     {
       "id": 1,
       "name": "Plains",
       "color": "#8db360",
+      "watermodifier": "#3f76e4",
       "temperature": 0.8,
       "humidity": 0.4
     },
@@ -20,6 +21,7 @@
       "id": 2,
       "name": "Desert",
       "color": "#fa9418",
+      "watermodifier": "#3f76e4",
       "temperature": 2.0,
       "humidity": 0.0
     },
@@ -27,6 +29,7 @@
       "id": 3,
       "name": "Mountains",
       "color": "#606060",
+      "watermodifier": "#3f76e4",
       "temperature": 0.2,
       "humidity": 0.3
     },
@@ -34,6 +37,7 @@
       "id": 4,
       "name": "Forest",
       "color": "#056621",
+      "watermodifier": "#3f76e4",
       "temperature": 0.7,
       "humidity": 0.8
     },
@@ -41,6 +45,7 @@
       "id": 5,
       "name": "Taiga",
       "color": "#0b6659",
+      "watermodifier": "#3f76e4",
       "temperature": 0.25,
       "humidity": 0.8
     },
@@ -48,19 +53,21 @@
       "id": 6,
       "name": "Swamp",
       "color": "#07f9b2",
-      "watermodifier": "#e0ffae",
+      "watermodifier": "#617b64",
       "temperature": 0.8,
       "humidity": 0.9
     },
     {
       "id": 7,
       "name": "River",
-      "color": "#0000ff"
+      "color": "#0000ff",
+      "watermodifier": "#3f76e4"
     },
     {
       "id": 8,
       "name": "Nether Wastes",
       "color": "#ff0000",
+      "watermodifier": "#3f76e4",
       "temperature": 2.0,
       "humidity": 0.0
     },
@@ -73,7 +80,7 @@
       "id": 10,
       "name": "Frozen Ocean",
       "color": "#9090a0",
-      "watermodifier": "#f1cfd4",
+      "watermodifier": "#3938c9",
       "temperature": 0.0,
       "humidity": 0.5
     },
@@ -81,6 +88,7 @@
       "id": 11,
       "name": "Frozen River",
       "color": "#a0a0ff",
+      "watermodifier": "#3938c9",
       "temperature": 0.0,
       "humidity": 0.5
     },
@@ -88,6 +96,7 @@
       "id": 12,
       "name": "Snowy Tundra",
       "color": "#ffffff",
+      "watermodifier": "#3f76e4",
       "temperature": 0.0,
       "humidity": 0.5
     },
@@ -95,6 +104,7 @@
       "id": 13,
       "name": "Snowy Mountains",
       "color": "#a0a0a0",
+      "watermodifier": "#3f76e4",
       "temperature": 0.0,
       "humidity": 0.5
     },
@@ -102,6 +112,7 @@
       "id": 14,
       "name": "Mushroom Fields",
       "color": "#ff00ff",
+      "watermodifier": "#3f76e4",
       "temperature": 0.9,
       "humidity": 1.0
     },
@@ -116,6 +127,7 @@
       "id": 16,
       "name": "Beach",
       "color": "#fade55",
+      "watermodifier": "#3f76e4",
       "temperature": 0.8,
       "humidity": 0.4
     },
@@ -123,6 +135,7 @@
       "id": 17,
       "name": "Desert Hills",
       "color": "#d25f12",
+      "watermodifier": "#3f76e4",
       "temperature": 2.0,
       "humidity": 0.0
     },
@@ -130,6 +143,7 @@
       "id": 18,
       "name": "Wooded Hills",
       "color": "#22551c",
+      "watermodifier": "#3f76e4",
       "temperature": 0.7,
       "humidity": 0.8
     },
@@ -137,6 +151,7 @@
       "id": 19,
       "name": "Taiga Hills",
       "color": "#163933",
+      "watermodifier": "#3f76e4",
       "temperature": 0.25,
       "humidity": 0.8
     },
@@ -144,6 +159,7 @@
       "id": 20,
       "name": "Mountain Edge",
       "color": "#72789a",
+      "watermodifier": "#3f76e4",
       "temperature": 0.2,
       "humidity": 0.3
     },
@@ -151,6 +167,7 @@
       "id": 21,
       "name": "Jungle",
       "color": "#537b09",
+      "watermodifier": "#3f76e4",
       "temperature": 0.95,
       "humidity": 0.9
     },
@@ -158,6 +175,7 @@
       "id": 22,
       "name": "Jungle Hills",
       "color": "#2c4205",
+      "watermodifier": "#3f76e4",
       "temperature": 0.95,
       "humidity": 0.9
     },
@@ -165,6 +183,7 @@
       "id": 23,
       "name": "Jungle Edge",
       "color": "#628b17",
+      "watermodifier": "#3f76e4",
       "temperature": 0.95,
       "humidity": 0.8
     },
@@ -172,12 +191,13 @@
       "id": 24,
       "name": "Deep Ocean",
       "color": "#000030",
-      "watermodifier": "#e4cce1"
+      "watermodifier": "#3f76e4"
     },
     {
       "id": 25,
       "name": "Stone Shore",
       "color": "#a2a284",
+      "watermodifier": "#3f76e4",
       "temperature": 0.2,
       "humidity": 0.3
     },
@@ -185,6 +205,7 @@
       "id": 26,
       "name": "Snowy Beach",
       "color": "#faf0c0",
+      "watermodifier": "#3f76e4",
       "temperature": 0.05,
       "humidity": 0.3
     },
@@ -192,6 +213,7 @@
       "id": 27,
       "name": "Birch Forest",
       "color": "#307444",
+      "watermodifier": "#3f76e4",
       "temperature": 0.6,
       "humidity": 0.6
     },
@@ -199,6 +221,7 @@
       "id": 28,
       "name": "Birch Forest Hills",
       "color": "#1f5f32",
+      "watermodifier": "#3f76e4",
       "temperature": 0.6,
       "humidity": 0.6
     },
@@ -206,6 +229,7 @@
       "id": 29,
       "name": "Dark Forest",
       "color": "#40511a",
+      "watermodifier": "#3f76e4",
       "temperature": 0.7,
       "humidity": 0.8
     },
@@ -213,6 +237,7 @@
       "id": 30,
       "name": "Snowy Taiga",
       "color": "#31554a",
+      "watermodifier": "#3f76e4",
       "temperature": -0.5,
       "humidity": 0.4
     },
@@ -220,6 +245,7 @@
       "id": 31,
       "name": "Snowy Taiga Hills",
       "color": "#243f36",
+      "watermodifier": "#3f76e4",
       "temperature": -0.5,
       "humidity": 0.4
     },
@@ -227,6 +253,7 @@
       "id": 32,
       "name": "Giant Tree Taiga",
       "color": "#596651",
+      "watermodifier": "#3f76e4",
       "temperature": 0.3,
       "humidity": 0.8
     },
@@ -234,6 +261,7 @@
       "id": 33,
       "name": "Giant Tree Taiga Hills",
       "color": "#454f3e",
+      "watermodifier": "#3f76e4",
       "temperature": 0.3,
       "humidity": 0.8
     },
@@ -241,6 +269,7 @@
       "id": 34,
       "name": "Wooded Mountains",
       "color": "#507050",
+      "watermodifier": "#3f76e4",
       "temperature": 0.2,
       "humidity": 0.3
     },
@@ -248,6 +277,7 @@
       "id": 35,
       "name": "Savanna",
       "color": "#bdb25f",
+      "watermodifier": "#3f76e4",
       "temperature": 1.2,
       "humidity": 0.0
     },
@@ -255,6 +285,7 @@
       "id": 36,
       "name": "Savanna Plateau",
       "color": "#a79d64",
+      "watermodifier": "#3f76e4",
       "temperature": 1.0,
       "humidity": 0.0
     },
@@ -262,6 +293,7 @@
       "id": 37,
       "name": "Badlands",
       "color": "#d94515",
+      "watermodifier": "#3f76e4",
       "temperature": 2.0,
       "humidity": 0.0
     },
@@ -269,6 +301,7 @@
       "id": 38,
       "name": "Wooded Badlands Plateau",
       "color": "#b09765",
+      "watermodifier": "#3f76e4",
       "temperature": 2.0,
       "humidity": 0.0
     },
@@ -276,80 +309,87 @@
       "id": 39,
       "name": "Badlands Plateau",
       "color": "#ca8c65",
+      "watermodifier": "#3f76e4",
       "temperature": 2.0,
       "humidity": 0.0
     },
     {
       "id": 40,
       "name": "Small End Islands",
-      "color": "#8080ff"
+      "color": "#8080ff",
+      "watermodifier": "#3f76e4"
     },
     {
       "id": 41,
       "name": "End Midlands",
-      "color": "#8080ff"
+      "color": "#8080ff",
+      "watermodifier": "#3f76e4"
     },
     {
       "id": 42,
       "name": "End Highlands",
-      "color": "#8080ff"
+      "color": "#8080ff",
+      "watermodifier": "#3f76e4"
     },
     {
       "id": 43,
       "name": "End Barrens",
-      "color": "#8080ff"
+      "color": "#8080ff",
+      "watermodifier": "#3f76e4"
     },
     {
       "id": 44,
       "name": "Warm Ocean",
       "color": "#0000ac",
-      "watermodifier": "#cfc9f8"
+      "watermodifier": "#43d5ee"
     },
     {
       "id": 45,
       "name": "Lukewarm Ocean",
       "color": "#000090",
-      "watermodifier": "#d7caef"
+      "watermodifier": "#45adf2"
     },
     {
       "id": 46,
       "name": "Cold Ocean",
       "color": "#202070",
-      "watermodifier": "#e9cddd"
+      "watermodifier": "#3d57d6"
     },
     {
       "id": 47,
       "name": "Deep Warm Ocean",
       "color": "#000050",
-      "watermodifier": "#d3c9f3"
+      "watermodifier": "#43d5ee"
     },
     {
       "id": 48,
       "name": "Deep Lukewarm Ocean",
       "color": "#000040",
-      "watermodifier": "#dccbea"
+      "watermodifier": "#45adf2"
     },
     {
       "id": 49,
       "name": "Deep Cold Ocean",
       "color": "#202038",
-      "watermodifier": "#edced8"
+      "watermodifier": "#3d57d6"
     },
     {
       "id": 50,
       "name": "Deep Frozen Ocean",
       "color": "#404090",
-      "watermodifier": "#f6d0d0"
+      "watermodifier": "#3938c9"
     },
     {
       "id": 127,
       "name": "The Void",
-      "color": "#282898"
+      "color": "#282898",
+      "watermodifier": "#3f76e4"
     },
     {
       "id": 129,
       "name": "Sunflower Plains",
       "color": "#b5db88",
+      "watermodifier": "#3f76e4",
       "temperature": 0.8,
       "humidity": 0.4
     },
@@ -357,6 +397,7 @@
       "id": 130,
       "name": "Desert Lakes",
       "color": "#ffbc40",
+      "watermodifier": "#3f76e4",
       "temperature": 2.0,
       "humidity": 0.0
     },
@@ -364,6 +405,7 @@
       "id": 131,
       "name": "Gravelly Mountains",
       "color": "#888888",
+      "watermodifier": "#3f76e4",
       "temperature": 0.2,
       "humidity": 0.3
     },
@@ -371,6 +413,7 @@
       "id": 132,
       "name": "Flower Forest",
       "color": "#2d8e49",
+      "watermodifier": "#3f76e4",
       "temperature": 0.7,
       "humidity": 0.8
     },
@@ -378,6 +421,7 @@
       "id": 133,
       "name": "Taiga Mountains",
       "color": "#338e81",
+      "watermodifier": "#3f76e4",
       "temperature": 0.25,
       "humidity": 0.8
     },
@@ -385,7 +429,7 @@
       "id": 134,
       "name": "Swamp Hills",
       "color": "#2fffda",
-      "watermodifier": "#e0ffae",
+      "watermodifier": "#617b64",
       "temperature": 0.8,
       "humidity": 0.9
     },
@@ -393,6 +437,7 @@
       "id": 140,
       "name": "Ice Spikes",
       "color": "#b4dcdc",
+      "watermodifier": "#3f76e4",
       "temperature": 0.0,
       "humidity": 0.5
     },
@@ -400,6 +445,7 @@
       "id": 149,
       "name": "Modified Jungle",
       "color": "#7ba331",
+      "watermodifier": "#3f76e4",
       "temperature": 0.95,
       "humidity": 0.9
     },
@@ -407,6 +453,7 @@
       "id": 151,
       "name": "Modified Jungle Edge",
       "color": "#8ab33f",
+      "watermodifier": "#3f76e4",
       "temperature": 0.95,
       "humidity": 0.8
     },
@@ -414,6 +461,7 @@
       "id": 155,
       "name": "Tall Birch Forest",
       "color": "#589c6c",
+      "watermodifier": "#3f76e4",
       "temperature": 0.6,
       "humidity": 0.6
     },
@@ -421,6 +469,7 @@
       "id": 156,
       "name": "Tall Birch Hills",
       "color": "#47875a",
+      "watermodifier": "#3f76e4",
       "temperature": 0.6,
       "humidity": 0.6
     },
@@ -428,6 +477,7 @@
       "id": 157,
       "name": "Dark Forest Hills",
       "color": "#687942",
+      "watermodifier": "#3f76e4",
       "temperature": 0.7,
       "humidity": 0.8
     },
@@ -435,6 +485,7 @@
       "id": 158,
       "name": "Snowy Taiga Mountains",
       "color": "#597d72",
+      "watermodifier": "#3f76e4",
       "temperature": -0.5,
       "humidity": 0.4
     },
@@ -442,6 +493,7 @@
       "id": 160,
       "name": "Giant Spruce Taiga",
       "color": "#818e79",
+      "watermodifier": "#3f76e4",
       "temperature": 0.25,
       "humidity": 0.8
     },
@@ -449,6 +501,7 @@
       "id": 161,
       "name": "Giant Spruce Taiga Hills",
       "color": "#6d7766",
+      "watermodifier": "#3f76e4",
       "temperature": 0.25,
       "humidity": 0.8
     },
@@ -456,6 +509,7 @@
       "id": 162,
       "name": "Gravelly Mountains+",
       "color": "#789878",
+      "watermodifier": "#3f76e4",
       "temperature": 0.2,
       "humidity": 0.3
     },
@@ -463,6 +517,7 @@
       "id": 163,
       "name": "Shattered Savanna",
       "color": "#e5da87",
+      "watermodifier": "#3f76e4",
       "temperature": 1.1,
       "humidity": 0.0
     },
@@ -470,6 +525,7 @@
       "id": 164,
       "name": "Shattered Savanna Plateau",
       "color": "#cfc58c",
+      "watermodifier": "#3f76e4",
       "temperature": 1.0,
       "humidity": 0.0
     },
@@ -477,6 +533,7 @@
       "id": 165,
       "name": "Eroded Badlands",
       "color": "#ff6d3d",
+      "watermodifier": "#3f76e4",
       "temperature": 2.0,
       "humidity": 0.0
     },
@@ -484,6 +541,7 @@
       "id": 166,
       "name": "Modified Wooded Badlands Plateau",
       "color": "#d8bf8d",
+      "watermodifier": "#3f76e4",
       "temperature": 2.0,
       "humidity": 0.0
     },
@@ -491,6 +549,7 @@
       "id": 167,
       "name": "Modified Badlands Plateau",
       "color": "#f2b48d",
+      "watermodifier": "#3f76e4",
       "temperature": 2.0,
       "humidity": 0.0
     },
@@ -499,6 +558,7 @@
       "id": 168,
       "name": "Bamboo Jungle",
       "color": "#768e14",
+      "watermodifier": "#3f76e4",
       "temperature": 0.95,
       "humidity": 0.9
     },
@@ -506,6 +566,7 @@
       "id": 169,
       "name": "Bamboo Jungle Hills",
       "color": "#3b470a",
+      "watermodifier": "#3f76e4",
       "temperature": 0.95,
       "humidity": 0.9
     },
@@ -513,6 +574,7 @@
       "id": 170,
       "name": "Soul Sand Valley",
       "color": "#522921",
+      "watermodifier": "#3f76e4",
       "temperature": 2.0,
       "humidity": 0.0
     },
@@ -520,6 +582,7 @@
       "id": 171,
       "name": "Crimson Forest",
       "color": "#dd0808",
+      "watermodifier": "#3f76e4",
       "temperature": 2.0,
       "humidity": 0.0
     },
@@ -527,6 +590,7 @@
       "id": 172,
       "name": "Warped Forest",
       "color": "#49907b",
+      "watermodifier": "#3f76e4",
       "temperature": 2.0,
       "humidity": 0.0
     },
@@ -534,6 +598,7 @@
       "id": 173,
       "name": "Basalt Deltas",
       "color": "#403636",
+      "watermodifier": "#3f76e4",
       "temperature": 2.0,
       "humidity": 0.0
     }
