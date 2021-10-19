@@ -490,8 +490,8 @@ void MapView::getToolTip(int x, int z) {
   int offset = (x & 0xf) + (z & 0xf) * 16;
   int y = 0;
 
-  QString name  = "Unknown";
-  QString biome = "Unknown Biome";
+  QString blockname = "Unknown Block";
+  QString biomename = "Unknown Biome";
   QString blockstate;
   QMap<QString, int> entityIds;
 
@@ -506,18 +506,18 @@ void MapView::getToolTip(int x, int z) {
       }
       // get information about block
       const PaletteEntry & pdata = section->getPaletteEntry(offset, y);
-      name = pdata.name;
+      blockname = pdata.name;
 
       // For unknown legacy block IDs, add the legacy ID to the displayed name.
       // TODO: Hoist "Unknown Block" literal into constant
-      if (name == "Unknown Block" && pdata.properties.contains(PaletteEntry::legacyBlockIdProperty)) {
+      if (blockname == "Unknown Block" && pdata.properties.contains(PaletteEntry::legacyBlockIdProperty)) {
         uint fullLegacyBlockId = pdata.properties[PaletteEntry::legacyBlockIdProperty].toUInt();
         // Legacy IDs with internal values > 4096 are virtual IDs with
         // higher-order bits encoding the data.
         uint baseLegacyBlockId = fullLegacyBlockId & 4095;
         uint legacyData = fullLegacyBlockId >> 12;
         QString displayName = QStringLiteral("Unknown [%1:%2]").arg(baseLegacyBlockId).arg(legacyData);
-        name = displayName;
+        blockname = displayName;
       }
       // in case of fully transparent blocks (meaning air)
       // -> we continue downwards
@@ -540,8 +540,10 @@ void MapView::getToolTip(int x, int z) {
       break;
     }
     int biomeID = chunk->getBiomeID((x & 0xf), y, (z & 0xf));
-    auto &bi = BiomeIdentifier::Instance().getBiome(biomeID);
-    biome = bi.name;
+    const BiomeInfo &biome = (chunk->version >=2800) ?
+        BiomeIdentifier::Instance().getBiome((quint8)biomeID) :
+        BiomeIdentifier::Instance().getBiome((qint32)biomeID);
+    biomename = biome.name;
 
     // count Entity of each display type
     for (auto &item : getItems(x, y, z)) {
@@ -565,8 +567,8 @@ void MapView::getToolTip(int x, int z) {
 
   QString hovertext = QString("X:%1 Y:%2 Z:%3 - %4 - %5")
                               .arg(x).arg(y).arg(z)
-                              .arg(biome)
-                              .arg(name);
+                              .arg(biomename)
+                              .arg(blockname);
   if (blockstate.length() > 0)
     hovertext += " (" + blockstate + ")";
   if (entityStr.length() > 0)

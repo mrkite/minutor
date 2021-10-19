@@ -34,7 +34,7 @@ class ChunkSection {
   bool       blockPaletteIsShared;
 
   quint16 blocks[16*16*16];       // index into blockPalette for each Block
-  quint8  biomes[16*16*4];        // key into BiomeIdentifer for each 4x4x4 volume of Blocks defining the Biome
+  quint8  biomes[4*4*4];          // key into BiomeIdentifer for each 4x4x4 volume of Blocks defining the Biome
 //quint8  skyLight[16*16*16/2];   // not needed in Minutor
   quint8  blockLight[16*16*16/2]; // light value for each Block
 };
@@ -92,7 +92,7 @@ private:
   void loadSection_decodeBlockPalette(ChunkSection * cs, const Tag * paletteTag);
   void loadSection_createDummyPalette(ChunkSection * cs);
   void loadSection_loadBlockStates(ChunkSection *cs, const Tag * blockStateTag);
-
+  bool loadSection_decodeBiomePalette(ChunkSection * cs, const Tag * biomesTag);
 };
 
 #endif  // CHUNK_H_

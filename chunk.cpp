@@ -5,6 +5,7 @@
 #include "./chunk.h"
 #include "./flatteningconverter.h"
 #include "./blockidentifier.h"
+#include "./biomeidentifier.h"
 
 template<typename ValueT>
 inline void* safeMemCpy(void* dest, const std::vector<ValueT>& srcVec, size_t length)
@@ -84,7 +85,18 @@ uint Chunk::getBlockHID(int x, int y, int z) const {
 int Chunk::getBiomeID(int x, int y, int z) const {
   int offset;
 
-  if (this->version >= 2203) {
+  if (this->version >= 2800) {
+    // Minecraft 1.18 has Y dependand Biome stored per Section
+    int x_idx = x         >> 2;
+    int y_idx = (y & 0xf) >> 2;
+    int z_idx = z         >> 2;
+    offset = x_idx + 4*z_idx + 16*y_idx;
+    int y_section = y >> 4;
+    if ((y_section>=0) && (y_section<16) && this->sections[y_section])
+      return this->sections[y_section]->biomes[offset];
+    else
+      return -1;
+  } else if (this->version >= 2203) {
     // Minecraft 1.15 has Y dependand Biome
     int x_idx = x >> 2;
     int y_idx = y >> 2;
@@ -98,7 +110,7 @@ int Chunk::getBiomeID(int x, int y, int z) const {
   #if defined(DEBUG) || defined(_DEBUG) || defined(QT_DEBUG)
   if ((offset < 0) || ((unsigned long long)(offset) > sizeof(this->biomes)/sizeof(this->biomes[0]))) {
     qWarning() << "Biome index out of range!";
-    return 0;
+    return -1;
   }
   #endif
   return this->biomes[offset];
@@ -161,7 +173,7 @@ void Chunk::load(const NBT &nbt) {
       if ((idx >=0) && (idx <16)) {
         ChunkSection *cs = new ChunkSection();
         if (this->version >= 2836) {
-          // after "Cliff & Caves" update (1.18)
+          // after "Cliffs & Caves" update (1.18)
           loadSection2800(cs, section);
         } else if (this->version >= 1519) {
           // after "The Flattening" update (1.13)
@@ -305,10 +317,10 @@ void Chunk::loadSection1519(ChunkSection *cs, const Tag *section) {
 }
 
 
-// Chunk format after "Clifs & Cave version 2800
+// Chunk format after "Cliffs & Caves version 2800
 void Chunk::loadSection2800(ChunkSection * cs, const Tag * section) {
 
-  // decode Palette to be able to map BlockStates
+  // decode BlockStates-Palette to be able to map BlockStates
   if (section->has("block_states") && section->at("block_states")->has("palette")) {
     loadSection_decodeBlockPalette(cs, section->at("block_states")->at("palette"));
   } else loadSection_createDummyPalette(cs);
@@ -320,6 +332,11 @@ void Chunk::loadSection2800(ChunkSection * cs, const Tag * section) {
     // set everything to 0 (minecraft:air)
     memset(cs->blocks, 0, sizeof(cs->blocks));
   }
+
+  // decode Biomes-Palette to be able to map Biome
+  if (section->has("biomes") && section->at("biomes")->has("palette")) {
+    loadSection_decodeBiomePalette(cs, section->at("biomes"));
+  } else {;/*todo*/}
 
   // copy Light data
 //  if (section->has("SkyLight")) {
@@ -419,6 +436,53 @@ void Chunk::loadSection_loadBlockStates(ChunkSection *cs, const Tag * blockState
   }
 
 }
+
+
+bool Chunk::loadSection_decodeBiomePalette(ChunkSection * cs, const Tag * biomesTag) {
+  BiomeIdentifier &bi = BiomeIdentifier::Instance();
+
+  if (biomesTag->has("palette")) {
+    auto paletteTag = biomesTag->at("palette");
+    int biomePaletteLength = paletteTag->length();
+    PaletteEntry* biomePalette = new PaletteEntry[biomePaletteLength];
+    for (int j = 0; j < biomePaletteLength; j++) {
+      biomePalette[j].name = paletteTag->at(j)->toString();
+      // query BiomeIdentifer for that Biome
+      quint8 bID = bi.getBiome(biomePalette[j].name).id;
+      // get name and hash it to hid
+      biomePalette[j].hid  = bID;
+    }
+
+    if (biomesTag->has("data")) {
+      auto biomeStates = biomesTag->at("data")->toLongArray();
+      int bsCnt  = 0;  // counter for 64bit words
+      int bitCnt = 0;  // counter for bits
+
+      // "optimized for loading" Biome data
+      int bitSize = std::max(1, int(ceil(log2(biomePaletteLength))));
+      int bitMask = (1 << bitSize)-1;
+      int len = sizeof(cs->biomes)/sizeof(cs->biomes[0]);
+      for (int i = 0; i < len; i++) {
+        uint64_t biomeState = biomeStates[bsCnt];
+        cs->biomes[i] = biomePalette[(biomeState >> bitCnt) & bitMask].hid;
+        bitCnt += bitSize;
+        if (bitCnt+bitSize > 64) {
+          bsCnt++;
+          bitCnt = 0;
+        }
+      }
+
+    } else {
+      // all Biome data is the same
+      std::fill_n(cs->biomes, sizeof(cs->biomes), biomePalette[0].hid);
+    }
+
+    delete[] biomePalette;
+
+    return true;
+  } else return false;
+}
+
 
 
 //-------------------------------------------------------------------------------------------------
