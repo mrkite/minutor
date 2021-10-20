@@ -138,6 +138,7 @@ signals:
   Settings *settings;
   JumpTo *jumpTo;
   QDir currentWorld;
+  int  currentWorldVersion;
   QNetworkAccessManager qnam;
 
   QSet<QString> overlayItemTypes;
