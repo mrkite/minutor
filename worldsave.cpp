@@ -191,27 +191,17 @@ void WorldSave::findBounds(QString path, int *top, int *left, int *bottom,
   // loop through all region files and find the extremes
   while (it.hasNext()) {
     it.next();
-    QString fn = it.fileName();
-    int len = fn.length() - 4;  // length of filename
+    // skip empty region files
+    if (it.fileInfo().size() == 0)
+      continue;
 
-    // figure out the X of the region
-    int posX = 2;  // position after "r."
-    int posE = posX;
-    while (posE < len && (fn.at(posE) == '+' || fn.at(posE) == '-' ||
-                          fn.at(posE).isDigit())) {
-      posE++;
-    }
-    QStringRef numX(&fn, posX, posE-posX);
-    cur.x = numX.toInt();
-
-    // figure out the Z of the region
-    int posZ = ++posE;
-    while (posE < len && (fn.at(posE) == '+' || fn.at(posE) == '-' ||
-                          fn.at(posE).isDigit())) {
-      posE++;
-    }
-    QStringRef numZ(&fn, posZ, posE - posZ);
-    cur.z = numZ.toInt();
+    // figure out the X & Z of the region
+    // -> split filename into parts, we expect 4 of them: "r" "X" "Z" "mca"
+    QStringList nameParts = it.fileName().split(".");
+    if (nameParts.length() != 4)
+      continue;
+    cur.x = nameParts[1].toInt();
+    cur.z = nameParts[2].toInt();
 
     if (!hasOne) {
       for (int e = 0; e < 4; e++)
@@ -233,6 +223,8 @@ void WorldSave::findBounds(QString path, int *top, int *left, int *bottom,
       QFile f(path+"/region/r." +
               QString::number(edges[e].at(i).x) + "." +
               QString::number(edges[e].at(i).z) + ".mca");
+      // skip empty region files
+      if (f.size() < 4096) continue;
       f.open(QIODevice::ReadOnly);
       uchar *header = f.map(0, 4096);
       // loop through all chunk headers.
@@ -242,16 +234,16 @@ void WorldSave::findBounds(QString path, int *top, int *left, int *bottom,
         if (coffset != 0) {
           switch (e) {
             case 0:  // smallest Z
-              minz = qMin(minz, offset / 128);
+              minz = std::min<int>(minz, offset / 128);
               break;
             case 1:  // smallest X
-              minx = qMin(minx, (offset & 127) / 4);
+              minx = std::min<int>(minx, (offset & 127) / 4);
               break;
             case 2:  // largest Z
-              maxz = qMax(maxz, offset / 128);
+              maxz = std::max<int>(maxz, offset / 128);
               break;
             case 3:  // largest X
-              maxx = qMax(maxx, (offset & 127) / 4);
+              maxx = std::max<int>(maxx, (offset & 127) / 4);
               break;
           }
         }
