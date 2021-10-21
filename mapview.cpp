@@ -472,7 +472,7 @@ void MapView::drawChunk(int x, int z) {
   centerx += (x - centerchunkx) * chunksize;
   centery += (z - centerchunkz) * chunksize;
 
-  const uchar* srcImageData = chunk ? chunk->image : placeholder;
+  const uchar* srcImageData = chunk ? chunk->getImage() : placeholder;
   QImage srcImage(srcImageData, 16, 16, QImage::Format_RGB32);
 
   QRectF targetRect(centerx, centery, chunksize, chunksize);
@@ -496,12 +496,13 @@ void MapView::getToolTip(int x, int z) {
   QMap<QString, int> entityIds;
 
   if (chunk) {
-    int top = qMin(depth, chunk->highest);
-    for (y = top; y >= 0; y--) {
-      int section_idx = y >> 4;
-      const ChunkSection *section = chunk->sections[section_idx];
+    int top = std::min(depth, chunk->highest);
+    for (y = top; y >= chunk->lowest; y--) {
+      const ChunkSection *section = chunk->getSectionByY(y);
       if (!section) {
-        y = (section_idx << 4) - 1;  // skip entire section
+        // skip entire section
+        int section_idx = (y >> 4);
+        y = (section_idx << 4) - 1;
         continue;
       }
       // get information about block
@@ -629,7 +630,7 @@ QList<QSharedPointer<OverlayItem>> MapView::getItems(int x, int y, int z) {
     for (auto &type : overlayItemTypes) {
       // generated structures
       for (auto &item : overlayItems[type]) {
-        double ymin = 0;
+        double ymin = chunk->lowest;
         double ymax = depth;
         if (item->intersects(OverlayItem::Point(x, ymin, z),
                              OverlayItem::Point(x, ymax, z))) {

@@ -69,8 +69,8 @@ private:
   QHash<int, BiomeInfo*>    biomes;   // consolidated Biome mapping
   QList<QList<BiomeInfo*> > packs;    // raw data of all available packs
   // new Biomes after Cliffs & Caves update (1.18)
-  QList<BiomeInfo*>         biomes18;   // consolidated Biome mapping
-  QList<QList<BiomeInfo*> > packs18;    // raw data of all available packs
+  QList<BiomeInfo*>         biomes18; // consolidated Biome mapping
+  QList<QList<BiomeInfo*> > packs18;  // raw data of all available packs
 };
 
 #endif  // BIOMEIDENTIFIER_H_

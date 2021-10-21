@@ -5,6 +5,7 @@ Copyright (c) 2016, EtlamGit
 
 #include <assert.h>
 #include <cmath>
+#include <QtCore>
 
 #include "./biomeidentifier.h"
 #include "./json.h"
@@ -221,6 +222,9 @@ const BiomeInfo &BiomeIdentifier::getBiome(QString id) const {
   for (const BiomeInfo* biome : this->biomes18) {
     if (biome->nid == id) return *(biome);
   }
+#if defined(DEBUG) || defined(_DEBUG) || defined(QT_DEBUG)
+  qWarning() << "Unknown Biome:" << id;
+#endif
   return unknownBiome;
 }
 

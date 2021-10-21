@@ -258,7 +258,7 @@
       "humidity": 0.6
     },
     {
-      "id": "minecraft:old growth_spruce_taiga",
+      "id": "minecraft:old_growth_spruce_taiga",
       "color": "#818e79",
       "temperature": 0.25,
       "humidity": 0.8
@@ -306,13 +306,22 @@
       "humidity": 0.0
     },
     {
+      "id": "minecraft:meadow"
+    },
+    {
       "id": "minecraft:mountain_meadow"
+    },
+    {
+      "id": "minecraft:grove"
     },
     {
       "id": "minecraft:mountain_grove"
     },
     {
       "id": "minecraft:snowy_slopes"
+    },
+    {
+      "id": "minecraft:frozen_peaks"
     },
     {
       "id": "minecraft:lofty_peaks"
@@ -322,6 +331,9 @@
     },
     {
       "id": "minecraft:stony_peaks"
+    },
+    {
+      "id": "minecraft:jagged_peaks"
     },
     {
       "id": "minecraft:lush_caves"

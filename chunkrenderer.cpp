@@ -30,7 +30,7 @@ void ChunkRenderer::run() {
 void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
   int offset = 0;
   uchar *bits = chunk->image;
-  uchar *depthbits = chunk->depth;
+  short *depthbits = chunk->depth;
   for (int z = 0; z < 16; z++) {  // n->s
     int lasty = -1;
     for (int x = 0; x < 16; x++, offset++) {  // e->w
@@ -43,12 +43,12 @@ void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
       if (flags & MapView::flgSingleLayer)
         top = depth;
       int highest = 0;
-      for (int y = top; y >= 0; y--) {  // top->down
+      for (int y = top; y >= chunk->lowest; y--) {  // top->down
         // perform a one deep scan in SingleLayer mode
         if ((flags & MapView::flgSingleLayer) && (y < top))
           break;
         int sec = y >> 4;
-        ChunkSection *section = chunk->sections[sec];
+        const ChunkSection *section = chunk->getSectionByIdx(sec);
         if (!section) {
           y = (sec << 4) - 1;  // skip whole section
           continue;
@@ -65,9 +65,7 @@ void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
 
         // get light value from one block above
         int light = 0;
-        ChunkSection *section1 = NULL;
-        if (y < 255)
-          section1 = chunk->sections[(y+1) >> 4];
+        const ChunkSection *section1 = chunk->getSectionByY(y+1);
         if (section1)
           light = section1->getBlockLight(offset, y+1);
         int light1 = light;
@@ -120,12 +118,8 @@ void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
         if (flags & MapView::flgMobSpawn) {
           // get block info from 1 and 2 above and 1 below
           uint blid1(0), blid2(0), blidB(0);  // default to legacy air (todo: better handling of block above)
-          ChunkSection *section2 = NULL;
-          ChunkSection *sectionB = NULL;
-          if (y < 254)
-            section2 = chunk->sections[(y+2) >> 4];
-          if (y > 0)
-            sectionB = chunk->sections[(y-1) >> 4];
+          const ChunkSection *section2 = chunk->getSectionByY(y+2);
+          const ChunkSection *sectionB = chunk->getSectionByY(y-1);
           if (section1) {
             blid1 = section1->getPaletteEntry(offset, y+1).hid;
           }
@@ -196,7 +190,7 @@ void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
         int cave_test = 0;
         for (int y=highest-1; (y >= 0) && (cave_test < CaveShade::CAVE_DEPTH); y--, cave_test++) {  // top->down
           // get section
-          ChunkSection *section = chunk->sections[y >> 4];
+          const ChunkSection *section = chunk->getSectionByY(y);
           if (!section) continue;
           // get data value
           // int data = section->getData(offset, y);

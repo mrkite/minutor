@@ -49,10 +49,13 @@ class Chunk : public QObject {
   void load(const NBT &nbt);
   void loadEntities(const NBT &nbt);
 
+  // public getters to read-only access internal data
   int getChunkX() const { return chunkX; }
   int getChunkZ() const { return chunkZ; }
+  const uchar * getImage() const { return image; }
 
   const ChunkSection* getSectionByY(int y) const;
+  const ChunkSection* getSectionByIdx(qint8 y) const;
 
   uint   getBlockHID(int x, int y, int z) const;
   qint32 getBiomeID(int x, int y, int z) const;
@@ -72,20 +75,20 @@ signals:
   int  chunkZ;
   int  version;
   int  highest;
+  int  lowest;
   int  renderedAt;
   int  renderedFlags;
   bool loaded;
   bool rendering;
 
-  std::array<ChunkSection*, 16> sections;
+  QMap<qint8, ChunkSection*> sections;
   qint32 biomes[16 * 16 * 4];
   uchar  image[16 * 16 * 4];  // cached render: RGBA for 16*16 Blocks
-  uchar  depth[16 * 16];
+  short  depth[16 * 16];      // cached depth map to create shadow
   EntityMap entities;
   friend class MapView;
   friend class ChunkRenderer;
   friend class ChunkCache;
-  friend class WorldSave;
 
 private:
   void findHighestBlock();

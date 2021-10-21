@@ -9,7 +9,7 @@
       "path": ".",
       "minY": -64,
       "maxY": 319,
-      "defaultY": 192,
+      "defaultY": 191,
       "scale": 1
     },
     {
@@ -18,7 +18,7 @@
       "path": "DIM-1",
       "minY": -64,
       "maxY": 319,
-      "defaultY": 100,
+      "defaultY": 95,
       "scale": 8
     },
     {
