@@ -22,15 +22,18 @@ GeneratedStructure::tryParseDatFile(const Tag* data) {
   return ret;
 }
 
-// parse structures in Chunks
+// parse structures stored in Chunks
 QList<QSharedPointer<GeneratedStructure>>
-GeneratedStructure::tryParseChunk(const Tag* data) {
+GeneratedStructure::tryParseChunk(const Tag* structuresTag) {
   // we will return a list of all found structures
   QList<QSharedPointer<GeneratedStructure>> ret;
 
-  // parse NBT data for "Starts"
-  if (data && data != &NBT::Null) {
-    auto features = data->at("Starts");
+  // parse NBT data for "Starts" & "starts"
+  if (structuresTag && structuresTag != &NBT::Null) {
+    QString starts("Starts");
+    if (!structuresTag->has(starts))
+      starts = "starts";
+    auto features = structuresTag->at(starts);
     if (features && features != &NBT::Null) {
       // convert the features to a qvariant here
       QVariant maybeFeatureMap = features->getData();
