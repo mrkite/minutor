@@ -67,9 +67,9 @@ signals:
   void structureFound(QSharedPointer<GeneratedStructure> structure);
 
  protected:
-  void loadSection1343(ChunkSection * cs, const Tag * section);
-  void loadSection1519(ChunkSection * cs, const Tag * section);
-  void loadSection2800(ChunkSection * cs, const Tag * section);
+  bool loadSection1343(ChunkSection * cs, const Tag * section);
+  bool loadSection1519(ChunkSection * cs, const Tag * section);
+  bool loadSection2844(ChunkSection * cs, const Tag * section);
 
   int  chunkX;
   int  chunkZ;
@@ -92,6 +92,8 @@ signals:
 
 private:
   void findHighestBlock();
+  void loadLevelTag(const Tag * levelTag);  // nested structure with Level tag (up to 1.17)
+  void loadCliffsCaves(const NBT &nbt);     // flat structure without Level tag (1.18+)
   void loadSection_decodeBlockPalette(ChunkSection * cs, const Tag * paletteTag);
   void loadSection_createDummyPalette(ChunkSection * cs);
   void loadSection_loadBlockStates(ChunkSection *cs, const Tag * blockStateTag);

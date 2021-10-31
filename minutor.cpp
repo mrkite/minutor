@@ -330,9 +330,9 @@ void Minutor::viewDimension(const DimensionInfo &dim) {
     // legacy versions before Cliffs & Caves (up to 1.17)
     depth->setRange(0, 255);
     if (dim.id == "minecraft:overworld") {
-      depth->setValue(128);   // cloud level
+      depth->setValue(127);   // cloud level
     } else if (dim.id == "minecraft:the_nether") {
-      depth->setValue(96);    // somewhere below Nether ceiling
+      depth->setValue(95);    // somewhere below Nether ceiling
     } else {
       depth->setValue(255);   // top
     }

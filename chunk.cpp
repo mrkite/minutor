@@ -143,9 +143,24 @@ void Chunk::load(const NBT &nbt) {
 
   if (nbt.has("DataVersion"))
     this->version = nbt.at("DataVersion")->toInt();
-  const Tag * level = nbt.at("Level");
-  chunkX = level->at("xPos")->toInt();
-  chunkZ = level->at("zPos")->toInt();
+  else
+    this->version = 0;
+
+  if (nbt.has("Level")) {
+    const Tag * level = nbt.at("Level");
+    loadLevelTag(level);
+  } else if (version >= 2844) {
+    loadCliffsCaves(nbt);
+  }
+}
+
+// Chunk NBT structure used up to 1.17
+// nested with all data below a "Level" tag
+void Chunk::loadLevelTag(const Tag * level) {
+  if (level->has("xPos"))
+    chunkX = level->at("xPos")->toInt();
+  if (level->has("xPos"))
+    chunkZ = level->at("zPos")->toInt();
 
   // load Biome data
   // Partially-generated chunks may have an empty Biomes tag.
@@ -189,20 +204,25 @@ void Chunk::load(const NBT &nbt) {
       if (tc->length() <= 1)
         continue; // skip sections without data
 
+      bool sectionContainsData;
       ChunkSection *cs = new ChunkSection();
       if (this->version >= 2836) {
         // after "Cliffs & Caves" update (1.18)
-        loadSection2800(cs, section);
+        sectionContainsData = loadSection2844(cs, section);
       } else if (this->version >= 1519) {
         // after "The Flattening" update (1.13)
-        loadSection1519(cs, section);
+        sectionContainsData = loadSection1519(cs, section);
       } else {
-        loadSection1343(cs, section);
+        sectionContainsData = loadSection1343(cs, section);
       }
 
-      // todo: only if section contains usefull data, otherwise: delete cs
-      this->sections[idx] = cs;
-      this->lowest = std::min(this->lowest, idx*16);
+      if (sectionContainsData) {
+        // only if section contains usefull data, otherwise: delete cs
+        this->sections[idx] = cs;
+        this->lowest = std::min(this->lowest, idx*16);
+      } else {  // otherwise: delete cs
+        delete cs;
+      }
     }
   }
 
@@ -225,6 +245,60 @@ void Chunk::load(const NBT &nbt) {
       auto e = Entity::TryParse(entitylist->at(i));
       if (e)
         entities.insertMulti(e->type(), e);
+    }
+  }
+
+  // check for the highest block in this chunk
+  // todo: use highmap from stored NBT data
+  findHighestBlock();
+
+  loaded = true; // needs to be at the end!
+}
+
+
+// Chunk NBT structure used after Cliffs & Caves update (1.18+)
+// flat structure with all data directly below the Chunk, tags mostly with lowercase
+void Chunk::loadCliffsCaves(const NBT &nbt) {
+  if (nbt.has("xPos"))
+    chunkX = nbt.at("xPos")->toInt();
+  if (nbt.has("zPos"))
+    chunkZ = nbt.at("zPos")->toInt();
+
+  // no Biome data present in this new storage format -> init as minecraft:air
+  int len = sizeof(this->biomes) / sizeof(this->biomes[0]);
+  for (int i=0; i<len; i++)
+    this->biomes[i] = -1;
+
+  // load available Sections
+  if (nbt.has("sections")) {
+    auto sections = nbt.at("sections");
+    int numSections = sections->length();
+    // loop over all stored Sections, they are not guarantied to be ordered or consecutive
+    for (int s = 0; s < numSections; s++) {
+      const Tag * section = sections->at(s);
+      int idx = section->at("Y")->toInt();
+
+      const Tag_Compound * tc = static_cast<const Tag_Compound *>(section);
+      if (tc->length() <= 1)
+        continue; // skip sections without data
+
+      ChunkSection *cs = new ChunkSection();
+      if (loadSection2844(cs, section)) {
+        // only if section contains usefull data, otherwise: delete cs
+        this->sections[idx] = cs;
+        this->lowest = std::min(this->lowest, idx*16);
+      } else {  // otherwise: delete cs
+        delete cs;
+      }
+    }
+  }
+
+  // parse Structures that start in this Chunk
+  if (nbt.has("structures")) {
+    auto nbtListStructures = nbt.at("structures");
+    auto structurelist     = GeneratedStructure::tryParseChunk(nbtListStructures);
+    for (auto it = structurelist.begin(); it != structurelist.end(); ++it) {
+      emit structureFound(*it);
     }
   }
 
@@ -276,7 +350,7 @@ void Chunk::loadEntities(const NBT &nbt) {
 // 1519 = 1.13
 // 1628 = 1.13.1
 // 2203 = 1.15.19w36a
-void Chunk::loadSection1343(ChunkSection *cs, const Tag *section) {
+bool Chunk::loadSection1343(ChunkSection *cs, const Tag *section) {
   // copy raw data
   quint8 blocks[4096];
   quint8 data[2048];
@@ -305,11 +379,19 @@ void Chunk::loadSection1343(ChunkSection *cs, const Tag *section) {
   cs->blockPaletteLength = FlatteningConverter::Instance().paletteLength;
   cs->blockPalette = FlatteningConverter::Instance().getPalette();
   cs->blockPaletteIsShared = true;
+
+  // check if some Block is different to minecraft:air
+  bool sectionContainsData = false;
+  for (int i = 0; i < 2048; i++) {
+    sectionContainsData |= cs->blocks[i];
+  }
+  return sectionContainsData;
 }
 
 
 // Chunk format after "The Flattening" version 1519
-void Chunk::loadSection1519(ChunkSection *cs, const Tag *section) {
+bool Chunk::loadSection1519(ChunkSection *cs, const Tag *section) {
+  bool sectionContainsData = true;
 
   // decode Palette to be able to map BlockStates
   if (section->has("Palette")) {
@@ -322,6 +404,7 @@ void Chunk::loadSection1519(ChunkSection *cs, const Tag *section) {
   } else {
     // set everything to 0 (minecraft:air)
     memset(cs->blocks, 0, sizeof(cs->blocks));
+    sectionContainsData = false;
   }
 
   // copy Light data
@@ -333,11 +416,14 @@ void Chunk::loadSection1519(ChunkSection *cs, const Tag *section) {
   } else {
     memset(cs->blockLight, 0, sizeof(cs->blockLight));
   }
+
+  return sectionContainsData;
 }
 
 
 // Chunk format after "Cliffs & Caves version 2800
-void Chunk::loadSection2800(ChunkSection * cs, const Tag * section) {
+bool Chunk::loadSection2844(ChunkSection * cs, const Tag * section) {
+  bool sectionContainsData = true;
 
   // decode BlockStates-Palette to be able to map BlockStates
   if (section->has("block_states") && section->at("block_states")->has("palette")) {
@@ -350,6 +436,7 @@ void Chunk::loadSection2800(ChunkSection * cs, const Tag * section) {
   } else {
     // set everything to 0 (minecraft:air)
     memset(cs->blocks, 0, sizeof(cs->blocks));
+    sectionContainsData = false;
   }
 
   // decode Biomes-Palette to be able to map Biome
@@ -366,6 +453,8 @@ void Chunk::loadSection2800(ChunkSection * cs, const Tag * section) {
   } else {
     memset(cs->blockLight, 0, sizeof(cs->blockLight));
   }
+
+  return sectionContainsData;
 }
 
 
