@@ -442,7 +442,9 @@ bool Chunk::loadSection2844(ChunkSection * cs, const Tag * section) {
   // decode Biomes-Palette to be able to map Biome
   if (section->has("biomes") && section->at("biomes")->has("palette")) {
     loadSection_decodeBiomePalette(cs, section->at("biomes"));
-  } else {;/*todo*/}
+  } else {
+    sectionContainsData = false;  // never observed in real live
+  }
 
   // copy Light data
 //  if (section->has("SkyLight")) {

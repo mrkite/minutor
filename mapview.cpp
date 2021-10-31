@@ -495,7 +495,7 @@ void MapView::getToolTip(int x, int z) {
   QString blockstate;
   QMap<QString, int> entityIds;
 
-  if (chunk) {
+  if ((chunk) && (chunk->highest >= chunk->lowest)) {
     int top = std::min(depth, chunk->highest);
     for (y = top; y >= chunk->lowest; y--) {
       const ChunkSection *section = chunk->getSectionByY(y);
