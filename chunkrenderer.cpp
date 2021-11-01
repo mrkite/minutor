@@ -28,9 +28,14 @@ void ChunkRenderer::run() {
 }
 
 void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
+  // threshold for mob spawn detection
+  const int lightSpawnSave = (chunk->version >= 2800)? 1 : 8;
+
   int offset = 0;
   uchar *bits = chunk->image;
   short *depthbits = chunk->depth;
+
+  // render loop
   for (int z = 0; z < 16; z++) {  // n->s
     int lasty = -1;
     for (int x = 0; x < 16; x++, offset++) {  // e->w
@@ -137,7 +142,7 @@ void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
 
            // spawn check #1: on top of solid block
            if (block0.doesBlockHaveSolidTopSurface() &&
-               !block0.isBedrock() && light1 < 8 &&
+               !block0.isBedrock() && light1 < lightSpawnSave &&
                !block1.isBlockNormalCube() && block1.spawninside &&
                !block1.isLiquid() &&
                !block2.isBlockNormalCube() && block2.spawninside) {
@@ -148,7 +153,7 @@ void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
            // spawn check #2: current block is transparent,
            // but mob can spawn through (e.g. snow)
            if (blockB.doesBlockHaveSolidTopSurface() &&
-               !blockB.isBedrock() && light0 < 8 &&
+               !blockB.isBedrock() && light0 < lightSpawnSave &&
                !block0.isBlockNormalCube() && block0.spawninside &&
                !block0.isLiquid() &&
                !block1.isBlockNormalCube() && block1.spawninside) {
