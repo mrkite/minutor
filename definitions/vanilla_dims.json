@@ -1,21 +1,33 @@
 {
   "name": "Vanilla",
   "type": "dimension",
-  "version": "1.6.2",
+  "version": "1.18.0",
   "data": [
     {
       "name": "Overworld",
+      "id": "minecraft:overworld",
       "path": ".",
+      "minY": -64,
+      "maxY": 319,
+      "defaultY": 191,
       "scale": 1
     },
     {
-      "name": "Nether",
+      "name": "The Nether",
+      "id": "minecraft:the_nether",
       "path": "DIM-1",
+      "minY": -64,
+      "maxY": 319,
+      "defaultY": 95,
       "scale": 8
     },
     {
-      "name": "End",
+      "name": "The End",
+      "id": "minecraft:the_end",
       "path": "DIM1",
+      "minY": -64,
+      "maxY": 319,
+      "defaultY": 255,
       "scale": 0
     }
   ],

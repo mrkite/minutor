@@ -14,14 +14,19 @@ class JSONArray;
 
 class DimensionInfo {
  public:
-  DimensionInfo(QString path, int scale, QString name) : path(path),
-    scale(scale), name(name) {}
-  QString path;
-  int scale;
+  DimensionInfo();
+
+  QString id;
   QString name;
+  QString path;
+  bool pathIsRegEx;
+  bool enabled;
+  int  scale;
+  int  minY;
+  int  maxY;
+  int  defaultY;
 };
 
-class DimensionDef;
 
 class DimensionIdentifier : public QObject {
   Q_OBJECT
@@ -30,17 +35,19 @@ class DimensionIdentifier : public QObject {
   // singleton: access to global usable instance
   static DimensionIdentifier &Instance();
 
-  int addDefinitions(JSONArray *, int pack = -1);
+  // definition parsing
+  int  addDefinitions(JSONArray *, int pack = -1);
   void enableDefinitions(int id);
   void disableDefinitions(int id);
-  void getDimensions(QDir path, QMenu *menu, QObject *parent);
-  void removeDimensions(QMenu *menu);
+  // Dimesnion view menu
+  void clearDimensionsMenu(QMenu *menu);
+  void getDimensionsInWorld(QDir path, QMenu *menu, QObject *parent);
 
  signals:
-  void dimensionChanged(const DimensionInfo &dim);
+  void dimensionChanged(const DimensionInfo &dim);    // dimension changed in menu
 
  private slots:
-  void viewDimension();
+  void changeViewToDimension();                       // dimension changed in menu
 
  private:
   // singleton: prevent access to constructor and copyconstructor
@@ -49,15 +56,15 @@ class DimensionIdentifier : public QObject {
   DimensionIdentifier(const DimensionIdentifier &);
   DimensionIdentifier &operator=(const DimensionIdentifier &);
 
-  void addDimension(QDir path, QString dir, QString name, int scale,
-                    QObject *parent);
-  QList<QAction *> items;
-  QList<DimensionInfo> dimensions;
-  QList<DimensionDef*> definitions;
-  QList<QList<DimensionDef*> > packs;
-  QActionGroup *group;
+  void addDimensionMenu(QDir path, QString dir, QString name, QObject *parent);
 
-  QHash<QString, bool> foundDimensions;
+  // GUI menu
+  QList<QAction *> currentMenuActions;
+  QActionGroup *   menuActionGroup;
+  QList<QString>   foundDimensionDirs;  // all directories where we already found a Dimension
+  // dimension storage
+  QList<DimensionInfo*>         definitions;  // definition of possible Dimensions
+  QList<QList<DimensionInfo*> > packs;
 };
 
 #endif  // DIMENSIONIDENTIFIER_H_

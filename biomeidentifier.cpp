@@ -5,6 +5,7 @@ Copyright (c) 2016, EtlamGit
 
 #include <assert.h>
 #include <cmath>
+#include <QtCore>
 
 #include "./biomeidentifier.h"
 #include "./json.h"
@@ -18,13 +19,13 @@ static BiomeInfo unknownBiome;
 
 BiomeInfo::BiomeInfo()
   : id(-1)
+  , nid("")
   , name("Unknown Biome")
   , enabled(false)
-  , watermodifier(255,255,255)
-  , enabledwatermodifier(false)
-  , alpha(1.0)
   , temperature(0.5)
   , humidity(0.5)
+  , enabledwatermodifier(false)
+  , watermodifier(255,255,255)
 {}
 
 
@@ -185,9 +186,7 @@ QColor BiomeInfo::getBiomeWaterColor( QColor watercolor ) const
 // BiomeIdentifier
 // --------- --------- --------- ---------
 
-BiomeIdentifier::BiomeIdentifier() {
-  unknownBiome.name = "Unknown";
-}
+BiomeIdentifier::BiomeIdentifier() {}
 
 BiomeIdentifier::~BiomeIdentifier() {
   for (int i = 0; i < packs.length(); i++) {
@@ -201,13 +200,32 @@ BiomeIdentifier& BiomeIdentifier::Instance() {
   return singleton;
 }
 
-const BiomeInfo &BiomeIdentifier::getBiome(int biome) const {
-  auto itr = biomes.find(biome);
-  if (itr == biomes.end()) {
+// legacy Biomes
+const BiomeInfo &BiomeIdentifier::getBiome(int id) const {
+  auto itr = this->biomes.find(id);
+  if (itr == this->biomes.end()) {
     return unknownBiome;
   } else {
     return *(*itr);
   }
+}
+
+// new Biomes after Cliffs & Caves update (1.18)
+const BiomeInfo &BiomeIdentifier::getBiome(quint8 id) const {
+  if (id < this->biomes18.length())
+    return *(this->biomes18.at(id));
+  else
+    return unknownBiome;
+}
+
+const BiomeInfo &BiomeIdentifier::getBiome(QString id) const {
+  for (const BiomeInfo* biome : this->biomes18) {
+    if (biome->nid == id) return *(biome);
+  }
+#if defined(DEBUG) || defined(_DEBUG) || defined(QT_DEBUG)
+  qWarning() << "Unknown Biome:" << id;
+#endif
+  return unknownBiome;
 }
 
 void BiomeIdentifier::enableDefinitions(int pack) {
@@ -225,90 +243,177 @@ void BiomeIdentifier::disableDefinitions(int pack) {
   updateBiomeDefinition();
 }
 
-int BiomeIdentifier::addDefinitions(JSONArray *defs, int pack) {
+int BiomeIdentifier::addDefinitions(JSONArray *data, JSONArray *data18, int pack) {
   if (pack == -1) {
     pack = packs.length();
-    packs.append(QList<BiomeInfo *>());
+    packs  .append(QList<BiomeInfo *>());
+    packs18.append(QList<BiomeInfo *>());
   }
 
-  int len = defs->length();
-  for (int i = 0; i < len; i++) {
-    JSONObject *b = dynamic_cast<JSONObject *>(defs->at(i));
-    int id = b->at("id")->asNumber();
-
-    BiomeInfo *biome = new BiomeInfo();
-    biome->enabled = true;
-    biome->id = id;
-    if (b->has("name"))
-      biome->name = b->at("name")->asString();
-
-    // check for "alpha" (0: transparent / 1: saturated)
-    // probably never used
-    if (b->has("alpha"))
-      biome->alpha = b->at("alpha")->asNumber();
-
-    // get temperature definition
-    if (b->has("temperature"))
-      biome->temperature = b->at("temperature")->asNumber();
-
-    // get humidity definition
-    if (b->has("humidity"))
-      biome->humidity = b->at("humidity")->asNumber();
-
-    // get watermodifier definition
-    if (b->has("watermodifier")) {
-      biome->watermodifier.setNamedColor(b->at("watermodifier")->asString());
-      biome->enabledwatermodifier = true;
-      assert(biome->watermodifier.isValid());
-    }
-
-    // get color definition
-    QColor biomecolor;
-    if (b->has("color")) {
-      QString colorname = b->at("color")->asString();
-      if (colorname.length() == 6) {
-        // check if this is an old color definition with missing '#'
-        bool ok;
-        colorname.toInt(&ok,16);
-        if (ok)
-          colorname.push_front('#');
-      }
-      biomecolor.setNamedColor(colorname);
-      assert(biomecolor.isValid());
-    } else {
-      // use hashed by name instead
-      quint32 hue = qHash(biome->name);
-      biomecolor.setHsv(hue % 360, 255, 255);
-    }
-
-    // pre-calculate light spectrum
-    for (int i = 0; i < 16; i++) {
-      // calculate light attenuation similar to Minecraft
-      // except base 90% here, were Minecraft is using 80% per level
-      double light_factor = pow(0.90,15-i);
-      biome->colors[i].setRgb(light_factor*biomecolor.red(),
-                              light_factor*biomecolor.green(),
-                              light_factor*biomecolor.blue(),
-                              255*biome->alpha );
-    }
-
-    packs[pack].append(biome);
-  }
+  if (data)   parseBiomeDefinitions0000(data, pack);
+  if (data18) parseBiomeDefinitions2800(data18, pack);
 
   updateBiomeDefinition();
   return pack;
 }
 
+// legacy Biome definitions before Cliffs & Caves (up to 1.17)
+void BiomeIdentifier::parseBiomeDefinitions0000(JSONArray *data, int pack) {
+  int len = data->length();
+  for (int i = 0; i < len; i++) {
+    JSONObject *b = dynamic_cast<JSONObject *>(data->at(i));
+    if (b->has("id")) {
+      int id = b->at("id")->asNumber();
+
+      BiomeInfo *biome = new BiomeInfo();
+      biome->enabled = true;
+      biome->id = id;
+      if (b->has("name"))
+        biome->name = b->at("name")->asString();
+
+      // get temperature definition
+      if (b->has("temperature"))
+        biome->temperature = b->at("temperature")->asNumber();
+
+      // get humidity definition
+      if (b->has("humidity"))
+        biome->humidity = b->at("humidity")->asNumber();
+
+      // get watermodifier definition
+      if (b->has("watermodifier")) {
+        biome->watermodifier.setNamedColor(b->at("watermodifier")->asString());
+        biome->enabledwatermodifier = true;
+        assert(biome->watermodifier.isValid());
+      }
+
+      // get color definition
+      QColor biomecolor;
+      if (b->has("color")) {
+        QString colorname = b->at("color")->asString();
+        if (colorname.length() == 6) {
+          // check if this is an old color definition with missing '#'
+          bool ok;
+          colorname.toInt(&ok,16);
+          if (ok)
+            colorname.push_front('#');
+        }
+        biomecolor.setNamedColor(colorname);
+        assert(biomecolor.isValid());
+      } else {
+        // use hashed by name instead
+        quint32 hue = qHash(biome->name);
+        biomecolor.setHsv(hue % 360, 255, 255);
+      }
+
+      // pre-calculate light spectrum for view mode "Biome Colors"
+      for (int i = 0; i < 16; i++) {
+        // calculate light attenuation similar to Minecraft
+        // except base 90% here, were Minecraft is using 80% per level
+        double light_factor = pow(0.90,15-i);
+        biome->colors[i].setRgb(light_factor*biomecolor.red(),
+                                light_factor*biomecolor.green(),
+                                light_factor*biomecolor.blue());
+      }
+
+      packs[pack].append(biome);
+    }
+  }
+}
+
+// new Biome definitions with Cliffs & Caves (1.18)
+void BiomeIdentifier::parseBiomeDefinitions2800(JSONArray *data18, int pack) {
+  int len = data18->length();
+  for (int i = 0; i < len; i++) {
+    JSONObject *b = dynamic_cast<JSONObject *>(data18->at(i));
+    if (b->has("id")) {
+      BiomeInfo *biome = new BiomeInfo();
+      biome->enabled = true;
+      biome->nid = b->at("id")->asString();
+      biome->id = i;
+
+      if (b->has("name"))
+        biome->name = b->at("name")->asString();
+      else {
+        // construct the name from NID
+        QString nid = QString(biome->nid).replace("minecraft:","").replace("_"," ");
+        QStringList parts = nid.toLower().split(' ', QString::SkipEmptyParts);
+        for (int i = 0; i < parts.size(); i++)
+          parts[i].replace(0, 1, parts[i][0].toUpper());
+        biome->name = parts.join(" ");
+      }
+
+      // get temperature definition
+      if (b->has("temperature"))
+        biome->temperature = b->at("temperature")->asNumber();
+
+      // get humidity definition
+      if (b->has("humidity"))
+        biome->humidity = b->at("humidity")->asNumber();
+
+      // get watermodifier definition
+      biome->enabledwatermodifier = true;
+      if (b->has("watermodifier")) {
+        biome->watermodifier.setNamedColor(b->at("watermodifier")->asString());
+        assert(biome->watermodifier.isValid());
+      } else biome->watermodifier.setNamedColor("#3f76e4");
+
+      // get color definition
+      QColor biomecolor;
+      if (b->has("color")) {
+        QString colorname = b->at("color")->asString();
+        if (colorname.length() == 6) {
+          // check if this is an old color definition with missing '#'
+          bool ok;
+          colorname.toInt(&ok,16);
+          if (ok)
+            colorname.push_front('#');
+        }
+        biomecolor.setNamedColor(colorname);
+        assert(biomecolor.isValid());
+      } else {
+        // use hashed by name instead
+        quint32 hue = qHash(biome->name);
+        biomecolor.setHsv(hue % 360, 255, 255);
+      }
+
+      // pre-calculate light spectrum for view mode "Biome Colors"
+      for (int i = 0; i < 16; i++) {
+        // calculate light attenuation similar to Minecraft
+        // except base 90% here, were Minecraft is using 80% per level
+        double light_factor = pow(0.90,15-i);
+        biome->colors[i].setRgb(light_factor*biomecolor.red(),
+                                light_factor*biomecolor.green(),
+                                light_factor*biomecolor.blue());
+      }
+
+      packs18[pack].append(biome);
+    }
+  }
+}
+
+
 void BiomeIdentifier::updateBiomeDefinition()
 {
   // start from scratch
   biomes.clear();
+  biomes18.clear();
 
-  for (int pack = 0; pack < packs.length(); pack++)
+  for (int pack = 0; pack < packs.length(); pack++) {
+    // legacy Biomes
     for (int i = 0; i < packs[pack].length(); i++) {
       BiomeInfo *bi = packs[pack][i];
       if (bi->enabled) {
         biomes[bi->id] = bi;
       }
     }
+
+    // new Biomes after Cliffs & Caves update (1.18)
+    for (int i = 0; i < packs18[pack].length(); i++) {
+      BiomeInfo *bi = packs18[pack][i];
+      if (bi->enabled) {
+        biomes18.append(bi);
+      }
+    }
+  }
+
 }

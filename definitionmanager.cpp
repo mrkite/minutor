@@ -434,7 +434,8 @@ void DefinitionManager::loadDefinition(QString path) {
       d.type = Definition::Block;
     } else if (type == "biome") {
       d.id = biomeManager.addDefinitions(
-          dynamic_cast<JSONArray*>(def->at("data")));
+            dynamic_cast<JSONArray*>(def->at("data")),
+            dynamic_cast<JSONArray*>(def->at("data18")));
       d.type = Definition::Biome;
     } else if (type == "dimension") {
       d.id = dimensionManager.addDefinitions(
@@ -488,7 +489,8 @@ void DefinitionManager::loadDefinition(QString path) {
               dynamic_cast<JSONArray*>(def->at("data")), d.blockid);
       } else if (type == "biome") {
         d.biomeid = biomeManager.addDefinitions(
-            dynamic_cast<JSONArray*>(def->at("data")), d.biomeid);
+              dynamic_cast<JSONArray*>(def->at("data")),
+              dynamic_cast<JSONArray*>(def->at("data18")), d.biomeid);
       } else if (type == "dimension") {
         d.dimensionid = dimensionManager.addDefinitions(
             dynamic_cast<JSONArray*>(def->at("data")), d.dimensionid);

@@ -222,7 +222,7 @@ void Minutor::closeWorld() {
   playerActions.clear();
   jumpMenu->setEnabled(false);
   // clear dimensions menu
-  DimensionIdentifier::Instance().removeDimensions(dimMenu);
+  DimensionIdentifier::Instance().clearDimensionsMenu(dimMenu);
   // clear overlays
   mapview->clearOverlayItems();
   // clear other stuff
@@ -314,6 +314,7 @@ void Minutor::toggleFlags() {
 }
 
 void Minutor::viewDimension(const DimensionInfo &dim) {
+  // update visability of Structure Overlays
   for (auto action : structureActions) {
     QString dimension = action->data().toMap()["dimension"].toString();
     if (dimension.isEmpty() ||
@@ -323,7 +324,28 @@ void Minutor::viewDimension(const DimensionInfo &dim) {
       action->setVisible(false);
     }
   }
-  mapview->setDimension(dim.path, dim.scale);
+
+  // change depth slider or adjust default Y when dimension is activated
+  if (currentWorldVersion < 2800 ) {
+    // legacy versions before Cliffs & Caves (up to 1.17)
+    depth->setRange(0, 255);
+    if (dim.id == "minecraft:overworld") {
+      depth->setValue(127);   // cloud level
+    } else if (dim.id == "minecraft:the_nether") {
+      depth->setValue(95);    // somewhere below Nether ceiling
+    } else {
+      depth->setValue(255);   // top
+    }
+  } else {
+    // after Cliffs & Caves (1.18+)
+    depth->setRange(dim.minY, dim.maxY);
+    depth->setValue(dim.defaultY);
+  }
+
+
+  // clear current map & update scale
+  QString path = QDir(currentWorld).absoluteFilePath(dim.path);
+  mapview->setDimension(path, dim.scale);
 }
 
 void Minutor::about() {
@@ -337,7 +359,7 @@ void Minutor::about() {
 }
 
 void Minutor::updateDimensions() {
-  DimensionIdentifier::Instance().getDimensions(currentWorld, dimMenu, this);
+  DimensionIdentifier::Instance().getDimensionsInWorld(currentWorld, dimMenu, this);
 }
 
 void Minutor::createActions() {
@@ -642,16 +664,24 @@ void Minutor::loadWorld(QDir path) {
   currentWorld = path;
 
   NBT level(path.filePath("level.dat"));
-
   auto data = level.at("Data");
+
   // add level name to window title
   setWindowTitle(qApp->applicationName() + " - " +
                  data->at("LevelName")->toString());
-  // save world spawn
+
+  // get maximum build height
+  if (data->has("DataVersion")) {
+    currentWorldVersion = data->at("DataVersion")->toInt();
+  } else
+    currentWorldVersion = 0;
+
+
+  // Jump to: world spawn
   jumpSpawnAct->setData(locations.count());
   locations.append(Location(data->at("SpawnX")->toDouble(),
                             data->at("SpawnZ")->toDouble()));
-  // show saved players
+  // Jump to: known players
   if (path.cd("playerdata") || path.cd("players")) {
     QDirIterator it(path.absolutePath(), {"*.dat"}, QDir::Files);
     bool hasPlayers = false;
@@ -740,8 +770,10 @@ void Minutor::loadWorld(QDir path) {
     path.cdUp();
   }
 
-  // show dimensions
-  DimensionIdentifier::Instance().getDimensions(path, dimMenu, this);
+  // create Dimensions menu
+  DimensionIdentifier::Instance().getDimensionsInWorld(path, dimMenu, this);
+
+  // finalize
   emit worldLoaded(true);
   mapview->setLocation(locations.first().x, locations.first().z);
   toggleFlags();

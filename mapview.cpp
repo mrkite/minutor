@@ -472,7 +472,7 @@ void MapView::drawChunk(int x, int z) {
   centerx += (x - centerchunkx) * chunksize;
   centery += (z - centerchunkz) * chunksize;
 
-  const uchar* srcImageData = chunk ? chunk->image : placeholder;
+  const uchar* srcImageData = chunk ? chunk->getImage() : placeholder;
   QImage srcImage(srcImageData, 16, 16, QImage::Format_RGB32);
 
   QRectF targetRect(centerx, centery, chunksize, chunksize);
@@ -490,34 +490,35 @@ void MapView::getToolTip(int x, int z) {
   int offset = (x & 0xf) + (z & 0xf) * 16;
   int y = 0;
 
-  QString name  = "Unknown";
-  QString biome = "Unknown Biome";
+  QString blockname = "Unknown Block";
+  QString biomename = "Unknown Biome";
   QString blockstate;
   QMap<QString, int> entityIds;
 
-  if (chunk) {
-    int top = qMin(depth, chunk->highest);
-    for (y = top; y >= 0; y--) {
-      int section_idx = y >> 4;
-      const ChunkSection *section = chunk->sections[section_idx];
+  if ((chunk) && (chunk->highest >= chunk->lowest)) {
+    int top = std::min(depth, chunk->highest);
+    for (y = top; y >= chunk->lowest; y--) {
+      const ChunkSection *section = chunk->getSectionByY(y);
       if (!section) {
-        y = (section_idx << 4) - 1;  // skip entire section
+        // skip entire section
+        int section_idx = (y >> 4);
+        y = (section_idx << 4) - 1;
         continue;
       }
       // get information about block
       const PaletteEntry & pdata = section->getPaletteEntry(offset, y);
-      name = pdata.name;
+      blockname = pdata.name;
 
       // For unknown legacy block IDs, add the legacy ID to the displayed name.
       // TODO: Hoist "Unknown Block" literal into constant
-      if (name == "Unknown Block" && pdata.properties.contains(PaletteEntry::legacyBlockIdProperty)) {
+      if (blockname == "Unknown Block" && pdata.properties.contains(PaletteEntry::legacyBlockIdProperty)) {
         uint fullLegacyBlockId = pdata.properties[PaletteEntry::legacyBlockIdProperty].toUInt();
         // Legacy IDs with internal values > 4096 are virtual IDs with
         // higher-order bits encoding the data.
         uint baseLegacyBlockId = fullLegacyBlockId & 4095;
         uint legacyData = fullLegacyBlockId >> 12;
         QString displayName = QStringLiteral("Unknown [%1:%2]").arg(baseLegacyBlockId).arg(legacyData);
-        name = displayName;
+        blockname = displayName;
       }
       // in case of fully transparent blocks (meaning air)
       // -> we continue downwards
@@ -539,9 +540,11 @@ void MapView::getToolTip(int x, int z) {
       blockstate.chop(1);
       break;
     }
-    int biome_code = chunk->get_biome((x & 0xf), y, (z & 0xf));
-    auto &bi = BiomeIdentifier::Instance().getBiome(biome_code);
-    biome = bi.name;
+    int biomeID = chunk->getBiomeID((x & 0xf), y, (z & 0xf));
+    const BiomeInfo &biome = (chunk->version >=2800) ?
+        BiomeIdentifier::Instance().getBiome((quint8)biomeID) :
+        BiomeIdentifier::Instance().getBiome((qint32)biomeID);
+    biomename = biome.name;
 
     // count Entity of each display type
     for (auto &item : getItems(x, y, z)) {
@@ -565,8 +568,8 @@ void MapView::getToolTip(int x, int z) {
 
   QString hovertext = QString("X:%1 Y:%2 Z:%3 - %4 - %5")
                               .arg(x).arg(y).arg(z)
-                              .arg(biome)
-                              .arg(name);
+                              .arg(biomename)
+                              .arg(blockname);
   if (blockstate.length() > 0)
     hovertext += " (" + blockstate + ")";
   if (entityStr.length() > 0)
@@ -627,7 +630,7 @@ QList<QSharedPointer<OverlayItem>> MapView::getItems(int x, int y, int z) {
     for (auto &type : overlayItemTypes) {
       // generated structures
       for (auto &item : overlayItems[type]) {
-        double ymin = 0;
+        double ymin = chunk->lowest;
         double ymax = depth;
         if (item->intersects(OverlayItem::Point(x, ymin, z),
                              OverlayItem::Point(x, ymax, z))) {

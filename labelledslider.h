@@ -30,8 +30,9 @@ class LabelledSlider : public QWidget {
   void valueChanged(int val);
 
  public slots:
-  void setValue(int val);  // set absolute
-  void changeValue(int val);  // change relative
+  void setValue(int val);                 // set absolute value
+  void changeValue(int val);              // change value relative to current
+  void setRange(int minVal, int maxVal);  // set slider range
 
  private slots:
   void intValueChange(int val);

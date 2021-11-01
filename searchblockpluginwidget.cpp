@@ -90,7 +90,7 @@ SearchPluginI::ResultListT SearchBlockPluginWidget::searchChunk(Chunk &chunk)
     {
       for (int x = 0; x < 16; x++)
       {
-        const uint blockHid = chunk.getBlockHid(x,y,z);
+        const uint blockHid = chunk.getBlockHID(x,y,z);
         const auto it = m_searchForIds.find(blockHid);
         if (it != m_searchForIds.end())
         {

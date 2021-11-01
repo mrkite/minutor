@@ -28,9 +28,14 @@ void ChunkRenderer::run() {
 }
 
 void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
+  // threshold for mob spawn detection
+  const int lightSpawnSave = (chunk->version >= 2800)? 1 : 8;
+
   int offset = 0;
   uchar *bits = chunk->image;
-  uchar *depthbits = chunk->depth;
+  short *depthbits = chunk->depth;
+
+  // render loop
   for (int z = 0; z < 16; z++) {  // n->s
     int lasty = -1;
     for (int x = 0; x < 16; x++, offset++) {  // e->w
@@ -43,12 +48,12 @@ void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
       if (flags & MapView::flgSingleLayer)
         top = depth;
       int highest = 0;
-      for (int y = top; y >= 0; y--) {  // top->down
+      for (int y = top; y >= chunk->lowest; y--) {  // top->down
         // perform a one deep scan in SingleLayer mode
         if ((flags & MapView::flgSingleLayer) && (y < top))
           break;
         int sec = y >> 4;
-        ChunkSection *section = chunk->sections[sec];
+        const ChunkSection *section = chunk->getSectionByIdx(sec);
         if (!section) {
           y = (sec << 4) - 1;  // skip whole section
           continue;
@@ -65,9 +70,7 @@ void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
 
         // get light value from one block above
         int light = 0;
-        ChunkSection *section1 = NULL;
-        if (y < 255)
-          section1 = chunk->sections[(y+1) >> 4];
+        const ChunkSection *section1 = chunk->getSectionByY(y+1);
         if (section1)
           light = section1->getBlockLight(offset, y+1);
         int light1 = light;
@@ -83,7 +86,9 @@ void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
 //        if (light > 15) light = 15;
 
         // get Biome
-        auto &biome = BiomeIdentifier::Instance().getBiome(chunk->get_biome(x,y,z));
+        const BiomeInfo &biome = (chunk->version >=2800) ?
+            BiomeIdentifier::Instance().getBiome((quint8)chunk->getBiomeID(x,y,z)) :
+            BiomeIdentifier::Instance().getBiome((qint32)chunk->getBiomeID(x,y,z));
         // get current block color
         QColor blockcolor = block.colors[15];  // get the color from Block definition
         if (block.biomeWater()) {
@@ -118,12 +123,8 @@ void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
         if (flags & MapView::flgMobSpawn) {
           // get block info from 1 and 2 above and 1 below
           uint blid1(0), blid2(0), blidB(0);  // default to legacy air (todo: better handling of block above)
-          ChunkSection *section2 = NULL;
-          ChunkSection *sectionB = NULL;
-          if (y < 254)
-            section2 = chunk->sections[(y+2) >> 4];
-          if (y > 0)
-            sectionB = chunk->sections[(y-1) >> 4];
+          const ChunkSection *section2 = chunk->getSectionByY(y+2);
+          const ChunkSection *sectionB = chunk->getSectionByY(y-1);
           if (section1) {
             blid1 = section1->getPaletteEntry(offset, y+1).hid;
           }
@@ -141,7 +142,7 @@ void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
 
            // spawn check #1: on top of solid block
            if (block0.doesBlockHaveSolidTopSurface() &&
-               !block0.isBedrock() && light1 < 8 &&
+               !block0.isBedrock() && light1 < lightSpawnSave &&
                !block1.isBlockNormalCube() && block1.spawninside &&
                !block1.isLiquid() &&
                !block2.isBlockNormalCube() && block2.spawninside) {
@@ -152,7 +153,7 @@ void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
            // spawn check #2: current block is transparent,
            // but mob can spawn through (e.g. snow)
            if (blockB.doesBlockHaveSolidTopSurface() &&
-               !blockB.isBedrock() && light0 < 8 &&
+               !blockB.isBedrock() && light0 < lightSpawnSave &&
                !block0.isBlockNormalCube() && block0.spawninside &&
                !block0.isLiquid() &&
                !block1.isBlockNormalCube() && block1.spawninside) {
@@ -165,7 +166,6 @@ void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
           colr = biome.colors[light].red();
           colg = biome.colors[light].green();
           colb = biome.colors[light].blue();
-          alpha = 0;
         }
 
         // combine current block to final color
@@ -195,7 +195,7 @@ void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
         int cave_test = 0;
         for (int y=highest-1; (y >= 0) && (cave_test < CaveShade::CAVE_DEPTH); y--, cave_test++) {  // top->down
           // get section
-          ChunkSection *section = chunk->sections[y >> 4];
+          const ChunkSection *section = chunk->getSectionByY(y);
           if (!section) continue;
           // get data value
           // int data = section->getData(offset, y);
