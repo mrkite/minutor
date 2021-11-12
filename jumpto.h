@@ -17,6 +17,8 @@ public:
   explicit JumpTo(QWidget *parent = 0);
   ~JumpTo();
 
+  void updateYrange(int yMin, int yMax);
+
 private slots:
   void on_spinBox_Block_X_valueChanged(int value);
   void on_spinBox_Block_Y_valueChanged(int value);

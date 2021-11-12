@@ -329,6 +329,7 @@ void Minutor::viewDimension(const DimensionInfo &dim) {
   if (currentWorldVersion < 2800 ) {
     // legacy versions before Cliffs & Caves (up to 1.17)
     depth->setRange(0, 255);
+    jumpTo->updateYrange(0, 255);
     if (dim.id == "minecraft:overworld") {
       depth->setValue(127);   // cloud level
     } else if (dim.id == "minecraft:the_nether") {
@@ -340,6 +341,7 @@ void Minutor::viewDimension(const DimensionInfo &dim) {
     // after Cliffs & Caves (1.18+)
     depth->setRange(dim.minY, dim.maxY);
     depth->setValue(dim.defaultY);
+    jumpTo->updateYrange(dim.minY, dim.maxY);
   }
 
 
