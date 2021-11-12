@@ -74,7 +74,12 @@ void SearchResultWidget::addResult(const SearchResultItem &result)
 
 void SearchResultWidget::searchDone()
 {
-  on_check_display_all_stateChanged(0);
+  // adapt width of result columns
+  for (int i = 0; i < ui->treeWidget->columnCount(); i++)
+      ui->treeWidget->resizeColumnToContents(i);
+  // update overlay items
+  on_check_display_all_stateChanged();
+  // update search status
   updateStatusText();
 }
 
@@ -117,7 +122,7 @@ void SearchResultWidget::on_treeWidget_itemClicked(QTreeWidgetItem *item, int co
   on_treeWidget_itemSelectionChanged();
 }
 
-void SearchResultWidget::on_check_display_all_stateChanged(int arg1)
+void SearchResultWidget::on_check_display_all_stateChanged()
 {
   QVector<QSharedPointer<OverlayItem> > items;
 

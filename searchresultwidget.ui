@@ -49,8 +49,11 @@
     <widget class="QTreeWidget" name="treeWidget">
      <property name="font">
       <font>
-       <pointsize>6</pointsize>
+       <pointsize>8</pointsize>
       </font>
+     </property>
+     <property name="rootIsDecorated">
+      <bool>false</bool>
      </property>
      <property name="sortingEnabled">
       <bool>true</bool>

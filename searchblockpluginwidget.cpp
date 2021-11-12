@@ -9,10 +9,13 @@
 
 SearchBlockPluginWidget::SearchBlockPluginWidget(QWidget* parent)
   : QWidget(parent)
-    , ui(new Ui::SearchBlockPluginWidget)
+  , layout(new QVBoxLayout(this))
 {
-  ui->setupUi(this);
 
+  layout->addWidget(stw_blockId = new SearchTextWidget("block id"));
+  layout->addWidget(stw_blockName = new SearchTextWidget("block name"));
+
+  // add suggestions for "block name"
   auto idList = BlockIdentifier::Instance().getKnownIds();
 
   QStringList nameList;
@@ -26,9 +29,6 @@ SearchBlockPluginWidget::SearchBlockPluginWidget(QWidget* parent)
 
   nameList.sort(Qt::CaseInsensitive);
 
-  ui->verticalLayout->addWidget(stw_blockId = new SearchTextWidget("block id"));
-  ui->verticalLayout->addWidget(stw_blockName = new SearchTextWidget("block name"));
-
   for (auto name: nameList)
   {
     stw_blockName->addSuggestion(name);
@@ -37,7 +37,7 @@ SearchBlockPluginWidget::SearchBlockPluginWidget(QWidget* parent)
 
 SearchBlockPluginWidget::~SearchBlockPluginWidget()
 {
-  delete ui;
+  delete layout;
 }
 
 QWidget &SearchBlockPluginWidget::getWidget()
@@ -86,7 +86,7 @@ SearchPluginI::ResultListT SearchBlockPluginWidget::searchChunk(Chunk &chunk)
 
   for (int z = 0; z < 16; z++)
   {
-    for (int y = 0; y < 256; y++)
+    for (int y = chunk.getLowest(); y < chunk.getHighest() ; y++)
     {
       for (int x = 0; x < 16; x++)
       {

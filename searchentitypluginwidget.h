@@ -5,12 +5,9 @@
 #include "searchplugininterface.h"
 
 #include <QWidget>
+#include <QLayout>
 
 class SearchTextWidget;
-
-namespace Ui {
-class SearchEntityPluginWidget;
-}
 
 class SearchEntityPluginWidget : public QWidget, public SearchPluginI
 {
@@ -25,7 +22,7 @@ public:
   SearchPluginI::ResultListT searchChunk(Chunk &chunk) override;
 
 private:
-  Ui::SearchEntityPluginWidget *ui;
+  QLayout* layout;
 
   SearchTextWidget* stw_sells;
   SearchTextWidget* stw_buys;

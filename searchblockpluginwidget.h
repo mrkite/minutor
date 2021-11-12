@@ -5,11 +5,8 @@
 #include "blockidentifier.h"
 
 #include <QWidget>
+#include <QLayout>
 #include <set>
-
-namespace Ui {
-class SearchBlockPluginWidget;
-}
 
 class SearchTextWidget;
 
@@ -26,7 +23,7 @@ public:
   SearchPluginI::ResultListT searchChunk(Chunk &chunk) override;
 
 private:
-  Ui::SearchBlockPluginWidget *ui;
+  QLayout* layout;
 
   SearchTextWidget* stw_blockId;
   SearchTextWidget* stw_blockName;

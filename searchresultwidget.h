@@ -51,7 +51,7 @@ private slots:
 
   void on_treeWidget_itemClicked(QTreeWidgetItem *item, int column);
 
-  void on_check_display_all_stateChanged(int arg1);
+  void on_check_display_all_stateChanged();
 
   void on_saveSearchResults_clicked();
 

@@ -477,6 +477,17 @@ void Minutor::createActions() {
   connect(manageDefsAct, SIGNAL(triggered()),
           dm,            SLOT(show()));
 
+  // [Search]
+  searchEntityAction = new QAction(tr("Search entity"), this);
+  connect(searchEntityAction, SIGNAL(triggered()), this, SLOT(openSearchEntityWidget()));
+  connect(this,               SIGNAL(worldLoaded(bool)),
+          searchEntityAction, SLOT(setEnabled(bool)));
+
+  searchBlockAction = new QAction(tr("Search block"), this);
+  connect(searchBlockAction, SIGNAL(triggered()), this, SLOT(openSearchBlockWidget()));
+  connect(this,              SIGNAL(worldLoaded(bool)),
+          searchBlockAction, SLOT(setEnabled(bool)));
+
   // [Help]
   aboutAct = new QAction(tr("&About"), this);
   aboutAct->setStatusTip(tr("About %1").arg(qApp->applicationName()));
@@ -494,11 +505,6 @@ void Minutor::createActions() {
   connect(updatesAct, SIGNAL(triggered()),
           dm,         SLOT(checkForUpdates()));
 
-  searchEntityAction = new QAction(tr("Search entity"), this);
-  connect(searchEntityAction, SIGNAL(triggered()), this, SLOT(searchEntity()));
-
-  searchBlockAction = new QAction(tr("Search block"), this);
-  connect(searchBlockAction, SIGNAL(triggered()), this, SLOT(searchBlock()));
 }
 
 // actionName will be modified, a "&" is added
@@ -907,13 +913,13 @@ SearchChunksWidget* Minutor::prepareSearchForm(const QSharedPointer<SearchPlugin
   return form;
 }
 
-void Minutor::searchBlock() {
+void Minutor::openSearchBlockWidget() {
   auto searchPlugin = QSharedPointer<SearchBlockPluginWidget>::create();
   auto searchBlockForm = prepareSearchForm(searchPlugin);
   searchBlockForm->showNormal();
 }
 
-void Minutor::searchEntity() {
+void Minutor::openSearchEntityWidget() {
   auto searchPlugin = QSharedPointer<SearchEntityPluginWidget>::create();
   auto searchEntityForm = prepareSearchForm(searchPlugin);
   searchEntityForm->showNormal();

@@ -1,5 +1,4 @@
 #include "searchentitypluginwidget.h"
-#include "ui_searchentitypluginwidget.h"
 
 //#include "./careeridentifier.h"
 #include "chunk.h"
@@ -8,20 +7,18 @@
 
 SearchEntityPluginWidget::SearchEntityPluginWidget()
   : QWidget()
-  , ui(new Ui::SearchEntityPluginWidget)
+  , layout(new QVBoxLayout(this))
 {
-  ui->setupUi(this);
-
-  ui->verticalLayout->addWidget(stw_sells = new SearchTextWidget("sells"));
-  ui->verticalLayout->addWidget(stw_buys = new SearchTextWidget("buys"));
-  ui->verticalLayout->addWidget(stw_entityType = new SearchTextWidget("entity type"));
-  ui->verticalLayout->addWidget(stw_villagerType = new SearchTextWidget("villager type"));
-  ui->verticalLayout->addWidget(stw_special = new SearchTextWidget("special"));
+  layout->addWidget(stw_sells = new SearchTextWidget("sells"));
+  layout->addWidget(stw_buys = new SearchTextWidget("buys"));
+  layout->addWidget(stw_entityType = new SearchTextWidget("entity type"));
+  layout->addWidget(stw_villagerType = new SearchTextWidget("villager type"));
+  layout->addWidget(stw_special = new SearchTextWidget("special"));
 }
 
 SearchEntityPluginWidget::~SearchEntityPluginWidget()
 {
-  delete ui;
+  delete layout;
 }
 
 QWidget &SearchEntityPluginWidget::getWidget()
