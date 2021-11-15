@@ -406,7 +406,7 @@ void MapView::redraw() {
     }
   }
 
-   const OverlayItem::Cuboid viewingCuboid(OverlayItem::Point(x1 - 1, -4096, z1 - 1),
+  const OverlayItem::Cuboid viewingCuboid(OverlayItem::Point(x1 - 1, -4096, z1 - 1),
                                           OverlayItem::Point(x2 + 1, depth, z2 + 1));
 
   // draw the generated structures
