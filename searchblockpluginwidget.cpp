@@ -1,5 +1,4 @@
 #include "searchblockpluginwidget.h"
-#include "ui_searchblockpluginwidget.h"
 #include "searchresultwidget.h"
 
 #include "chunk.h"
