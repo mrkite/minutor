@@ -11,7 +11,7 @@ class SearchTextWidget : public QWidget
 {
   Q_OBJECT
 
-public:
+ public:
   explicit SearchTextWidget(const QString& name, QWidget *parent = nullptr);
   ~SearchTextWidget();
 
@@ -25,7 +25,7 @@ public:
 
   bool matches(const QString& textToSearch) const;
 
-private:
+ private:
   Ui::SearchTextWidget *ui;
 };
 

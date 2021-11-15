@@ -10,7 +10,7 @@ class SearchResultItem;
 
 class SearchPluginI
 {
-public:
+ public:
   using ResultListT = std::vector<SearchResultItem>;
 
 
@@ -18,7 +18,7 @@ public:
 
   virtual bool initSearch() { return true; }
 
-  virtual ResultListT searchChunk(Chunk &chunk) = 0;
+  virtual ResultListT searchChunk(const Chunk &chunk) = 0;
 
   virtual ~SearchPluginI() {}
 };

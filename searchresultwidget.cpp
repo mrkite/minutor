@@ -37,12 +37,11 @@ namespace {
     private:
     bool operator<(const QTreeWidgetItem &other)const {
       int column = treeWidget()->sortColumn();
-      switch (column)
-      {
-      case 1:
-        return text(column).toDouble() < other.text(column).toDouble();
-      default:
-        return QTreeWidgetItem::operator<(other);
+      switch (column) {
+        case 1:
+          return text(column).toDouble() < other.text(column).toDouble();
+        default:
+          return QTreeWidgetItem::operator<(other);
       }
     }
   };
@@ -52,9 +51,7 @@ namespace {
 void SearchResultWidget::addResult(const SearchResultItem &result)
 {
   if (ui->treeWidget->topLevelItemCount() > 16000)
-  {
     return;
-  }
 
   auto item = new MyTreeWidgetItem(nullptr);
   item->setData(0, Qt::UserRole, QVariant::fromValue(result));
@@ -64,12 +61,16 @@ void SearchResultWidget::addResult(const SearchResultItem &result)
 
   int c = 0;
   item->setText(c++, result.name);
+  item->setTextAlignment(c, Qt::AlignHCenter);
   item->setText(c++, QString::number(std::roundf(slopeDistance)));
-  item->setText(c++, QString("%1,%2,%3").arg(result.pos.x()).arg(result.pos.y()).arg(result.pos.z()));
-  item->setText(c++, result.buys);
-  item->setText(c++, result.sells);
+  item->setTextAlignment(c, Qt::AlignHCenter);
+  item->setText(c++, QString().number(int(std::roundf(result.pos.x()))) + "/" +
+                     QString().number(int(std::roundf(result.pos.y()))) + "/" +
+                     QString().number(int(std::roundf(result.pos.z()))) );
+  item->setText(c++, result.offers);
 
   ui->treeWidget->addTopLevelItem(item);
+
 }
 
 void SearchResultWidget::searchDone()
@@ -101,14 +102,12 @@ void SearchResultWidget::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, 
 void SearchResultWidget::on_treeWidget_itemSelectionChanged()
 {
   auto list = ui->treeWidget->selectedItems();
-  if (list.size() > 0)
-  {
+  if (list.size() > 0) {
     auto item = list[0];
     auto data = item->data(0, Qt::UserRole).value<SearchResultItem>();
     emit jumpTo(data.pos);
 
-    if (!ui->check_display_all->isChecked())
-    {
+    if (!ui->check_display_all->isChecked()) {
       QVector<QSharedPointer<OverlayItem> > items;
       items.push_back(data.entity);
 
@@ -126,11 +125,9 @@ void SearchResultWidget::on_check_display_all_stateChanged()
 {
   QVector<QSharedPointer<OverlayItem> > items;
 
-  if (ui->check_display_all->isChecked())
-  {
+  if (ui->check_display_all->isChecked()) {
     const int count = ui->treeWidget->topLevelItemCount();
-    for (int i = 0; i < count; i++)
-    {
+    for (int i = 0; i < count; i++) {
       auto item = ui->treeWidget->topLevelItem(i);
       auto data = item->data(0, Qt::UserRole).value<SearchResultItem>();
 
@@ -157,9 +154,8 @@ void SearchResultWidget::on_saveSearchResults_clicked() {
         this, tr("Save search results as tab separated values"),
         QString(), "Tab separated files (*.tsv)");
 
-  if (saveFilename.isEmpty()) {
+  if (saveFilename.isEmpty())
     return;
-  }
 
   QString delim = "\t";
 

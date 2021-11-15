@@ -194,3 +194,14 @@ QColor EntityIdentifier::getBrushColor(const QString id) const {
 QColor EntityIdentifier::getPenColor(const QString id) const {
   return getEntityInfo(id).penColor;
 }
+
+QList<QString> EntityIdentifier::getKnownIds() const {
+  QList<QString> temp;
+  for (auto it = packs.constBegin(); it != packs.constEnd(); ++it) {
+    if (it->enabled) {
+      for (QString& e: it->map.keys())
+        temp.append(e);
+    }
+  }
+  return temp;
+}

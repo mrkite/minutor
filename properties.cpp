@@ -5,8 +5,10 @@
 #include "./ui_properties.h"
 
 
-Properties::Properties(QWidget *parent) : QDialog(parent),
-    ui(new Ui::Properties) {
+Properties::Properties(QWidget *parent)
+  : QDialog(parent)
+  , ui(new Ui::Properties)
+{
   ui->setupUi(this);
 }
 
@@ -25,7 +27,7 @@ void Properties::DisplayProperties(QVariant p) {
   ui->propertyView->clear();
 
   // only support QVariantMap or QVariantHash at this level
-  switch (p.type()) {
+  switch ((QMetaType::Type)p.type()) {
     case QMetaType::QVariantMap:
       treeCreator.ParseIterable(ui->propertyView->invisibleRootItem(), p.toMap());
       break;

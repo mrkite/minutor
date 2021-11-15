@@ -1,9 +1,9 @@
 #include "searchtextwidget.h"
 #include "ui_searchtextwidget.h"
 
-SearchTextWidget::SearchTextWidget(const QString &name, QWidget *parent) :
-  QWidget(parent),
-  ui(new Ui::SearchTextWidget)
+SearchTextWidget::SearchTextWidget(const QString &name, QWidget *parent)
+  : QWidget(parent)
+  , ui(new Ui::SearchTextWidget)
 {
   ui->setupUi(this);
   ui->checkBox_active->setText(name);
@@ -38,12 +38,9 @@ bool SearchTextWidget::matches(const QString &textToSearch) const
 {
   QRegExp matcher(getSearchText(), Qt::CaseInsensitive, QRegExp::Wildcard);
 
-  if (exactMatch())
-  {
+  if (exactMatch()) {
     return matcher.exactMatch(textToSearch);
-  }
-  else
-  {
+  } else {
     return (matcher.indexIn(textToSearch) >= 0);
   }
 }

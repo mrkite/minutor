@@ -26,18 +26,18 @@ class SearchChunksWidget : public QWidget
 {
   Q_OBJECT
 
-public:
+ public:
   explicit SearchChunksWidget(QSharedPointer<SearchPluginI> searchPlugin, QWidget *parent = nullptr);
   ~SearchChunksWidget();
 
-public slots:
+ public slots:
   void setSearchCenter(int x, int y, int z);
 
-signals:
+ signals:
   void jumpTo(QVector3D pos);
   void updateSearchResultPositions(QVector<QSharedPointer<OverlayItem> >);
 
-private slots:
+ private slots:
   void on_pb_search_clicked();
 
   void on_resultList_jumpTo(const QVector3D &);
@@ -45,7 +45,7 @@ private slots:
 
   void displayResultsOfSingleChunk(QSharedPointer<SearchPluginI::ResultListT> results);
 
-private:
+ private:
   QSharedPointer<Ui::SearchChunksWidget> ui;
   QSharedPointer<SearchPluginI> searchPlugin;
   QVector3D searchCenter;
@@ -56,7 +56,7 @@ private:
 
   class AsyncSearch
   {
-  public:
+   public:
     AsyncSearch(SearchChunksWidget& parent_,
                 const Range<float>& range_y_,
                 const QWeakPointer<SearchPluginI>& searchPlugin_)
@@ -71,7 +71,7 @@ private:
 
     QSharedPointer<SearchPluginI::ResultListT> searchExistingChunk_async(const QSharedPointer<Chunk> &chunk);
 
-  private:
+   private:
     SearchChunksWidget& parent;
     const Range<float> range_y;
     QWeakPointer<SearchPluginI> searchPlugin;

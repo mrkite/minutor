@@ -3,31 +3,31 @@
 
 #include "entityevaluator.h"
 #include "searchplugininterface.h"
+#include "searchtextwidget.h"
 
 #include <QWidget>
 #include <QLayout>
 
-class SearchTextWidget;
 
 class SearchEntityPluginWidget : public QWidget, public SearchPluginI
 {
   Q_OBJECT
 
-public:
+ public:
   explicit SearchEntityPluginWidget();
   ~SearchEntityPluginWidget() override;
 
   QWidget &getWidget() override;
 
-  SearchPluginI::ResultListT searchChunk(Chunk &chunk) override;
+  SearchPluginI::ResultListT searchChunk(const Chunk &chunk) override;
 
-private:
+ private:
   QLayout* layout;
 
+  SearchTextWidget* stw_entity;
+  SearchTextWidget* stw_villager;
   SearchTextWidget* stw_sells;
   SearchTextWidget* stw_buys;
-  SearchTextWidget* stw_entityType;
-  SearchTextWidget* stw_villagerType;
   SearchTextWidget* stw_special;
 
   bool evaluateEntity(EntityEvaluator &entity);

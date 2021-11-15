@@ -122,7 +122,7 @@ bool BlockIdentifier::hasBlockInfo(uint hid) {
 
 QList<quint32> BlockIdentifier::getKnownIds() const
 {
-    return blocks.keys();
+  return blocks.keys();
 }
 
 void BlockIdentifier::enableDefinitions(int pack) {

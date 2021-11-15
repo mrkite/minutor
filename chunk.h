@@ -53,8 +53,8 @@ class Chunk : public QObject {
   int getChunkX() const { return chunkX; }
   int getChunkZ() const { return chunkZ; }
   const uchar * getImage() const { return image; }
-  int  getHighest() { return highest; }
-  int  getLowest()  { return lowest; }
+  int  getHighest() const { return highest; }
+  int  getLowest() const  { return lowest; }
 
   const ChunkSection* getSectionByY(int y) const;
   const ChunkSection* getSectionByIdx(qint8 y) const;

@@ -17,12 +17,11 @@ class SearchResultWidget;
 
 class SearchResultItem
 {
-public:
-  QString name;
+ public:
+  QString   name;
   QVector3D pos;
-  QString buys;
-  QString sells;
-  QVariant properties;
+  QString   offers;
+  QVariant  properties;
   QSharedPointer<OverlayItem> entity;
 };
 
@@ -30,7 +29,7 @@ class SearchResultWidget : public QWidget
 {
   Q_OBJECT
 
-public:
+ public:
   explicit SearchResultWidget(QWidget *parent = nullptr);
   ~SearchResultWidget();
 
@@ -40,13 +39,13 @@ public:
 
   void setPointOfInterest(const QVector3D& centerPoint);
 
-signals:
+ signals:
   void jumpTo(QVector3D pos);
   void updateSearchResultPositions(QVector<QSharedPointer<OverlayItem> >);
 
-protected slots:
+ protected slots:
   void on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column);
-private slots:
+ private slots:
   void on_treeWidget_itemSelectionChanged();
 
   void on_treeWidget_itemClicked(QTreeWidgetItem *item, int column);
@@ -55,7 +54,7 @@ private slots:
 
   void on_saveSearchResults_clicked();
 
-private:
+ private:
   Ui::SearchResultWidget *ui;
 
   QVector3D pointOfInterest;
