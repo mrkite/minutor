@@ -138,9 +138,7 @@ INSTALLS += desktopfile pixmapfile target
 
 FORMS += \
     properties.ui \
-    searchblockpluginwidget.ui \
     searchchunkswidget.ui \
-    searchentitypluginwidget.ui \
     searchresultwidget.ui \
     searchtextwidget.ui \
     settings.ui \

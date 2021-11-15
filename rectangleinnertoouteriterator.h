@@ -6,7 +6,7 @@
 
 class RectangleInnerToOuterIterator
 {
-public:
+ public:
   RectangleInnerToOuterIterator(const QRect& rect_)
     : rect(rect_)
     , center(rect_.center())
@@ -70,7 +70,7 @@ public:
     return rect;
   }
 
-private:
+ private:
   QRect rect;
   QPoint center;
   QPoint currentPos;
@@ -82,8 +82,7 @@ private:
   {
     subNr++;
     const int lastValidSub = (((shellNr-1) * 2) + 1);
-    if (subNr > lastValidSub)
-    {
+    if (subNr > lastValidSub) {
       shellNr++;
       subNr=1;
     }
@@ -100,12 +99,9 @@ private:
     int ncx = center.x() + (shellRadius * shellSign);
     int ncy = center.y() + (shellRadius * shellSign);
 
-    if (subNrBit1)
-    {
+    if (subNrBit1) {
       ncy -= subNrRemaining * shellSign;
-    }
-    else
-    {
+    } else {
       ncx -= subNrRemaining * shellSign;
     }
 

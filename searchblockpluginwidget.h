@@ -2,31 +2,27 @@
 #define SEARCHBLOCKPLUGINWIDGET_H
 
 #include "searchplugininterface.h"
-#include "blockidentifier.h"
+#include "searchtextwidget.h"
 
 #include <QWidget>
+#include <QLayout>
 #include <set>
 
-namespace Ui {
-class SearchBlockPluginWidget;
-}
-
-class SearchTextWidget;
 
 class SearchBlockPluginWidget : public QWidget, public SearchPluginI
 {
   Q_OBJECT
 
-public:
+ public:
   explicit SearchBlockPluginWidget(QWidget* parent = nullptr);
   ~SearchBlockPluginWidget();
 
   QWidget &getWidget() override;
   bool initSearch() override;
-  SearchPluginI::ResultListT searchChunk(Chunk &chunk) override;
+  SearchPluginI::ResultListT searchChunk(const Chunk &chunk) override;
 
-private:
-  Ui::SearchBlockPluginWidget *ui;
+ private:
+  QLayout* layout;
 
   SearchTextWidget* stw_blockId;
   SearchTextWidget* stw_blockName;

@@ -53,6 +53,8 @@ class Chunk : public QObject {
   int getChunkX() const { return chunkX; }
   int getChunkZ() const { return chunkZ; }
   const uchar * getImage() const { return image; }
+  int  getHighest() const { return highest; }
+  int  getLowest() const  { return lowest; }
 
   const ChunkSection* getSectionByY(int y) const;
   const ChunkSection* getSectionByIdx(qint8 y) const;
@@ -63,7 +65,7 @@ class Chunk : public QObject {
   typedef QMap<QString, QSharedPointer<OverlayItem>> EntityMap;
   const EntityMap& getEntityMap() const;
 
-signals:
+ signals:
   void structureFound(QSharedPointer<GeneratedStructure> structure);
 
  protected:
@@ -90,7 +92,7 @@ signals:
   friend class ChunkRenderer;
   friend class ChunkCache;
 
-private:
+ private:
   void findHighestBlock();
   void loadLevelTag(const Tag * levelTag);  // nested structure with Level tag (up to 1.17)
   void loadCliffsCaves(const NBT &nbt);     // flat structure without Level tag (1.18+)

@@ -14,10 +14,34 @@
    <string>Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="spacing">
+      <number>18</number>
+     </property>
+     <property name="leftMargin">
+      <number>6</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
      <item>
       <widget class="QLabel" name="lbl_location">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
         <string>Results:</string>
        </property>
@@ -25,10 +49,10 @@
      </item>
      <item>
       <widget class="QPushButton" name="saveSearchResults">
-       <property name="maximumSize">
+       <property name="minimumSize">
         <size>
-         <width>122</width>
-         <height>16777215</height>
+         <width>100</width>
+         <height>0</height>
         </size>
        </property>
        <property name="text">
@@ -49,8 +73,11 @@
     <widget class="QTreeWidget" name="treeWidget">
      <property name="font">
       <font>
-       <pointsize>6</pointsize>
+       <pointsize>8</pointsize>
       </font>
+     </property>
+     <property name="rootIsDecorated">
+      <bool>false</bool>
      </property>
      <property name="sortingEnabled">
       <bool>true</bool>
@@ -64,20 +91,21 @@
       <property name="text">
        <string>Distance</string>
       </property>
+      <property name="textAlignment">
+       <set>AlignCenter</set>
+      </property>
      </column>
      <column>
       <property name="text">
        <string>Coordinates</string>
       </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Buys</string>
+      <property name="textAlignment">
+       <set>AlignCenter</set>
       </property>
      </column>
      <column>
       <property name="text">
-       <string>Sells</string>
+       <string>Details</string>
       </property>
      </column>
     </widget>

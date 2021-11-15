@@ -82,8 +82,8 @@ private slots:
   void addOverlayItemType(QString type, QColor color, QString dimension = "");
   void showProperties(QVariant props);
 
-  void searchBlock();
-  void searchEntity();
+  void openSearchBlockWidget();
+  void openSearchEntityWidget();
 
   void triggerJumpToPosition(QVector3D pos);
 

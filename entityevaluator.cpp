@@ -11,8 +11,7 @@ static const QString prefixToBeRemoved = "minecraft:";
 
 static QString removeMinecraftPrefix(const QString& id)
 {
-  if (id.startsWith(prefixToBeRemoved))
-  {
+  if (id.startsWith(prefixToBeRemoved)) {
     return id.mid(prefixToBeRemoved.size());
   }
 
@@ -24,13 +23,16 @@ using SpecialParamsFunctionT = std::function<QString(const EntityEvaluator &enti
 static std::map<QString, SpecialParamsFunctionT> special_param_extractor =
 {
   {"minecraft:horse", SpecialParamsFunctionT([](const EntityEvaluator &entity) -> QString {
-     return "horse,speed/jump/health: " + entity.getNamedAttribute("generic.movementSpeed")
-     + "/" + entity.getNamedAttribute("horse.jumpStrength")
-     + "/" + entity.getNamedAttribute("generic.maxHealth");
-   })},
+      return "horse,speed/jump/health: "
+        + entity.getNamedAttribute("generic.movementSpeed") + entity.getNamedAttribute("generic.movement_speed") + "/"
+        + entity.getNamedAttribute("horse.jumpStrength")    + entity.getNamedAttribute("horse.jump_strength")    + "/"
+        + entity.getNamedAttribute("generic.maxHealth")     + entity.getNamedAttribute("generic.max_health");
+    })
+  },
   {"minecraft:villager", SpecialParamsFunctionT([](const EntityEvaluator &entity) -> QString {
-     return "[" + removeMinecraftPrefix(entity.getCareerName()) + "]" + entity.getOffers().join("|");
-   })}
+      return "[" + removeMinecraftPrefix(entity.getVillagerProfession()) + "]: " + entity.getVillagerOffers().join(" | ");
+    })
+  }
 };
 
 
@@ -43,39 +45,34 @@ EntityEvaluator::EntityEvaluator(const EntityEvaluatorConfig& config)
   //searchProperties();
 
   bool found = config.evalFunction(*this);
-  if (found)
-  {
+  if (found) {
     addResult();
   }
 }
 
-QList<QString> EntityEvaluator::getOffers() const
+QList<QString> EntityEvaluator::getVillagerOffers() const
 {
   QList<QString> result;
 
   auto* node = getNodeFromPath("Offers/Recipes", *rootNode);
-  if (!node)
-  {
+  if (!node) {
     return result;
   }
 
   {   // single receipe only?
-    QString receipeDesc = describeReceipe(*node);
-    if (receipeDesc.size() > 0)
-    {
-      result.append(receipeDesc);
+    QString receipeDescription = describeReceipe(*node);
+    if (receipeDescription.size() > 0) {
+      result.append(receipeDescription);
       return result;
     }
   }
 
   // multiple ones:
-  for (int i = 0; i < node->childCount(); i++)
-  {
+  for (int i = 0; i < node->childCount(); i++) {
     auto& currentReceipNode = *node->child(i);
-    QString receipeDesc = describeReceipe(currentReceipNode);
-    if (receipeDesc.size() > 0)
-    {
-      result.append(receipeDesc);
+    QString receipeDescription = describeReceipe(currentReceipNode);
+    if (receipeDescription.size() > 0) {
+      result.append(receipeDescription);
     }
   }
 
@@ -85,8 +82,7 @@ QList<QString> EntityEvaluator::getOffers() const
 QString EntityEvaluator::getSpecialParams() const
 {
   auto it = special_param_extractor.find(getTypeId());
-  if (it != special_param_extractor.end())
-  {
+  if (it != special_param_extractor.end()) {
     return it->second(*this);
   }
 
@@ -104,14 +100,10 @@ void EntityEvaluator::searchTreeNode(const QString prefix, const QTreeWidgetItem
   auto valueText = node.text(1);
 
   bool found = config.evalFunction(*this);
-  if (found)
-  {
+  if (found) {
     addResult();
-  }
-  else
-  {
-    for (int i = 0; i < node.childCount(); i++)
-    {
+  } else {
+    for (int i = 0; i < node.childCount(); i++) {
       searchTreeNode(keyText + ".", *node.child(i));
     }
   }
@@ -122,20 +114,19 @@ QString EntityEvaluator::describeReceipe(const QTreeWidgetItem &currentReceipNod
   QString result = "";
 
   auto* buyNode = getNodeFromPath("buy", currentReceipNode);
-  if (buyNode)
-  {
+  if (buyNode) {
     result += describeReceipeItem(*buyNode);
   }
 
   auto* buyBNode = getNodeFromPath("buyB", currentReceipNode);
-  if (buyBNode)
-  {
-    result += "," + describeReceipeItem(*buyBNode);
+  if (buyBNode) {
+    QString buyB = describeReceipeItem(*buyBNode);
+    if (buyB != "air")
+      result += "," + buyB;
   }
 
   auto* sellNode = getNodeFromPath("sell", currentReceipNode);
-  if (sellNode)
-  {
+  if (sellNode) {
     result += " => " + describeReceipeItem(*sellNode);
   }
 
@@ -147,12 +138,10 @@ QString EntityEvaluator::describeReceipeItem(const QTreeWidgetItem &itemNode) co
   QString value = "";
 
   auto* itemIdNode = getNodeFromPath("id", itemNode);
-  if (itemIdNode)
-  {
+  if (itemIdNode) {
     auto* itemCountNode = getNodeFromPath("Count", itemNode);
     int count = itemCountNode->text(1).toInt();
-    if (count > 1)
-    {
+    if (count > 1) {
       value += QString::number(count) + "*";
     }
 
@@ -172,8 +161,7 @@ void EntityEvaluator::addResult()
   result.pos.setX(config.entity->midpoint().x);
   result.pos.setY(config.entity->midpoint().y);
   result.pos.setZ(config.entity->midpoint().z);
-  QString info = getSpecialParams();
-  result.sells = info;
+  result.offers = getSpecialParams();
   result.entity = config.entity;
   config.resultSink.push_back(result);
 }
@@ -193,14 +181,10 @@ const QTreeWidgetItem *EntityEvaluator::getNodeFromPath(QStringList::iterator it
   for (int i = 0; i < searchRoot.childCount(); i++)
   {
     auto *child = searchRoot.child(i);
-    if (child && (child->text(0) == nextName))
-    {
-      if (iter != end)
-      {
+    if (child && (child->text(0) == nextName)) {
+      if (iter != end) {
         return getNodeFromPath(iter, end, *child);
-      }
-      else
-      {
+      } else {
         return child;
       }
     }
@@ -212,8 +196,7 @@ const QTreeWidgetItem *EntityEvaluator::getNodeFromPath(QStringList::iterator it
 const QString EntityEvaluator::getNodeValueFromPath(const QString path, const QTreeWidgetItem &searchRoot, QString defaultValue)
 {
   auto* node = getNodeFromPath(path, searchRoot);
-  if (node)
-  {
+  if (node) {
     return node->text(1);
   }
 
@@ -223,8 +206,7 @@ const QString EntityEvaluator::getNodeValueFromPath(const QString path, const QT
 QString EntityEvaluator::getTypeId() const
 {
   auto* itemIdNode = getNodeFromPath("id", *rootNode);
-  if (itemIdNode)
-  {
+  if (itemIdNode) {
     return itemIdNode->text(1);
   }
 
@@ -237,11 +219,10 @@ bool EntityEvaluator::isVillager() const
   return (id == "minecraft:villager");
 }
 
-QString EntityEvaluator::getCareerName() const
+QString EntityEvaluator::getVillagerProfession() const
 {
   auto node = getNodeFromPath("VillagerData", *rootNode);
-  if (node != nullptr)
-  {
+  if (node != nullptr) {
     return getNodeValueFromPath("profession", *node, "");
   }
 
@@ -254,19 +235,14 @@ QString EntityEvaluator::getNamedAttribute(const QString &name) const
 
   if (!node) return "";
 
-  for (int i = 0; i < node->childCount(); i++)
-  {
+  for (int i = 0; i < node->childCount(); i++) {
     auto *child = node->child(i);
-    if (child)
-    {
+    if (child) {
       auto nameNode = getNodeFromPath("Name", *child);
-      if (nameNode)
-      {
-        if (nameNode->text(1) == name)
-        {
+      if (nameNode) {
+        if (nameNode->text(1) == name) {
           auto baseNode = getNodeFromPath("Base", *child);
-          if (baseNode)
-          {
+          if (baseNode) {
             return baseNode->text(1);
           }
         }

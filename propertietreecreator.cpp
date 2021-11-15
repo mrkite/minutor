@@ -3,13 +3,14 @@
 #include <QTreeWidgetItem>
 
 PropertieTreeCreator::PropertieTreeCreator() {
-  summary.insert("", "{id} ({Pos.[0]}, {Pos.[1]}, {Pos.[2]})");
+//summary.insert("", "{id} ({Pos.[0]}, {Pos.[1]}, {Pos.[2]})");
+  summary.insert("", "{id}");
   summary.insert("Pos", "({[0]}, {[1]}, {[2]})");
   summary.insert("Attributes[]", "{Name} = {Base}");
 }
 
 void PropertieTreeCreator::CreateTree(QTreeWidgetItem* node, const QVariant& v) {
-  switch (v.type()) {
+  switch ((QMetaType::Type)v.type()) {
     case QMetaType::QVariantMap:
       ParseIterable(node, v.toMap());
       break;

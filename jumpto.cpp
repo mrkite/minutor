@@ -18,6 +18,14 @@ JumpTo::~JumpTo()
   delete ui;
 }
 
+void JumpTo::updateYrange(int yMin, int yMax)
+{
+  ui->spinBox_Block_Y->setMinimum(yMin);
+  ui->spinBox_Block_Y->setMaximum(yMax);
+  ui->spinBox_Chunk_Y->setMinimum(yMin >> 4);
+  ui->spinBox_Chunk_Y->setMaximum(yMax >> 4);
+}
+
 void JumpTo::on_spinBox_Block_X_valueChanged(int value)
 {
   updateSpinBoxValue(ui->spinBox_Chunk_X, value >> 4);

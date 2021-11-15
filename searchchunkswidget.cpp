@@ -38,20 +38,16 @@ void SearchChunksWidget::setSearchCenter(int x, int y, int z)
 
 static Range<float> helperRangeCreation(const QCheckBox& checkBox, const QSpinBox& sb1, const QSpinBox& sb2)
 {
-  if (!checkBox.isChecked())
-  {
+  if (!checkBox.isChecked()) {
     return Range<float>::max();
-  }
-  else
-  {
+  } else {
     return Range<float>::createFromUnorderedParams(sb1.value(), sb2.value());
   }
 }
 
 void SearchChunksWidget::on_pb_search_clicked()
 {
-  if (!currentfuture.isCanceled())
-  {
+  if (!currentfuture.isCanceled()) {
     cancelSearch();
     return;
   }
@@ -67,9 +63,7 @@ void SearchChunksWidget::on_pb_search_clicked()
 
   const bool successfull_init = searchPlugin->initSearch();
   if (!successfull_init)
-  {
     return;
-  }
 
   const QVector2D poi = getChunkCoordinates(QVector2D(searchCenter.x(), searchCenter.z()));
   const QVector2D radius2d(radius, radius);
@@ -78,8 +72,7 @@ void SearchChunksWidget::on_pb_search_clicked()
 
   auto chunks = QSharedPointer<QList<ChunkID> >::create();
 
-  for (RectangleInnerToOuterIterator it(searchRange); it != it.end(); ++it)
-  {
+  for (RectangleInnerToOuterIterator it(searchRange); it != it.end(); ++it) {
     const ChunkID id(it->x(), it->y());
     chunks->append(id);
   }
@@ -103,8 +96,7 @@ void SearchChunksWidget::AsyncSearch::searchLoadedChunk_async(const QSharedPoint
 {
   QSharedPointer<SearchPluginI::ResultListT> results;
 
-  if (chunk)
-  {
+  if (chunk) {
     results = searchExistingChunk_async(chunk);
   }
 
@@ -117,18 +109,15 @@ QSharedPointer<SearchPluginI::ResultListT> SearchChunksWidget::AsyncSearch::sear
   ChunkID id(chunk->getChunkX(), chunk->getChunkZ());
 
   auto strong = searchPlugin.lock();
-  if (!strong)
-  {
+  if (!strong) {
     return QSharedPointer<SearchPluginI::ResultListT>();
   }
 
   auto results_tmp = strong->searchChunk(*chunk);
   auto results = QSharedPointer<SearchPluginI::ResultListT>::create();
 
-  for (const auto& result: results_tmp)
-  {
-    if (range_y.isInsideRange(result.pos.y()))
-    {
+  for (const auto& result: results_tmp) {
+    if (range_y.isInsideRange(result.pos.y())) {
       results->push_back(result);
     }
   }
@@ -139,10 +128,8 @@ QSharedPointer<SearchPluginI::ResultListT> SearchChunksWidget::AsyncSearch::sear
 
 void SearchChunksWidget::displayResultsOfSingleChunk(QSharedPointer<SearchPluginI::ResultListT> results)
 {
-  if (results)
-  {
-    for (const auto& result: *results)
-    {
+  if (results) {
+    for (const auto& result: *results) {
       ui->resultList->addResult(result);
     }
   }
@@ -154,8 +141,7 @@ void SearchChunksWidget::addOneToProgress()
 {
   ui->progressBar->setValue(ui->progressBar->value() + 1);
 
-  if (ui->progressBar->maximum() == ui->progressBar->value())
-  {
+  if (ui->progressBar->maximum() == ui->progressBar->value()) {
     cancelSearch();
   }
 }

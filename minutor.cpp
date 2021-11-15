@@ -329,6 +329,7 @@ void Minutor::viewDimension(const DimensionInfo &dim) {
   if (currentWorldVersion < 2800 ) {
     // legacy versions before Cliffs & Caves (up to 1.17)
     depth->setRange(0, 255);
+    jumpTo->updateYrange(0, 255);
     if (dim.id == "minecraft:overworld") {
       depth->setValue(127);   // cloud level
     } else if (dim.id == "minecraft:the_nether") {
@@ -340,6 +341,7 @@ void Minutor::viewDimension(const DimensionInfo &dim) {
     // after Cliffs & Caves (1.18+)
     depth->setRange(dim.minY, dim.maxY);
     depth->setValue(dim.defaultY);
+    jumpTo->updateYrange(dim.minY, dim.maxY);
   }
 
 
@@ -475,6 +477,17 @@ void Minutor::createActions() {
   connect(manageDefsAct, SIGNAL(triggered()),
           dm,            SLOT(show()));
 
+  // [Search]
+  searchEntityAction = new QAction(tr("Search entity"), this);
+  connect(searchEntityAction, SIGNAL(triggered()), this, SLOT(openSearchEntityWidget()));
+  connect(this,               SIGNAL(worldLoaded(bool)),
+          searchEntityAction, SLOT(setEnabled(bool)));
+
+  searchBlockAction = new QAction(tr("Search block"), this);
+  connect(searchBlockAction, SIGNAL(triggered()), this, SLOT(openSearchBlockWidget()));
+  connect(this,              SIGNAL(worldLoaded(bool)),
+          searchBlockAction, SLOT(setEnabled(bool)));
+
   // [Help]
   aboutAct = new QAction(tr("&About"), this);
   aboutAct->setStatusTip(tr("About %1").arg(qApp->applicationName()));
@@ -492,11 +505,6 @@ void Minutor::createActions() {
   connect(updatesAct, SIGNAL(triggered()),
           dm,         SLOT(checkForUpdates()));
 
-  searchEntityAction = new QAction(tr("Search entity"), this);
-  connect(searchEntityAction, SIGNAL(triggered()), this, SLOT(searchEntity()));
-
-  searchBlockAction = new QAction(tr("Search block"), this);
-  connect(searchBlockAction, SIGNAL(triggered()), this, SLOT(searchBlock()));
 }
 
 // actionName will be modified, a "&" is added
@@ -905,13 +913,13 @@ SearchChunksWidget* Minutor::prepareSearchForm(const QSharedPointer<SearchPlugin
   return form;
 }
 
-void Minutor::searchBlock() {
+void Minutor::openSearchBlockWidget() {
   auto searchPlugin = QSharedPointer<SearchBlockPluginWidget>::create();
   auto searchBlockForm = prepareSearchForm(searchPlugin);
   searchBlockForm->showNormal();
 }
 
-void Minutor::searchEntity() {
+void Minutor::openSearchEntityWidget() {
   auto searchPlugin = QSharedPointer<SearchEntityPluginWidget>::create();
   auto searchEntityForm = prepareSearchForm(searchPlugin);
   searchEntityForm->showNormal();

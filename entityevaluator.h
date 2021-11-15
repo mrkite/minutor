@@ -40,7 +40,7 @@ class EntityEvaluator
 public:
   EntityEvaluator(const EntityEvaluatorConfig& config);
 
-  QList<QString> getOffers() const;
+  QList<QString> getVillagerOffers() const;
   QString getSpecialParams() const;
 
   static const QTreeWidgetItem *getNodeFromPath(const QString path, const QTreeWidgetItem &searchRoot);
@@ -50,7 +50,7 @@ public:
 
   QString getTypeId() const;
   bool isVillager() const;
-  QString getCareerName() const;
+  QString getVillagerProfession() const;
 
   QString getNamedAttribute(const QString& name) const;
 

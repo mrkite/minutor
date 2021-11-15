@@ -41,6 +41,8 @@ class EntityIdentifier {
   QColor getBrushColor(const QString id) const;
   QColor getPenColor(const QString id) const;
 
+  QList<QString> getKnownIds() const;
+
  private:
   // singleton: prevent access to constructor and copyconstructor
   EntityIdentifier();
