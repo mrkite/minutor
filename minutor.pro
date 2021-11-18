@@ -18,6 +18,7 @@ HEADERS += \
     chunkid.h \
     chunkmath.h \
     entityevaluator.h \
+    labelledseparator.h \
     labelledslider.h \
     biomeidentifier.h \
     blockidentifier.h \
@@ -59,6 +60,7 @@ HEADERS += \
     paletteentry.h
 SOURCES += \
     entityevaluator.cpp \
+    labelledseparator.cpp \
     labelledslider.cpp \
     biomeidentifier.cpp \
     blockidentifier.cpp \
@@ -137,6 +139,7 @@ target.path = /usr/bin
 INSTALLS += desktopfile pixmapfile target
 
 FORMS += \
+    minutor.ui \
     properties.ui \
     searchchunkswidget.ui \
     searchresultwidget.ui \
