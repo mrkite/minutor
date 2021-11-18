@@ -9,6 +9,9 @@
 #include <QSet>
 #include <QVector3D>
 #include <QtNetwork/QNetworkReply>
+#include <QWidgetAction>
+
+#include "./ui_minutor.h"
 
 class QAction;
 class QActionGroup;
@@ -93,13 +96,13 @@ signals:
   void worldLoaded(bool isLoaded);
 
  private:
+  Ui::Minutor m_ui;
   SearchChunksWidget* prepareSearchForm(const QSharedPointer<SearchPluginI> &searchPlugin);
 
   void createActions();
   void createMenus();
   void createStatusBar();
   void loadStructures(const QDir &dataPath);
-  void populateEntityOverlayMenu();
   QKeySequence generateUniqueKeyboardShortcut(QString *actionName);
 
   QString getWorldName(QDir path);
@@ -110,33 +113,18 @@ signals:
   QProgressDialog *progress;
   bool progressAutoclose;
 
-  QMenu *fileMenu, *worldMenu;
-  QMenu *viewMenu, *jumpMenu, *dimMenu;
-  QMenu *helpMenu;
-  QMenu *structureOverlayMenu, *entityOverlayMenu;
-  QMenu *searchMenu;
-
-  QList<QAction *>worlds;
-  QAction *openAct, *reloadAct, *saveAct, *exitAct;
-  QAction *jumpSpawnAct;
-  QList<QAction *>playerActions;
-  QAction *lightingAct, *mobSpawnAct, *caveModeAct, *depthShadingAct, *biomeColorsAct, *singleLayerAct, *seaGroundAct;
-  QAction *manageDefsAct;
-  QAction *refreshAct;
-  QAction *aboutAct;
-  QAction *settingsAct;
-  QAction *updatesAct;
-  QAction *jumpToAct;
-  QList<QAction*> structureActions;
-  QList<QAction*> entityActions;
-  QAction *searchEntityAction;
-  QAction *searchBlockAction;
+  QList<QAction*> worldActions;
+  QList<QAction*> playerActions;
+  QList<QAction*> entityOverlayActions;
+  QList<QAction*> structureOverlayActions;
+  QWidgetAction* separatorEntityOverlay;
+  QWidgetAction* separatorStructureOverlay;
 
   // loaded world data
   QList<Location> locations;  // data of player related locations in this world
   DefinitionManager *dm;
-  Settings *settings;
-  JumpTo *jumpTo;
+  Settings *dialogSettings;
+  JumpTo *dialogJumpTo;
   QDir currentWorld;
   int  currentWorldVersion;
   QNetworkAccessManager qnam;

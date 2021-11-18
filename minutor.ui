@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Minutor</class>
+ <widget class="QMainWindow" name="Minutor">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>500</width>
+    <height>450</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>500</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>&amp;File</string>
+    </property>
+    <widget class="QMenu" name="menu_OpenWorld">
+     <property name="title">
+      <string>&amp;Open World</string>
+     </property>
+    </widget>
+    <addaction name="menu_OpenWorld"/>
+    <addaction name="action_Open"/>
+    <addaction name="action_Reload"/>
+    <addaction name="separator"/>
+    <addaction name="action_SavePNG"/>
+    <addaction name="separator"/>
+    <addaction name="action_Exit"/>
+   </widget>
+   <widget class="QMenu" name="menu_View">
+    <property name="title">
+     <string>&amp;View</string>
+    </property>
+    <widget class="QMenu" name="menu_Dimension">
+     <property name="title">
+      <string>Dimension</string>
+     </property>
+    </widget>
+    <widget class="QMenu" name="menu_JumpPlayer">
+     <property name="title">
+      <string>Jump to Player</string>
+     </property>
+    </widget>
+    <addaction name="action_JumpSpawn"/>
+    <addaction name="action_JumpTo"/>
+    <addaction name="menu_JumpPlayer"/>
+    <addaction name="menu_Dimension"/>
+    <addaction name="separator"/>
+    <addaction name="action_Lighting"/>
+    <addaction name="action_MobSpawning"/>
+    <addaction name="action_CaveMode"/>
+    <addaction name="action_DepthShading"/>
+    <addaction name="action_BiomeColors"/>
+    <addaction name="action_SeaGround"/>
+    <addaction name="action_SingleLayer"/>
+    <addaction name="separator"/>
+    <addaction name="action_Refresh"/>
+    <addaction name="action_ManageDefinitions"/>
+   </widget>
+   <widget class="QMenu" name="menu_Overlay">
+    <property name="title">
+     <string>&amp;Overlay</string>
+    </property>
+    <addaction name="separator"/>
+    <addaction name="separator"/>
+   </widget>
+   <widget class="QMenu" name="menu_Search">
+    <property name="title">
+     <string>&amp;Search</string>
+    </property>
+    <addaction name="action_SearchEntity"/>
+    <addaction name="action_SearchBlock"/>
+   </widget>
+   <widget class="QMenu" name="menu_Help">
+    <property name="title">
+     <string>&amp;Help</string>
+    </property>
+    <addaction name="action_About"/>
+    <addaction name="separator"/>
+    <addaction name="action_Settings"/>
+    <addaction name="action_Update"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menu_View"/>
+   <addaction name="menu_Overlay"/>
+   <addaction name="menu_Search"/>
+   <addaction name="menu_Help"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="action_Open">
+   <property name="text">
+    <string>&amp;Open...</string>
+   </property>
+   <property name="toolTip">
+    <string>Open a world from folder</string>
+   </property>
+   <property name="statusTip">
+    <string>Open a world from folder</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="action_Reload">
+   <property name="text">
+    <string>&amp;Reload</string>
+   </property>
+   <property name="toolTip">
+    <string>Reload current world</string>
+   </property>
+   <property name="statusTip">
+    <string>Reload current world</string>
+   </property>
+   <property name="shortcut">
+    <string>F5</string>
+   </property>
+  </action>
+  <action name="action_SavePNG">
+   <property name="text">
+    <string>&amp;Save PNG...</string>
+   </property>
+   <property name="toolTip">
+    <string>Save world as PNG</string>
+   </property>
+   <property name="statusTip">
+    <string>Save world as PNG</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="action_Exit">
+   <property name="text">
+    <string>E&amp;xit</string>
+   </property>
+   <property name="statusTip">
+    <string/>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="action_About">
+   <property name="text">
+    <string>&amp;About</string>
+   </property>
+  </action>
+  <action name="action_Settings">
+   <property name="text">
+    <string>Settings...</string>
+   </property>
+  </action>
+  <action name="action_Update">
+   <property name="text">
+    <string>Check for updates...</string>
+   </property>
+   <property name="toolTip">
+    <string>Check for updated definitions</string>
+   </property>
+   <property name="statusTip">
+    <string>Check for updated definitions</string>
+   </property>
+  </action>
+  <action name="action_SearchEntity">
+   <property name="text">
+    <string>Search for Entity</string>
+   </property>
+   <property name="statusTip">
+    <string>Search for Entity</string>
+   </property>
+  </action>
+  <action name="action_SearchBlock">
+   <property name="text">
+    <string>Search for Block</string>
+   </property>
+   <property name="statusTip">
+    <string>Search for Block</string>
+   </property>
+  </action>
+  <action name="action_JumpSpawn">
+   <property name="text">
+    <string>Jump to &amp;Spawn</string>
+   </property>
+   <property name="toolTip">
+    <string>Jump to world spawn</string>
+   </property>
+   <property name="statusTip">
+    <string>Jump to world spawn</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
+   </property>
+  </action>
+  <action name="action_JumpTo">
+   <property name="text">
+    <string>&amp;Jump To</string>
+   </property>
+   <property name="toolTip">
+    <string>Jump to a location</string>
+   </property>
+   <property name="statusTip">
+    <string>Jump to a location</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+J</string>
+   </property>
+  </action>
+  <action name="action_Lighting">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Lighting</string>
+   </property>
+   <property name="toolTip">
+    <string>Toggle lighting on/off</string>
+   </property>
+   <property name="statusTip">
+    <string>Toggle lighting on/off</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+L</string>
+   </property>
+  </action>
+  <action name="action_MobSpawning">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Mob spawning</string>
+   </property>
+   <property name="toolTip">
+    <string>Toggle show mob spawning on/off</string>
+   </property>
+   <property name="statusTip">
+    <string>Toggle show mob spawning on/off</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+M</string>
+   </property>
+  </action>
+  <action name="action_CaveMode">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Cave Mode</string>
+   </property>
+   <property name="toolTip">
+    <string>Toggle cave mode on/off</string>
+   </property>
+   <property name="statusTip">
+    <string>Toggle cave mode on/off</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+C</string>
+   </property>
+  </action>
+  <action name="action_DepthShading">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Depth shading</string>
+   </property>
+   <property name="toolTip">
+    <string>Toggle shading based on relative depth</string>
+   </property>
+   <property name="statusTip">
+    <string>Toggle shading based on relative depth</string>
+   </property>
+  </action>
+  <action name="action_BiomeColors">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Biome Colors</string>
+   </property>
+   <property name="toolTip">
+    <string>Toggle draw biome colors or block colors</string>
+   </property>
+   <property name="statusTip">
+    <string>Toggle draw biome colors or block colors</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+B</string>
+   </property>
+  </action>
+  <action name="action_SeaGround">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Sea &amp;Ground mode</string>
+   </property>
+   <property name="toolTip">
+    <string>Toggle sea ground mode on/off</string>
+   </property>
+   <property name="statusTip">
+    <string>Toggle sea ground mode on/off</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+G</string>
+   </property>
+  </action>
+  <action name="action_SingleLayer">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Single layer</string>
+   </property>
+   <property name="toolTip">
+    <string>Toggle single layer on/off</string>
+   </property>
+   <property name="statusTip">
+    <string>Toggle single layer on/off</string>
+   </property>
+  </action>
+  <action name="action_Refresh">
+   <property name="text">
+    <string>Refresh</string>
+   </property>
+   <property name="toolTip">
+    <string>Reloads all chunks,
+but keeps the same position / dimension</string>
+   </property>
+   <property name="statusTip">
+    <string>Reloads all chunks,\nbut keeps the same position / dimension</string>
+   </property>
+   <property name="shortcut">
+    <string>F2</string>
+   </property>
+  </action>
+  <action name="action_ManageDefinitions">
+   <property name="text">
+    <string>Manage &amp;Definitions...</string>
+   </property>
+   <property name="toolTip">
+    <string>Manage block and biome definitions</string>
+   </property>
+   <property name="statusTip">
+    <string>Manage block and biome definitions</string>
+   </property>
+  </action>
+  <action name="actiontest">
+   <property name="text">
+    <string>test</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

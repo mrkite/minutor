@@ -14,6 +14,7 @@
 #include <QtNetwork/QNetworkReply>
 #include "./minutor.h"
 #include "./mapview.h"
+#include "./labelledseparator.h"
 #include "./labelledslider.h"
 #include "./nbt.h"
 #include "./json.h"
@@ -33,10 +34,10 @@
 #include "./searchresultwidget.h"
 
 Minutor::Minutor()
-  : searchMenu(nullptr)
-  , searchEntityAction(nullptr)
-  , searchBlockAction(nullptr)
 {
+  m_ui.setupUi(this);
+
+  // central MapView wiget
   mapview = new MapView;
   connect(mapview, SIGNAL(hoverTextChanged(QString)),
           statusBar(), SLOT(showMessage(QString)));
@@ -51,12 +52,16 @@ Minutor::Minutor()
   DimensionIdentifier *dimensions = &DimensionIdentifier::Instance();
   connect(dimensions, SIGNAL(dimensionChanged(const DimensionInfo &)),
           this, SLOT(viewDimension(const DimensionInfo &)));
-  settings = new Settings(this);
-  connect(settings, SIGNAL(settingsUpdated()),
-          this, SLOT(rescanWorlds()));
-  jumpTo = new JumpTo(this);
 
-  if (settings->autoUpdate) {
+  // "Settings" dialog
+  dialogSettings = new Settings(this);
+  connect(dialogSettings, SIGNAL(settingsUpdated()),
+          this, SLOT(rescanWorlds()));
+
+  // "Jump To" dialog
+  dialogJumpTo = new JumpTo(this);
+
+  if (dialogSettings->autoUpdate) {
     // get time of last update
     QSettings settings;
     QDateTime lastUpdateTime = settings.value("packupdate").toDateTime();
@@ -66,12 +71,18 @@ Minutor::Minutor()
       dm->autoUpdate();
   }
 
-  createActions();
+  setWindowTitle(qApp->applicationName());
+  // create dynamic part of menu
+  getWorldList();
   createMenus();
+  // connect actions to handlers
+  createActions();
+  // configure status bar
   createStatusBar();
 
+  // central layout
   QBoxLayout *mainLayout;
-  if (settings->verticalDepth) {
+  if (dialogSettings->verticalDepth) {
     mainLayout = new QHBoxLayout;
     depth = new LabelledSlider(Qt::Vertical);
     mainLayout->addWidget(mapview, 1);
@@ -102,8 +113,6 @@ Minutor::Minutor()
 
   setCentralWidget(central);
   layout()->setContentsMargins(0, 0, 0, 0);
-
-  setWindowTitle(qApp->applicationName());
 
   propView = new Properties(this);
 
@@ -213,28 +222,37 @@ void Minutor::saveFinished() {
 }
 
 void Minutor::closeWorld() {
-  // clear jump menu
+  // clear "Jump to Player" menu
   locations.clear();
   for (int i = 0; i < playerActions.size(); i++) {
-    jumpMenu->removeAction(playerActions[i]);
+    m_ui.menu_JumpPlayer->removeAction(playerActions[i]);
     delete playerActions[i];
   }
   playerActions.clear();
-  jumpMenu->setEnabled(false);
-  // clear dimensions menu
-  DimensionIdentifier::Instance().clearDimensionsMenu(dimMenu);
+  m_ui.menu_JumpPlayer->setEnabled(false);
+
+  // clear "Dimensions" menu
+  DimensionIdentifier::Instance().clearDimensionsMenu(m_ui.menu_Dimension);
   // clear overlays
   mapview->clearOverlayItems();
   // clear other stuff
   currentWorld = QString();
   emit worldLoaded(false);
+
+  // clear "Structures Overlays"
+  for (int i = 0; i < structureOverlayActions.size(); i++) {
+    m_ui.menu_Overlay->removeAction(structureOverlayActions[i]);
+    delete structureOverlayActions[i];
+  }
+  structureOverlayActions.clear();
+  overlayItemTypes.clear();
 }
 
 void Minutor::jumpToLocation() {
   QAction *action = qobject_cast<QAction*>(sender());
   if (action) {
     Location loc = locations[action->data().toInt()];
-    if ((loc.dimension == "minecraft:the_nether") && (this->dimMenu[0].isEnabled())) {
+    if ((loc.dimension == "minecraft:the_nether") && (m_ui.menu_Dimension[0].isEnabled())) {
       // dimMenu[0] defaults to Overworld
       loc.x *= 8;
       loc.z *= 8;
@@ -248,37 +266,37 @@ void Minutor::jumpToXZ(int blockX, int blockZ) {
 }
 
 void Minutor::setViewLighting(bool value) {
-  lightingAct->setChecked(value);
+  m_ui.action_Lighting->setChecked(value);
   toggleFlags();
 }
 
 void Minutor::setViewMobspawning(bool value) {
-  mobSpawnAct->setChecked(value);
+  m_ui.action_MobSpawning->setChecked(value);
   toggleFlags();
 }
 
 void Minutor::setViewCavemode(bool value) {
-  caveModeAct->setChecked(value);
+  m_ui.action_CaveMode->setChecked(value);
   toggleFlags();
 }
 
 void Minutor::setViewDepthshading(bool value) {
-  depthShadingAct->setChecked(value);
+  m_ui.action_DepthShading->setChecked(value);
   toggleFlags();
 }
 
 void Minutor::setViewBiomeColors(bool value) {
-  biomeColorsAct->setChecked(value);
+  m_ui.action_BiomeColors->setChecked(value);
   toggleFlags();
 }
 
 void Minutor::setViewSeaGroundMode(bool value) {
-  seaGroundAct->setChecked(value);
+  m_ui.action_SeaGround->setChecked(value);
   toggleFlags();
 }
 
 void Minutor::setViewSingleLayer(bool value) {
-  singleLayerAct->setChecked(value);
+  m_ui.action_SingleLayer->setChecked(value);
   toggleFlags();
 }
 
@@ -289,22 +307,22 @@ void Minutor::setDepth(int value) {
 void Minutor::toggleFlags() {
   int flags = 0;
 
-  if (lightingAct->isChecked())     flags |= MapView::flgLighting;
-  if (mobSpawnAct->isChecked())     flags |= MapView::flgMobSpawn;
-  if (caveModeAct->isChecked())     flags |= MapView::flgCaveMode;
-  if (depthShadingAct->isChecked()) flags |= MapView::flgDepthShading;
-  if (biomeColorsAct->isChecked())  flags |= MapView::flgBiomeColors;
-  if (seaGroundAct->isChecked())    flags |= MapView::flgSeaGround;
-  if (singleLayerAct->isChecked())  flags |= MapView::flgSingleLayer;
+  if (m_ui.action_Lighting->isChecked())     flags |= MapView::flgLighting;
+  if (m_ui.action_MobSpawning->isChecked())  flags |= MapView::flgMobSpawn;
+  if (m_ui.action_CaveMode->isChecked())     flags |= MapView::flgCaveMode;
+  if (m_ui.action_DepthShading->isChecked()) flags |= MapView::flgDepthShading;
+  if (m_ui.action_BiomeColors->isChecked())  flags |= MapView::flgBiomeColors;
+  if (m_ui.action_SeaGround->isChecked())    flags |= MapView::flgSeaGround;
+  if (m_ui.action_SingleLayer->isChecked())  flags |= MapView::flgSingleLayer;
   mapview->setFlags(flags);
 
   QSet<QString> overlayTypes;
-  for (auto action : structureActions) {
+  for (auto action : structureOverlayActions) {
     if (action->isChecked()) {
       overlayTypes.insert(action->data().toMap()["type"].toString());
     }
   }
-  for (auto action : entityActions) {
+  for (auto action : entityOverlayActions) {
     if (action->isChecked()) {
       overlayTypes.insert(action->data().toString());
     }
@@ -315,7 +333,7 @@ void Minutor::toggleFlags() {
 
 void Minutor::viewDimension(const DimensionInfo &dim) {
   // update visability of Structure Overlays
-  for (auto action : structureActions) {
+  for (auto action : structureOverlayActions) {
     QString dimension = action->data().toMap()["dimension"].toString();
     if (dimension.isEmpty() ||
         !dimension.compare(dim.name, Qt::CaseInsensitive)) {
@@ -329,7 +347,7 @@ void Minutor::viewDimension(const DimensionInfo &dim) {
   if (currentWorldVersion < 2800 ) {
     // legacy versions before Cliffs & Caves (up to 1.17)
     depth->setRange(0, 255);
-    jumpTo->updateYrange(0, 255);
+    dialogJumpTo->updateYrange(0, 255);
     if (dim.id == "minecraft:overworld") {
       depth->setValue(127);   // cloud level
     } else if (dim.id == "minecraft:the_nether") {
@@ -341,7 +359,7 @@ void Minutor::viewDimension(const DimensionInfo &dim) {
     // after Cliffs & Caves (1.18+)
     depth->setRange(dim.minY, dim.maxY);
     depth->setValue(dim.defaultY);
-    jumpTo->updateYrange(dim.minY, dim.maxY);
+    dialogJumpTo->updateYrange(dim.minY, dim.maxY);
   }
 
 
@@ -361,149 +379,93 @@ void Minutor::about() {
 }
 
 void Minutor::updateDimensions() {
-  DimensionIdentifier::Instance().getDimensionsInWorld(currentWorld, dimMenu, this);
+  DimensionIdentifier::Instance().getDimensionsInWorld(currentWorld, m_ui.menu_Dimension, this);
 }
 
 void Minutor::createActions() {
-  getWorldList();
-
   // [File]
-  openAct = new QAction(tr("&Open..."), this);
-  openAct->setShortcut(tr("Ctrl+O"));
-  openAct->setStatusTip(tr("Open a world"));
-  connect(openAct, SIGNAL(triggered()),
-          this,    SLOT(open()));
+  connect(m_ui.action_Open, SIGNAL(triggered()),
+          this,             SLOT(open()));
 
-  reloadAct = new QAction(tr("&Reload"), this);
-  reloadAct->setShortcut(tr("F5"));
-  reloadAct->setStatusTip(tr("Reload current world"));
-  connect(reloadAct, SIGNAL(triggered()),
-          this,      SLOT(reload()));
-  connect(this,      SIGNAL(worldLoaded(bool)),
-          reloadAct, SLOT(setEnabled(bool)));
+  connect(m_ui.action_Reload, SIGNAL(triggered()),
+          this,               SLOT(reload()));
+  connect(this,               SIGNAL(worldLoaded(bool)),
+          m_ui.action_Reload, SLOT(setEnabled(bool)));
 
-  saveAct = new QAction(tr("&Save PNG..."), this);
-  saveAct->setShortcut(tr("Ctrl+S"));
-  saveAct->setStatusTip(tr("Save as PNG"));
-  connect(saveAct, SIGNAL(triggered()),
-          this,    SLOT(save()));
-  connect(this,    SIGNAL(worldLoaded(bool)),
-          saveAct, SLOT(setEnabled(bool)));
+  connect(m_ui.action_SavePNG, SIGNAL(triggered()),
+          this,                SLOT(save()));
+  connect(this,                SIGNAL(worldLoaded(bool)),
+          m_ui.action_SavePNG, SLOT(setEnabled(bool)));
 
-  exitAct = new QAction(tr("E&xit"), this);
-  exitAct->setShortcut(tr("Ctrl+Q"));
-  exitAct->setStatusTip(tr("Exit %1").arg(qApp->applicationName()));
-  connect(exitAct, SIGNAL(triggered()),
-          this,    SLOT(close()));
+  m_ui.action_Exit->setStatusTip(tr("Exit %1").arg(qApp->applicationName()));
+  connect(m_ui.action_Exit, SIGNAL(triggered()),
+          this,             SLOT(close()));
 
   // [View->Jump]
-  jumpSpawnAct = new QAction(tr("Jump to &Spawn"), this);
-  jumpSpawnAct->setShortcut(tr("F1"));
-  jumpSpawnAct->setStatusTip(tr("Jump to world spawn"));
-  connect(jumpSpawnAct, SIGNAL(triggered()),
-          this,         SLOT(jumpToLocation()));
-  connect(this,         SIGNAL(worldLoaded(bool)),
-          jumpSpawnAct, SLOT(setEnabled(bool)));
+  connect(m_ui.action_JumpSpawn, SIGNAL(triggered()),
+          this,                  SLOT(jumpToLocation()));
+  connect(this,                  SIGNAL(worldLoaded(bool)),
+          m_ui.action_JumpSpawn, SLOT(setEnabled(bool)));
 
-  jumpToAct = new QAction(tr("&Jump To"), this);
-  jumpToAct->setShortcut(tr("CTRL+J"));
-  jumpToAct->setStatusTip(tr("Jump to a location"));
-  connect(jumpToAct, SIGNAL(triggered()),
-          jumpTo,    SLOT(show()));
-  connect(this,      SIGNAL(worldLoaded(bool)),
-          jumpToAct, SLOT(setEnabled(bool)));
+  connect(m_ui.action_JumpTo, SIGNAL(triggered()),
+          dialogJumpTo,       SLOT(show()));
+  connect(this,               SIGNAL(worldLoaded(bool)),
+          m_ui.action_JumpTo, SLOT(setEnabled(bool)));
 
 
   // [View->Modes]
-  lightingAct = new QAction(tr("&Lighting"), this);
-  lightingAct->setCheckable(true);
-  lightingAct->setShortcut(tr("Ctrl+L"));
-  lightingAct->setStatusTip(tr("Toggle lighting on/off"));
-  connect(lightingAct, SIGNAL(triggered()),
-          this,        SLOT(toggleFlags()));
+  connect(m_ui.action_Lighting, SIGNAL(triggered()),
+          this,                 SLOT(toggleFlags()));
 
-  mobSpawnAct = new QAction(tr("&Mob spawning"), this);
-  mobSpawnAct->setCheckable(true);
-  mobSpawnAct->setShortcut(tr("Ctrl+M"));
-  mobSpawnAct->setStatusTip(tr("Toggle show mob spawning on/off"));
-  connect(mobSpawnAct, SIGNAL(triggered()),
-          this,        SLOT(toggleFlags()));
+  connect(m_ui.action_MobSpawning, SIGNAL(triggered()),
+          this,                    SLOT(toggleFlags()));
 
-  caveModeAct = new QAction(tr("&Cave Mode"), this);
-  caveModeAct->setCheckable(true);
-  caveModeAct->setShortcut(tr("Ctrl+C"));
-  caveModeAct->setStatusTip(tr("Toggle cave mode on/off"));
-  connect(caveModeAct, SIGNAL(triggered()),
-          this,        SLOT(toggleFlags()));
+  connect(m_ui.action_CaveMode, SIGNAL(triggered()),
+          this,                 SLOT(toggleFlags()));
 
-  depthShadingAct = new QAction(tr("&Depth shading"), this);
-  depthShadingAct->setCheckable(true);
-  depthShadingAct->setShortcut(tr("Ctrl+D"));
-  depthShadingAct->setStatusTip(tr("Toggle shading based on relative depth"));
-  connect(depthShadingAct, SIGNAL(triggered()),
-          this,            SLOT(toggleFlags()));
+  connect(m_ui.action_DepthShading, SIGNAL(triggered()),
+          this,                     SLOT(toggleFlags()));
 
-  biomeColorsAct = new QAction(tr("&Biome Colors"), this);
-  biomeColorsAct->setCheckable(true);
-  biomeColorsAct->setShortcut(tr("Ctrl+B"));
-  biomeColorsAct->setStatusTip(tr("Toggle draw biome colors or block colors"));
-  connect(biomeColorsAct, SIGNAL(triggered()),
-          this,           SLOT(toggleFlags()));
+  connect(m_ui.action_BiomeColors, SIGNAL(triggered()),
+          this,                    SLOT(toggleFlags()));
   
-  seaGroundAct = new QAction(tr("Sea &Ground Mode"), this);
-  seaGroundAct->setCheckable(true);
-  seaGroundAct->setShortcut(tr("Ctrl+G"));
-  seaGroundAct->setStatusTip(tr("Toggle sea ground mode on/off"));
-  connect(seaGroundAct, SIGNAL(triggered()),
-          this,           SLOT(toggleFlags()));
+  connect(m_ui.action_SeaGround, SIGNAL(triggered()),
+          this,                  SLOT(toggleFlags()));
 
-  singleLayerAct = new QAction(tr("Single Layer"), this);
-  singleLayerAct->setCheckable(true);
-  //singleLayerAct->setShortcut(tr("Ctrl+L"));  // both S and L are already used
-  singleLayerAct->setStatusTip(tr("Toggle single layer on/off"));
-  connect(singleLayerAct, SIGNAL(triggered()),
-          this,           SLOT(toggleFlags()));
+  connect(m_ui.action_SingleLayer, SIGNAL(triggered()),
+          this,                    SLOT(toggleFlags()));
 
   // [View->Others]
-  refreshAct = new QAction(tr("Refresh"), this);
-  refreshAct->setShortcut(tr("F2"));
-  refreshAct->setStatusTip(tr("Reloads all chunks, "
-                              "but keeps the same position / dimension"));
-  connect(refreshAct, SIGNAL(triggered()),
-          mapview,    SLOT(clearCache()));
+//  m_ui.action_Refresh->setStatusTip(tr("Reloads all chunks, "
+//                                       "but keeps the same position / dimension"));
+  connect(m_ui.action_Refresh, SIGNAL(triggered()),
+          mapview,             SLOT(clearCache()));
 
-  manageDefsAct = new QAction(tr("Manage &Definitions..."), this);
-  manageDefsAct->setStatusTip(tr("Manage block and biome definitions"));
-  connect(manageDefsAct, SIGNAL(triggered()),
-          dm,            SLOT(show()));
+  connect(m_ui.action_ManageDefinitions, SIGNAL(triggered()),
+          dm,                            SLOT(show()));
 
   // [Search]
-  searchEntityAction = new QAction(tr("Search entity"), this);
-  connect(searchEntityAction, SIGNAL(triggered()), this, SLOT(openSearchEntityWidget()));
-  connect(this,               SIGNAL(worldLoaded(bool)),
-          searchEntityAction, SLOT(setEnabled(bool)));
+  connect(m_ui.action_SearchEntity, SIGNAL(triggered()),
+          this,                     SLOT(openSearchEntityWidget()));
+  connect(this,                     SIGNAL(worldLoaded(bool)),
+          m_ui.action_SearchEntity, SLOT(setEnabled(bool)));
 
-  searchBlockAction = new QAction(tr("Search block"), this);
-  connect(searchBlockAction, SIGNAL(triggered()), this, SLOT(openSearchBlockWidget()));
-  connect(this,              SIGNAL(worldLoaded(bool)),
-          searchBlockAction, SLOT(setEnabled(bool)));
+  connect(m_ui.action_SearchBlock, SIGNAL(triggered()), this,
+                                   SLOT(openSearchBlockWidget()));
+  connect(this,                    SIGNAL(worldLoaded(bool)),
+          m_ui.action_SearchBlock, SLOT(setEnabled(bool)));
 
   // [Help]
-  aboutAct = new QAction(tr("&About"), this);
-  aboutAct->setStatusTip(tr("About %1").arg(qApp->applicationName()));
-  connect(aboutAct, SIGNAL(triggered()),
-          this,     SLOT(about()));
+  m_ui.action_About->setStatusTip(tr("About %1").arg(qApp->applicationName()));
+  connect(m_ui.action_About, SIGNAL(triggered()),
+          this,              SLOT(about()));
 
-  settingsAct = new QAction(tr("Settings..."), this);
-  settingsAct->setStatusTip(tr("Change %1 Settings")
-                            .arg(qApp->applicationName()));
-  connect(settingsAct, SIGNAL(triggered()),
-          settings,    SLOT(show()));
+  m_ui.action_Settings->setStatusTip(tr("Change %1 Settings").arg(qApp->applicationName()));
+  connect(m_ui.action_Settings, SIGNAL(triggered()),
+          dialogSettings,       SLOT(show()));
 
-  updatesAct = new QAction(tr("Check for updates..."), this);
-  updatesAct->setStatusTip(tr("Check for updated packs"));
-  connect(updatesAct, SIGNAL(triggered()),
-          dm,         SLOT(checkForUpdates()));
+  connect(m_ui.action_Update, SIGNAL(triggered()),
+          dm,                 SLOT(checkForUpdates()));
 
 }
 
@@ -513,7 +475,7 @@ QKeySequence Minutor::generateUniqueKeyboardShortcut(QString *actionName) {
   QKeySequence sequence;
   // test all letters in given name
   QString testName(*actionName);
-  for (int ampPos=0; ampPos < testName.length(); ++ampPos) {
+  for (int ampPos = testName.indexOf(":") + 1; ampPos < testName.length(); ++ampPos) {
     QChar c = testName[ampPos];
     sequence = QKeySequence(QString("Ctrl+")+c);
     for (auto m : menuBar()->findChildren<QMenu*>()) {
@@ -534,12 +496,26 @@ QKeySequence Minutor::generateUniqueKeyboardShortcut(QString *actionName) {
   return sequence;
 }
 
-void Minutor::populateEntityOverlayMenu() {
+
+void Minutor::createMenus() {
+  // [File]
+  m_ui.menu_OpenWorld->addActions(worldActions);
+  if (worldActions.size() == 0)  // no worlds found
+    m_ui.menu_OpenWorld->setEnabled(false);
+
+  // [View]
+
+  // [Overlay]
+  separatorEntityOverlay    = new LabeledSeparator("Entity Overlays", this);
+  separatorStructureOverlay = new LabeledSeparator("Structure Overlays", this);
+  m_ui.menu_Overlay->addAction(separatorStructureOverlay);
+  m_ui.menu_Overlay->addAction(separatorEntityOverlay);
+
   EntityIdentifier &ei = EntityIdentifier::Instance();
   for (auto it = ei.getCategoryList().constBegin();
        it != ei.getCategoryList().constEnd(); it++) {
     QString category = it->first;
-    QColor catcolor = it->second;
+    QColor  catcolor = it->second;
 
     QString actionName = category;
     QKeySequence sequence = generateUniqueKeyboardShortcut(&actionName);
@@ -549,76 +525,24 @@ void Minutor::populateEntityOverlayMenu() {
     solidColor.setAlpha(255);
     pixmap.fill(solidColor);
 
-    entityActions.push_back(new QAction(pixmap, actionName, this));
-    entityActions.last()->setShortcut(sequence);
-    entityActions.last()->setStatusTip(tr("Toggle viewing of %1")
-                                       .arg(category));
-    entityActions.last()->setEnabled(true);
-    entityActions.last()->setData("Entity."+category);
-    entityActions.last()->setCheckable(true);
-    entityOverlayMenu->addAction(entityActions.last());
-    connect(entityActions.last(), SIGNAL(triggered()),
-            this, SLOT(toggleFlags()));
+    // create new QAction
+    QAction* action = new QAction(pixmap, actionName, this);
+    action->setShortcut(sequence);
+    action->setStatusTip(tr("Toggle viewing of %1").arg(category));
+    action->setEnabled(true);
+    action->setData("Entity."+category);
+    action->setCheckable(true);
+    // put it into menu
+    entityOverlayActions.push_back(action);
+    m_ui.menu_Overlay->addAction(action); // add at bottom
+    // connect handler
+    connect(action, SIGNAL(triggered()),
+            this,   SLOT(toggleFlags()));
   }
-}
-
-
-void Minutor::createMenus() {
-  // [File]
-  fileMenu = menuBar()->addMenu(tr("&File"));
-  worldMenu = fileMenu->addMenu(tr("&Open World"));
-
-  worldMenu->addActions(worlds);
-  if (worlds.size() == 0)  // no worlds found
-    worldMenu->setEnabled(false);
-
-  fileMenu->addAction(openAct);
-  fileMenu->addAction(reloadAct);
-  fileMenu->addSeparator();
-  fileMenu->addAction(saveAct);
-  fileMenu->addSeparator();
-  fileMenu->addAction(exitAct);
-
-  // [View]
-  viewMenu = menuBar()->addMenu(tr("&View"));
-  viewMenu->addAction(jumpSpawnAct);
-  viewMenu->addAction(jumpToAct);
-  jumpMenu = viewMenu->addMenu(tr("&Jump to Player"));
-  jumpMenu->setEnabled(false);
-  dimMenu = viewMenu->addMenu(tr("&Dimension"));
-  dimMenu->setEnabled(false);
-  // [View->Modes]
-  viewMenu->addSeparator();
-  viewMenu->addAction(lightingAct);
-  viewMenu->addAction(mobSpawnAct);
-  viewMenu->addAction(caveModeAct);
-  viewMenu->addAction(depthShadingAct);
-  viewMenu->addAction(biomeColorsAct);
-  viewMenu->addAction(seaGroundAct);
-  viewMenu->addAction(singleLayerAct);
-  // [View->Overlay]
-  viewMenu->addSeparator();
-  structureOverlayMenu = viewMenu->addMenu(tr("&Structure Overlay"));
-  entityOverlayMenu    = viewMenu->addMenu(tr("&Entity Overlay"));
-  populateEntityOverlayMenu();
-
-  viewMenu->addSeparator();
-  viewMenu->addAction(refreshAct);
-  viewMenu->addAction(manageDefsAct);
-
-  //menuBar()->addSeparator();
 
   // [Search]
-  searchMenu = menuBar()->addMenu(tr("&Search"));
-  searchMenu->addAction(searchEntityAction);
-  searchMenu->addAction(searchBlockAction);
 
   // [Help]
-  helpMenu = menuBar()->addMenu(tr("&Help"));
-  helpMenu->addAction(aboutAct);
-  helpMenu->addSeparator();
-  helpMenu->addAction(settingsAct);
-  helpMenu->addAction(updatesAct);
 }
 
 void Minutor::createStatusBar() {
@@ -635,7 +559,7 @@ QString Minutor::getWorldName(QDir path) {
 
 
 void Minutor::getWorldList() {
-  QDir mc(settings->mcpath);
+  QDir mc(dialogSettings->mcpath);
   if (!mc.cd("saves"))
     return;
 
@@ -655,7 +579,7 @@ void Minutor::getWorldList() {
         }
         connect(w, SIGNAL(triggered()),
                 this, SLOT(openWorld()));
-        worlds.append(w);
+        worldActions.append(w);
       }
     }
   }
@@ -686,7 +610,7 @@ void Minutor::loadWorld(QDir path) {
 
 
   // Jump to: world spawn
-  jumpSpawnAct->setData(locations.count());
+  m_ui.action_JumpSpawn->setData(locations.count());
   locations.append(Location(data->at("SpawnX")->toDouble(),
                             data->at("SpawnZ")->toDouble()));
   // Jump to: known players
@@ -768,8 +692,8 @@ void Minutor::loadWorld(QDir path) {
         }
       }
     }
-    jumpMenu->addActions(playerActions);
-    jumpMenu->setEnabled(hasPlayers);
+    m_ui.menu_JumpPlayer->addActions(playerActions);
+    m_ui.menu_JumpPlayer->setEnabled(hasPlayers);
     path.cdUp();
   }
 
@@ -779,7 +703,7 @@ void Minutor::loadWorld(QDir path) {
   }
 
   // create Dimensions menu
-  DimensionIdentifier::Instance().getDimensionsInWorld(path, dimMenu, this);
+  DimensionIdentifier::Instance().getDimensionsInWorld(path, m_ui.menu_Dimension, this);
 
   // finalize
   emit worldLoaded(true);
@@ -814,11 +738,11 @@ void Minutor::updatePlayerCache(QNetworkReply* reply) {
 }
 
 void Minutor::rescanWorlds() {
-  worlds.clear();
+  worldActions.clear();
   getWorldList();
-  worldMenu->clear();
-  worldMenu->addActions(worlds);
-  worldMenu->setEnabled(worlds.count() != 0);
+  m_ui.menu_OpenWorld->clear();
+  m_ui.menu_OpenWorld->addActions(worldActions);
+  m_ui.menu_OpenWorld->setEnabled(worldActions.count() != 0);
   // we don't care about the auto-update toggle, since that only happens
   // on startup anyway.
 }
@@ -832,7 +756,7 @@ void Minutor::addOverlayItemType(QString type, QColor color,
     nextIt = path.begin();
     nextIt++;  // skip first part
     pathIt = nextIt++;
-    QMenu* cur = structureOverlayMenu;
+    QMenu* cur = m_ui.menu_Overlay;
 
     // generate a nested menu structure to match the path
     while (nextIt != endPathIt) {
@@ -842,11 +766,10 @@ void Minutor::addOverlayItemType(QString type, QColor color,
         cur = cur->addMenu("&" + *pathIt);
         cur->setObjectName(*pathIt);
       } else {
-        cur = results.front();
+        cur->addMenu( results.front() );
       }
       pathIt = ++nextIt;
     }
-
     // generate a unique keyboard shortcut
     QString actionName = path.last();
     QKeySequence sequence = generateUniqueKeyboardShortcut(&actionName);
@@ -860,15 +783,16 @@ void Minutor::addOverlayItemType(QString type, QColor color,
     entityData["type"] = type;
     entityData["dimension"] = dimension;
 
-    structureActions.push_back(new QAction(pixmap, actionName, this));
-    structureActions.last()->setShortcut(sequence);
-    structureActions.last()->setStatusTip(tr("Toggle viewing of %1")
+    structureOverlayActions.push_back(new QAction(pixmap, actionName, this));
+    structureOverlayActions.last()->setShortcut(sequence);
+    structureOverlayActions.last()->setStatusTip(tr("Toggle viewing of %1")
                                           .arg(type));
-    structureActions.last()->setEnabled(true);
-    structureActions.last()->setData(entityData);
-    structureActions.last()->setCheckable(true);
-    cur->addAction(structureActions.last());
-    connect(structureActions.last(), SIGNAL(triggered()),
+    structureOverlayActions.last()->setEnabled(true);
+    structureOverlayActions.last()->setData(entityData);
+    structureOverlayActions.last()->setCheckable(true);
+    // insert before Entitys
+    cur->insertAction(separatorEntityOverlay, structureOverlayActions.last());
+    connect(structureOverlayActions.last(), SIGNAL(triggered()),
             this, SLOT(toggleFlags()));
   }
 }
@@ -902,7 +826,7 @@ SearchChunksWidget* Minutor::prepareSearchForm(const QSharedPointer<SearchPlugin
           form, SLOT(setSearchCenter(int,int,int))
           );
 
-  connect(form, SIGNAL(jumpTo(QVector3D)),
+  connect(form, SIGNAL(dialogJumpTo(QVector3D)),
           this, SLOT(triggerJumpToPosition(QVector3D))
           );
 
