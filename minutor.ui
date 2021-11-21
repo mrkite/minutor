@@ -68,7 +68,6 @@
     <addaction name="action_SingleLayer"/>
     <addaction name="separator"/>
     <addaction name="action_Refresh"/>
-    <addaction name="action_ManageDefinitions"/>
    </widget>
    <widget class="QMenu" name="menu_Overlay">
     <property name="title">
@@ -91,7 +90,7 @@
     <addaction name="action_About"/>
     <addaction name="separator"/>
     <addaction name="action_Settings"/>
-    <addaction name="action_Update"/>
+    <addaction name="action_ManageDefinitions"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menu_View"/>
