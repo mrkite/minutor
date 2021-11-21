@@ -441,9 +441,6 @@ void Minutor::createActions() {
   connect(m_ui.action_Refresh, SIGNAL(triggered()),
           mapview,             SLOT(clearCache()));
 
-  connect(m_ui.action_ManageDefinitions, SIGNAL(triggered()),
-          dm,                            SLOT(show()));
-
   // [Search]
   connect(m_ui.action_SearchEntity, SIGNAL(triggered()),
           this,                     SLOT(openSearchEntityWidget()));
@@ -464,8 +461,11 @@ void Minutor::createActions() {
   connect(m_ui.action_Settings, SIGNAL(triggered()),
           dialogSettings,       SLOT(show()));
 
-  connect(m_ui.action_Update, SIGNAL(triggered()),
-          dm,                 SLOT(checkForUpdates()));
+  connect(m_ui.action_ManageDefinitions, SIGNAL(triggered()),
+          dm,                            SLOT(show()));
+
+  connect(dialogSettings, SIGNAL(checkForUpdates()),
+          dm,             SLOT(checkForUpdates()));
 
 }
 

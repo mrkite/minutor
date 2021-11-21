@@ -30,6 +30,9 @@ Settings::Settings(QWidget *parent) : QDialog(parent) {
   connect(m_ui.checkBox_AutoUpdate, SIGNAL(toggled(bool)),
           this, SLOT(toggleAutoUpdate(bool)));
 
+  connect(m_ui.pushButton_UpdateNow, SIGNAL(clicked()),
+          this, SLOT(clickedUpdateNow()));
+
   connect(m_ui.radioButton_depth_shift, &QRadioButton::toggled,
           this,                         &Settings::toggleModifier4DepthSlider);
   connect(m_ui.radioButton_depth_ctrl,  &QRadioButton::toggled,
@@ -110,6 +113,11 @@ void Settings::toggleAutoUpdate(bool up) {
   QSettings info;
   info.setValue("autoupdate", up);
   emit settingsUpdated();
+}
+
+void Settings::clickedUpdateNow()
+{
+  emit checkForUpdates();
 }
 
 void Settings::browseLocation(bool /* on */) {

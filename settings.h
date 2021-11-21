@@ -23,9 +23,11 @@ class Settings : public QDialog {
  signals:
   void settingsUpdated();
   void locationChanged(const QString &loc);
+  void checkForUpdates();
 
  private slots:
   void toggleAutoUpdate(bool on);
+  void clickedUpdateNow();
   void browseLocation(bool on);
   void toggleDefaultLocation(bool on);
   void pathChanged(const QString &path);
