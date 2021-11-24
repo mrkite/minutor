@@ -29,7 +29,7 @@
     </property>
     <widget class="QMenu" name="menu_OpenWorld">
      <property name="title">
-      <string>&amp;Open World</string>
+      <string>Open &amp;World</string>
      </property>
     </widget>
     <addaction name="menu_OpenWorld"/>
@@ -51,7 +51,7 @@
     </widget>
     <widget class="QMenu" name="menu_JumpPlayer">
      <property name="title">
-      <string>Jump to Player</string>
+      <string>Jump to &amp;Player</string>
      </property>
     </widget>
     <addaction name="action_JumpSpawn"/>
@@ -159,7 +159,7 @@
   </action>
   <action name="action_Settings">
    <property name="text">
-    <string>Settings...</string>
+    <string>&amp;Settings...</string>
    </property>
   </action>
   <action name="action_Update">
@@ -175,7 +175,7 @@
   </action>
   <action name="action_SearchEntity">
    <property name="text">
-    <string>Search for Entity</string>
+    <string>Search for &amp;Entity</string>
    </property>
    <property name="statusTip">
     <string>Search for Entity</string>
@@ -183,7 +183,7 @@
   </action>
   <action name="action_SearchBlock">
    <property name="text">
-    <string>Search for Block</string>
+    <string>Search for &amp;Block</string>
    </property>
    <property name="statusTip">
     <string>Search for Block</string>
@@ -321,7 +321,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Single layer</string>
+    <string>&amp;Single layer</string>
    </property>
    <property name="toolTip">
     <string>Toggle single layer on/off</string>
