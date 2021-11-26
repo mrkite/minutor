@@ -15,6 +15,7 @@ class DefinitionUpdater : public QObject {
  public:
   DefinitionUpdater(QString filename, QString url, QString version);
   void update();
+  static int versionCompare( QString const &version1, QString const &version2 );
  signals:
   void updated(DefinitionUpdater *, QString filename, QString version);
  private slots:
@@ -23,7 +24,6 @@ class DefinitionUpdater : public QObject {
   void finishUpdate();
  private:
   QString parseVersion(const QByteArray & data);
-  int versionCompare( QString const &version1, QString const &version2 );
   QString filename;
   QUrl url;
   QString version;

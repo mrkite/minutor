@@ -83,6 +83,7 @@ void DefinitionUpdater::finishUpdate() {
   emit updated(this, filename, version);
 }
 
+// static
 int DefinitionUpdater::versionCompare(QString const &version1, QString const &version2)
 {
   // split in major and minor version sections
