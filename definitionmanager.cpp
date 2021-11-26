@@ -273,7 +273,7 @@ void DefinitionManager::installJson(QString path, bool overwrite,
     }
     QString fileversion = def->at("version")->asString();
 
-    if (exeversion.compare(fileversion, Qt::CaseInsensitive) > 0) {
+    if (DefinitionUpdater::versionCompare(exeversion, fileversion) > 0) {
       // force overwriting outdated local copy
       QFile::remove(dest);
       QFile::copy(path, dest);
