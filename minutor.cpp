@@ -826,7 +826,7 @@ SearchChunksWidget* Minutor::prepareSearchForm(const QSharedPointer<SearchPlugin
           form, SLOT(setSearchCenter(int,int,int))
           );
 
-  connect(form, SIGNAL(dialogJumpTo(QVector3D)),
+  connect(form, SIGNAL(jumpTo(QVector3D)),
           this, SLOT(triggerJumpToPosition(QVector3D))
           );
 
