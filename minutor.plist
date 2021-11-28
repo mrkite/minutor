@@ -19,11 +19,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.3.0</string>
+	<string>2.18.0</string>
 	<key>CFBundleVersion</key>
-	<string>2.3.0</string>
+	<string>2.18.0</string>
 	<key>NSHumanReadableCopyright</key>
-	<string>© 2013-2020 Sean Kasun</string>
+	<string>© 2013-2021 Sean Kasun</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 </dict>
