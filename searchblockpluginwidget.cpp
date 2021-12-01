@@ -84,7 +84,7 @@ SearchPluginI::ResultListT SearchBlockPluginWidget::searchChunk(const Chunk &chu
 
           SearchResultItem item;
           item.name = info.getName();
-          item.pos = QVector3D(chunk.getChunkX() * 16 + x, y, chunk.getChunkZ() * 16 + z) + QVector3D(0.5,0.5,0.5); // mark center of block, not origin
+          item.pos = QVector3D(chunk.getChunkX() * 16 + x, y, chunk.getChunkZ() * 16 + z) + QVector3D(0.5,0.0,0.5); // mark center of block, not origin
           item.entity = QSharedPointer<Entity>::create(OverlayItem::Point(item.pos));
           results.push_back(item);
         }
