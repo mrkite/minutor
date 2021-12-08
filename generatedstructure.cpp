@@ -63,13 +63,15 @@ GeneratedStructure::tryParseBlockEntites(const Tag* tagBlockEntites) {
         ret.append( GeneratedStructure::tryParseSpawner(be) );
       }
 
-      if (be->has("id") &&
-          ( (be->at("id")->toString() == "minecraft:chest") ||
+/*    if (be->has("id") &&
+          ( (be->at("id")->toString() == "minecraft:shulker_box") ||
+            (be->at("id")->toString() == "minecraft:chest") ||
             (be->at("id")->toString() == "Chest") ) ) {
-        // mob spawner found
+        // chest found
         // -> parse the chest data to a GeneratedStructure pointer
-        //ret.append( GeneratedStructure::tryParseChest(be) );
+        ret.append( GeneratedStructure::tryParseChest(be) );
       }
+*/
     }
   }
 
@@ -116,7 +118,6 @@ GeneratedStructure::tryParseSpawner(const Tag* tagSpawner) {
 
   // base the color on a hash of its type
   int    hue = qHash(QString("minecraft:spawner"), 0) % 360;
-  qInfo("Hue: %d", hue);
   QColor color;
   color.setHsv(hue, 255, 255, 64);
   spawner->setColor(color);

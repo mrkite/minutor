@@ -226,11 +226,11 @@ void Chunk::loadLevelTag(const Tag * level) {
     }
   }
 
-  // parse Spawners in this Chunk
+  // parse Tile Entities in this Chunk
   if (level->has("TileEntities")) {
     auto nbtListBE = level->at("TileEntities");
-    auto spawnerlist = GeneratedStructure::tryParseBlockEntites(nbtListBE);
-    for (auto it = spawnerlist.begin(); it != spawnerlist.end(); ++it) {
+    auto belist    = GeneratedStructure::tryParseBlockEntites(nbtListBE);
+    for (auto it = belist.begin(); it != belist.end(); ++it) {
       emit structureFound(*it);
     }
   }
@@ -302,11 +302,11 @@ void Chunk::loadCliffsCaves(const NBT &nbt) {
     }
   }
 
-  // parse Spawners in this Chunk
+  // parse Block Entities in this Chunk
   if (nbt.has("block_entities")) {
     auto nbtListBE = nbt.at("block_entities");
-    auto spawnerlist = GeneratedStructure::tryParseBlockEntites(nbtListBE);
-    for (auto it = spawnerlist.begin(); it != spawnerlist.end(); ++it) {
+    auto belist    = GeneratedStructure::tryParseBlockEntites(nbtListBE);
+    for (auto it = belist.begin(); it != belist.end(); ++it) {
       emit structureFound(*it);
     }
   }
