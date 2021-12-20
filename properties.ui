@@ -11,11 +11,15 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Properties Dialog</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLineEdit" name="lineEdit"/>
+    <widget class="QLineEdit" name="lineEdit">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QTreeWidget" name="propertyView">
@@ -25,11 +29,11 @@
      <attribute name="headerVisible">
       <bool>true</bool>
      </attribute>
-     <attribute name="headerDefaultSectionSize">
-      <number>150</number>
-     </attribute>
      <attribute name="headerMinimumSectionSize">
       <number>25</number>
+     </attribute>
+     <attribute name="headerDefaultSectionSize">
+      <number>150</number>
      </attribute>
      <column>
       <property name="text">

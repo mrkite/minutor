@@ -28,15 +28,31 @@ void Properties::DisplayProperties(QVariant p) {
 
   // only support QVariantMap or QVariantHash at this level
   switch ((QMetaType::Type)p.type()) {
-    case QMetaType::QVariantMap:
-      treeCreator.ParseIterable(ui->propertyView->invisibleRootItem(), p.toMap());
+    case QMetaType::QVariantMap: {
+      // we got a QMap with all properties stored as [key]->value
+      auto data = p.toMap();
+      treeCreator.ParseIterable(ui->propertyView->invisibleRootItem(), data);
+      this->setWindowTitle(data.value("id", "Properties").toString());
       break;
-    case QMetaType::QVariantHash:
-      treeCreator.ParseIterable(ui->propertyView->invisibleRootItem(), p.toHash());
+    }
+    case QMetaType::QVariantHash: {
+      // we got a QHashMap with all properties stored as [key]->value
+      auto data = p.toHash();
+      treeCreator.ParseIterable(ui->propertyView->invisibleRootItem(), data);
+      this->setWindowTitle(data.value("id", "Properties").toString());
       break;
-    case QMetaType::QVariantList:
-      treeCreator.ParseList(ui->propertyView->invisibleRootItem(), p.toList());
+    }
+    case QMetaType::QVariantList: {
+      // we got a QList with Properties of several objects
+      //  each element is a QMap with all properties stored as [key]->value
+      auto data = p.toList();
+      treeCreator.ParseList(ui->propertyView->invisibleRootItem(), data);
+      if (data.length()>0) {
+        // we take the Title from the first list element, ignoring all other
+        this->setWindowTitle(data[0].toMap().value("id", "Properties").toString());
+      }
       break;
+    }
     default:
       qWarning("Trying to display scalar value as a property");
       break;

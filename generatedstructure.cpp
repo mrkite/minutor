@@ -43,6 +43,103 @@ GeneratedStructure::tryParseChunk(const Tag* structuresTag) {
   return ret;
 }
 
+// static
+QList<QSharedPointer<GeneratedStructure>>
+GeneratedStructure::tryParseBlockEntites(const Tag* tagBlockEntites) {
+  // we will return a list of all found block entities
+  QList<QSharedPointer<GeneratedStructure>> ret;
+
+  if (tagBlockEntites && tagBlockEntites != &NBT::Null) {
+
+    // loop over all block entities in Chunk (typically chests and spawners)
+    for (int idx = 0; idx < tagBlockEntites->length(); idx++) {
+      const Tag * be = tagBlockEntites->at(idx);
+
+      if (be->has("id") &&
+          ( (be->at("id")->toString() == "minecraft:mob_spawner") ||
+            (be->at("id")->toString() == "MobSpawner") ) ) {
+        // mob spawner found
+        // -> parse the spawner data to a GeneratedStructure pointer
+        ret.append( GeneratedStructure::tryParseSpawner(be) );
+      }
+
+/*    if (be->has("id") &&
+          ( (be->at("id")->toString() == "minecraft:shulker_box") ||
+            (be->at("id")->toString() == "minecraft:chest") ||
+            (be->at("id")->toString() == "Chest") ) ) {
+        // chest found
+        // -> parse the chest data to a GeneratedStructure pointer
+        ret.append( GeneratedStructure::tryParseChest(be) );
+      }
+*/
+    }
+  }
+
+  return ret;
+}
+
+
+
+// static
+QSharedPointer<GeneratedStructure>
+GeneratedStructure::tryParseChest(const Tag* tagChest) {
+  return QSharedPointer<GeneratedStructure>();
+}
+
+// static
+QSharedPointer<GeneratedStructure>
+GeneratedStructure::tryParseSpawner(const Tag* tagSpawner) {
+  // we will return a list of all found structures
+  QSharedPointer<GeneratedStructure> spawner = QSharedPointer<GeneratedStructure>(new GeneratedStructure());
+
+  QString mobType = "minecraft:unknown_mob";
+  // before "The Flattening"
+  if (tagSpawner->has("EntityId")) {
+    mobType = tagSpawner->at("EntityId")->toString();
+    // reformat CamelCase text to flattening
+    // split at uppercase characters
+    QStringList tokens = mobType.split(QRegExp("(?<=[a-z])(?=[A-Z])"), QString::SkipEmptyParts);
+    mobType = tokens.join("_").toLower();
+  }
+  // after "The Flattening"
+  if (tagSpawner->has("SpawnData") && tagSpawner->at("SpawnData")->has("id")) {
+    mobType = tagSpawner->at("SpawnData")->at("id")->toString();
+  }
+  // after "Caves & Cliffs"
+  if (tagSpawner->has("SpawnData") && tagSpawner->at("SpawnData")->has("entity") &&
+      tagSpawner->at("SpawnData")->at("entity")->has("id")) {
+    mobType = tagSpawner->at("SpawnData")->at("entity")->at("id")->toString();
+  }
+  mobType.replace("minecraft:", "");
+
+  spawner->setType("Structure.minecraft:spawner");
+  spawner->setDisplay("minecraft:spawner:"+mobType);
+  spawner->setDimension("overworld");
+
+  // base the color on a hash of its type
+  int    hue = qHash(QString("minecraft:spawner"), 0) % 360;
+  QColor color;
+  color.setHsv(hue, 255, 255, 64);
+  spawner->setColor(color);
+
+  // fill properties
+  const Tag_Compound * tc = static_cast<const Tag_Compound *>(tagSpawner);
+  QMap<QString, QVariant> spawnerProperties = tc->getData().toMap();
+  spawner->setProperties(spawnerProperties);
+
+  // get covered area
+  int x = tagSpawner->at("x")->toInt();
+  int y = tagSpawner->at("y")->toInt();
+  int z = tagSpawner->at("z")->toInt();
+  int r = 4;
+  if (tagSpawner->has("SpawnRange"))
+    r = tagSpawner->at("SpawnRange")->toInt();
+  spawner->setBounds( Point(x-r, y, z-r), Point(x+r, y, z+r));
+
+  return spawner;
+}
+
+// static
 QList<QSharedPointer<GeneratedStructure>>
 GeneratedStructure::tryParseFeatures(QVariant &maybeFeatureMap) {
   // we will return a list of all found structures
@@ -71,13 +168,13 @@ GeneratedStructure::tryParseFeatures(QVariant &maybeFeatureMap) {
           structure->setProperties(featureProperties);
 
           // base the color on a hash of its type
-          int    hue = qHash(id) % 360;
+          int    hue = qHash(id, 0) % 360;
           QColor color;
           color.setHsv(hue, 255, 255, 64);
           structure->setColor(color);
 
           // this will have to be maintained if new structures are added
-          // that are appearing only a some Dimensions
+          // that are appearing only in some Dimensions
           if (structure->type() == "Structure.Fortress") {
             structure->setDimension("nether");
           } else if (structure->type() == "Structure.EndCity") {
@@ -140,6 +237,7 @@ GeneratedStructure::tryParseFeatures(QVariant &maybeFeatureMap) {
   }
   return ret;
 }
+
 
 bool GeneratedStructure::intersects(const OverlayItem::Cuboid& cuboid) const {
   return cuboid.min.x <= p2.x && p1.x <= cuboid.max.x &&

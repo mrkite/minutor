@@ -226,6 +226,15 @@ void Chunk::loadLevelTag(const Tag * level) {
     }
   }
 
+  // parse Tile Entities in this Chunk
+  if (level->has("TileEntities")) {
+    auto nbtListBE = level->at("TileEntities");
+    auto belist    = GeneratedStructure::tryParseBlockEntites(nbtListBE);
+    for (auto it = belist.begin(); it != belist.end(); ++it) {
+      emit structureFound(*it);
+    }
+  }
+
   // parse Structures that start in this Chunk
   if (version >= 1519) {
     if (level->has("Structures")) {
@@ -290,6 +299,15 @@ void Chunk::loadCliffsCaves(const NBT &nbt) {
       } else {  // otherwise: delete cs
         delete cs;
       }
+    }
+  }
+
+  // parse Block Entities in this Chunk
+  if (nbt.has("block_entities")) {
+    auto nbtListBE = nbt.at("block_entities");
+    auto belist    = GeneratedStructure::tryParseBlockEntites(nbtListBE);
+    for (auto it = belist.begin(); it != belist.end(); ++it) {
+      emit structureFound(*it);
     }
   }
 

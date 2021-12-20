@@ -13,7 +13,7 @@ class GeneratedStructure: public OverlayItem {
  public:
   static QList<QSharedPointer<GeneratedStructure>> tryParseDatFile(const Tag* tag);
   static QList<QSharedPointer<GeneratedStructure>> tryParseChunk(const Tag* tag);
-  static QList<QSharedPointer<GeneratedStructure>> tryParseFeatures(QVariant &maybeFeatureMap);
+  static QList<QSharedPointer<GeneratedStructure>> tryParseBlockEntites(const Tag* tagBlockEntities);
 
   virtual bool intersects(const Cuboid &cuboid) const;
   virtual void draw(double offsetX, double offsetZ, double scale,
@@ -23,10 +23,13 @@ class GeneratedStructure: public OverlayItem {
  protected:
   GeneratedStructure() {}
 
+  static QSharedPointer<GeneratedStructure> tryParseChest(const Tag* tagChest);
+  static QSharedPointer<GeneratedStructure> tryParseSpawner(const Tag* tagSpawner);
+  static QList<QSharedPointer<GeneratedStructure>> tryParseFeatures(QVariant &maybeFeatureMap);
+
   // these are used to draw a rounded rect. If you want to draw something
   // else, override draw()
   void setBounds(const Point& min, const Point& max) {p1 = min; p2 = max;}
-
   static const int RADIUS = 10;
 
  private:
