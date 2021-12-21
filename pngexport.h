@@ -16,7 +16,8 @@ public:
   explicit PngExport(QWidget *parent = 0);
   ~PngExport();
 
-  void setBounds(int top, int left, int bottom, int right);
+  void setBoundsFromChunks(int top, int left, int bottom, int right);
+  void setBoundsFromBlocks(int top, int left, int bottom, int right);
 
   int getTop();
   int getLeft();
