@@ -29,7 +29,7 @@ WorldSave::WorldSave(QString filename, MapView *map,
 WorldSave::~WorldSave() {
 }
 
-static inline void w32(char *p, quint32 v) {
+static inline void write32(char *p, quint32 v) {
   *p++ = v >> 24;
   *p++ = (v >> 16) & 0xff;
   *p++ = (v >> 8) & 0xff;
@@ -39,7 +39,7 @@ static inline void w32(char *p, quint32 v) {
 static void writeChunk(QFile *f, const char *tag, const char *data,
                        int len) {
   char dword[4];
-  w32(dword, len);
+  write32(dword, len);
   f->write(dword, 4);
   f->write(tag, 4);
   if (len != 0)
@@ -48,7 +48,7 @@ static void writeChunk(QFile *f, const char *tag, const char *data,
   crc = crc32(crc, (const Bytef *)tag, 4);
   if (len != 0)
     crc = crc32(crc, (const Bytef *)data, len);
-  w32(dword, crc);
+  write32(dword, crc);
   f->write(dword, 4);
 }
 
@@ -57,13 +57,13 @@ void WorldSave::run() {
   QString path = map->getWorldPath();
 
   // convert from Blocks to Chunks
-  top    = top/16;
-  left   = left/16;
-  bottom = bottom/16;
-  right  = right/16;
+  top    = top    >> 4;
+  left   = left   >> 4;
+  bottom = bottom >> 4;
+  right  = right  >> 4;
 
   if ( top==0 && left==0 && right==0 && bottom==0)
-    findBounds(path, &top, &left, &bottom, &right);
+    findWorldBounds(path, &top, &left, &bottom, &right);
 
   int width  = (right + 1 - left) * 16;
   int height = (bottom + 1 - top) * 16;
@@ -84,8 +84,8 @@ void WorldSave::run() {
                           "\x00";             // interlace method (none)
   char ihdr[13];
   memcpy(ihdr, ihdrdata, 13);
-  w32(ihdr, width);
-  w32(ihdr + 4, height);
+  write32(ihdr, width);
+  write32(ihdr + 4, height);
   writeChunk(&png, "IHDR", ihdr, 13);
 
   int insize = width * 16 * 4 + 16;
@@ -178,8 +178,8 @@ static bool onside(int side, const ChunkPos &edge, const ChunkPos &p) {
    of padding around the edge of the final image.  However, if we just
    went by regions, there could be 511 pixels of padding.
    */
-void WorldSave::findBounds(QString path, int *top, int *left, int *bottom,
-                           int *right) {
+void WorldSave::findWorldBounds(QString path,
+                                        int *top, int *left, int *bottom, int *right) {
   QStringList filters;
   filters << "*.mca";
 
@@ -252,10 +252,10 @@ void WorldSave::findBounds(QString path, int *top, int *left, int *bottom,
       f.close();
     }
   }
-  *top = (edges[0].front().z * 32) + minz;
-  *left = (edges[1].front().x * 32) + minx;
+  *top    = (edges[0].front().z * 32) + minz;
+  *left   = (edges[1].front().x * 32) + minx;
   *bottom = (edges[2].front().z * 32) + maxz;
-  *right = (edges[3].front().x * 32) + maxx;
+  *right  = (edges[3].front().x * 32) + maxx;
 }
 
 // sets chunk to transparent

@@ -37,7 +37,7 @@ class WorldSave : public QObject, public QRunnable {
   bool chunkChecker;
 
  public: // static
-  static void findBounds(QString path, int *top, int *left, int *bottom, int *right);
+  static void findWorldBounds(QString path, int *top, int *left, int *bottom, int *right);
 };
 
 #endif  // WORLDSAVE_H_

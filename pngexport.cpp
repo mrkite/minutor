@@ -24,13 +24,18 @@ PngExport::~PngExport()
   delete ui;
 }
 
-void PngExport::setBounds(int top, int left, int bottom, int right)
+void PngExport::setBoundsFromChunks(int top, int left, int bottom, int right)
 {
   // convert from Chunks to Blocks
-  w_top    = 16*top;
-  w_left   = 16*left;
-  w_bottom = 16*bottom+15;
-  w_right  = 16*right+15;
+  setBoundsFromBlocks(16*top, 16*left, 16*bottom+15, 16*right+15);
+}
+
+void PngExport::setBoundsFromBlocks(int top, int left, int bottom, int right)
+{
+  w_top    = top;
+  w_left   = left;
+  w_bottom = bottom;
+  w_right  = right;
 
   // restrict range of spin boxes to world dimension
   ui->spinBox_top   ->setRange(w_top, w_bottom-15);

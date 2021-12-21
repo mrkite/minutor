@@ -156,10 +156,10 @@ void Minutor::reload() {
 
 void Minutor::save() {
   int w_top, w_left, w_right, w_bottom;
-  WorldSave::findBounds(mapview->getWorldPath(),
-                        &w_top, &w_left, &w_bottom, &w_right);
+  WorldSave::findWorldBounds(mapview->getWorldPath(),
+                             &w_top, &w_left, &w_bottom, &w_right);
   PngExport pngoptions;
-  pngoptions.setBounds(w_top, w_left, w_bottom, w_right);
+  pngoptions.setBoundsFromChunks(w_top, w_left, w_bottom, w_right);
   pngoptions.exec();
   if (pngoptions.result() == QDialog::Rejected)
     return;
