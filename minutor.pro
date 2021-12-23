@@ -20,12 +20,11 @@ HEADERS += \
     entityevaluator.h \
     labelledseparator.h \
     labelledslider.h \
+    clamp.h \
     chunk.h \
     chunkcache.h \
     chunkloader.h \
     chunkrenderer.h \
-    entity.h \
-    generatedstructure.h \
     identifier\biomeidentifier.h \
     identifier\blockidentifier.h \
     identifier\definitionmanager.h \
@@ -33,13 +32,19 @@ HEADERS += \
     identifier\dimensionidentifier.h \
     identifier\entityidentifier.h \
     identifier\flatteningconverter.h \
+    jumpto.h \
     json\json.h \
     mapview.h \
     minutor.h \
     nbt\nbt.h \
     nbt\tag.h \
     nbt\tagdatastream.h \
-    overlayitem.h \
+    overlay\entity.h \
+    overlay\generatedstructure.h \
+    overlay\overlayitem.h \
+    overlay\village.h \
+    paletteentry.h \
+    pngexport.h \
     properties.h \
     propertietreecreator.h \
     range.h \
@@ -51,13 +56,8 @@ HEADERS += \
     searchresultwidget.h \
     searchtextwidget.h \
     settings.h \
-    village.h \
     worldsave.h \
-    zipreader.h \
-    clamp.h \
-    jumpto.h \
-    pngexport.h \
-    paletteentry.h
+    zipreader.h
 SOURCES += \
     entityevaluator.cpp \
     labelledseparator.cpp \
@@ -66,8 +66,6 @@ SOURCES += \
     chunkcache.cpp \
     chunkloader.cpp \
     chunkrenderer.cpp \
-    entity.cpp \
-    generatedstructure.cpp \
     identifier\biomeidentifier.cpp \
     identifier\blockidentifier.cpp \
     identifier\definitionmanager.cpp \
@@ -75,6 +73,7 @@ SOURCES += \
     identifier\dimensionidentifier.cpp \
     identifier\entityidentifier.cpp \
     identifier\flatteningconverter.cpp \
+    jumpto.cpp \
     json\json.cpp \
     main.cpp \
     mapview.cpp \
@@ -82,6 +81,10 @@ SOURCES += \
     nbt\nbt.cpp \
     nbt\tag.cpp \
     nbt\tagdatastream.cpp \
+    overlay\entity.cpp \
+    overlay\generatedstructure.cpp \
+    overlay\village.cpp \
+    pngexport.cpp \
     properties.cpp \
     propertietreecreator.cpp \
     searchblockpluginwidget.cpp \
@@ -90,11 +93,8 @@ SOURCES += \
     searchresultwidget.cpp \
     searchtextwidget.cpp \
     settings.cpp \
-    village.cpp \
     worldsave.cpp \
-    zipreader.cpp \
-    jumpto.cpp \
-    pngexport.cpp
+    zipreader.cpp
 RESOURCES = minutor.qrc
 
 win32 {

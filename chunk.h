@@ -6,9 +6,9 @@
 #include <QVector>
 
 #include "nbt/nbt.h"
-#include "entity.h"
+#include "overlay/entity.h"
+#include "overlay/generatedstructure.h"
 #include "paletteentry.h"
-#include "generatedstructure.h"
 
 #include <array>
 

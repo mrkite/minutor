@@ -1,8 +1,8 @@
 #ifndef SEARCHENTITYWIDGET_H
 #define SEARCHENTITYWIDGET_H
 
+#include "overlay/overlayitem.h"
 #include "propertietreecreator.h"
-#include "overlayitem.h"
 #include "entityevaluator.h"
 #include "searchplugininterface.h"
 #include "chunkid.h"

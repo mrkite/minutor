@@ -1,6 +1,6 @@
 #include "entityevaluator.h"
 
-#include "overlayitem.h"
+#include "overlay/overlayitem.h"
 //#include "genericidentifier.h"
 #include "searchresultwidget.h"
 //#include "careeridentifier.h"
