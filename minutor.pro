@@ -17,7 +17,6 @@ macx:ICON=icon.icns
 HEADERS += \
     chunkid.h \
     chunkmath.h \
-    entityevaluator.h \
     labelledseparator.h \
     labelledslider.h \
     clamp.h \
@@ -42,24 +41,24 @@ HEADERS += \
     overlay\entity.h \
     overlay\generatedstructure.h \
     overlay\overlayitem.h \
+    overlay\properties.h \
+    overlay\propertietreecreator.h \
     overlay\village.h \
     paletteentry.h \
     pngexport.h \
-    properties.h \
-    propertietreecreator.h \
     range.h \
-    rectangleinnertoouteriterator.h \
-    searchblockpluginwidget.h \
-    searchchunkswidget.h \
-    searchentitypluginwidget.h \
-    searchplugininterface.h \
-    searchresultwidget.h \
-    searchtextwidget.h \
+    search\entityevaluator.h \
+    search\rectangleinnertoouteriterator.h \
+    search\searchblockpluginwidget.h \
+    search\searchchunkswidget.h \
+    search\searchentitypluginwidget.h \
+    search\searchplugininterface.h \
+    search\searchresultwidget.h \
+    search\searchtextwidget.h \
     settings.h \
     worldsave.h \
     zipreader.h
 SOURCES += \
-    entityevaluator.cpp \
     labelledseparator.cpp \
     labelledslider.cpp \
     chunk.cpp \
@@ -83,15 +82,16 @@ SOURCES += \
     nbt\tagdatastream.cpp \
     overlay\entity.cpp \
     overlay\generatedstructure.cpp \
+    overlay\properties.cpp \
+    overlay\propertietreecreator.cpp \
     overlay\village.cpp \
     pngexport.cpp \
-    properties.cpp \
-    propertietreecreator.cpp \
-    searchblockpluginwidget.cpp \
-    searchchunkswidget.cpp \
-    searchentitypluginwidget.cpp \
-    searchresultwidget.cpp \
-    searchtextwidget.cpp \
+    search\entityevaluator.cpp \
+    search\searchblockpluginwidget.cpp \
+    search\searchchunkswidget.cpp \
+    search\searchentitypluginwidget.cpp \
+    search\searchresultwidget.cpp \
+    search\searchtextwidget.cpp \
     settings.cpp \
     worldsave.cpp \
     zipreader.cpp
@@ -140,10 +140,10 @@ INSTALLS += desktopfile pixmapfile target
 
 FORMS += \
     minutor.ui \
-    properties.ui \
-    searchchunkswidget.ui \
-    searchresultwidget.ui \
-    searchtextwidget.ui \
-    settings.ui \
     jumpto.ui \
-    pngexport.ui
+    pngexport.ui \
+    overlay\properties.ui \
+    search\searchchunkswidget.ui \
+    search\searchresultwidget.ui \
+    search\searchtextwidget.ui \
+    settings.ui

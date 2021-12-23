@@ -1,8 +1,8 @@
 #ifndef ENTITYEVALUATOR_H
 #define ENTITYEVALUATOR_H
 
-#include "propertietreecreator.h"
-#include "searchplugininterface.h"
+#include "overlay/propertietreecreator.h"
+#include "search/searchplugininterface.h"
 
 #include <QSharedPointer>
 

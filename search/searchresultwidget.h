@@ -1,7 +1,7 @@
 #ifndef SEARCHRESULTWIDGET_H
 #define SEARCHRESULTWIDGET_H
 
-#include "properties.h"
+#include "overlay/properties.h"
 
 #include <QWidget>
 #include <QVariant>

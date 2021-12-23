@@ -24,15 +24,15 @@
 #include "identifier/dimensionidentifier.h"
 #include "settings.h"
 #include "worldsave.h"
-#include "properties.h"
+#include "overlay/properties.h"
 #include "overlay/generatedstructure.h"
 #include "overlay/village.h"
 #include "jumpto.h"
 #include "pngexport.h"
-#include "searchchunkswidget.h"
-#include "searchentitypluginwidget.h"
-#include "searchblockpluginwidget.h"
-#include "searchresultwidget.h"
+#include "search/searchchunkswidget.h"
+#include "search/searchentitypluginwidget.h"
+#include "search/searchblockpluginwidget.h"
+#include "search/searchresultwidget.h"
 
 Minutor::Minutor()
 {

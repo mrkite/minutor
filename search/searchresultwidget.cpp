@@ -6,7 +6,7 @@
 #include <QtWidgets/QFileDialog>
 #include <cmath>
 
-#include "properties.h"
+#include "overlay/properties.h"
 
 Q_DECLARE_METATYPE(SearchResultItem);
 
