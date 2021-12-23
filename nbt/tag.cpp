@@ -3,8 +3,8 @@
 #include <QDebug>
 #include <QStringList>
 
-#include "nbt_tag.h"
-#include "nbt.h"
+#include "./tag.h"
+#include "./nbt.h"
 
 
 Tag::Tag() {

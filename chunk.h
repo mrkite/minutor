@@ -5,7 +5,7 @@
 #include <QtCore>
 #include <QVector>
 
-#include "./nbt.h"
+#include "./nbt/nbt.h"
 #include "./entity.h"
 #include "./paletteentry.h"
 #include "./generatedstructure.h"

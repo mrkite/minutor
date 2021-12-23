@@ -1,6 +1,6 @@
 /** Copyright (c) 2013, Sean Kasun */
 
-#include "nbt_tagdatastream.h"
+#include "./tagdatastream.h"
 
 
 TagDataStream::TagDataStream(const char *data, int len) {

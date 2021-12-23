@@ -5,7 +5,7 @@
 #include <QString>
 #include <QVariant>
 
-#include "nbt_tagdatastream.h"
+#include "./tagdatastream.h"
 
 
 class Tag {

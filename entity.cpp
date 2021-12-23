@@ -2,7 +2,7 @@
 #include <QPainter>
 #include "./entity.h"
 #include "./entityidentifier.h"
-#include "./nbt.h"
+#include "./nbt/nbt.h"
 
 Entity::Entity(const Point &positionInfo)
     : extraColor(QColor::fromRgb(0,255,0))

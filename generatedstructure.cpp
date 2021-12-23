@@ -1,7 +1,7 @@
 /** Copyright 2014 Rian Shelley */
 #include <QPainter>
 #include "./generatedstructure.h"
-#include "./nbt.h"
+#include "./nbt/nbt.h"
 
 
 // parse structures in *.dat files

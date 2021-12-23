@@ -16,7 +16,7 @@
 #include "./mapview.h"
 #include "./labelledseparator.h"
 #include "./labelledslider.h"
-#include "./nbt.h"
+#include "./nbt/nbt.h"
 #include "./json.h"
 #include "./definitionmanager.h"
 #include "./entityidentifier.h"
