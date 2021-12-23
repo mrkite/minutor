@@ -5,10 +5,10 @@
 #include <QtCore>
 #include <QVector>
 
-#include "./nbt/nbt.h"
-#include "./entity.h"
-#include "./paletteentry.h"
-#include "./generatedstructure.h"
+#include "nbt/nbt.h"
+#include "entity.h"
+#include "paletteentry.h"
+#include "generatedstructure.h"
 
 #include <array>
 

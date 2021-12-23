@@ -4,8 +4,8 @@
 #include <assert.h>
 #include <cmath>
 
-#include "./flatteningconverter.h"
-#include "./json/json.h"
+#include "flatteningconverter.h"
+#include "json/json.h"
 
 const QString PaletteEntry::legacyBlockIdProperty = "lbid";
 

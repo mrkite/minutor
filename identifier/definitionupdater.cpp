@@ -4,7 +4,8 @@
 #include <QFile>
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
-#include "./definitionupdater.h"
+
+#include "definitionupdater.h"
 
 DefinitionUpdater::DefinitionUpdater(QString filename,
                                      QString url,

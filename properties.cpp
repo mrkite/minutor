@@ -1,8 +1,8 @@
 /** Copyright 2014 Rian Shelley */
 #include <QRegularExpression>
 #include <QVector3D>
-#include "./properties.h"
-#include "./ui_properties.h"
+#include "properties.h"
+#include "ui_properties.h"
 
 
 Properties::Properties(QWidget *parent)

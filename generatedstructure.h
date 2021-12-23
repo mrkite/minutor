@@ -4,7 +4,7 @@
 
 #include <QSharedPointer>
 #include <QString>
-#include "./overlayitem.h"
+#include "overlayitem.h"
 
 class Tag;
 class QColor;

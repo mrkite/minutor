@@ -3,7 +3,7 @@
 #include <zlib.h>
 #include <QFile>
 
-#include "./nbt.h"
+#include "nbt.h"
 
 
 // this handles decoding the gzipped level.dat

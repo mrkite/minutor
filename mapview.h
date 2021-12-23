@@ -4,7 +4,8 @@
 
 #include <QtWidgets/QWidget>
 #include <QSharedPointer>
-#include "./chunkcache.h"
+#include "chunkcache.h"
+
 class DefinitionManager;
 class BiomeIdentifier;
 class BlockIdentifier;

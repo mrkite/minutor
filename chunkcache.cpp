@@ -1,7 +1,7 @@
 /** Copyright (c) 2013, Sean Kasun */
 
-#include "./chunkcache.h"
-#include "./chunkloader.h"
+#include "chunkcache.h"
+#include "chunkloader.h"
 
 
 #if defined(__unix__) || defined(__unix) || defined(unix)

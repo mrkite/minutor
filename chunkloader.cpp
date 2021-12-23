@@ -1,8 +1,8 @@
 /** Copyright (c) 2013, Sean Kasun */
 
-#include "./chunkloader.h"
-#include "./chunkcache.h"
-#include "./chunk.h"
+#include "chunkloader.h"
+#include "chunkcache.h"
+#include "chunk.h"
 
 
 ChunkLoader::ChunkLoader(QString path, int cx, int cz)

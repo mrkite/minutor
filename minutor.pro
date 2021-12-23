@@ -20,18 +20,19 @@ HEADERS += \
     entityevaluator.h \
     labelledseparator.h \
     labelledslider.h \
-    biomeidentifier.h \
-    blockidentifier.h \
     chunk.h \
     chunkcache.h \
     chunkloader.h \
     chunkrenderer.h \
-    definitionmanager.h \
-    definitionupdater.h \
-    dimensionidentifier.h \
     entity.h \
-    entityidentifier.h \
     generatedstructure.h \
+    identifier\biomeidentifier.h \
+    identifier\blockidentifier.h \
+    identifier\definitionmanager.h \
+    identifier\definitionupdater.h \
+    identifier\dimensionidentifier.h \
+    identifier\entityidentifier.h \
+    identifier\flatteningconverter.h \
     json\json.h \
     mapview.h \
     minutor.h \
@@ -56,24 +57,24 @@ HEADERS += \
     clamp.h \
     jumpto.h \
     pngexport.h \
-    flatteningconverter.h \
     paletteentry.h
 SOURCES += \
     entityevaluator.cpp \
     labelledseparator.cpp \
     labelledslider.cpp \
-    biomeidentifier.cpp \
-    blockidentifier.cpp \
     chunk.cpp \
     chunkcache.cpp \
     chunkloader.cpp \
     chunkrenderer.cpp \
-    definitionmanager.cpp \
-    definitionupdater.cpp \
-    dimensionidentifier.cpp \
     entity.cpp \
-    entityidentifier.cpp \
     generatedstructure.cpp \
+    identifier\biomeidentifier.cpp \
+    identifier\blockidentifier.cpp \
+    identifier\definitionmanager.cpp \
+    identifier\definitionupdater.cpp \
+    identifier\dimensionidentifier.cpp \
+    identifier\entityidentifier.cpp \
+    identifier\flatteningconverter.cpp \
     json\json.cpp \
     main.cpp \
     mapview.cpp \
@@ -93,8 +94,7 @@ SOURCES += \
     worldsave.cpp \
     zipreader.cpp \
     jumpto.cpp \
-    pngexport.cpp \
-    flatteningconverter.cpp
+    pngexport.cpp
 RESOURCES = minutor.qrc
 
 win32 {

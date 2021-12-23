@@ -3,7 +3,7 @@
 #include <QTranslator>
 #include <QLocale>
 
-#include "./minutor.h"
+#include "minutor.h"
 
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);

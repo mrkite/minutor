@@ -3,7 +3,7 @@
 #include "searchresultwidget.h"
 
 #include "chunk.h"
-#include "entityidentifier.h"
+#include "identifier/entityidentifier.h"
 #include <set>
 
 

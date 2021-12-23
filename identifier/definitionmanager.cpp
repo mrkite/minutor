@@ -10,16 +10,16 @@
 #include <QStandardPaths>
 #include <QtWidgets/QFileDialog>
 #include <algorithm>
-#include "./definitionmanager.h"
-#include "./biomeidentifier.h"
-#include "./blockidentifier.h"
-#include "./dimensionidentifier.h"
-#include "./entityidentifier.h"
-#include "./flatteningconverter.h"
-#include "./mapview.h"
-#include "./json/json.h"
-#include "./zipreader.h"
-#include "./definitionupdater.h"
+#include "definitionmanager.h"
+#include "biomeidentifier.h"
+#include "blockidentifier.h"
+#include "dimensionidentifier.h"
+#include "entityidentifier.h"
+#include "flatteningconverter.h"
+#include "mapview.h"
+#include "json/json.h"
+#include "zipreader.h"
+#include "definitionupdater.h"
 
 DefinitionManager::DefinitionManager(QWidget *parent) :
     QWidget(parent),

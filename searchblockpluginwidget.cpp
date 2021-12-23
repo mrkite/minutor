@@ -2,7 +2,7 @@
 #include "searchresultwidget.h"
 
 #include "chunk.h"
-#include "blockidentifier.h"
+#include "identifier/blockidentifier.h"
 
 #include <algorithm>
 

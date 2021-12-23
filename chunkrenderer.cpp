@@ -1,12 +1,12 @@
 /** Copyright (c) 2019, EtlamGit */
 
-#include "./chunk.h"
-#include "./chunkrenderer.h"
-#include "./chunkcache.h"
-#include "./mapview.h"
-#include "./blockidentifier.h"
-#include "./biomeidentifier.h"
-#include "./clamp.h"
+#include "chunk.h"
+#include "chunkrenderer.h"
+#include "chunkcache.h"
+#include "mapview.h"
+#include "identifier/blockidentifier.h"
+#include "identifier/biomeidentifier.h"
+#include "clamp.h"
 
 ChunkRenderer::ChunkRenderer(int cx, int cz, int y, int flags)
   : cx(cx)

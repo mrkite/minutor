@@ -11,7 +11,7 @@
 #include <QtNetwork/QNetworkReply>
 #include <QWidgetAction>
 
-#include "./ui_minutor.h"
+#include "ui_minutor.h"
 
 class QAction;
 class QActionGroup;

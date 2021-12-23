@@ -1,6 +1,6 @@
 /** Copyright (c) 2013, Sean Kasun */
 #include <QVBoxLayout>
-#include "./labelledslider.h"
+#include "labelledslider.h"
 
 LabelledSlider::LabelledSlider(Qt::Orientation orientation, QWidget *parent) :
   QWidget(parent) {

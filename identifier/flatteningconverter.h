@@ -2,7 +2,7 @@
 #ifndef FLATTENINGCONVERTER_H_
 #define FLATTENINGCONVERTER_H_
 
-#include "./paletteentry.h"
+#include "paletteentry.h"
 
 class JSONArray;
 class JSONObject;

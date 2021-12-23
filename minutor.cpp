@@ -12,26 +12,27 @@
 #include <QRegExp>
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
-#include "./minutor.h"
-#include "./mapview.h"
-#include "./labelledseparator.h"
-#include "./labelledslider.h"
-#include "./nbt/nbt.h"
-#include "./json/json.h"
-#include "./definitionmanager.h"
-#include "./entityidentifier.h"
-#include "./settings.h"
-#include "./dimensionidentifier.h"
-#include "./worldsave.h"
-#include "./properties.h"
-#include "./generatedstructure.h"
-#include "./village.h"
-#include "./jumpto.h"
-#include "./pngexport.h"
-#include "./searchchunkswidget.h"
-#include "./searchentitypluginwidget.h"
-#include "./searchblockpluginwidget.h"
-#include "./searchresultwidget.h"
+
+#include "minutor.h"
+#include "mapview.h"
+#include "labelledseparator.h"
+#include "labelledslider.h"
+#include "nbt/nbt.h"
+#include "json/json.h"
+#include "identifier/definitionmanager.h"
+#include "identifier/entityidentifier.h"
+#include "identifier/dimensionidentifier.h"
+#include "settings.h"
+#include "worldsave.h"
+#include "properties.h"
+#include "generatedstructure.h"
+#include "village.h"
+#include "jumpto.h"
+#include "pngexport.h"
+#include "searchchunkswidget.h"
+#include "searchentitypluginwidget.h"
+#include "searchblockpluginwidget.h"
+#include "searchresultwidget.h"
 
 Minutor::Minutor()
 {
@@ -428,7 +429,7 @@ void Minutor::createActions() {
 
   connect(m_ui.action_BiomeColors, SIGNAL(triggered()),
           this,                    SLOT(toggleFlags()));
-  
+
   connect(m_ui.action_SeaGround, SIGNAL(triggered()),
           this,                  SLOT(toggleFlags()));
 

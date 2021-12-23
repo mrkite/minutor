@@ -1,10 +1,10 @@
 #include "searchchunkswidget.h"
 #include "ui_searchchunkswidget.h"
 
-#include "./chunkcache.h"
-#include "./chunkmath.h"
-#include "./range.h"
-#include "./rectangleinnertoouteriterator.h"
+#include "chunkcache.h"
+#include "chunkmath.h"
+#include "range.h"
+#include "rectangleinnertoouteriterator.h"
 
 #include <QVariant>
 #include <QTreeWidgetItem>

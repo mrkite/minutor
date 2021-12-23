@@ -5,8 +5,8 @@
 #include <assert.h>
 #include <cmath>
 
-#include "./blockidentifier.h"
-#include "./json/json.h"
+#include "blockidentifier.h"
+#include "json/json.h"
 
 static BlockInfo unknownBlock;
 
