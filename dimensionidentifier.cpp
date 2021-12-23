@@ -3,7 +3,7 @@
 #include <QDirIterator>
 #include <QtWidgets/QMenu>
 #include "./dimensionidentifier.h"
-#include "./json.h"
+#include "./json/json.h"
 
 
 //-------------------------------------------------------------------------------------------------

@@ -5,7 +5,7 @@
 #include <cmath>
 
 #include "./flatteningconverter.h"
-#include "./json.h"
+#include "./json/json.h"
 
 const QString PaletteEntry::legacyBlockIdProperty = "lbid";
 

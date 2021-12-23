@@ -17,7 +17,7 @@
 #include "./labelledseparator.h"
 #include "./labelledslider.h"
 #include "./nbt/nbt.h"
-#include "./json.h"
+#include "./json/json.h"
 #include "./definitionmanager.h"
 #include "./entityidentifier.h"
 #include "./settings.h"

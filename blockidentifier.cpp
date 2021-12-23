@@ -6,7 +6,7 @@
 #include <cmath>
 
 #include "./blockidentifier.h"
-#include "./json.h"
+#include "./json/json.h"
 
 static BlockInfo unknownBlock;
 

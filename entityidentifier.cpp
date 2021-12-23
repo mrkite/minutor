@@ -2,7 +2,7 @@
 #include <QDebug>
 #include <assert.h>
 #include "./entityidentifier.h"
-#include "./json.h"
+#include "./json/json.h"
 
 EntityInfo::EntityInfo(QString name, QString category, QColor brushColor,
                        QColor penColor) : name(name), category(category),

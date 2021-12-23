@@ -17,7 +17,7 @@
 #include "./entityidentifier.h"
 #include "./flatteningconverter.h"
 #include "./mapview.h"
-#include "./json.h"
+#include "./json/json.h"
 #include "./zipreader.h"
 #include "./definitionupdater.h"
 

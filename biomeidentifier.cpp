@@ -8,7 +8,7 @@ Copyright (c) 2016, EtlamGit
 #include <QtCore>
 
 #include "./biomeidentifier.h"
-#include "./json.h"
+#include "./json/json.h"
 #include "./clamp.h"
 
 // --------- --------- --------- ---------

@@ -32,7 +32,7 @@ HEADERS += \
     entity.h \
     entityidentifier.h \
     generatedstructure.h \
-    json.h \
+    json\json.h \
     mapview.h \
     minutor.h \
     nbt\nbt.h \
@@ -74,7 +74,7 @@ SOURCES += \
     entity.cpp \
     entityidentifier.cpp \
     generatedstructure.cpp \
-    json.cpp \
+    json\json.cpp \
     main.cpp \
     mapview.cpp \
     minutor.cpp \
