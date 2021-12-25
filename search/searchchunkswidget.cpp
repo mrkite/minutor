@@ -2,11 +2,11 @@
 #include "ui_searchchunkswidget.h"
 
 #include "chunkcache.h"
-#include "chunkmath.h"
 #include "range.h"
 #include "rectangleinnertoouteriterator.h"
 
 #include <QVariant>
+#include <QVector2D>
 #include <QTreeWidgetItem>
 #include <QtConcurrent/QtConcurrent>
 
@@ -59,13 +59,14 @@ void SearchChunksWidget::on_pb_search_clicked()
 
   ui->resultList->clearResults();
 
-  const int radius = 1 + (ui->sb_radius->value() / CHUNK_SIDE_LENGTH);
+  const int radius = 1 + (ui->sb_radius->value() / 16);
 
   const bool successfull_init = searchPlugin->initSearch();
   if (!successfull_init)
     return;
 
-  const QVector2D poi = getChunkCoordinates(QVector2D(searchCenter.x(), searchCenter.z()));
+  QVector2D poi(int(searchCenter.x()) >> 4,
+                int(searchCenter.z()) >> 4);
   const QVector2D radius2d(radius, radius);
 
   QRect searchRange((poi - radius2d).toPoint(), (poi + radius2d).toPoint());

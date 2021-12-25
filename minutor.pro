@@ -16,7 +16,6 @@ macx:ICON=icon.icns
 # Input
 HEADERS += \
     chunkid.h \
-    chunkmath.h \
     labelledseparator.h \
     labelledslider.h \
     clamp.h \
@@ -46,8 +45,8 @@ HEADERS += \
     overlay\village.h \
     paletteentry.h \
     pngexport.h \
-    range.h \
     search\entityevaluator.h \
+    search\range.h \
     search\rectangleinnertoouteriterator.h \
     search\searchblockpluginwidget.h \
     search\searchchunkswidget.h \
