@@ -1,8 +1,8 @@
 #ifndef SEARCHBLOCKPLUGINWIDGET_H
 #define SEARCHBLOCKPLUGINWIDGET_H
 
-#include "searchplugininterface.h"
-#include "searchtextwidget.h"
+#include "search/searchplugininterface.h"
+#include "search/searchtextwidget.h"
 
 #include <QWidget>
 #include <QLayout>

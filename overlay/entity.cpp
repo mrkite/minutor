@@ -1,6 +1,7 @@
 /** Copyright 2014 EtlamGit */
 #include <QPainter>
-#include "entity.h"
+
+#include "overlay/entity.h"
 #include "identifier/entityidentifier.h"
 #include "nbt/nbt.h"
 

@@ -1,9 +1,9 @@
-#include "searchchunkswidget.h"
+#include "search/searchchunkswidget.h"
 #include "ui_searchchunkswidget.h"
 
 #include "chunkcache.h"
-#include "range.h"
-#include "rectangleinnertoouteriterator.h"
+#include "search/range.h"
+#include "search/rectangleinnertoouteriterator.h"
 
 #include <QVariant>
 #include <QVector2D>

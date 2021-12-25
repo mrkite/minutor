@@ -1,5 +1,5 @@
-#include "searchblockpluginwidget.h"
-#include "searchresultwidget.h"
+#include "search/searchblockpluginwidget.h"
+#include "search/searchresultwidget.h"
 
 #include "chunk.h"
 #include "identifier/blockidentifier.h"

@@ -1,10 +1,10 @@
-#include "searchresultwidget.h"
-#include "ui_searchresultwidget.h"
-
 #include <QMessageBox>
 #include <QTextStream>
 #include <QtWidgets/QFileDialog>
 #include <cmath>
+
+#include "search/searchresultwidget.h"
+#include "ui_searchresultwidget.h"
 
 #include "overlay/properties.h"
 

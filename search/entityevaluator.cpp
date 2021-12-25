@@ -1,8 +1,8 @@
-#include "entityevaluator.h"
+#include "search/entityevaluator.h"
 
 #include "overlay/overlayitem.h"
 //#include "genericidentifier.h"
-#include "searchresultwidget.h"
+#include "search/searchresultwidget.h"
 //#include "careeridentifier.h"
 
 #include <QTreeWidgetItem>

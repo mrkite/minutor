@@ -2,7 +2,7 @@
 #ifndef VILLAGE_H_
 #define VILLAGE_H_
 
-#include "generatedstructure.h"
+#include "overlay/generatedstructure.h"
 
 class Village : public GeneratedStructure {
  public:

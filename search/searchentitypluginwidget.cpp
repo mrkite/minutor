@@ -1,6 +1,5 @@
-#include "searchentitypluginwidget.h"
-
-#include "searchresultwidget.h"
+#include "search/searchentitypluginwidget.h"
+#include "search/searchresultwidget.h"
 
 #include "chunk.h"
 #include "identifier/entityidentifier.h"

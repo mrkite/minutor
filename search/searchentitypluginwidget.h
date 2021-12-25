@@ -1,9 +1,9 @@
 #ifndef SEARCHENTITYPLUGINWIDGET_H
 #define SEARCHENTITYPLUGINWIDGET_H
 
-#include "entityevaluator.h"
-#include "searchplugininterface.h"
-#include "searchtextwidget.h"
+#include "search/entityevaluator.h"
+#include "search/searchplugininterface.h"
+#include "search/searchtextwidget.h"
 
 #include <QWidget>
 #include <QLayout>

@@ -2,7 +2,7 @@
 #ifndef PROPERTIES_H_
 #define PROPERTIES_H_
 
-#include "propertietreecreator.h"
+#include "overlay/propertietreecreator.h"
 
 #include <QDialog>
 #include <QMap>

@@ -1,6 +1,7 @@
 /** Copyright 2014 Rian Shelley */
 #include <QPainter>
-#include "generatedstructure.h"
+
+#include "overlay/generatedstructure.h"
 #include "nbt/nbt.h"
 
 

@@ -1,4 +1,4 @@
-#include "searchtextwidget.h"
+#include "search/searchtextwidget.h"
 #include "ui_searchtextwidget.h"
 
 SearchTextWidget::SearchTextWidget(const QString &name, QWidget *parent)

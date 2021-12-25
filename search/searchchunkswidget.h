@@ -4,9 +4,9 @@
 #include "overlay/overlayitem.h"
 #include "overlay/propertietreecreator.h"
 #include "search/entityevaluator.h"
+#include "search/range.h"
 #include "search/searchplugininterface.h"
 #include "chunkid.h"
-#include "range.h"
 
 #include <QWidget>
 #include <QFuture>

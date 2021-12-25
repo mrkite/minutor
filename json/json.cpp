@@ -1,7 +1,8 @@
 /** Copyright (c) 2013, Sean Kasun */
 #include <QFile>
 #include <QtCore>
-#include "json.h"
+
+#include "json/json.h"
 
 enum Token {
   TokenNULL,

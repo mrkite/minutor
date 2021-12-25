@@ -3,7 +3,7 @@
 #define ENTITY_H_
 
 #include <QSharedPointer>
-#include "overlayitem.h"
+#include "overlay/overlayitem.h"
 
 class Tag;
 

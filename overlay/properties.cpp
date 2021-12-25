@@ -1,7 +1,9 @@
 /** Copyright 2014 Rian Shelley */
 #include <QRegularExpression>
 #include <QVector3D>
-#include "properties.h"
+
+#include "overlay/properties.h"
+
 #include "ui_properties.h"
 
 

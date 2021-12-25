@@ -4,7 +4,7 @@
 
 #include <QString>
 
-#include "tag.h"
+#include "nbt/tag.h"
 
 
 class NBT {
