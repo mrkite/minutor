@@ -111,7 +111,7 @@
   <customwidget>
    <class>SearchResultWidget</class>
    <extends>QWidget</extends>
-   <header>searchresultwidget.h</header>
+   <header>search/searchresultwidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
