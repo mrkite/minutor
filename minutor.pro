@@ -127,7 +127,7 @@ SOURCES += \
     zlib/uncompr.c \
     zlib/zutil.c
 
-INCLUDEPATH += zlib
+INCLUDEPATH += identifer json nbt overlay search zlib
 }
 
 desktopfile.path = /usr/share/applications
