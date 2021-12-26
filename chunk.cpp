@@ -2,10 +2,10 @@
 
 #include <algorithm>    // std::max
 
-#include "./chunk.h"
-#include "./flatteningconverter.h"
-#include "./blockidentifier.h"
-#include "./biomeidentifier.h"
+#include "chunk.h"
+#include "identifier/flatteningconverter.h"
+#include "identifier/blockidentifier.h"
+#include "identifier/biomeidentifier.h"
 
 template<typename ValueT>
 inline void* safeMemCpy(void* dest, const std::vector<ValueT>& srcVec, size_t length)

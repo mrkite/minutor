@@ -4,13 +4,13 @@
 #include <QMessageBox>
 #include <assert.h>
 
-#include "./mapview.h"
-#include "./chunkcache.h"
-#include "./chunkrenderer.h"
-#include "./definitionmanager.h"
-#include "./blockidentifier.h"
-#include "./biomeidentifier.h"
-#include "./clamp.h"
+#include "mapview.h"
+#include "chunkcache.h"
+#include "chunkrenderer.h"
+#include "identifier/definitionmanager.h"
+#include "identifier/blockidentifier.h"
+#include "identifier/biomeidentifier.h"
+#include "clamp.h"
 
 MapView::MapView(QWidget *parent)
   : QWidget(parent)

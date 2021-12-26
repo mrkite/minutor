@@ -3,7 +3,7 @@
 #include <QSettings>
 #include <QDir>
 
-#include "./settings.h"
+#include "settings.h"
 
 Settings::Settings(QWidget *parent) : QDialog(parent) {
   m_ui.setupUi(this);

@@ -3,7 +3,7 @@
 #define SETTINGS_H_
 
 #include <QDialog>
-#include "./ui_settings.h"
+#include "ui_settings.h"
 
 
 class Settings : public QDialog {

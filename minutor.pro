@@ -16,85 +16,84 @@ macx:ICON=icon.icns
 # Input
 HEADERS += \
     chunkid.h \
-    chunkmath.h \
-    entityevaluator.h \
     labelledseparator.h \
     labelledslider.h \
-    biomeidentifier.h \
-    blockidentifier.h \
+    clamp.h \
     chunk.h \
     chunkcache.h \
     chunkloader.h \
     chunkrenderer.h \
-    definitionmanager.h \
-    definitionupdater.h \
-    dimensionidentifier.h \
-    entity.h \
-    entityidentifier.h \
-    generatedstructure.h \
-    json.h \
+    identifier\biomeidentifier.h \
+    identifier\blockidentifier.h \
+    identifier\definitionmanager.h \
+    identifier\definitionupdater.h \
+    identifier\dimensionidentifier.h \
+    identifier\entityidentifier.h \
+    identifier\flatteningconverter.h \
+    jumpto.h \
+    json\json.h \
     mapview.h \
     minutor.h \
-    nbt.h \
-    nbt_tag.h \
-    nbt_tagdatastream.h \
-    overlayitem.h \
-    properties.h \
-    propertietreecreator.h \
-    range.h \
-    rectangleinnertoouteriterator.h \
-    searchblockpluginwidget.h \
-    searchchunkswidget.h \
-    searchentitypluginwidget.h \
-    searchplugininterface.h \
-    searchresultwidget.h \
-    searchtextwidget.h \
-    settings.h \
-    village.h \
-    worldsave.h \
-    zipreader.h \
-    clamp.h \
-    jumpto.h \
+    nbt\nbt.h \
+    nbt\tag.h \
+    nbt\tagdatastream.h \
+    overlay\entity.h \
+    overlay\generatedstructure.h \
+    overlay\overlayitem.h \
+    overlay\properties.h \
+    overlay\propertietreecreator.h \
+    overlay\village.h \
+    paletteentry.h \
     pngexport.h \
-    flatteningconverter.h \
-    paletteentry.h
+    search\entityevaluator.h \
+    search\range.h \
+    search\rectangleinnertoouteriterator.h \
+    search\searchblockpluginwidget.h \
+    search\searchchunkswidget.h \
+    search\searchentitypluginwidget.h \
+    search\searchplugininterface.h \
+    search\searchresultwidget.h \
+    search\searchtextwidget.h \
+    settings.h \
+    worldsave.h \
+    zipreader.h
 SOURCES += \
-    entityevaluator.cpp \
     labelledseparator.cpp \
     labelledslider.cpp \
-    biomeidentifier.cpp \
-    blockidentifier.cpp \
     chunk.cpp \
     chunkcache.cpp \
     chunkloader.cpp \
     chunkrenderer.cpp \
-    definitionmanager.cpp \
-    definitionupdater.cpp \
-    dimensionidentifier.cpp \
-    entity.cpp \
-    entityidentifier.cpp \
-    generatedstructure.cpp \
-    json.cpp \
+    identifier\biomeidentifier.cpp \
+    identifier\blockidentifier.cpp \
+    identifier\definitionmanager.cpp \
+    identifier\definitionupdater.cpp \
+    identifier\dimensionidentifier.cpp \
+    identifier\entityidentifier.cpp \
+    identifier\flatteningconverter.cpp \
+    jumpto.cpp \
+    json\json.cpp \
     main.cpp \
     mapview.cpp \
     minutor.cpp \
-    nbt.cpp \
-    nbt_tag.cpp \
-    nbt_tagdatastream.cpp \
-    properties.cpp \
-    propertietreecreator.cpp \
-    searchblockpluginwidget.cpp \
-    searchchunkswidget.cpp \
-    searchentitypluginwidget.cpp \
-    searchresultwidget.cpp \
-    searchtextwidget.cpp \
-    settings.cpp \
-    village.cpp \
-    worldsave.cpp \
-    zipreader.cpp \
-    jumpto.cpp \
+    nbt\nbt.cpp \
+    nbt\tag.cpp \
+    nbt\tagdatastream.cpp \
+    overlay\entity.cpp \
+    overlay\generatedstructure.cpp \
+    overlay\properties.cpp \
+    overlay\propertietreecreator.cpp \
+    overlay\village.cpp \
     pngexport.cpp \
-    flatteningconverter.cpp
+    search\entityevaluator.cpp \
+    search\searchblockpluginwidget.cpp \
+    search\searchchunkswidget.cpp \
+    search\searchentitypluginwidget.cpp \
+    search\searchresultwidget.cpp \
+    search\searchtextwidget.cpp \
+    settings.cpp \
+    worldsave.cpp \
+    zipreader.cpp
 RESOURCES = minutor.qrc
 
 win32 {
@@ -128,7 +127,7 @@ SOURCES += \
     zlib/uncompr.c \
     zlib/zutil.c
 
-INCLUDEPATH += zlib
+INCLUDEPATH += identifer json nbt overlay search zlib
 }
 
 desktopfile.path = /usr/share/applications
@@ -140,10 +139,10 @@ INSTALLS += desktopfile pixmapfile target
 
 FORMS += \
     minutor.ui \
-    properties.ui \
-    searchchunkswidget.ui \
-    searchresultwidget.ui \
-    searchtextwidget.ui \
-    settings.ui \
     jumpto.ui \
-    pngexport.ui
+    pngexport.ui \
+    overlay\properties.ui \
+    search\searchchunkswidget.ui \
+    search\searchresultwidget.ui \
+    search\searchtextwidget.ui \
+    settings.ui

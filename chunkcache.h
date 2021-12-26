@@ -4,8 +4,8 @@
 
 #include <QObject>
 #include <QCache>
-#include "./chunk.h"
-#include "./chunkid.h"
+#include "chunk.h"
+#include "chunkid.h"
 
 enum class CacheState {
   uncached,

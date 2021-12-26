@@ -8,10 +8,10 @@
  */
 
 #include <zlib.h>
-#include "./worldsave.h"
-#include "./mapview.h"
-#include "./chunkloader.h"
-#include "./chunkrenderer.h"
+#include "worldsave.h"
+#include "mapview.h"
+#include "chunkloader.h"
+#include "chunkrenderer.h"
 
 WorldSave::WorldSave(QString filename, MapView *map,
                      bool regionChecker, bool chunkChecker,
