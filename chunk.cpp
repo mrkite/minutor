@@ -1,6 +1,7 @@
 /** Copyright (c) 2013, Sean Kasun */
 
 #include <algorithm>    // std::max
+#include <typeinfo>     // typeid
 
 #include "chunk.h"
 #include "identifier/flatteningconverter.h"
