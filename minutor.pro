@@ -23,37 +23,37 @@ HEADERS += \
     chunkcache.h \
     chunkloader.h \
     chunkrenderer.h \
-    identifier\biomeidentifier.h \
-    identifier\blockidentifier.h \
-    identifier\definitionmanager.h \
-    identifier\definitionupdater.h \
-    identifier\dimensionidentifier.h \
-    identifier\entityidentifier.h \
-    identifier\flatteningconverter.h \
+    identifier/biomeidentifier.h \
+    identifier/blockidentifier.h \
+    identifier/definitionmanager.h \
+    identifier/definitionupdater.h \
+    identifier/dimensionidentifier.h \
+    identifier/entityidentifier.h \
+    identifier/flatteningconverter.h \
     jumpto.h \
-    json\json.h \
+    json/json.h \
     mapview.h \
     minutor.h \
-    nbt\nbt.h \
-    nbt\tag.h \
-    nbt\tagdatastream.h \
-    overlay\entity.h \
-    overlay\generatedstructure.h \
-    overlay\overlayitem.h \
-    overlay\properties.h \
-    overlay\propertietreecreator.h \
-    overlay\village.h \
+    nbt/nbt.h \
+    nbt/tag.h \
+    nbt/tagdatastream.h \
+    overlay/entity.h \
+    overlay/generatedstructure.h \
+    overlay/overlayitem.h \
+    overlay/properties.h \
+    overlay/propertietreecreator.h \
+    overlay/village.h \
     paletteentry.h \
     pngexport.h \
-    search\entityevaluator.h \
-    search\range.h \
-    search\rectangleinnertoouteriterator.h \
-    search\searchblockpluginwidget.h \
-    search\searchchunkswidget.h \
-    search\searchentitypluginwidget.h \
-    search\searchplugininterface.h \
-    search\searchresultwidget.h \
-    search\searchtextwidget.h \
+    search/entityevaluator.h \
+    search/range.h \
+    search/rectangleinnertoouteriterator.h \
+    search/searchblockpluginwidget.h \
+    search/searchchunkswidget.h \
+    search/searchentitypluginwidget.h \
+    search/searchplugininterface.h \
+    search/searchresultwidget.h \
+    search/searchtextwidget.h \
     settings.h \
     worldsave.h \
     zipreader.h
@@ -64,33 +64,33 @@ SOURCES += \
     chunkcache.cpp \
     chunkloader.cpp \
     chunkrenderer.cpp \
-    identifier\biomeidentifier.cpp \
-    identifier\blockidentifier.cpp \
-    identifier\definitionmanager.cpp \
-    identifier\definitionupdater.cpp \
-    identifier\dimensionidentifier.cpp \
-    identifier\entityidentifier.cpp \
-    identifier\flatteningconverter.cpp \
+    identifier/biomeidentifier.cpp \
+    identifier/blockidentifier.cpp \
+    identifier/definitionmanager.cpp \
+    identifier/definitionupdater.cpp \
+    identifier/dimensionidentifier.cpp \
+    identifier/entityidentifier.cpp \
+    identifier/flatteningconverter.cpp \
     jumpto.cpp \
-    json\json.cpp \
+    json/json.cpp \
     main.cpp \
     mapview.cpp \
     minutor.cpp \
-    nbt\nbt.cpp \
-    nbt\tag.cpp \
-    nbt\tagdatastream.cpp \
-    overlay\entity.cpp \
-    overlay\generatedstructure.cpp \
-    overlay\properties.cpp \
-    overlay\propertietreecreator.cpp \
-    overlay\village.cpp \
+    nbt/nbt.cpp \
+    nbt/tag.cpp \
+    nbt/tagdatastream.cpp \
+    overlay/entity.cpp \
+    overlay/generatedstructure.cpp \
+    overlay/properties.cpp \
+    overlay/propertietreecreator.cpp \
+    overlay/village.cpp \
     pngexport.cpp \
-    search\entityevaluator.cpp \
-    search\searchblockpluginwidget.cpp \
-    search\searchchunkswidget.cpp \
-    search\searchentitypluginwidget.cpp \
-    search\searchresultwidget.cpp \
-    search\searchtextwidget.cpp \
+    search/entityevaluator.cpp \
+    search/searchblockpluginwidget.cpp \
+    search/searchchunkswidget.cpp \
+    search/searchentitypluginwidget.cpp \
+    search/searchresultwidget.cpp \
+    search/searchtextwidget.cpp \
     settings.cpp \
     worldsave.cpp \
     zipreader.cpp
@@ -141,8 +141,8 @@ FORMS += \
     minutor.ui \
     jumpto.ui \
     pngexport.ui \
-    overlay\properties.ui \
-    search\searchchunkswidget.ui \
-    search\searchresultwidget.ui \
-    search\searchtextwidget.ui \
+    overlay/properties.ui \
+    search/searchchunkswidget.ui \
+    search/searchresultwidget.ui \
+    search/searchtextwidget.ui \
     settings.ui
