@@ -561,8 +561,8 @@ QString Minutor::getWorldName(QDir path) {
 
 void Minutor::getWorldList() {
   QDir mc(dialogSettings->mcpath);
-  if (!mc.cd("saves"))
-    return;
+  if (mc.exists("saves"))
+    mc.cd("saves");
 
   QDirIterator it(mc);
   int key = 1;
