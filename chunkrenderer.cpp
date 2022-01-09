@@ -161,8 +161,9 @@ void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
              colg = (colg + 0) / 2;
              colb = (colb + 256) / 2;
            }
-           // water spawn check for Drowned
-           if (((biome.isOceanBiome() && (y < 58)) || biome.isRiverBiome()) &&
+           // water spawn check for Drowned, introduced with "Update Aquatic" (1.13)
+           if ((chunk->version >= 1519) &&
+               ((biome.isOceanBiome() && (y < 58)) || biome.isRiverBiome()) &&
                (light0 < lightSpawnSave) &&
                block0.biomeWater() &&
                block1.biomeWater() ) {

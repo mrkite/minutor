@@ -274,6 +274,18 @@ void BiomeIdentifier::parseBiomeDefinitions0000(JSONArray *data, int pack) {
       if (b->has("name"))
         biome->name = b->at("name")->asString();
 
+      // define ocean / river Biome category by (optional) tag or guess from name
+      if (b->has("ocean")) {
+        biome->ocean = b->at("ocean")->asBool();
+      } else if (biome->name.contains("ocean", Qt::CaseInsensitive)) {
+        biome->ocean = true;
+      }
+      if (b->has("river")) {
+        biome->ocean = b->at("river")->asBool();
+      } else if (biome->name.contains("river", Qt::CaseInsensitive)) {
+        biome->river = true;
+      }
+
       // get temperature definition
       if (b->has("temperature"))
         biome->temperature = b->at("temperature")->asNumber();
@@ -349,12 +361,12 @@ void BiomeIdentifier::parseBiomeDefinitions2800(JSONArray *data18, int pack) {
       if (b->has("ocean")) {
         biome->ocean = b->at("ocean")->asBool();
       } else if (biome->name.contains("ocean", Qt::CaseInsensitive)) {
-          biome->ocean = true;
+        biome->ocean = true;
       }
       if (b->has("river")) {
         biome->ocean = b->at("river")->asBool();
       } else if (biome->name.contains("river", Qt::CaseInsensitive)) {
-          biome->river = true;
+        biome->river = true;
       }
 
       // get temperature definition
