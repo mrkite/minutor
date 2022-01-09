@@ -162,7 +162,7 @@ void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
              colb = (colb + 256) / 2;
            }
            // water spawn check for Drowned, introduced with "Update Aquatic" (1.13)
-           if ((chunk->version >= 1519) &&
+           if ((chunk->version >= 1478) &&
                ((biome.isOceanBiome() && (y < 58)) || biome.isRiverBiome()) &&
                (light0 < lightSpawnSave) &&
                block0.biomeWater() &&
