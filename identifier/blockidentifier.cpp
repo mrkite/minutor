@@ -45,8 +45,9 @@ bool BlockInfo::doesBlockHaveSolidTopSurface() const {
 }
 
 bool BlockInfo::isBlockNormalCube() const {
-  return this->isOpaque() && this->renderAsNormalBlock() &&
-      !this->canProvidePower();
+  return this->isOpaque() &&
+         this->renderAsNormalBlock() &&
+         !this->canProvidePower();
 }
 
 bool BlockInfo::renderAsNormalBlock() const {

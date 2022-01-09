@@ -22,6 +22,8 @@ BiomeInfo::BiomeInfo()
   , nid("")
   , name("Unknown Biome")
   , enabled(false)
+  , ocean(false)
+  , river(false)
   , temperature(0.5)
   , humidity(0.5)
   , enabledwatermodifier(false)
@@ -235,6 +237,7 @@ void BiomeIdentifier::enableDefinitions(int pack) {
     packs[pack][i]->enabled = true;
   updateBiomeDefinition();
 }
+
 void BiomeIdentifier::disableDefinitions(int pack) {
   if (pack < 0) return;
   int len = packs[pack].length();
@@ -340,6 +343,18 @@ void BiomeIdentifier::parseBiomeDefinitions2800(JSONArray *data18, int pack) {
         for (int i = 0; i < parts.size(); i++)
           parts[i].replace(0, 1, parts[i][0].toUpper());
         biome->name = parts.join(" ");
+      }
+
+      // define ocean / river Biome category by (optional) tag or guess from name
+      if (b->has("ocean")) {
+        biome->ocean = b->at("ocean")->asBool();
+      } else if (biome->name.contains("ocean", Qt::CaseInsensitive)) {
+          biome->ocean = true;
+      }
+      if (b->has("river")) {
+        biome->ocean = b->at("river")->asBool();
+      } else if (biome->name.contains("river", Qt::CaseInsensitive)) {
+          biome->river = true;
       }
 
       // get temperature definition
