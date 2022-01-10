@@ -151,7 +151,7 @@ void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
              colb = (colb + 192) / 2;
            }
            // spawn check #2: current block is transparent,
-           // but mob can spawn through (e.g. snow)
+           // but mob can spawn through from block below (e.g. snow)
            if (blockB.doesBlockHaveSolidTopSurface() &&
                !blockB.isBedrock() && light0 < lightSpawnSave &&
                !block0.isBlockNormalCube() && block0.spawninside &&
@@ -161,7 +161,18 @@ void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
              colg = (colg + 0) / 2;
              colb = (colb + 256) / 2;
            }
+           // water spawn check for Drowned, introduced with "Update Aquatic" (1.13)
+           if ((chunk->version >= 1478) &&
+               ((biome.isOceanBiome() && (y < 58)) || biome.isRiverBiome()) &&
+               (light0 < lightSpawnSave) &&
+               block0.biomeWater() &&
+               block1.biomeWater() ) {
+             colr = (colr + 256) / 2;
+             colg = (colg + 0) / 2;
+             colb = (colb + 128) / 2;
+           }
         }
+
         if (flags & MapView::flgBiomeColors) {
           colr = biome.colors[light].red();
           colg = biome.colors[light].green();

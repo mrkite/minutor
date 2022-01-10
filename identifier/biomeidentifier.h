@@ -17,12 +17,17 @@ class BiomeInfo {
   QColor getBiomeFoliageColor( QColor blockcolor, int elevation ) const;
   QColor getBiomeWaterColor( QColor watercolor ) const;
 
+  bool   isOceanBiome() const { return ocean; };
+  bool   isRiverBiome() const { return river; };
+
   // public members
  public:
   int     id;   // numerical ID
   QString nid;  // namespace ID
   QString name;
   bool    enabled;
+  bool    ocean;
+  bool    river;
   double  temperature;
   double  humidity;
   bool    enabledwatermodifier;
