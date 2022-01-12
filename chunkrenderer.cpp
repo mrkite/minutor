@@ -35,23 +35,26 @@ void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
   uchar *bits = chunk->image;
   short *depthbits = chunk->depth;
 
+  // adapt y loop start/stop value to render depth and available data in Chunk
+  int startY = std::min(chunk->highest, this->depth);
+  int stopY  = chunk->lowest;
+  if (this->flags & MapView::flgSingleLayer) {
+    startY = this->depth;
+    stopY  = this->depth;
+  }
+
   // render loop
   for (int z = 0; z < 16; z++) {  // n->s
-    int lasty = -1;
+    // we do not know the last y value from Chunk to the east, -> set special value
+    int lasty = -9999;
     for (int x = 0; x < 16; x++, offset++) {  // e->w
       // initialize color
       uchar r = 0, g = 0, b = 0;
       double alpha = 0.0;
-      int top = depth;
-      if (top > chunk->highest)
-        top = chunk->highest;
-      if (flags & MapView::flgSingleLayer)
-        top = depth;
-      int highest = 0;
-      for (int y = top; y >= chunk->lowest; y--) {  // top->down
+
+      int highest = -4096;  // highest block in current column
+      for (int y = startY; y >= stopY; y--) {  // top->down
         // perform a one deep scan in SingleLayer mode
-        if ((flags & MapView::flgSingleLayer) && (y < top))
-          break;
         int sec = y >> 4;
         const ChunkSection *section = chunk->getSectionByIdx(sec);
         if (!section) {
@@ -59,14 +62,11 @@ void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
           continue;
         }
 
-        // get data value
-        //int data = section->getData(offset, y);
-
         // get BlockInfo from block value
         BlockInfo &block = BlockIdentifier::Instance().getBlockInfo(section->getPaletteEntry(offset, y).hid);
         if (block.alpha == 0.0) continue;
 
-        if (flags & MapView::flgSeaGround && block.isLiquid()) continue;
+        if (this->flags & MapView::flgSeaGround && block.isLiquid()) continue;
 
         // get light value from one block above
         int light = 0;
@@ -74,9 +74,10 @@ void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
         if (section1)
           light = section1->getBlockLight(offset, y+1);
         int light1 = light;
-        if (!(flags & MapView::flgLighting))
+        if (!(this->flags & MapView::flgLighting))
           light = 13;
-        if (alpha == 0.0 && lasty != -1) {
+        // y gradient detection / edge highlight
+        if ((alpha == 0.0) && (lasty != -9999)) {
           if (lasty < y)
             light += 2;
           else if (lasty > y)
@@ -107,20 +108,19 @@ void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
         quint32 colg = std::clamp( int(light_factor*blockcolor.green()), 0, 255 );
         quint32 colb = std::clamp( int(light_factor*blockcolor.blue()),  0, 255 );
 
-        // process flags
-        if (flags & MapView::flgDepthShading) {
+        if (this->flags & MapView::flgDepthShading) {
           // Use a table to define depth-relative shade:
           static const quint32 shadeTable[] = {
             0, 12, 18, 22, 24, 26, 28, 29, 30, 31, 32};
-          size_t idx = qMin(static_cast<size_t>(depth - y),
+          size_t idx = std::min(static_cast<size_t>(this->depth - y),
                             sizeof(shadeTable) / sizeof(*shadeTable) - 1);
           quint32 shade = shadeTable[idx];
-          colr = colr - qMin(shade, colr);
-          colg = colg - qMin(shade, colg);
-          colb = colb - qMin(shade, colb);
+          colr = colr - std::min(shade, colr);
+          colg = colg - std::min(shade, colg);
+          colb = colb - std::min(shade, colb);
         }
 
-        if (flags & MapView::flgMobSpawn) {
+        if (this->flags & MapView::flgMobSpawn) {
           // get block info from 1 and 2 above and 1 below
           uint blid1(0), blid2(0), blidB(0);  // default to legacy air (todo: better handling of block above)
           const ChunkSection *section2 = chunk->getSectionByY(y+2);
@@ -173,7 +173,7 @@ void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
            }
         }
 
-        if (flags & MapView::flgBiomeColors) {
+        if (this->flags & MapView::flgBiomeColors) {
           colr = biome.colors[light].red();
           colg = biome.colors[light].green();
           colb = biome.colors[light].blue();
@@ -201,22 +201,21 @@ void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
 
       } // top -> down
 
-      if (flags & MapView::flgCaveMode) {
+      // finished to find color for current column, only continue for cave mode
+      if (this->flags & MapView::flgCaveMode) {
         float cave_factor = 1.0;
         int cave_test = 0;
-        for (int y=highest-1; (y >= 0) && (cave_test < CaveShade::CAVE_DEPTH); y--, cave_test++) {  // top->down
+        for (int y=highest-1; (y >= stopY) && (cave_test < CaveShade::CAVE_DEPTH); y--, cave_test++) {  // top->down
           // get section
           const ChunkSection *section = chunk->getSectionByY(y);
           if (!section) continue;
-          // get data value
-          // int data = section->getData(offset, y);
           // get BlockInfo from block value
           BlockInfo &block = BlockIdentifier::Instance().getBlockInfo(section->getPaletteEntry(offset, y).hid);
           if (block.transparent) {
             cave_factor -= CaveShade::getShade(cave_test);
           }
         }
-        cave_factor = std::max(cave_factor,0.25f);
+        cave_factor = std::max(cave_factor, 0.25f);
         // darken color by blending with cave shade factor
         r = (quint8)(cave_factor * r);
         g = (quint8)(cave_factor * g);
@@ -230,8 +229,8 @@ void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
       *bits++ = 0xff;
     }
   }
-  chunk->renderedAt = depth;
-  chunk->renderedFlags = flags;
+  chunk->renderedAt = this->depth;
+  chunk->renderedFlags = this->flags;
 }
 
 
