@@ -281,6 +281,9 @@
    <property name="statusTip">
     <string>Toggle shading based on relative depth</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+D</string>
+   </property>
   </action>
   <action name="action_BiomeColors">
    <property name="checkable">
