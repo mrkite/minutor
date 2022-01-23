@@ -1,0 +1,48 @@
+name: Ubuntu Qt CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    strategy:
+      fail-fast: false
+      matrix:
+        name: [ubuntu-18.04, ubuntu-20.04]
+        include:
+          - name: ubuntu-18.04
+            os: ubuntu-18.04
+            artifact: minutor
+          - name: ubuntu-20.04
+            os: ubuntu-20.04
+            artifact: minutor
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install Qt
+      run: sudo apt-get install qt5-default -y
+
+    - name: Create BUILD folder
+      run: |
+        mkdir ../build
+    
+    - name: Build (Ubuntu)
+      working-directory: ../build
+      run: |
+        qmake ${{ github.workspace }}/${{ matrix.artifact }}.pro
+        make
+      env:
+        # only needed for Ubuntu-16.04
+        LD_LIBRARY_PATH: '${{ runner.workspace }}/Qt/5.5/gcc_64/lib'
+   
+    - name: Archive build result
+      uses: actions/upload-artifact@v2
+      with:
+        name: Binary ${{ matrix.name }}
+        path: ${{ runner.workspace }}/build/${{ matrix.artifact }}
