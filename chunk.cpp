@@ -401,7 +401,7 @@ bool Chunk::loadSection1343(ChunkSection *cs, const Tag *section) {
 
   // check if some Block is different to minecraft:air
   bool sectionContainsData = false;
-  for (int i = 0; i < 2048; i++) {
+  for (int i = 0; i < 4096; i++) {
     sectionContainsData |= (cs->blocks[i] != 0);
   }
   return sectionContainsData;
