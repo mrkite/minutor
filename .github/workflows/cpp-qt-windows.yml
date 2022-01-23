@@ -1,0 +1,76 @@
+name: Windows Qt CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    strategy:
+      fail-fast: false
+      matrix:
+        name: [windows-5.9, windows-5.12]
+        include:
+          - name: windows-5.9
+            os: windows-2019
+            qt: '5.9.9'
+            msvc_toolset: '14.16'
+            artifact: release/minutor.exe
+          - name: windows-5.12
+            os: windows-latest
+            qt: '5.12.12'
+            msvc_toolset: '14.29'
+            artifact: release/minutor.exe
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ilammy/msvc-dev-cmd@v1
+      with:
+        toolset: ${{ matrix.msvc_toolset }}
+
+    - name: Cache Qt
+      id: cache-qt
+      uses: actions/cache@v2
+      with:
+        path: ${{ runner.workspace }}/Qt
+        key: ${{ runner.os }}-QtCache-${{ matrix.qt }}
+
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v2
+      with:
+        version: ${{ matrix.qt }}
+        target: 'desktop'
+#       tools: 'tools_openssl_x64,1.1.1-10,qt.tools.openssl.win_x64'
+        cached: ${{ steps.cache-qt.outputs.cache-hit }}
+
+    - name: Create BUILD folder
+      run: |
+        mkdir ../build
+        mkdir ../deploy
+    
+    - name: Build (Windows)
+      working-directory: ../build
+      shell: cmd
+      run: |
+        qmake ${{ github.workspace }}/minutor.pro
+        nmake
+
+#    - name: Deploy Qt (Windows)
+#      working-directory: ../build
+#      shell: cmd
+#      run: |
+#        cp ..\build\release\minutor.exe ..\deploy\minutor.exe
+#        windeployqt ..\deploy
+#        dir /S ..\deploy
+#        echo Test
+
+    - name: Archive build result
+      uses: actions/upload-artifact@v2
+      with:
+        name: Binary ${{ matrix.name }}
+        path: ${{ runner.workspace }}/build/${{ matrix.artifact }}
+        
