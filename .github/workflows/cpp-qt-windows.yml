@@ -18,12 +18,10 @@ jobs:
             os: windows-2019
             qt: '5.9.9'
             msvc_toolset: '14.16'
-            artifact: release/minutor.exe
           - name: windows-5.12
             os: windows-latest
             qt: '5.12.12'
             msvc_toolset: '14.29'
-            artifact: release/minutor.exe
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -59,18 +57,17 @@ jobs:
         qmake ${{ github.workspace }}/minutor.pro
         nmake
 
-#    - name: Deploy Qt (Windows)
-#      working-directory: ../build
-#      shell: cmd
-#      run: |
-#        cp ..\build\release\minutor.exe ..\deploy\minutor.exe
-#        windeployqt ..\deploy
-#        dir /S ..\deploy
-#        echo Test
+    - name: Deploy Qt (Windows)
+      working-directory: ../build
+      shell: cmd
+      run: |
+        cp ..\build\release\minutor.exe ..\deploy\minutor.exe
+        windeployqt ..\deploy
+# todo: we have to add OpenSSL DLLs here
 
     - name: Archive build result
       uses: actions/upload-artifact@v2
       with:
         name: Binary ${{ matrix.name }}
-        path: ${{ runner.workspace }}/build/${{ matrix.artifact }}
+        path: ${{ runner.workspace }}/deploy/*
         
