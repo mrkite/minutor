@@ -125,8 +125,8 @@ qint32 Tag_Int::toInt() const {
   return data;
 }
 
-unsigned int Tag_Int::toUInt() const {
-  return (unsigned int)data;
+quint32 Tag_Int::toUInt() const {
+  return (quint32)data;
 }
 
 const QString Tag_Int::toString() const {
@@ -154,6 +154,18 @@ double Tag_Long::toDouble() const {
 
 qint32 Tag_Long::toInt() const {
   return static_cast<qint32>(data);
+}
+
+quint32 Tag_Long::toUInt() const {
+  return static_cast<quint32>(data);
+}
+
+qint64 Tag_Long::toLong() const {
+  return static_cast<qint64>(data);
+}
+
+quint64 Tag_Long::toULong() const {
+  return static_cast<quint64>(data);
 }
 
 const QString Tag_Long::toString() const {
