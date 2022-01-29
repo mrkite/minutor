@@ -55,6 +55,7 @@ HEADERS += \
     search/searchresultwidget.h \
     search/searchtextwidget.h \
     settings.h \
+    worldinfo.h \
     worldsave.h \
     zipreader.h
 SOURCES += \
@@ -92,6 +93,7 @@ SOURCES += \
     search/searchresultwidget.cpp \
     search/searchtextwidget.cpp \
     settings.cpp \
+    worldinfo.cpp \
     worldsave.cpp \
     zipreader.cpp
 RESOURCES = minutor.qrc
