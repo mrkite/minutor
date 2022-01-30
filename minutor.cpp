@@ -23,6 +23,7 @@
 #include "identifier/entityidentifier.h"
 #include "identifier/dimensionidentifier.h"
 #include "settings.h"
+#include "worldinfo.h"
 #include "worldsave.h"
 #include "overlay/properties.h"
 #include "overlay/generatedstructure.h"
@@ -345,7 +346,8 @@ void Minutor::viewDimension(const DimensionInfo &dim) {
   }
 
   // change depth slider or adjust default Y when dimension is activated
-  if (currentWorldVersion < 2800 ) {
+  WorldInfo & wi(WorldInfo::Instance());
+  if (wi.getDataVersion() < 2800 ) {
     // legacy versions before Cliffs & Caves (up to 1.17)
     depth->setRange(0, 255);
     dialogJumpTo->updateYrange(0, 255);
@@ -550,29 +552,20 @@ void Minutor::createStatusBar() {
   statusBar()->showMessage(tr("Ready"));
 }
 
-QString Minutor::getWorldName(QDir path) {
-  if (!path.exists("level.dat"))  // no level.dat?  no world
-    return QString();
-
-  NBT level(path.filePath("level.dat"));
-  return level.at("Data")->at("LevelName")->toString();
-}
-
-
 void Minutor::getWorldList() {
   QDir mc(dialogSettings->mcpath);
   if (mc.exists("saves"))
     mc.cd("saves");
 
+  WorldInfo & wi(WorldInfo::Instance());
   QDirIterator it(mc);
   int key = 1;
   while (it.hasNext()) {
     it.next();
     if (it.fileInfo().isDir()) {
-      QString name = getWorldName(it.filePath());
-      if (!name.isNull()) {
+      if (wi.parseFolder(it.filePath())) {
         QAction *w = new QAction(this);
-        w->setText(name);
+        w->setText(wi.getLevelName());
         w->setData(it.filePath());
         if (key < 10) {
           w->setShortcut("Ctrl+"+QString::number(key));
@@ -584,6 +577,7 @@ void Minutor::getWorldList() {
       }
     }
   }
+  wi.clear();
 }
 
 MapView *Minutor::getMapview() const
@@ -596,24 +590,17 @@ void Minutor::loadWorld(QDir path) {
   closeWorld();
   currentWorld = path;
 
-  NBT level(path.filePath("level.dat"));
-  auto data = level.at("Data");
+  WorldInfo & wi(WorldInfo::Instance());
+  wi.parseFolder(path);
+  //wi.parseDimensions();
 
   // add level name to window title
-  setWindowTitle(qApp->applicationName() + " - " +
-                 data->at("LevelName")->toString());
-
-  // get maximum build height
-  if (data->has("DataVersion")) {
-    currentWorldVersion = data->at("DataVersion")->toInt();
-  } else
-    currentWorldVersion = 0;
-
+  setWindowTitle(qApp->applicationName() + " - " + wi.getLevelName());
 
   // Jump to: world spawn
   m_ui.action_JumpSpawn->setData(locations.count());
-  locations.append(Location(data->at("SpawnX")->toDouble(),
-                            data->at("SpawnZ")->toDouble()));
+  locations.append(Location(wi.getSpawnX(), wi.getSpawnZ() ));
+
   // Jump to: known players
   if (path.cd("playerdata") || path.cd("players")) {
     QDirIterator it(path.absolutePath(), {"*.dat"}, QDir::Files);

@@ -105,7 +105,6 @@ signals:
   void loadStructures(const QDir &dataPath);
   QKeySequence generateUniqueKeyboardShortcut(QString *actionName);
 
-  QString getWorldName(QDir path);
   void getWorldList();
 
   MapView *mapview;
@@ -126,7 +125,6 @@ signals:
   Settings *dialogSettings;
   JumpTo *dialogJumpTo;
   QDir currentWorld;
-  int  currentWorldVersion;
   QNetworkAccessManager qnam;
 
   QSet<QString> overlayItemTypes;
