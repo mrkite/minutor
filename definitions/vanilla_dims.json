@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "dimension",
-  "version": "1.18.0",
+  "version": "1.18.1",
   "data": [
     {
       "name": "Overworld",
@@ -16,8 +16,8 @@
       "name": "The Nether",
       "id": "minecraft:the_nether",
       "path": "DIM-1",
-      "minY": -64,
-      "maxY": 319,
+      "minY": 0,
+      "maxY": 255,
       "defaultY": 95,
       "scale": 8
     },
@@ -25,8 +25,8 @@
       "name": "The End",
       "id": "minecraft:the_end",
       "path": "DIM1",
-      "minY": -64,
-      "maxY": 319,
+      "minY": 0,
+      "maxY": 255,
       "defaultY": 255,
       "scale": 0
     }
