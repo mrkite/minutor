@@ -592,7 +592,7 @@ void Minutor::loadWorld(QDir path) {
 
   WorldInfo & wi(WorldInfo::Instance());
   wi.parseFolder(path);
-  //wi.parseDimensions();
+  wi.parseDimensions();
 
   // add level name to window title
   setWindowTitle(qApp->applicationName() + " - " + wi.getLevelName());
