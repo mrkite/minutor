@@ -15,10 +15,11 @@ struct ZipFileHeader {
 
 class ZipReader {
  public:
-  explicit ZipReader(const QString filename);
-  bool open();
-  void close();
-  QByteArray get(const QString filename);
+  explicit    ZipReader(const QString filename);
+  bool        open();
+  void        close();
+  QByteArray  get(const QString filename);
+  QStringList getFileList() const;
  private:
   QFile f;
   QHash<QString, struct ZipFileHeader> files;
