@@ -2,10 +2,14 @@
 #include <zlib.h>
 #include "zipreader.h"
 
-ZipReader::ZipReader(const QString filename) : f(filename) {
-}
 
-bool ZipReader::open() {
+ZipReader::ZipReader(const QString filename)
+  : f(filename)
+{}
+
+
+bool ZipReader::open()
+{
   if (!f.open(QIODevice::ReadOnly))
     return false;
 
@@ -67,7 +71,10 @@ bool ZipReader::open() {
   }
   return true;
 }
-QByteArray ZipReader::get(const QString filename) {
+
+
+QByteArray ZipReader::get(const QString filename)
+{
   if (!files.contains(filename))
     return QByteArray();
   ZipFileHeader &zfh = files[filename];
@@ -109,7 +116,16 @@ QByteArray ZipReader::get(const QString filename) {
   inflateEnd(&strm);
   return result;
 }
-void ZipReader::close() {
+
+
+QStringList ZipReader::getFileList() const
+{
+  return QStringList(files.keys());
+}
+
+
+void ZipReader::close()
+{
   files.clear();  // erase all headers
   f.close();
 }

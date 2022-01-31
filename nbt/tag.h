@@ -74,7 +74,7 @@ class Tag_Int : public Tag {
   explicit Tag_Int(TagDataStream *s);
 
   qint32         toInt() const override;
-  unsigned int   toUInt() const;
+  quint32        toUInt() const;
   double         toDouble() const override;
   const QString  toString() const override;
   const QVariant getData() const override;
@@ -87,6 +87,9 @@ class Tag_Long : public Tag {
   explicit Tag_Long(TagDataStream *s);
 
   qint32         toInt() const override;
+  quint32        toUInt() const;
+  qint64         toLong() const;
+  quint64        toULong() const;
   double         toDouble() const override;
   const QString  toString() const override;
   const QVariant getData() const override;

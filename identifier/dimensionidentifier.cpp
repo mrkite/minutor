@@ -5,6 +5,7 @@
 
 #include "dimensionidentifier.h"
 #include "json/json.h"
+#include "worldinfo.h"
 
 
 //-------------------------------------------------------------------------------------------------
@@ -150,6 +151,13 @@ void DimensionIdentifier::getDimensionsInWorld(QDir path, QMenu *menu, QObject *
       }
     }
   }
+
+  // add Custom Dimensions
+  WorldInfo & wi(WorldInfo::Instance());
+  for (auto dim: wi.getDimensions()) {
+    addDimensionMenu(path, dim.path, dim.name, parent);
+  }
+
   // re-add new build actions to menu
   menu->addActions(currentMenuActions);
   if (currentMenuActions.count() > 0) {
@@ -171,40 +179,61 @@ void DimensionIdentifier::getDimensionsInWorld(QDir path, QMenu *menu, QObject *
   }
 }
 
+
+#define DIM_MAGIC 0x10000
+
 void DimensionIdentifier::addDimensionMenu(QDir path, QString dir, QString name, QObject *parent) {
   // prevent adding non-existing directory
   if (!path.exists(dir))
+    return;
+
+  // prevent adding unused dimension
+  if (!path.exists(dir + "/region"))
     return;
 
   // prevent re-adding already found directory
   if (foundDimensionDirs.contains(dir))
     return;
 
-  path.cd(dir);
-  if (path.exists("region")) {  // is it a used dimension?
-    QAction *action = new QAction(parent);
-    action->setText(name);
-    // find index in definition list
-    int idx = 0;
-    for (; idx<definitions.length(); idx++) {
-      if (definitions[idx]->name == name) {
-        action->setData(idx);
+  QAction *action = new QAction(parent);
+  action->setText(name);
+  bool found = false;
+  // find index in definition list
+  for (int idx = 0; idx<definitions.length(); idx++) {
+    if (definitions[idx]->name == name) {
+      action->setData(idx);
+      found = true;
+    }
+  }
+  if (!found) {
+    // find index in custom dimension list
+    WorldInfo & wi(WorldInfo::Instance());
+    const QList<DimensionInfo> & custom = wi.getDimensions();
+    for (int idx = 0; idx<custom.length(); idx++) {
+      if (custom[idx].name == name) {
+        action->setData(idx+DIM_MAGIC);
       }
     }
-    action->setCheckable(true);
-    parent->connect(action, SIGNAL(triggered()),
-                    this, SLOT(changeViewToDimension()));
-    menuActionGroup->addAction(action);
-    currentMenuActions.append(action);
-    foundDimensionDirs.append(dir);
   }
-  path.cdUp();
+
+  action->setCheckable(true);
+  parent->connect(action, SIGNAL(triggered()),
+                  this, SLOT(changeViewToDimension()));
+  menuActionGroup->addAction(action);
+  currentMenuActions.append(action);
+  foundDimensionDirs.append(dir);
 }
 
 void DimensionIdentifier::changeViewToDimension() {
   QAction *action = qobject_cast<QAction*>(sender());
   if (action) {
     int idx = action->data().toInt();
-    emit dimensionChanged(*definitions[idx]);
+    if (idx < DIM_MAGIC) {
+      emit dimensionChanged(*definitions[idx]);
+    } else {
+      WorldInfo & wi(WorldInfo::Instance());
+      const QList<DimensionInfo> & custom = wi.getDimensions();
+      emit dimensionChanged(custom[idx-DIM_MAGIC]);
+    }
   }
 }
