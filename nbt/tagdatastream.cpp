@@ -10,16 +10,19 @@ TagDataStream::TagDataStream(const char *data, int len) {
 }
 
 quint8 TagDataStream::r8() {
+  if (pos+1 > this->len) return 0;  // safety check to prevent reading beyond the end
   return data[pos++];
 }
 
 quint16 TagDataStream::r16() {
+  if (pos+2 > this->len) return 0;  // safety check to prevent reading beyond the end
   quint16 r = data[pos++] << 8;
   r |= data[pos++];
   return r;
 }
 
 quint32 TagDataStream::r32() {
+  if (pos+4 > this->len) return 0;  // safety check to prevent reading beyond the end
   quint32 r = data[pos++] << 24;
   r |= data[pos++] << 16;
   r |= data[pos++] << 8;
@@ -34,6 +37,7 @@ quint64 TagDataStream::r64() {
 }
 
 void TagDataStream::r(int len, std::vector<quint8>& data_out) {
+  if (pos+len > this->len) return;  // safety check to prevent reading beyond the end
   // you need to free anything read with this
   data_out.resize(len);
   memcpy(&data_out[0], data + pos, len);
@@ -41,6 +45,7 @@ void TagDataStream::r(int len, std::vector<quint8>& data_out) {
 }
 
 QString TagDataStream::utf8(int len) {
+  if (pos+len > this->len) return QString();  // safety check to prevent reading beyond the end
   int old = pos;
   pos += len;
   return QString::fromUtf8((const char *)data + old, len);
