@@ -16,7 +16,7 @@ MapView::MapView(QWidget *parent)
   : QWidget(parent)
   , depth(255)
   , scale(1)      // overworld coordinate mapping
-  , zoomIndex(0)  // 1:1
+  , zoomLevel(0)  // 1:1
   , cache(ChunkCache::Instance())
 {
   adjustZoom(0, false);
@@ -139,15 +139,23 @@ void MapView::clearCache() {
 
 void MapView::adjustZoom(double steps, bool allowZoomOut)
 {
-  zoomIndex += steps;
+  // get current zoom level as an index, rounded to nearest int
+  int oldZoomIndex = zoomLevel + 0.5;
+  zoomLevel += steps;
 
   // use Fibonacci numbers to get natural zoom behaviour
   const float zoomTable[] = {1, 2, 3, 5, 8, 13, 21, 34, 55, 89};
   const int zoomMin = allowZoomOut ? -4 : 0;
   const int zoomMax = (sizeof(zoomTable) / sizeof(float)) -1;
 
-  if (zoomIndex < zoomMin) zoomIndex = zoomMin;
-  if (zoomIndex > zoomMax) zoomIndex = zoomMax;
+  if (zoomLevel < zoomMin) zoomLevel = zoomMin;
+  if (zoomLevel > zoomMax) zoomLevel = zoomMax;
+
+  int zoomIndex = zoomLevel + 0.5;
+
+  // check whether zoomIndex has changed since last adjustZoom call
+  // don't return early if steps == 0, this is used for initialization
+  if (zoomIndex == oldZoomIndex && steps != 0) return;
 
   // determine minimal zoomed value that is allowed
   // with current window size and available pyhiscal memory
@@ -174,6 +182,9 @@ void MapView::adjustZoom(double steps, bool allowZoomOut)
 
   // we try to set higher margin than above (100%)!
   cache.setCacheMaxSize(2.0 * chunks);
+
+  // no point in redrawing if the zoom level didn't change
+  if (steps != 0) redraw();
 }
 
 static int lastMouseX = -1, lastMouseY = -1;
@@ -248,12 +259,10 @@ void MapView::wheelEvent(QWheelEvent *event) {
     emit demandDepthChange(event->delta() / 120);
   } else if ((event->modifiers() & modifier4ZoomOut) == modifier4ZoomOut) {
     // allow change zoom also to zoom OUT
-    adjustZoom( event->delta() / 120.0, true );
-    redraw();
+    adjustZoom( event->angleDelta().y() / 120.0, true );
   } else {
     // normal change zoom
-    adjustZoom( event->delta() / 120.0, false );
-    redraw();
+    adjustZoom( event->angleDelta().y() / 120.0, false );
   }
 }
 
@@ -579,7 +588,7 @@ void MapView::getToolTip(int x, int z) {
   hovertext += " [Cache:"
             + QString().number(this->cache.getCacheUsage()) + "/"
             + QString().number(this->cache.getCacheMax()) + "]";
-  hovertext += " Zoom:" + QString().number(zoomIndex);
+  hovertext += " Zoom:" + QString().number(zoomLevel);
 #endif
 
   emit hoverTextChanged(hovertext);
