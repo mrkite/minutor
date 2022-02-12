@@ -2,6 +2,7 @@
 #include <QPainter>
 #include <QResizeEvent>
 #include <QMessageBox>
+#include <cmath>
 #include <assert.h>
 
 #include "mapview.h"
@@ -140,7 +141,7 @@ void MapView::clearCache() {
 void MapView::adjustZoom(double steps, bool allowZoomOut)
 {
   // get current zoom level as an index, rounded to nearest int
-  int oldZoomIndex = zoomLevel + 0.5;
+  int oldZoomIndex = (int)(floor(zoomLevel + 0.5));
   zoomLevel += steps;
 
   // use Fibonacci numbers to get natural zoom behaviour
@@ -151,7 +152,7 @@ void MapView::adjustZoom(double steps, bool allowZoomOut)
   if (zoomLevel < zoomMin) zoomLevel = zoomMin;
   if (zoomLevel > zoomMax) zoomLevel = zoomMax;
 
-  int zoomIndex = zoomLevel + 0.5;
+  int zoomIndex = (int)(floor(zoomLevel + 0.5 ));
 
   // check whether zoomIndex has changed since last adjustZoom call
   // don't return early if steps == 0, this is used for initialization
