@@ -104,7 +104,7 @@ class MapView : public QWidget {
   int depth;
   double x, z;
   int scale;
-  int zoomIndex;
+  double zoomLevel;
   double zoom;
   int flags;
   ChunkCache &cache;
