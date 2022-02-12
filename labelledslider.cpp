@@ -38,15 +38,14 @@ int LabelledSlider::value() const {
 // public slot
 void LabelledSlider::setValue(double v) {
   preciseValue = v;
+  if (preciseValue < slider->minimum()) preciseValue = slider->minimum();
+  if (preciseValue > slider->maximum()) preciseValue = slider->maximum();
   slider->setValue((int)(v + 0.5));
 }
 
 // public slot
 void LabelledSlider::changeValue(double v) {
-  preciseValue += v;
-  if (preciseValue < slider->minimum()) preciseValue = slider->minimum();
-  if (preciseValue > slider->maximum()) preciseValue = slider->maximum();
-  slider->setValue(preciseValue);
+  this->setValue(preciseValue + v);
 }
 
 // public slot
