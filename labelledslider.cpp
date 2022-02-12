@@ -1,5 +1,6 @@
 /** Copyright (c) 2013, Sean Kasun */
 #include <QVBoxLayout>
+#include <cmath>
 #include "labelledslider.h"
 
 LabelledSlider::LabelledSlider(Qt::Orientation orientation, QWidget *parent) :
@@ -40,7 +41,7 @@ void LabelledSlider::setValue(double v) {
   preciseValue = v;
   if (preciseValue < slider->minimum()) preciseValue = slider->minimum();
   if (preciseValue > slider->maximum()) preciseValue = slider->maximum();
-  slider->setValue((int)(v + 0.5));
+  slider->setValue(static_cast<int>(floor(v + 0.5)));
 }
 
 // public slot
