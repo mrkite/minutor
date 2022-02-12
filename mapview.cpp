@@ -245,7 +245,7 @@ void MapView::wheelEvent(QWheelEvent *event) {
 
   if ((event->modifiers() & modifier4DepthSlider) == modifier4DepthSlider) {
     // change depth
-    emit demandDepthChange(event->delta() / 120);
+    emit demandDepthChange(event->angleDelta().y() / 120.0);
   } else if ((event->modifiers() & modifier4ZoomOut) == modifier4ZoomOut) {
     // allow change zoom also to zoom OUT
     adjustZoom( event->delta() / 120.0, true );

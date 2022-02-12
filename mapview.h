@@ -69,8 +69,8 @@ class MapView : public QWidget {
 
  signals:
   void hoverTextChanged(QString text);
-  void demandDepthChange(int value);
-  void demandDepthValue(int value);
+  void demandDepthChange(double value);
+  void demandDepthValue(double value);
   void showProperties(QVariant properties);
   void addOverlayItemType(QString type, QColor color);
   void coordinatesChanged(int x, int y, int z);

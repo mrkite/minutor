@@ -16,6 +16,7 @@ class MSlider : public QSlider {
 
  public slots:
   void wheelEvent(QWheelEvent *event);
+
 };
 
 
@@ -30,8 +31,8 @@ class LabelledSlider : public QWidget {
   void valueChanged(int val);
 
  public slots:
-  void setValue(int val);                 // set absolute value
-  void changeValue(int val);              // change value relative to current
+  void setValue(double val);                 // set absolute value
+  void changeValue(double val);              // change value relative to current
   void setRange(int minVal, int maxVal);  // set slider range
 
  private slots:
@@ -43,6 +44,7 @@ class LabelledSlider : public QWidget {
  private:
   MSlider *slider;
   QLabel *label;
+  double preciseValue;
 };
 
 #endif  // LABELLEDSLIDER_H_
