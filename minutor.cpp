@@ -101,10 +101,10 @@ Minutor::Minutor()
 
   connect(depth, SIGNAL(valueChanged(int)),
           mapview, SLOT(setDepth(int)));
-  connect(mapview, SIGNAL(demandDepthChange(int)),
-          depth, SLOT(changeValue(int)));
-  connect(mapview, SIGNAL(demandDepthValue(int)),
-          depth, SLOT(setValue(int)));
+  connect(mapview, SIGNAL(demandDepthChange(double)),
+          depth, SLOT(changeValue(double)));
+  connect(mapview, SIGNAL(demandDepthValue(double)),
+          depth, SLOT(setValue(double)));
   connect(this, SIGNAL(worldLoaded(bool)),
           mapview, SLOT(setEnabled(bool)));
   connect(this, SIGNAL(worldLoaded(bool)),

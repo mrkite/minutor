@@ -1,5 +1,6 @@
 /** Copyright (c) 2013, Sean Kasun */
 #include <QVBoxLayout>
+#include <cmath>
 #include "labelledslider.h"
 
 LabelledSlider::LabelledSlider(Qt::Orientation orientation, QWidget *parent) :
@@ -36,13 +37,16 @@ int LabelledSlider::value() const {
 }
 
 // public slot
-void LabelledSlider::setValue(int v) {
-  slider->setValue(v);
+void LabelledSlider::setValue(double v) {
+  preciseValue = v;
+  if (preciseValue < slider->minimum()) preciseValue = slider->minimum();
+  if (preciseValue > slider->maximum()) preciseValue = slider->maximum();
+  slider->setValue(static_cast<int>(floor(v + 0.5)));
 }
 
 // public slot
-void LabelledSlider::changeValue(int v) {
-  slider->setValue(slider->value() + v);
+void LabelledSlider::changeValue(double v) {
+  this->setValue(preciseValue + v);
 }
 
 // public slot
@@ -58,13 +62,14 @@ void LabelledSlider::intValueChange(int v) {
 }
 
 void LabelledSlider::wheelEvent(QWheelEvent* event) {
-  slider->wheelEvent(event);
+  this->changeValue(event->angleDelta().y() / 120.0); // in order to make wheel intuitive
 }
 
 MSlider::MSlider(Qt::Orientation orientation, QWidget* parent) :
   QSlider(orientation, parent) {}
 
+// catch the wheelEvent to prevent it from scrolling the slider
+// ignore the event to allow it to bubble up to the LabelledSlider
 void  MSlider::wheelEvent(QWheelEvent* event) {
-  int delta = event->delta() / 120;  // in order to make wheel intuitive
-  this->setValue(this->value() + delta);
+  event->ignore();
 }
