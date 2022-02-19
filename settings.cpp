@@ -7,6 +7,8 @@
 
 Settings::Settings(QWidget *parent) : QDialog(parent) {
   m_ui.setupUi(this);
+  // remove "question mark" in title bar
+  setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
   setWindowTitle(tr("%1 Settings").arg(qApp->applicationName()));
 

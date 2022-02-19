@@ -19,27 +19,26 @@ public:
   void setBoundsFromChunks(int top, int left, int bottom, int right);
   void setBoundsFromBlocks(int top, int left, int bottom, int right);
 
-  int getTop();
-  int getLeft();
-  int getBottom();
-  int getRight();
+  int getTop() const;
+  int getLeft() const;
+  int getBottom() const;
+  int getRight() const;
 
-  bool getChunkChecker();
-  bool getRegionChecker();
+  bool getChunkChecker() const;
+  bool getRegionChecker() const;
 
 private:
   Ui::PngExport *ui;
 
-  int w_top;
-  int w_left;
-  int w_bottom;
-  int w_right;
+  int  snapDistance;
 
 private slots:
   void checkTop(int value);
   void checkLeft(int value);
   void checkBottom(int value);
   void checkRight(int value);
+
+  void setSingleStep();
 };
 
 #endif // PNGEXPORT_H
