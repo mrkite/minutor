@@ -57,10 +57,10 @@ void PngExport::setBoundsFromBlocks(int top, int left, int bottom, int right)
   int e_right  = 512*(std::floor(float(right)/512.0) +1) -1;
 
   // restrict range of spin boxes to world dimension
-  ui->spinBox_top   ->setRange(e_top, e_bottom-15);
-  ui->spinBox_left  ->setRange(e_left, e_right-15);
-  ui->spinBox_bottom->setRange(e_top+15, e_bottom);
-  ui->spinBox_right ->setRange(e_left+15, e_right);
+  ui->spinBox_top   ->setRange(e_top, e_bottom-(snapDistance-1));
+  ui->spinBox_left  ->setRange(e_left, e_right-(snapDistance-1));
+  ui->spinBox_bottom->setRange(e_top+(snapDistance-1), e_bottom);
+  ui->spinBox_right ->setRange(e_left+(snapDistance-1), e_right);
 
   // initialize spin boxes to complete world dimension
   ui->spinBox_top   ->setValue(top);
@@ -124,10 +124,10 @@ void PngExport::setSingleStep()
 }
 
 
-int PngExport::getTop() const    { return ui->spinBox_top->value(); }
-int PngExport::getLeft() const   { return ui->spinBox_left->value(); }
+int PngExport::getTop() const    { return ui->spinBox_top   ->value(); }
+int PngExport::getLeft() const   { return ui->spinBox_left  ->value(); }
 int PngExport::getBottom() const { return ui->spinBox_bottom->value(); }
-int PngExport::getRight() const  { return ui->spinBox_right->value(); }
+int PngExport::getRight() const  { return ui->spinBox_right ->value(); }
 
-bool PngExport::getChunkChecker() const  { return ui->checkBox_chunk->checkState(); }
+bool PngExport::getChunkChecker() const  { return ui->checkBox_chunk ->checkState(); }
 bool PngExport::getRegionChecker() const { return ui->checkBox_region->checkState(); }

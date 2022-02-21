@@ -47,6 +47,12 @@
           <property name="keyboardTracking">
            <bool>false</bool>
           </property>
+          <property name="minimum">
+           <number>-4096</number>
+          </property>
+          <property name="maximum">
+           <number>4095</number>
+          </property>
           <property name="singleStep">
            <number>16</number>
           </property>
@@ -101,6 +107,12 @@
           <property name="keyboardTracking">
            <bool>false</bool>
           </property>
+          <property name="minimum">
+           <number>-4096</number>
+          </property>
+          <property name="maximum">
+           <number>4095</number>
+          </property>
           <property name="singleStep">
            <number>16</number>
           </property>
@@ -123,6 +135,12 @@
          <widget class="QSpinBox" name="spinBox_right">
           <property name="keyboardTracking">
            <bool>false</bool>
+          </property>
+          <property name="minimum">
+           <number>-4096</number>
+          </property>
+          <property name="maximum">
+           <number>4095</number>
           </property>
           <property name="singleStep">
            <number>16</number>
@@ -177,6 +195,12 @@
          <widget class="QSpinBox" name="spinBox_bottom">
           <property name="keyboardTracking">
            <bool>false</bool>
+          </property>
+          <property name="minimum">
+           <number>-4096</number>
+          </property>
+          <property name="maximum">
+           <number>4095</number>
           </property>
           <property name="singleStep">
            <number>16</number>
