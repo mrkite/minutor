@@ -5,6 +5,8 @@
 JumpTo::JumpTo(QWidget *parent) : QDialog(parent), ui(new Ui::JumpTo)
 {
   ui->setupUi(this);
+  // remove "question mark" in title bar
+  setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
   readSettings();
 

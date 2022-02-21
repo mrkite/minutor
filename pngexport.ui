@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>240</width>
-    <height>237</height>
+    <height>303</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Export region</string>
+      <string>Export range</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
@@ -44,6 +44,15 @@
         </item>
         <item>
          <widget class="QSpinBox" name="spinBox_top">
+          <property name="keyboardTracking">
+           <bool>false</bool>
+          </property>
+          <property name="minimum">
+           <number>-4096</number>
+          </property>
+          <property name="maximum">
+           <number>4095</number>
+          </property>
           <property name="singleStep">
            <number>16</number>
           </property>
@@ -95,6 +104,15 @@
         </item>
         <item>
          <widget class="QSpinBox" name="spinBox_left">
+          <property name="keyboardTracking">
+           <bool>false</bool>
+          </property>
+          <property name="minimum">
+           <number>-4096</number>
+          </property>
+          <property name="maximum">
+           <number>4095</number>
+          </property>
           <property name="singleStep">
            <number>16</number>
           </property>
@@ -115,6 +133,15 @@
         </item>
         <item>
          <widget class="QSpinBox" name="spinBox_right">
+          <property name="keyboardTracking">
+           <bool>false</bool>
+          </property>
+          <property name="minimum">
+           <number>-4096</number>
+          </property>
+          <property name="maximum">
+           <number>4095</number>
+          </property>
           <property name="singleStep">
            <number>16</number>
           </property>
@@ -166,6 +193,15 @@
         </item>
         <item>
          <widget class="QSpinBox" name="spinBox_bottom">
+          <property name="keyboardTracking">
+           <bool>false</bool>
+          </property>
+          <property name="minimum">
+           <number>-4096</number>
+          </property>
+          <property name="maximum">
+           <number>4095</number>
+          </property>
           <property name="singleStep">
            <number>16</number>
           </property>
@@ -192,6 +228,32 @@
          </widget>
         </item>
        </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_3">
+     <property name="title">
+      <string>Snap to</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <item>
+       <widget class="QRadioButton" name="radioButton_chunk">
+        <property name="text">
+         <string>Chunk</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="radioButton_region">
+        <property name="text">
+         <string>Region</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
