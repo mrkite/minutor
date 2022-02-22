@@ -58,7 +58,7 @@ void LabelledSlider::setRange(int minVal, int maxVal)
 // private slot
 void LabelledSlider::intValueChange(int v) {
   // update preciceValue in case slider is moved by other means
-  preciseValue -= static_cast<long>(preciseValue);  // preserve fractional part
+  preciseValue -= static_cast<int>(preciseValue);   // preserve fractional part
   preciseValue += v;                                // take over integer part
   label->setNum(v);
   emit valueChanged(v);
