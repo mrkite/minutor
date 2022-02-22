@@ -15,8 +15,8 @@ LabelledSlider::LabelledSlider(Qt::Orientation orientation, QWidget *parent) :
   label->setFixedWidth(label->fontMetrics().width("888"));
   label->setNum(255);
 
-  connect(slider, SIGNAL(valueChanged(int)),
-          this, SLOT(intValueChange(int)));
+  connect(slider, &MSlider::valueChanged,
+          this,   &LabelledSlider::intValueChange);
 
   QBoxLayout *myLayout;
   if (orientation == Qt::Vertical) {
@@ -41,7 +41,7 @@ void LabelledSlider::setValue(double v) {
   preciseValue = v;
   if (preciseValue < slider->minimum()) preciseValue = slider->minimum();
   if (preciseValue > slider->maximum()) preciseValue = slider->maximum();
-  slider->setValue(static_cast<int>(floor(v + 0.5)));
+  slider->setValue(static_cast<int>(floor(preciseValue + 0.5)));
 }
 
 // public slot
@@ -57,6 +57,9 @@ void LabelledSlider::setRange(int minVal, int maxVal)
 
 // private slot
 void LabelledSlider::intValueChange(int v) {
+  // update preciceValue in case slider is moved by other means
+  preciseValue -= static_cast<long>(preciseValue);  // preserve fractional part
+  preciseValue += v;                                // take over integer part
   label->setNum(v);
   emit valueChanged(v);
 }
