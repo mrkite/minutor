@@ -1,8 +1,5 @@
 /** Copyright (c) 2013, Sean Kasun */
 
-#include <QDirIterator>
-#include <QtWidgets/QMenu>
-
 #include "dimensionidentifier.h"
 #include "json/json.h"
 #include "worldinfo.h"
@@ -27,7 +24,6 @@ DimensionInfo::DimensionInfo()
 // DimensionIdentifier
 
 DimensionIdentifier::DimensionIdentifier()
-  : menuActionGroup(NULL)
 {
   dummy_dimension.enabled = false;
   dummy_dimension.name    = "Dummy Dimension";
@@ -106,81 +102,25 @@ int DimensionIdentifier::addDefinitions(JSONArray *defs, int pack) {
   return pack;
 }
 
-//-------------------------------------------------------------------------------------------------
-// Dimension view menu
 
-void DimensionIdentifier::clearDimensionsMenu(QMenu *menu) {
-  for (int i = 0; i < currentMenuActions.count(); i++) {
-    menu           ->removeAction(currentMenuActions[i]);
-    menuActionGroup->removeAction(currentMenuActions[i]);
-    delete currentMenuActions[i];
+int DimensionIdentifier::getDimensionIndex(const QString & dim_name) const
+{
+  for (int index = 0; index<definitions.length(); index++) {
+    if (definitions[index]->name == dim_name)
+      return index;
   }
-  currentMenuActions.clear();
-  //dimensions.clear();
-  foundDimensionDirs.clear();
-  menu->setEnabled(false);
-  if (menuActionGroup != NULL) {
-    delete menuActionGroup;
-    menuActionGroup = NULL;
-  }
+  return -1;
 }
 
-void DimensionIdentifier::getDimensionsInWorld(QDir path, QMenu *menu, QObject *parent) {
-  // first get the currently selected dimension so it doesn't change
-  int currentIdx = -1;
-  for (int i = 0; i < currentMenuActions.length(); i++)
-    if (currentMenuActions[i]->isChecked())
-      currentIdx = currentMenuActions[i]->data().toInt();
-  clearDimensionsMenu(menu);
-  menuActionGroup = new QActionGroup(parent);
 
-  for (int i = 0; i < definitions.length(); i++) {
-    if (definitions[i]->enabled) {
-      // check path for regex
-      if (definitions[i]->pathIsRegEx) {
-        QDirIterator it(path.absolutePath(), QDir::Dirs);
-        QRegExp rx(definitions[i]->path);
-        while (it.hasNext()) {
-          it.next();
-          if (rx.indexIn(it.fileName()) != -1) {
-            QString name = definitions[i]->name;
-            for (int c = 0; c < rx.captureCount(); c++)
-              name = name.arg(rx.cap(c + 1));
-            addDimensionMenu(path, it.fileName(), name, parent);
-          }
-        }
-      } else {
-        addDimensionMenu(path, definitions[i]->path, definitions[i]->name, parent);
-      }
-    }
-  }
-
-  // add Custom Dimensions
-  WorldInfo & wi(WorldInfo::Instance());
-  for (auto dim: wi.getDimensions()) {
-    addDimensionMenu(path, dim.path, dim.name, parent);
-  }
-
-  // re-add new build actions to menu
-  menu->addActions(currentMenuActions);
-  if (currentMenuActions.count() > 0) {
-    bool changed = true;
-    // locate our old selected item
-    for (int i = 0; i < currentMenuActions.length(); i++) {
-      if (currentMenuActions[i]->data().toInt() == currentIdx) {
-        currentMenuActions[i]->setChecked(true);
-        changed = false;
-        break;
-      }
-    }
-    if (changed) {
-      currentMenuActions.first()->setChecked(true);
-      int idx = currentMenuActions.first()->data().toInt();
-      emit dimensionChanged(*definitions[idx]);
-    }
-    menu->setEnabled(true);
-  }
+const DimensionInfo & DimensionIdentifier::getDimensionInfo(int index) const
+{
+  if (index >= definitions.length())
+    return dummy_dimension;
+  else
+    return *definitions[index];
 }
+
 
 const DimensionInfo & DimensionIdentifier::getDimensionInfo(const QString & dim_name) const
 {
@@ -189,63 +129,4 @@ const DimensionInfo & DimensionIdentifier::getDimensionInfo(const QString & dim_
       return *dim;
   }
   return dummy_dimension;
-}
-
-
-#define DIM_MAGIC 0x10000
-
-void DimensionIdentifier::addDimensionMenu(QDir path, QString dir, QString name, QObject *parent) {
-  // prevent adding non-existing directory
-  if (!path.exists(dir))
-    return;
-
-  // prevent adding unused dimension
-  if (!path.exists(dir + "/region"))
-    return;
-
-  // prevent re-adding already found directory
-  if (foundDimensionDirs.contains(dir))
-    return;
-
-  QAction *action = new QAction(parent);
-  action->setText(name);
-  bool found = false;
-  // find index in definition list
-  for (int idx = 0; idx<definitions.length(); idx++) {
-    if (definitions[idx]->name == name) {
-      action->setData(idx);
-      found = true;
-    }
-  }
-  if (!found) {
-    // find index in custom dimension list
-    WorldInfo & wi(WorldInfo::Instance());
-    const QList<DimensionInfo> & custom = wi.getDimensions();
-    for (int idx = 0; idx<custom.length(); idx++) {
-      if (custom[idx].name == name) {
-        action->setData(idx+DIM_MAGIC);
-      }
-    }
-  }
-
-  action->setCheckable(true);
-  parent->connect(action, SIGNAL(triggered()),
-                  this, SLOT(changeViewToDimension()));
-  menuActionGroup->addAction(action);
-  currentMenuActions.append(action);
-  foundDimensionDirs.append(dir);
-}
-
-void DimensionIdentifier::changeViewToDimension() {
-  QAction *action = qobject_cast<QAction*>(sender());
-  if (action) {
-    int idx = action->data().toInt();
-    if (idx < DIM_MAGIC) {
-      emit dimensionChanged(*definitions[idx]);
-    } else {
-      WorldInfo & wi(WorldInfo::Instance());
-      const QList<DimensionInfo> & custom = wi.getDimensions();
-      emit dimensionChanged(custom[idx-DIM_MAGIC]);
-    }
-  }
 }
