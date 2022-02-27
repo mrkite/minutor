@@ -7,10 +7,8 @@
 #include <QHash>
 #include <QDir>
 
-class QMenu;
-class QAction;
-class QActionGroup;
-class JSONArray;
+#include "json/json.h"
+
 
 class DimensionInfo {
  public:
@@ -28,9 +26,7 @@ class DimensionInfo {
 };
 
 
-class DimensionIdentifier : public QObject {
-  Q_OBJECT
-
+class DimensionIdentifier {
  public:
   // singleton: access to global usable instance
   static DimensionIdentifier &Instance();
@@ -39,15 +35,10 @@ class DimensionIdentifier : public QObject {
   int  addDefinitions(JSONArray *, int pack = -1);
   void enableDefinitions(int id);
   void disableDefinitions(int id);
-  // Dimesnion view menu
-  void clearDimensionsMenu(QMenu *menu);
-  void getDimensionsInWorld(QDir path, QMenu *menu, QObject *parent);
 
- signals:
-  void dimensionChanged(const DimensionInfo &dim);    // dimension changed in menu
-
- private slots:
-  void changeViewToDimension();                       // dimension changed in menu
+  int getDimensionIndex(const QString & dim_name) const;
+  const DimensionInfo & getDimensionInfo(int index) const;
+  const DimensionInfo & getDimensionInfo(const QString & dim_name) const;
 
  private:
   // singleton: prevent access to constructor and copyconstructor
@@ -56,15 +47,11 @@ class DimensionIdentifier : public QObject {
   DimensionIdentifier(const DimensionIdentifier &);
   DimensionIdentifier &operator=(const DimensionIdentifier &);
 
-  void addDimensionMenu(QDir path, QString dir, QString name, QObject *parent);
-
-  // GUI menu
-  QList<QAction *> currentMenuActions;
-  QActionGroup *   menuActionGroup;
-  QList<QString>   foundDimensionDirs;  // all directories where we already found a Dimension
   // dimension storage
   QList<DimensionInfo*>         definitions;  // definition of possible Dimensions
   QList<QList<DimensionInfo*> > packs;
+
+  DimensionInfo dummy_dimension; // dummy in case no matching dimension is available
 };
 
 #endif  // DIMENSIONIDENTIFIER_H_

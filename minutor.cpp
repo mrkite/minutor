@@ -41,24 +41,24 @@ Minutor::Minutor()
 
   // central MapView wiget
   mapview = new MapView;
-  connect(mapview, SIGNAL(hoverTextChanged(QString)),
+  connect(mapview,     SIGNAL(hoverTextChanged(QString)),
           statusBar(), SLOT(showMessage(QString)));
   connect(mapview, SIGNAL(showProperties(QVariant)),
-          this, SLOT(showProperties(QVariant)));
+          this,    SLOT(showProperties(QVariant)));
   connect(mapview, SIGNAL(addOverlayItemType(QString, QColor)),
-          this, SLOT(addOverlayItemType(QString, QColor)));
+          this,    SLOT(addOverlayItemType(QString, QColor)));
   dm = new DefinitionManager(this);
   mapview->attach(dm);
   connect(dm,   SIGNAL(packsChanged()),
           this, SLOT(updateDimensions()));
-  DimensionIdentifier *dimensions = &DimensionIdentifier::Instance();
-  connect(dimensions, SIGNAL(dimensionChanged(const DimensionInfo &)),
+  WorldInfo & wi = WorldInfo::Instance();
+  connect(&wi,  SIGNAL(dimensionChanged(const DimensionInfo &)),
           this, SLOT(viewDimension(const DimensionInfo &)));
 
   // "Settings" dialog
   dialogSettings = new Settings(this);
   connect(dialogSettings, SIGNAL(settingsUpdated()),
-          this, SLOT(rescanWorlds()));
+          this,           SLOT(rescanWorlds()));
 
   // "Jump To" dialog
   dialogJumpTo = new JumpTo(this);
@@ -234,7 +234,7 @@ void Minutor::closeWorld() {
   m_ui.menu_JumpPlayer->setEnabled(false);
 
   // clear "Dimensions" menu
-  DimensionIdentifier::Instance().clearDimensionsMenu(m_ui.menu_Dimension);
+  WorldInfo::Instance().clearDimensionsMenu(m_ui.menu_Dimension);
   // clear overlays
   mapview->clearOverlayItems();
   // clear other stuff
@@ -382,7 +382,7 @@ void Minutor::about() {
 }
 
 void Minutor::updateDimensions() {
-  DimensionIdentifier::Instance().getDimensionsInWorld(currentWorld, m_ui.menu_Dimension, this);
+  WorldInfo::Instance().getDimensionsInWorld(currentWorld, m_ui.menu_Dimension, this);
 }
 
 void Minutor::createActions() {
@@ -691,7 +691,7 @@ void Minutor::loadWorld(QDir path) {
   }
 
   // create Dimensions menu
-  DimensionIdentifier::Instance().getDimensionsInWorld(path, m_ui.menu_Dimension, this);
+  WorldInfo::Instance().getDimensionsInWorld(path, m_ui.menu_Dimension, this);
 
   // finalize
   emit worldLoaded(true);

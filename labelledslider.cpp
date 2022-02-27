@@ -12,7 +12,6 @@ LabelledSlider::LabelledSlider(Qt::Orientation orientation, QWidget *parent) :
 
   label = new QLabel();
   label->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
-  label->setFixedWidth(label->fontMetrics().width("888"));
   label->setNum(255);
 
   connect(slider, &MSlider::valueChanged,
