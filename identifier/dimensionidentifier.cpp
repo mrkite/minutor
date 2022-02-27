@@ -28,7 +28,10 @@ DimensionInfo::DimensionInfo()
 
 DimensionIdentifier::DimensionIdentifier()
   : menuActionGroup(NULL)
-{}
+{
+  dummy_dimension.enabled = false;
+  dummy_dimension.name    = "Dummy Dimension";
+}
 
 DimensionIdentifier::~DimensionIdentifier() {
   for (int i = 0; i < packs.length(); i++) {
@@ -177,6 +180,15 @@ void DimensionIdentifier::getDimensionsInWorld(QDir path, QMenu *menu, QObject *
     }
     menu->setEnabled(true);
   }
+}
+
+const DimensionInfo & DimensionIdentifier::getDimensionInfo(const QString & dim_name) const
+{
+  for (DimensionInfo * dim: definitions) {
+    if (dim->id == dim_name)
+      return *dim;
+  }
+  return dummy_dimension;
 }
 
 

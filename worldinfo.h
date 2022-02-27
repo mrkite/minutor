@@ -34,6 +34,8 @@ class WorldInfo
   WorldInfo(const WorldInfo &);
   WorldInfo &operator=(const WorldInfo &);
 
+  bool parseDimensionType(DimensionInfo & dim, const QString & dim_type_id);
+
   QDir                  folder;       // base folder of world
   QString               levelName;    // custom world name
   unsigned int          dataVersion;

@@ -39,9 +39,11 @@ class DimensionIdentifier : public QObject {
   int  addDefinitions(JSONArray *, int pack = -1);
   void enableDefinitions(int id);
   void disableDefinitions(int id);
-  // Dimesnion view menu
+  // Dimension view menu
   void clearDimensionsMenu(QMenu *menu);
   void getDimensionsInWorld(QDir path, QMenu *menu, QObject *parent);
+
+  const DimensionInfo & getDimensionInfo(const QString & dim_name) const;
 
  signals:
   void dimensionChanged(const DimensionInfo &dim);    // dimension changed in menu
@@ -65,6 +67,8 @@ class DimensionIdentifier : public QObject {
   // dimension storage
   QList<DimensionInfo*>         definitions;  // definition of possible Dimensions
   QList<QList<DimensionInfo*> > packs;
+
+  DimensionInfo dummy_dimension; // dummy in case no matching dimension is available
 };
 
 #endif  // DIMENSIONIDENTIFIER_H_
