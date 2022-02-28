@@ -27,6 +27,7 @@ class WorldInfo : public QObject
   unsigned long long  getDayTime() const     { return dayTime; };
   int                 getSpawnX() const      { return spawnX; };
   int                 getSpawnZ() const      { return spawnZ; };
+  signed long long    getSeed() const        { return seed; };
 
   const QList<DimensionInfo> & getDimensions() const { return dimensions; };
 
@@ -55,6 +56,7 @@ class WorldInfo : public QObject
   unsigned long long    dayTime;
   int                   spawnX;
   int                   spawnZ;
+  long long             seed;
 
   QList<DimensionInfo>  dimensions;
 
