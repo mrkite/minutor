@@ -59,6 +59,7 @@ class Minutor : public QMainWindow {
   void setViewBiomeColors(bool value);    // set View->Biome_Colors
   void setViewSeaGroundMode(bool value);  // set View->Sea_Ground_Mode
   void setViewSingleLayer(bool value);    // set View->Single_Layer
+  void setViewSlimeChunks(bool value);    // set View->Slime_Chunks
   void setDepth(int value);               // set Depth-Slider
 
   MapView *getMapview() const;

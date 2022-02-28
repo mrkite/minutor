@@ -16,6 +16,7 @@ macx:ICON=icon.icns
 # Input
 HEADERS += \
     chunkid.h \
+    java.h \
     labelledseparator.h \
     labelledslider.h \
     clamp.h \
@@ -59,6 +60,7 @@ HEADERS += \
     worldsave.h \
     zipreader.h
 SOURCES += \
+    java.cpp \
     labelledseparator.cpp \
     labelledslider.cpp \
     chunk.cpp \
