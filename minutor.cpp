@@ -302,6 +302,11 @@ void Minutor::setViewSingleLayer(bool value) {
   toggleFlags();
 }
 
+void Minutor::setViewSlimeChunks(bool value) {
+  m_ui.action_SlimeChunks->setChecked(value);
+  toggleFlags();
+}
+
 void Minutor::setDepth(int value) {
   depth->setValue(value);
 }
@@ -316,6 +321,7 @@ void Minutor::toggleFlags() {
   if (m_ui.action_BiomeColors->isChecked())  flags |= MapView::flgBiomeColors;
   if (m_ui.action_SeaGround->isChecked())    flags |= MapView::flgSeaGround;
   if (m_ui.action_SingleLayer->isChecked())  flags |= MapView::flgSingleLayer;
+  if (m_ui.action_SlimeChunks->isChecked())  flags |= MapView::flgSlimeChunks;
   mapview->setFlags(flags);
 
   QSet<QString> overlayTypes;
@@ -436,6 +442,9 @@ void Minutor::createActions() {
           this,                  SLOT(toggleFlags()));
 
   connect(m_ui.action_SingleLayer, SIGNAL(triggered()),
+          this,                    SLOT(toggleFlags()));
+
+  connect(m_ui.action_SlimeChunks, SIGNAL(triggered()),
           this,                    SLOT(toggleFlags()));
 
   // [View->Others]

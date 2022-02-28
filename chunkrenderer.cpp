@@ -7,6 +7,8 @@
 #include "identifier/blockidentifier.h"
 #include "identifier/biomeidentifier.h"
 #include "clamp.h"
+#include "worldinfo.h"
+#include "java.h"
 
 ChunkRenderer::ChunkRenderer(int cx, int cz, int y, int flags)
   : cx(cx)
@@ -41,6 +43,18 @@ void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
   if (this->flags & MapView::flgSingleLayer) {
     startY = this->depth;
     stopY  = this->depth;
+  }
+
+  bool isSlimeChunk = false;
+  if (this->flags & MapView::flgSlimeChunks) {
+    long long seed =
+        ( WorldInfo::Instance().getSeed() +
+          (int) (cx * cx * 0x4c1906) +
+          (int) (cx * 0x5ac0db) +
+          (int) (cz * cz) * 0x4307a7LL +
+          (int) (cz * 0x5f24f) ^ 0x3ad8025fLL );
+    if (Java::Random(seed).nextInt(10) == 0)
+      isSlimeChunk = true;
   }
 
   // render loop
@@ -177,6 +191,10 @@ void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
           colr = biome.colors[light].red();
           colg = biome.colors[light].green();
           colb = biome.colors[light].blue();
+        }
+
+        if (isSlimeChunk) {
+          colg = (colg + 255) / 2;
         }
 
         // combine current block to final color

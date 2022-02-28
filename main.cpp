@@ -101,6 +101,10 @@ int main(int argc, char *argv[]) {
       minutor.setViewSingleLayer(true);
       continue;
     }
+    if (args[i] == "-sc" || args[i] == "--slimechunks") {
+      minutor.setViewSlimeChunks(true);
+      continue;
+    }
   }
 
   minutor.show();

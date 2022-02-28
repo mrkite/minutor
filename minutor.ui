@@ -66,6 +66,7 @@
     <addaction name="action_BiomeColors"/>
     <addaction name="action_SeaGround"/>
     <addaction name="action_SingleLayer"/>
+    <addaction name="action_SlimeChunks"/>
     <addaction name="separator"/>
     <addaction name="action_Refresh"/>
    </widget>
@@ -359,9 +360,18 @@ but keeps the same position / dimension</string>
     <string>Manage block and biome definitions</string>
    </property>
   </action>
-  <action name="actiontest">
+  <action name="action_SlimeChunks">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
-    <string>test</string>
+    <string>Slime Chunks</string>
+   </property>
+   <property name="toolTip">
+    <string>toggle slime chunks on/off</string>
+   </property>
+   <property name="statusTip">
+    <string>toggle slime chunks on/off</string>
    </property>
   </action>
  </widget>

@@ -48,6 +48,16 @@ bool WorldInfo::parseFolder(const QDir &path)
   spawnX = data->at("SpawnX")->toInt();
   spawnZ = data->at("SpawnZ")->toInt();
 
+  // Seed
+  if (data->has("RandomSeed")) {
+    const Tag_Long * seedtag = dynamic_cast<const Tag_Long *>(data->at("RandomSeed"));
+    seed = seedtag->toLong();
+  }
+  if (data->has("WorldGenSettings") && data->at("WorldGenSettings")->has("seed")) {
+    const Tag_Long * seedtag = dynamic_cast<const Tag_Long *>(data->at("WorldGenSettings")->at("seed"));
+    seed = seedtag->toLong();
+  }
+
   return true;
 }
 
