@@ -60,6 +60,7 @@ Settings::Settings(QWidget *parent) : QDialog(parent) {
   }
   autoUpdate    = info.value("autoupdate", true).toBool();
   verticalDepth = info.value("verticaldepth", true).toBool();
+  zoomFollowsCursor = info.value("zoomFollowsCursor", true).toBool();
   modifier4DepthSlider = Qt::KeyboardModifier(info.value("modifier4DepthSlider", 0x02000000).toUInt());
   modifier4ZoomOut     = Qt::KeyboardModifier(info.value("modifier4ZoomOut",     0x04000000).toUInt());
 

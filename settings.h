@@ -14,6 +14,7 @@ class Settings : public QDialog {
   QString mcpath;
   bool verticalDepth;
   bool autoUpdate;
+  bool zoomFollowsCursor;
   Qt::KeyboardModifier modifier4DepthSlider;
   Qt::KeyboardModifier modifier4ZoomOut;
 
