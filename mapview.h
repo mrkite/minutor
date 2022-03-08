@@ -94,7 +94,7 @@ class MapView : public QWidget {
   void getToolTip(int x, int z);
   int getY(int x, int z);
   QList<QSharedPointer<OverlayItem>> getItems(int x, int y, int z);
-  void adjustZoom(double steps, bool allowZoomOut);
+  void adjustZoom(double steps, bool allowZoomOut, bool cursorSource);
 
   template<typename ListT>
   void drawOverlayItems(const ListT& list, const OverlayItem::Cuboid& cuboid, double x1, double z1, QPainter& canvas);
@@ -108,6 +108,7 @@ class MapView : public QWidget {
   double zoomLevel;
   double zoom;
   int flags;
+  int lastMouseX = -1, lastMouseY = -1;
   ChunkCache &cache;
   QImage imageChunks;
   QImage imageOverlays;

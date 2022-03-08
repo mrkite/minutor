@@ -20,7 +20,7 @@ MapView::MapView(QWidget *parent)
   , zoomLevel(0)  // 1:1
   , cache(ChunkCache::Instance())
 {
-  adjustZoom(0, false);
+  adjustZoom(0, false, false);
   connect(&cache, SIGNAL(chunkLoaded(int, int)),
           this,   SLOT  (chunkUpdated(int, int)));
   connect(&cache, SIGNAL(structureFound(QSharedPointer<GeneratedStructure>)),
@@ -138,8 +138,11 @@ void MapView::clearCache() {
   redraw();
 }
 
-void MapView::adjustZoom(double steps, bool allowZoomOut)
+void MapView::adjustZoom(double steps, bool allowZoomOut, bool cursorSource)
 {
+  // save old zoom value for panning to cursor
+  double oldZoom = zoom;
+
   // get current zoom level as an index, rounded to nearest int
   int oldZoomIndex = (int)(floor(zoomLevel + 0.5));
   zoomLevel += steps;
@@ -184,11 +187,21 @@ void MapView::adjustZoom(double steps, bool allowZoomOut)
   // we try to set higher margin than above (100%)!
   cache.setCacheMaxSize(2.0 * chunks);
 
+  // pan to keep cursor pixel in same location
+  if (cursorSource && QSettings().value("zoomFollowsCursor", true).toBool()) {
+    int centerx = imageChunks.width() / 2;
+    int centery = imageChunks.height() / 2;
+    double distancex = static_cast<double>(lastMouseX - centerx);
+    double distancey = static_cast<double>(lastMouseY - centery);
+    double distanceScale = (1 / oldZoom) - (1 / zoom);
+    x += distancex * distanceScale;
+    z += distancey * distanceScale;
+  }
+
   // no point in redrawing if the zoom level didn't change
   if (steps != 0) redraw();
 }
 
-static int lastMouseX = -1, lastMouseY = -1;
 static bool dragging = false;
 void MapView::mousePressEvent(QMouseEvent *event) {
   lastMouseX = event->x();
@@ -197,6 +210,15 @@ void MapView::mousePressEvent(QMouseEvent *event) {
 }
 
 void MapView::mouseMoveEvent(QMouseEvent *event) {
+  if (dragging) {
+    x += (lastMouseX-event->x()) / zoom;
+    z += (lastMouseY-event->y()) / zoom;
+    redraw();
+  }
+
+  lastMouseX = event->x();
+  lastMouseY = event->y();
+
   if (!dragging) {
     int centerblockx = floor(this->x);
     int centerblockz = floor(this->z);
@@ -211,14 +233,7 @@ void MapView::mouseMoveEvent(QMouseEvent *event) {
     int mz = floor(centerblockz - (centery - event->y()) / zoom);
 
     getToolTip(mx, mz);
-    return;
   }
-  x += (lastMouseX-event->x()) / zoom;
-  z += (lastMouseY-event->y()) / zoom;
-  lastMouseX = event->x();
-  lastMouseY = event->y();
-
-  redraw();
 }
 
 void MapView::mouseReleaseEvent(QMouseEvent * /* event */) {
@@ -260,10 +275,10 @@ void MapView::wheelEvent(QWheelEvent *event) {
     emit demandDepthChange(event->angleDelta().y() / 120.0);
   } else if ((event->modifiers() & modifier4ZoomOut) == modifier4ZoomOut) {
     // allow change zoom also to zoom OUT
-    adjustZoom( event->angleDelta().y() / 120.0, true );
+    adjustZoom(event->angleDelta().y() / 120.0, true, true);
   } else {
     // normal change zoom
-    adjustZoom( event->angleDelta().y() / 120.0, false );
+    adjustZoom(event->angleDelta().y() / 120.0, false, true);
   }
 }
 
@@ -307,12 +322,12 @@ void MapView::keyPressEvent(QKeyEvent *event) {
       break;
     case Qt::Key_PageUp:
     case Qt::Key_Q:
-      adjustZoom(1, allowZoomOut);
+      adjustZoom(1, allowZoomOut, false);
       redraw();
       break;
     case Qt::Key_PageDown:
     case Qt::Key_E:
-      adjustZoom(-1, allowZoomOut);
+      adjustZoom(-1, allowZoomOut, false);
       redraw();
       break;
     case Qt::Key_Home:
@@ -333,7 +348,7 @@ void MapView::resizeEvent(QResizeEvent *event) {
   imageChunks   = QImage(event->size(), QImage::Format_RGB32);
   imageOverlays = QImage(event->size(), QImage::Format_RGBA8888);
   // restrict zoom and adapt ChunkCache
-  adjustZoom(0, true);
+  adjustZoom(0, true, false);
   // redraw everything
   redraw();
 }
@@ -354,7 +369,6 @@ void MapView::redraw() {
   }
 
   double chunksize = 16 * zoom;
-
   // first find the center block position
   int centerchunkx = floor(x / 16);
   int centerchunkz = floor(z / 16);
