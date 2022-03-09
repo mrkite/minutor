@@ -67,6 +67,7 @@
     <addaction name="action_SeaGround"/>
     <addaction name="action_SingleLayer"/>
     <addaction name="action_SlimeChunks"/>
+    <addaction name="action_InhabitedTime"/>
     <addaction name="separator"/>
     <addaction name="action_Refresh"/>
    </widget>
@@ -372,6 +373,20 @@ but keeps the same position / dimension</string>
    </property>
    <property name="statusTip">
     <string>toggle slime chunks on/off</string>
+   </property>
+  </action>
+  <action name="action_InhabitedTime">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Inhabited Time</string>
+   </property>
+   <property name="toolTip">
+    <string>toggle inhabited time on/off</string>
+   </property>
+   <property name="statusTip">
+    <string>toggle inhabited time on/off</string>
    </property>
   </action>
  </widget>

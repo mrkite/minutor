@@ -307,6 +307,11 @@ void Minutor::setViewSlimeChunks(bool value) {
   toggleFlags();
 }
 
+void Minutor::setViewInhabitedTime(bool value) {
+  m_ui.action_InhabitedTime->setChecked(value);
+  toggleFlags();
+}
+
 void Minutor::setDepth(int value) {
   depth->setValue(value);
 }
@@ -314,14 +319,15 @@ void Minutor::setDepth(int value) {
 void Minutor::toggleFlags() {
   int flags = 0;
 
-  if (m_ui.action_Lighting->isChecked())     flags |= MapView::flgLighting;
-  if (m_ui.action_MobSpawning->isChecked())  flags |= MapView::flgMobSpawn;
-  if (m_ui.action_CaveMode->isChecked())     flags |= MapView::flgCaveMode;
-  if (m_ui.action_DepthShading->isChecked()) flags |= MapView::flgDepthShading;
-  if (m_ui.action_BiomeColors->isChecked())  flags |= MapView::flgBiomeColors;
-  if (m_ui.action_SeaGround->isChecked())    flags |= MapView::flgSeaGround;
-  if (m_ui.action_SingleLayer->isChecked())  flags |= MapView::flgSingleLayer;
-  if (m_ui.action_SlimeChunks->isChecked())  flags |= MapView::flgSlimeChunks;
+  if (m_ui.action_Lighting->isChecked())      flags |= MapView::flgLighting;
+  if (m_ui.action_MobSpawning->isChecked())   flags |= MapView::flgMobSpawn;
+  if (m_ui.action_CaveMode->isChecked())      flags |= MapView::flgCaveMode;
+  if (m_ui.action_DepthShading->isChecked())  flags |= MapView::flgDepthShading;
+  if (m_ui.action_BiomeColors->isChecked())   flags |= MapView::flgBiomeColors;
+  if (m_ui.action_SeaGround->isChecked())     flags |= MapView::flgSeaGround;
+  if (m_ui.action_SingleLayer->isChecked())   flags |= MapView::flgSingleLayer;
+  if (m_ui.action_SlimeChunks->isChecked())   flags |= MapView::flgSlimeChunks;
+  if (m_ui.action_InhabitedTime->isChecked()) flags |= MapView::flgInhabitedTime;
   mapview->setFlags(flags);
 
   QSet<QString> overlayTypes;
@@ -446,6 +452,9 @@ void Minutor::createActions() {
 
   connect(m_ui.action_SlimeChunks, SIGNAL(triggered()),
           this,                    SLOT(toggleFlags()));
+
+  connect(m_ui.action_InhabitedTime, SIGNAL(triggered()),
+          this,                      SLOT(toggleFlags()));
 
   // [View->Others]
 //  m_ui.action_Refresh->setStatusTip(tr("Reloads all chunks, "
