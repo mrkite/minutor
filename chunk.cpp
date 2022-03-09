@@ -28,6 +28,7 @@ Chunk::Chunk()
   , lowest(INT_MAX)
   , loaded(false)
   , rendering(false)
+  , inhabitedTime(0)
 {}
 
 Chunk::~Chunk() {
@@ -163,6 +164,9 @@ void Chunk::loadLevelTag(const Tag * level) {
   if (level->has("xPos"))
     chunkZ = level->at("zPos")->toInt();
 
+  if (level->has("InhabitedTime"))
+    inhabitedTime = dynamic_cast<const Tag_Long *>(level->at("InhabitedTime"))->toLong();
+
   // load Biome data
   // Partially-generated chunks may have an empty Biomes tag.
   // Trying to extract the Biomes data in that case will cause a crash.
@@ -273,6 +277,9 @@ void Chunk::loadCliffsCaves(const NBT &nbt) {
     chunkX = nbt.at("xPos")->toInt();
   if (nbt.has("zPos"))
     chunkZ = nbt.at("zPos")->toInt();
+
+  if (nbt.has("InhabitedTime"))
+    inhabitedTime = dynamic_cast<const Tag_Long *>(nbt.at("InhabitedTime"))->toLong();
 
   // no Biome data present in this new storage format -> init as minecraft:air
   int len = sizeof(this->biomes) / sizeof(this->biomes[0]);

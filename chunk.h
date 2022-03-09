@@ -82,6 +82,7 @@ class Chunk : public QObject {
   int  renderedFlags;
   bool loaded;
   bool rendering;
+  long long inhabitedTime;
 
   QMap<qint8, ChunkSection*> sections;
   qint32 biomes[16 * 16 * 4];
