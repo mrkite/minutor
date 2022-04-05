@@ -23,6 +23,20 @@ WorldInfo& WorldInfo::Instance() {
   return singleton;
 }
 
+void WorldInfo::clear() {
+  folder = QDir();
+  levelName   = "unknown world name";
+  dataVersion = 0;
+  dayTime     = 0;
+
+  spawnX      = 0;
+  spawnZ      = 0;
+
+  seed        = 0;
+
+  dimensions.clear();
+}
+
 
 bool WorldInfo::parseFolder(const QDir &path)
 {
@@ -174,19 +188,6 @@ bool WorldInfo::parseDimensionType(DimensionInfo & dim, const QString & dim_type
   }
 
   return true;
-}
-
-void WorldInfo::clear()
-{
-  folder = QDir();
-  levelName   = "unknown world name";
-  dataVersion = 0;
-  dayTime     = 0;
-
-  spawnX      = 0;
-  spawnZ      = 0;
-
-  dimensions.clear();
 }
 
 

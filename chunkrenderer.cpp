@@ -57,6 +57,13 @@ void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
       isSlimeChunk = true;
   }
 
+  float regionalDifficulty = 0.0;
+  if (this->flags & MapView::flgInhabitedTime) {
+    // regional difficulty is max-capped at 3600000 ticks
+    long long inhabitedTime = std::min<long long>(chunk->inhabitedTime, 3600000);
+    regionalDifficulty = 6.0 * static_cast<double>(inhabitedTime) / 3600000.0;
+  }
+
   // render loop
   for (int z = 0; z < 16; z++) {  // n->s
     // we do not know the last y value from Chunk to the east, -> set special value
@@ -195,6 +202,44 @@ void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
 
         if (isSlimeChunk) {
           colg = (colg + 255) / 2;
+        }
+
+        if (this->flags & MapView::flgInhabitedTime) {
+          // first reduce brightness
+          colr = colr / 2;
+          colg = colg / 2;
+          colb = colb / 2;
+          // then add highlight
+          int rdidx = static_cast<int>(regionalDifficulty);
+          double rd = regionalDifficulty - rdidx;
+          switch (rdidx) {
+          case 0:  // transparent -> blue
+            colb = (colb + 255*regionalDifficulty) / 2;
+            break;
+          case 1:  // blue -> cyan
+            colg = (colg + 255*rd) / 2;
+            colb = (colb + 255) / 2;
+            break;
+          case 2:  // cyan -> green
+            colg = (colg + 255) / 2;
+            colb = (colb + 255*(1.0-rd)) / 2;
+            break;
+          case 3:  // green -> yellow
+            colr = (colr + 255*rd) / 2;
+            colg = (colg + 255) / 2;
+            break;
+          case 4:  // yellow -> red
+            colr = (colr + 255) / 2;
+            colg = (colg + 255*(1.0-rd)) / 2;
+            break;
+          case 5:  // red -> purple
+            colr = (colr + 255) / 2;
+            colb = (colb + 255*rd) / 2;
+            break;
+          default:  // saturated at purple
+            colr = (colr + 255) / 2;
+            colb = (colb + 255) / 2;
+          }
         }
 
         // combine current block to final color

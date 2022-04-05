@@ -105,6 +105,10 @@ int main(int argc, char *argv[]) {
       minutor.setViewSlimeChunks(true);
       continue;
     }
+    if (args[i] == "-it" || args[i] == "--inhabitedtime") {
+      minutor.setViewInhabitedTime(true);
+      continue;
+    }
   }
 
   minutor.show();
