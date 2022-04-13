@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "entity",
-  "version": "1.17.21w13a2",
+  "version": "1.19.22w13a",
   "data": [
     {
       "category": "Hostile",
@@ -181,6 +181,10 @@
         {
           "id": "piglin_brute",
           "color": "Gold"
+        },
+        {
+          "id": "warden",
+          "color": "#17a1c2"
         }
       ]
     },
@@ -372,6 +376,18 @@
         {
           "id": "goat",
           "color": "Beige"
+        },
+        {
+          "id": "frog",
+          "color": "#cf8c46"
+        },
+        {
+          "id": "tadpole",
+          "color": "#281b11"
+        },
+        {
+          "id": "allay",
+          "color": "#68ffff"
         }
       ]
     },
