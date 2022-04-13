@@ -95,7 +95,7 @@ void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
         if (section1)
           light = section1->getBlockLight(offset, y+1);
         else // just as fallback
-          light = std::min(0, section->getBlockLight(offset, y)-1);
+          light = std::max(0, section->getBlockLight(offset, y)-1);
         int light1 = light;
         if (!(this->flags & MapView::flgLighting))
           light = 13;
