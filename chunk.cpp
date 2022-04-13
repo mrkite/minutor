@@ -417,7 +417,7 @@ bool Chunk::loadSection1343(ChunkSection *cs, const Tag *section) {
 
 // Chunk format after "The Flattening" version 1519
 bool Chunk::loadSection1519(ChunkSection *cs, const Tag *section) {
-  bool sectionContainsData = true;
+  bool sectionContainsData = false;
 
   // decode Palette to be able to map BlockStates
   if (section->has("Palette")) {
@@ -427,10 +427,10 @@ bool Chunk::loadSection1519(ChunkSection *cs, const Tag *section) {
   // map BlockStates to BlockData
   if (section->has("BlockStates")) {
     loadSection_loadBlockStates(cs, section->at("BlockStates"));
+    sectionContainsData = true;
   } else {
     // set everything to 0 (minecraft:air)
     memset(cs->blocks, 0, sizeof(cs->blocks));
-    sectionContainsData = false;
   }
 
   // copy Light data
@@ -439,6 +439,7 @@ bool Chunk::loadSection1519(ChunkSection *cs, const Tag *section) {
 //  }
   if (section->has("BlockLight")) {
     safeMemCpy(cs->blockLight, section->at("BlockLight")->toByteArray(), 2048);
+    sectionContainsData = true;
   } else {
     memset(cs->blockLight, 0, sizeof(cs->blockLight));
   }
@@ -449,7 +450,7 @@ bool Chunk::loadSection1519(ChunkSection *cs, const Tag *section) {
 
 // Chunk format after "Cliffs & Caves version 2800
 bool Chunk::loadSection2844(ChunkSection * cs, const Tag * section) {
-  bool sectionContainsData = true;
+  bool sectionContainsData = false;
 
   // decode BlockStates-Palette to be able to map BlockStates
   if (section->has("block_states") && section->at("block_states")->has("palette")) {
@@ -459,17 +460,20 @@ bool Chunk::loadSection2844(ChunkSection * cs, const Tag * section) {
   // map BlockStates to BlockData
   if (section->has("block_states") && section->at("block_states")->has("data")) {
     loadSection_loadBlockStates(cs, section->at("block_states")->at("data"));
+    sectionContainsData = true;
   } else {
     // set everything to 0 (minecraft:air)
     memset(cs->blocks, 0, sizeof(cs->blocks));
-    sectionContainsData = false;
   }
 
   // decode Biomes-Palette to be able to map Biome
   if (section->has("biomes") && section->at("biomes")->has("palette")) {
     loadSection_decodeBiomePalette(cs, section->at("biomes"));
+    sectionContainsData = true;
   } else {
-    sectionContainsData = false;  // never observed in real live
+    // never observed in real live
+    // probably we should create some default Biome in this case
+    sectionContainsData = false;
   }
 
   // copy Light data
@@ -478,6 +482,7 @@ bool Chunk::loadSection2844(ChunkSection * cs, const Tag * section) {
 //  }
   if (section->has("BlockLight")) {
     safeMemCpy(cs->blockLight, section->at("BlockLight")->toByteArray(), 2048);
+    sectionContainsData = true;
   } else {
     memset(cs->blockLight, 0, sizeof(cs->blockLight));
   }
