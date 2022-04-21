@@ -344,7 +344,6 @@ void BiomeIdentifier::parseBiomeDefinitions2800(JSONArray *data18, int pack) {
       BiomeInfo *biome = new BiomeInfo();
       biome->enabled = true;
       biome->nid = b->at("id")->asString();
-      biome->id = i;
 
       if (b->has("name"))
         biome->name = b->at("name")->asString();
@@ -438,6 +437,7 @@ void BiomeIdentifier::updateBiomeDefinition()
     for (int i = 0; i < packs18[pack].length(); i++) {
       BiomeInfo *bi = packs18[pack][i];
       if (bi->enabled) {
+        bi->id = biomes18.length();
         biomes18.append(bi);
       }
     }
