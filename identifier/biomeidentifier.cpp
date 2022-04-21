@@ -370,7 +370,7 @@ void BiomeIdentifier::parseBiomeDefinitions2800(JSONArray *data18, int pack) {
         biome->name = b->at("name")->asString();
       else {
         // construct the name from NID
-        QString nid = QString(biome->nid).replace("minecraft:","").replace("_"," ");
+        QString nid = QString(biome->nid).replace("minecraft:","").replace("_"," ").replace(":",": ");
         QStringList parts = nid.toLower().split(' ', QString::SkipEmptyParts);
         for (int i = 0; i < parts.size(); i++)
           parts[i].replace(0, 1, parts[i][0].toUpper());
