@@ -7,6 +7,7 @@
 #include <QString>
 #include <QColor>
 class JSONArray;
+class JSONObject;
 
 
 class BiomeInfo {
@@ -28,6 +29,9 @@ class BiomeInfo {
   bool    enabled;
   bool    ocean;
   bool    river;
+  bool    swamp;
+  bool    darkforest;
+  bool    badlands;
   double  temperature;
   double  humidity;
   bool    enabledwatermodifier;
@@ -69,6 +73,7 @@ private:
 
   void parseBiomeDefinitions0000(JSONArray *data, int pack);
   void parseBiomeDefinitions2800(JSONArray *data18, int pack);
+  void guessSpecialBiomes(JSONObject *b, BiomeInfo *biome);
 
   // legacy Biomes
   QHash<int, BiomeInfo*>    biomes;   // consolidated Biome mapping

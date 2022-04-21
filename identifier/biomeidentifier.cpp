@@ -24,6 +24,9 @@ BiomeInfo::BiomeInfo()
   , enabled(false)
   , ocean(false)
   , river(false)
+  , swamp(false)
+  , darkforest(false)
+  , badlands(false)
   , temperature(0.5)
   , humidity(0.5)
   , enabledwatermodifier(false)
@@ -124,29 +127,27 @@ QColor BiomeInfo::mixColor( QColor colorizer, QColor blockcolor )
 QColor BiomeInfo::getBiomeGrassColor( QColor blockcolor, int elevation ) const
 {
   QColor colorizer;
-  // remove variants from ID
-  int id = this->id & 0x7f;
   // swampland
-  if (id == 6) {
+  if (this->swamp) {
     // perlin noise generator omitted due to performance reasons
     // otherwise the random temperature distribution selects
     // (below -0.1°C) ‭4C.76.3C‬ or ‭6A.70.39 (above -0.1°C)
     colorizer = QColor::fromRgb(0x6a,0x70,0x39);  // hard wired
   }
-  // roofed forest
-  else if (id == 29) {
+  // mesa / badlands
+  else if (this->badlands) {
+    colorizer = QColor::fromRgb(0x90,0x81,0x4d);  // hard wired
+  } else {
+    // standard way
     colorizer = getBiomeColor( this->temperature, this->humidity, elevation, grassCorners );
+  }
+  // dark forest
+  if (this->darkforest) {
     // average with 0x28340A
     colorizer.setRed  ( (colorizer.red()   + 0x28)>>1 );
     colorizer.setGreen( (colorizer.green() + 0x34)>>1 );
     colorizer.setBlue ( (colorizer.blue()  + 0x0A)>>1 );
   }
-  // mesa
-  else if ((id == 37) || (id == 38) || (id == 39)) {
-    colorizer = QColor::fromRgb(0x90,0x81,0x4d);  // hard wired
-  } else
-    // standard way
-    colorizer = getBiomeColor( this->temperature, this->humidity, elevation, grassCorners );
 
   return mixColor( colorizer, blockcolor );
 }
@@ -154,14 +155,12 @@ QColor BiomeInfo::getBiomeGrassColor( QColor blockcolor, int elevation ) const
 QColor BiomeInfo::getBiomeFoliageColor( QColor blockcolor, int elevation ) const
 {
   QColor colorizer;
-  // remove variants from ID
-  int id = this->id & 0x7f;
   // swampland
-  if (id == 6) {
+  if (this->swamp) {
     colorizer = QColor::fromRgb(0x6a,0x70,0x39);  // hard wired
   }
-  // mesa
-  else if ((id == 37) || (id == 38) || (id == 39)) {
+  // mesa / badlands
+  else if (this->badlands) {
     colorizer = QColor::fromRgb(0x9e,0x81,0x4d);  // hard wired
   } else
     // standard way
@@ -260,6 +259,37 @@ int BiomeIdentifier::addDefinitions(JSONArray *data, JSONArray *data18, int pack
   return pack;
 }
 
+// define some special Biome category by (optional) tag or guess from name
+void BiomeIdentifier::guessSpecialBiomes(JSONObject *b, BiomeInfo *biome)
+{
+  if (b->has("ocean")) {
+    biome->ocean = b->at("ocean")->asBool();
+  } else if (biome->name.contains("ocean", Qt::CaseInsensitive)) {
+    biome->ocean = true;
+  }
+  if (b->has("river")) {
+    biome->river = b->at("river")->asBool();
+  } else if (biome->name.contains("river", Qt::CaseInsensitive)) {
+    biome->river = true;
+  }
+  if (b->has("swamp")) {
+    biome->swamp = b->at("swamp")->asBool();
+  } else if (biome->name.contains("swamp", Qt::CaseInsensitive)) {
+    biome->swamp = true;
+  }
+  if (b->has("darkforest")) {
+    biome->darkforest = b->at("darkforest")->asBool();
+  } else if (biome->name.contains("dark forest", Qt::CaseInsensitive)) {
+    biome->darkforest = true;
+  }
+  if (b->has("badlands")) {
+    biome->badlands = b->at("badlands")->asBool();
+  } else if ((biome->name.contains("mesa", Qt::CaseInsensitive)) ||
+             (biome->name.contains("badlands", Qt::CaseInsensitive))) {
+    biome->badlands = true;
+  }
+}
+
 // legacy Biome definitions before Cliffs & Caves (up to 1.17)
 void BiomeIdentifier::parseBiomeDefinitions0000(JSONArray *data, int pack) {
   int len = data->length();
@@ -274,17 +304,8 @@ void BiomeIdentifier::parseBiomeDefinitions0000(JSONArray *data, int pack) {
       if (b->has("name"))
         biome->name = b->at("name")->asString();
 
-      // define ocean / river Biome category by (optional) tag or guess from name
-      if (b->has("ocean")) {
-        biome->ocean = b->at("ocean")->asBool();
-      } else if (biome->name.contains("ocean", Qt::CaseInsensitive)) {
-        biome->ocean = true;
-      }
-      if (b->has("river")) {
-        biome->ocean = b->at("river")->asBool();
-      } else if (biome->name.contains("river", Qt::CaseInsensitive)) {
-        biome->river = true;
-      }
+      // define some special Biome category by (optional) tag or guess from name
+      guessSpecialBiomes(b, biome);
 
       // get temperature definition
       if (b->has("temperature"))
@@ -344,30 +365,20 @@ void BiomeIdentifier::parseBiomeDefinitions2800(JSONArray *data18, int pack) {
       BiomeInfo *biome = new BiomeInfo();
       biome->enabled = true;
       biome->nid = b->at("id")->asString();
-      biome->id = i;
 
       if (b->has("name"))
         biome->name = b->at("name")->asString();
       else {
         // construct the name from NID
-        QString nid = QString(biome->nid).replace("minecraft:","").replace("_"," ");
+        QString nid = QString(biome->nid).replace("minecraft:","").replace("_"," ").replace(":",": ");
         QStringList parts = nid.toLower().split(' ', QString::SkipEmptyParts);
         for (int i = 0; i < parts.size(); i++)
           parts[i].replace(0, 1, parts[i][0].toUpper());
         biome->name = parts.join(" ");
       }
 
-      // define ocean / river Biome category by (optional) tag or guess from name
-      if (b->has("ocean")) {
-        biome->ocean = b->at("ocean")->asBool();
-      } else if (biome->name.contains("ocean", Qt::CaseInsensitive)) {
-        biome->ocean = true;
-      }
-      if (b->has("river")) {
-        biome->ocean = b->at("river")->asBool();
-      } else if (biome->name.contains("river", Qt::CaseInsensitive)) {
-        biome->river = true;
-      }
+      // define some special Biome category by (optional) tag or guess from name
+      guessSpecialBiomes(b, biome);
 
       // get temperature definition
       if (b->has("temperature"))
@@ -438,6 +449,7 @@ void BiomeIdentifier::updateBiomeDefinition()
     for (int i = 0; i < packs18[pack].length(); i++) {
       BiomeInfo *bi = packs18[pack][i];
       if (bi->enabled) {
+        bi->id = biomes18.length();
         biomes18.append(bi);
       }
     }
