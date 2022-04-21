@@ -284,7 +284,8 @@ void BiomeIdentifier::guessSpecialBiomes(JSONObject *b, BiomeInfo *biome)
   }
   if (b->has("badlands")) {
     biome->badlands = b->at("badlands")->asBool();
-  } else if (biome->name.contains("badlands", Qt::CaseInsensitive)) {
+  } else if ((biome->name.contains("mesa", Qt::CaseInsensitive)) ||
+             (biome->name.contains("badlands", Qt::CaseInsensitive))) {
     biome->badlands = true;
   }
 }
