@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.17.pre3",
+  "version": "1.19.22w11a",
   "data": [
     {
       "name": "minecraft:air",
@@ -393,6 +393,13 @@
       "spawninside": true
     },
     {
+      "name": "minecraft:mangrove_propagule",
+      "color": "#60AF54",
+      "alpha": 0.3,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
       "name": "minecraft:bamboo",
       "color": "#5e9014",
       "alpha": 0.75,
@@ -533,6 +540,16 @@
       ]
     },
     {
+      "name": "minecraft:mangrove_log",
+      "color": "#544329",
+      "variants": [
+        {
+          "blockstate": "axis:y",
+          "color": "#67312A"
+        }
+      ]
+    },
+    {
       "name": "minecraft:stripped_spruce_log",
       "color": "#745a34",
       "variants": [
@@ -593,6 +610,16 @@
       ]
     },
     {
+      "name": "minecraft:stripped_mangrove_log",
+      "color": "#783630",
+      "variants": [
+        {
+          "blockstate": "axis:y",
+          "color": "#6D2C2B"
+        }
+      ]
+    },
+    {
       "name": "minecraft:oak_wood",
       "color": "#665132"
     },
@@ -617,6 +644,10 @@
       "color": "#342917"
     },
     {
+      "name": "minecraft:mangrove_wood",
+      "color": "#544329"
+    },
+    {
       "name": "minecraft:stripped_oak_wood",
       "color": "#b19056"
     },
@@ -639,6 +670,10 @@
     {
       "name": "minecraft:stripped_dark_oak_wood",
       "color": "#614c32"
+    },
+    {
+      "name": "minecraft:stripped_mangrove_wood",
+      "color": "#783630"
     },
     {
       "name": "minecraft:oak_leaves",
@@ -678,6 +713,25 @@
     {
       "name": "minecraft:dark_oak_leaves",
       "color": "#4f4f4f",
+      "transparent": true,
+      "rendercube": true,
+      "biomeFoliage": true
+    },
+    {
+      "name": "minecraft:azalea_leaves",
+      "color": "#5a732c",
+      "transparent": true,
+      "rendercube": true
+    },
+    {
+      "name": "minecraft:flowering_azalea_leaves",
+      "color": "#646f3d",
+      "transparent": true,
+      "rendercube": true
+    },
+    {
+      "name": "minecraft:mangrove_leaves",
+      "color": "#828181",
       "transparent": true,
       "rendercube": true,
       "biomeFoliage": true
@@ -2452,6 +2506,11 @@
     {
       "name": "minecraft:potted_dark_oak_sapling",
       "color": "#315e05",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:potted_mangrove_propagule",
+      "color": "#60AF54",
       "transparent": true
     },
     {
@@ -5507,18 +5566,6 @@
       "transparent": true
     },
     {
-      "name": "minecraft:azalea_leaves",
-      "color": "#5a732c",
-      "transparent": true,
-      "rendercube": true
-    },
-    {
-      "name": "minecraft:flowering_azalea_leaves",
-      "color": "#646f3d",
-      "transparent": true,
-      "rendercube": true
-    },
-    {
       "name": "minecraft:cave_vines",
       "color": "#5a6d29",
       "alpha": 0.7,
@@ -5526,7 +5573,7 @@
       "variants": [
         {
           "blockstate": "berries:true",
-          "color": "#69712a",
+          "color": "#69712a"
         }
       ]
     },
@@ -5538,7 +5585,7 @@
       "variants": [
         {
           "blockstate": "berries:true",
-          "color": "#696b29",
+          "color": "#696b29"
         }
       ]
     },
@@ -5747,6 +5794,195 @@
     {
       "name": "minecraft:smooth_basalt",
       "color": "#49484e"
+    },
+    {
+      "name": "minecraft:ochre_froglight",
+      "color": "#f5e9b6",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "axis:y",
+          "color": "#fbf5cf"
+        }
+      ]
+    },
+    {
+      "name": "minecraft:pearlescent_froglight",
+      "color": "#ece1e5",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "axis:y",
+          "color": "#f6f0f0"
+        }
+      ]
+    },
+    {
+      "name": "minecraft:verdant_froglight",
+      "color": "#d3ebd0",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "axis:y",
+          "color": "#e5f4e4"
+        }
+      ]
+    },
+    {
+      "name": "minecraft:frogspawn",
+      "color": "#6a5b52",
+      "alpha": 0.5,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:mud",
+      "color": "#3C393D"
+    },
+    {
+      "name": "minecraft:packed_mud",
+      "color": "#8E6B50"
+    },
+    {
+      "name": "minecraft:mud_bricks",
+      "color": "#89684F"
+    },
+    {
+      "name": "minecraft:mud_brick_slab",
+      "color": "#8F6D52",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:mud_brick_stairs",
+      "color": "#82624B",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:mud_brick_wall",
+      "color": "#89684F",
+      "alpha": 0.7,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:mangrove_roots",
+      "color": "#4b3c26",
+      "transparent": true,
+      "alpha": 0.8
+    },
+    {
+      "name": "minecraft:muddy_mangrove_roots",
+      "color": "#443b30",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "axis:y",
+          "color": "#463b2d"
+        }
+      ]
+    },
+    {
+      "name": "minecraft:mangrove_planks",
+      "color": "#763631"
+    },
+    {
+      "name": "minecraft:mangrove_button",
+      "color": "#763631"
+    },
+    {
+      "name": "minecraft:mangrove_door",
+      "color": "#71312F"
+    },
+    {
+      "name": "minecraft:mangrove_fence",
+      "color": "#763631"
+    },
+    {
+      "name": "minecraft:mangrove_fence_gate",
+      "color": "#763631"
+    },
+    {
+      "name": "minecraft:mangrove_pressure_plate",
+      "color": "#763631"
+    },
+    {
+      "name": "minecraft:mangrove_sign",
+      "color": "#763631"
+    },
+    {
+      "name": "minecraft:mangrove_slab",
+      "color": "#7B3833",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:mangrove_stairs",
+      "color": "#70332E",
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:mangrove_trapdoor",
+      "color": "#6F2F2A"
+    },
+    {
+      "name": "minecraft:mangrove_wall_sign",
+      "color": "#763631"
+    },
+    {
+      "name": "minecraft:sculk",
+      "color": "#0D1E24"
+    },
+    {
+      "name": "minecraft:sculk_catalyst",
+      "color": "#0F2026"
+    },
+    {
+      "name": "minecraft:sculk_shrieker",
+      "color": "#C7CDAA"
+    },
+    {
+      "name": "minecraft:sculk_vein",
+      "color": "#08303A",
+      "transparent": true,
+      "alpha": 0.3,
+      "variants": [
+        {
+          "blockstate": "down:true",
+          "alpha": 0.8
+        },
+        {
+          "blockstate": "up:true",
+          "alpha": 0.8
+        }
+      ]
     }
   ],
   "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_blocks.json"
