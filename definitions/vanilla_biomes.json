@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "biome",
-  "version": "1.18.21w41a",
+  "version": "1.19.22w11a",
   "data18": [
     {
       "id": "minecraft:ocean",
@@ -354,8 +354,14 @@
     },
     {
       "id": "minecraft:dripstone_caves",
+      "color": "RosyBrown",
       "temperature": 0.8,
       "humidity": 0.4
+    },
+    {
+      "id": "minecraft:deep_dark",
+      "color": "#101B1B",
+      "temperature": 0.8
     }
   ],
   "data": [
