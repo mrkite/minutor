@@ -114,12 +114,13 @@ QColor BiomeInfo::mixColor( QColor colorizer, QColor blockcolor )
   float hue = hueC;
   float sat = satC;
   if ((satB != 0) && (hueB != -1.0f)) {
-    // when block contains some color component
-    hue = (hueC + hueB ) / 2.0f;
-    sat = (satC + satB ) / 2.0f;
+    // when blockcolor contains some color component
+    return QColor::fromRgb( (colorizer.red()   + blockcolor.red()   +1) >> 1,
+                            (colorizer.green() + blockcolor.green() +1) >> 1,
+                            (colorizer.blue()  + blockcolor.blue()  +1) >> 1 );
   }
-//float lig = std::clamp( ligC + ligB - 0.5f, 0.0f, 1.0f );  // more brightness contrast
-  float lig = (ligC + ligB ) / 2.0f;
+//float lig = std::clamp( ligC + ligB - 0.5f, 0.0f, 1.0f );   // more brightness contrast
+  float lig = (ligC + ligB ) / 2.0f;                          // simple average
   return QColor::fromHslF( hue, sat, lig );
 }
 

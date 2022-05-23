@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.19.22w11a",
+  "version": "1.19.22w13a",
   "data": [
     {
       "name": "minecraft:air",
@@ -394,7 +394,7 @@
     },
     {
       "name": "minecraft:mangrove_propagule",
-      "color": "#60AF54",
+      "color": "#60af54",
       "alpha": 0.3,
       "transparent": true,
       "spawninside": true
@@ -545,7 +545,7 @@
       "variants": [
         {
           "blockstate": "axis:y",
-          "color": "#67312A"
+          "color": "#67312a"
         }
       ]
     },
@@ -615,7 +615,7 @@
       "variants": [
         {
           "blockstate": "axis:y",
-          "color": "#6D2C2B"
+          "color": "#6d2c2b"
         }
       ]
     },
@@ -721,17 +721,19 @@
       "name": "minecraft:azalea_leaves",
       "color": "#5a732c",
       "transparent": true,
-      "rendercube": true
+      "rendercube": true,
+      "biomeFoliage": false
     },
     {
       "name": "minecraft:flowering_azalea_leaves",
       "color": "#646f3d",
       "transparent": true,
-      "rendercube": true
+      "rendercube": true,
+      "biomeFoliage": false
     },
     {
       "name": "minecraft:mangrove_leaves",
-      "color": "#828181",
+      "color": "#414040",
       "transparent": true,
       "rendercube": true,
       "biomeFoliage": true
@@ -5983,6 +5985,10 @@
           "alpha": 0.8
         }
       ]
+    },
+    {
+      "name": "minecraft:reinforced_deepslate",
+      "color": "#50534F"
     }
   ],
   "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_blocks.json"
