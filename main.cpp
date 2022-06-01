@@ -71,6 +71,11 @@ int main(int argc, char *argv[]) {
       i += 1;
       continue;
     }
+    if ((args[i] == "-dim" || args[i] == "--dimension") && i + 1 < numArgs) {
+      minutor.viewDimension(args[i + 1]);
+      i += 1;
+      continue;
+    }
 
     // menu View->
     if (args[i] == "-L" || args[i] == "--lighting") {

@@ -345,6 +345,31 @@ void Minutor::toggleFlags() {
   mapview->redraw();
 }
 
+void Minutor::viewDimension(QString dim_string)
+{
+  // when missing, add default namespace
+  if (!dim_string.contains(":"))
+    dim_string.insert(0,"minecraft:");
+  if (dim_string.startsWith("minecraft:")) {
+    // vanilla dimension
+    const DimensionInfo & dim = DimensionIdentifier::Instance().getDimensionInfo(dim_string);
+    if (dim.name != "Dummy Dimension") {
+      viewDimension(dim);
+      return;
+    }
+  }
+  // custom dimension
+  WorldInfo & wi(WorldInfo::Instance());
+  const QList<DimensionInfo> & dimensions = wi.getDimensions();
+  for (auto & dim: dimensions) {
+    if (dim.name == dim_string) {
+      viewDimension(dim);
+      return;
+    }
+  }
+}
+
+
 void Minutor::viewDimension(const DimensionInfo &dim) {
   // update visability of Structure Overlays
   for (auto action : structureOverlayActions) {
@@ -377,6 +402,12 @@ void Minutor::viewDimension(const DimensionInfo &dim) {
     dialogJumpTo->updateYrange(dim.minY, dim.maxY);
   }
 
+  // ensure selected action is checked
+  for (auto & action: m_ui.menu_Dimension->actions())
+    if (action->text() == dim.name) {
+      action->setChecked(true);
+      break;
+    }
 
   // clear current map & update scale
   QString path = QDir(currentWorld).absoluteFilePath(dim.path);

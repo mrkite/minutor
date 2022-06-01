@@ -64,6 +64,7 @@ class Minutor : public QMainWindow {
   void setDepth(int value);               // set Depth-Slider
 
   MapView *getMapview() const;
+  void viewDimension(QString dim);        // view dimension matching dim_name
 
 private slots:
   void openWorld();
