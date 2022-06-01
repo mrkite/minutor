@@ -298,10 +298,8 @@ void WorldInfo::addDimensionToMenu(QDir path, QString dir, QString name, QObject
     action->setData(index);
   } else {
     // find index in custom Dimension list
-    WorldInfo & wi(WorldInfo::Instance());
-    const QList<DimensionInfo> & custom = wi.getDimensions();
-    for (int idx = 0; idx<custom.length(); idx++) {
-      if (custom[idx].name == name) {
+    for (int idx = 0; idx<dimensions.length(); idx++) {
+      if (dimensions[idx].name == name) {
         action->setData(idx+DIM_MAGIC);
       }
     }
@@ -323,9 +321,7 @@ void WorldInfo::changeViewToDimension() {
     if (idx < DIM_MAGIC) {
       emit dimensionChanged(DimensionIdentifier::Instance().getDimensionInfo(idx));
     } else {
-      WorldInfo & wi(WorldInfo::Instance());
-      const QList<DimensionInfo> & custom = wi.getDimensions();
-      emit dimensionChanged(custom[idx-DIM_MAGIC]);
+      emit dimensionChanged(dimensions[idx-DIM_MAGIC]);
     }
   }
 }
