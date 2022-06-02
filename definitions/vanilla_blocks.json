@@ -677,42 +677,42 @@
     },
     {
       "name": "minecraft:oak_leaves",
-      "color": "#4f4f4f",
+      "color": "#616161",
       "transparent": true,
       "rendercube": true,
       "biomeFoliage": true
     },
     {
       "name": "minecraft:spruce_leaves",
-      "color": "#406540",
+      "color": "#587458",
       "transparent": true,
       "rendercube": true,
       "biomeFoliage": false
     },
     {
       "name": "minecraft:birch_leaves",
-      "color": "#607d40",
+      "color": "#64784F",
       "transparent": true,
       "rendercube": true,
       "biomeFoliage": false
     },
     {
       "name": "minecraft:jungle_leaves",
-      "color": "#6d6c69",
+      "color": "#6d6b64",
       "transparent": true,
       "rendercube": true,
       "biomeFoliage": true
     },
     {
       "name": "minecraft:acacia_leaves",
-      "color": "#4f4f4f",
+      "color": "#565656",
       "transparent": true,
       "rendercube": true,
       "biomeFoliage": true
     },
     {
       "name": "minecraft:dark_oak_leaves",
-      "color": "#4f4f4f",
+      "color": "#696969",
       "transparent": true,
       "rendercube": true,
       "biomeFoliage": true
@@ -733,7 +733,7 @@
     },
     {
       "name": "minecraft:mangrove_leaves",
-      "color": "#414040",
+      "color": "#6a6a6a",
       "transparent": true,
       "rendercube": true,
       "biomeFoliage": true
