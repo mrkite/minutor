@@ -120,12 +120,6 @@ void DefinitionManager::checkAndRepair()
     }
   }
 
-  // repair when definition is in settings, but file is missing
-  for (const auto& def: known_packs) {
-    if (!QFile::exists(def.toString()))
-      known_packs.removeOne(def.toString());
-  }
-
   // copy over built-in definitions if necessary
   QDirIterator build_in(":/definitions", QDir::Files | QDir::Readable);
   while (build_in.hasNext()) {
@@ -134,6 +128,20 @@ void DefinitionManager::checkAndRepair()
   }
   // all changed definitions are now in sorted -> copy over
   known_packs.append(sorted);
+
+  // remove duplicates
+  QMutableListIterator<QVariant> itD(known_packs);
+  while (itD.hasNext()) {
+    if (known_packs.count(itD.next()) > 1)
+      itD.remove();
+  }
+
+  // repair when definition is in settings, but file is missing
+  QMutableListIterator<QVariant> itF(known_packs);
+  while (itF.hasNext()) {
+    if (!QFile::exists(itF.next().toString()))
+      itF.remove();
+  }
 
   // store repaired list of definitions
   settings.setValue("packs", known_packs);
@@ -257,6 +265,13 @@ void DefinitionManager::installJson(QString path, bool overwrite,
 
   QString key = def->at("name")->asString() + def->at("type")->asString();
   QString exeversion = def->at("version")->asString();
+
+  // check if intermediate qHash(..,0) name is present
+  QString dest0 = destdir + "/" + QString("%1").arg(qHash(key, 0)) + ".json";
+  if (QFile::exists(dest0)) {
+    QFile file (dest0);
+    file.remove();
+  }
 
   QString dest = destdir + "/" + QString("%1").arg(qHash(key,42)) + ".json";
 
