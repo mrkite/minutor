@@ -90,7 +90,7 @@ class BlockIdentifier {
   BlockIdentifier &operator=(const BlockIdentifier &);
 
   void parseDefinition(JSONObject *block, BlockInfo *parent, int pack);
-  QMap<uint, BlockInfo*>    blocks;
+  QHash<uint, BlockInfo*>   blocks;
   QList<QList<BlockInfo*> > packs;
 };
 
