@@ -364,6 +364,7 @@ void MapView::redraw() {
   if (!this->isEnabled()) {
     // blank
     imageChunks.fill(palette().color(QPalette::Base));
+    imageOverlays.fill(Qt::transparent);
     update();
     return;
   }
