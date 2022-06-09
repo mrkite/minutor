@@ -110,9 +110,9 @@ BlockIdentifier& BlockIdentifier::Instance() {
 }
 
 BlockInfo &BlockIdentifier::getBlockInfo(uint hid) {
-  if (blocks.contains(hid)) {
-    return *blocks[hid];
-  }
+  auto iter = blocks.find(hid);
+  if (iter != blocks.end())
+    return *iter.value();
   // no blocks at all found.. dammit
   return unknownBlock;
 }
