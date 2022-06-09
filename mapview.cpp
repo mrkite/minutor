@@ -363,7 +363,7 @@ void MapView::paintEvent(QPaintEvent * /* event */) {
 void MapView::redraw() {
   if (!this->isEnabled()) {
     // blank
-    imageChunks.fill(0xeeeeee);
+    imageChunks.fill(palette().color(QPalette::Base));
     update();
     return;
   }
