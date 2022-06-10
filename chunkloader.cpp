@@ -93,6 +93,7 @@ bool ChunkLoader::loadNbtHelper(QString filename, int cx, int cz, QSharedPointer
   switch (loadtype) {
     case ChunkLoader::MAIN_MAP_DATA:
       chunk->load(nbt);
+      Q_FALLTHROUGH();
     case ChunkLoader::SEPARATED_ENTITIES:
       chunk->loadEntities(nbt);
   }
