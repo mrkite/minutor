@@ -368,9 +368,10 @@ bool Tag_Compound::has(const QString key) const {
 }
 
 const Tag *Tag_Compound::at(const QString key) const {
-  if (!children.contains(key))
+  auto iter = children.find(key);
+  if (iter == children.end())
     return &NBT::Null;
-  return children[key];
+  return iter.value();
 }
 
 int Tag_Compound::length() const {
