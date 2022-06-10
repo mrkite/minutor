@@ -258,7 +258,7 @@ void Chunk::loadLevelTag(const Tag * level) {
     for (int i = 0; i < numEntities; ++i) {
       auto e = Entity::TryParse(entitylist->at(i));
       if (e)
-        entities.insertMulti(e->type(), e);
+        entities.insert(e->type(), e);
     }
   }
 
@@ -345,7 +345,7 @@ void Chunk::loadEntities(const NBT &nbt) {
       for (int i = 0; i < numEntities; ++i) {
         auto e = Entity::TryParse(entitylist->at(i));
         if (e)
-          entities.insertMulti(e->type(), e);
+          entities.insert(e->type(), e);
       }
     }
   }

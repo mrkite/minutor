@@ -84,6 +84,7 @@ GeneratedStructure::tryParseBlockEntites(const Tag* tagBlockEntites) {
 // static
 QSharedPointer<GeneratedStructure>
 GeneratedStructure::tryParseChest(const Tag* tagChest) {
+  Q_UNUSED(tagChest);
   return QSharedPointer<GeneratedStructure>();
 }
 
