@@ -10,9 +10,6 @@
     <height>703</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>Form</string>
-  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QGroupBox" name="plugin_context">
@@ -84,11 +81,7 @@
          </layout>
         </item>
         <item row="4" column="1">
-         <widget class="QProgressBar" name="progressBar">
-          <property name="value">
-           <number>0</number>
-          </property>
-         </widget>
+         <widget class="QProgressBar" name="progressBar"/>
         </item>
         <item row="4" column="0">
          <widget class="QPushButton" name="pb_search">

@@ -26,9 +26,6 @@
      <property name="columnCount">
       <number>2</number>
      </property>
-     <attribute name="headerVisible">
-      <bool>true</bool>
-     </attribute>
      <attribute name="headerMinimumSectionSize">
       <number>25</number>
      </attribute>
