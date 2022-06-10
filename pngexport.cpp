@@ -73,6 +73,18 @@ void PngExport::setBoundsFromBlocks(int top, int left, int bottom, int right)
   ui->spinBox_right ->setValue(e_right);
 }
 
+QString PngExport::getLabelText(int value)
+{
+  QString text;
+  if (snapDistance == 16) {
+    text = "C: " + QString::number(value >> 4);
+  }
+  if (snapDistance == 512) {
+    text = "R: " + QString::number(value >> 9);
+  }
+  return text;
+}
+
 
 void PngExport::checkTop(int value)
 {
@@ -80,6 +92,8 @@ void PngExport::checkTop(int value)
   ui->spinBox_top->setValue(value);
   if (value+(snapDistance-1) > ui->spinBox_bottom->value())
     ui->spinBox_bottom->setValue(value+(snapDistance-1));
+  // update Chunk/Region label
+  ui->label_top->setText(getLabelText(value));
 }
 
 void PngExport::checkLeft(int value)
@@ -88,6 +102,8 @@ void PngExport::checkLeft(int value)
   ui->spinBox_left->setValue(value);
   if (value+(snapDistance-1) > ui->spinBox_right->value())
     ui->spinBox_right->setValue(value+(snapDistance-1));
+  // update Chunk/Region label
+  ui->label_left->setText(getLabelText(value));
 }
 
 void PngExport::checkBottom(int value)
@@ -96,6 +112,8 @@ void PngExport::checkBottom(int value)
   ui->spinBox_bottom->setValue(value);
   if (value-(snapDistance-1) < ui->spinBox_top->value())
     ui->spinBox_top->setValue(value-(snapDistance-1));
+  // update Chunk/Region label
+  ui->label_bottom->setText(getLabelText(value));
 }
 
 void PngExport::checkRight(int value)
@@ -104,6 +122,8 @@ void PngExport::checkRight(int value)
   ui->spinBox_right->setValue(value);
   if (value-(snapDistance-1) < ui->spinBox_left->value())
     ui->spinBox_left->setValue(value-(snapDistance-1));
+  // update Chunk/Region label
+  ui->label_right->setText(getLabelText(value));
 }
 
 void PngExport::setSingleStep()

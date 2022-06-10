@@ -38,6 +38,8 @@ private slots:
   void checkBottom(int value);
   void checkRight(int value);
 
+  QString getLabelText(int value);
+
   void setSingleStep();
 };
 
