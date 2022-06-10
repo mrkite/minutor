@@ -238,7 +238,7 @@ void Minutor::closeWorld() {
   // clear overlays
   mapview->clearOverlayItems();
   // clear other stuff
-  currentWorld = QString();
+  currentWorld = QDir();
   emit worldLoaded(false);
 
   // clear "Structures Overlays"
