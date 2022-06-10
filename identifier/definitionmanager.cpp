@@ -583,6 +583,9 @@ void DefinitionManager::autoUpdate() {
 void DefinitionManager::updatePack(DefinitionUpdater *updater,
                                    QString filename,
                                    QString version) {
+  Q_UNUSED(filename);
+  Q_UNUSED(version);
+
   updateQueue.removeOne(updater);
   delete updater;
 
