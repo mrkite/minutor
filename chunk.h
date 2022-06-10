@@ -62,7 +62,7 @@ class Chunk : public QObject {
   uint   getBlockHID(int x, int y, int z) const;
   qint32 getBiomeID(int x, int y, int z) const;
 
-  typedef QMap<QString, QSharedPointer<OverlayItem>> EntityMap;
+  typedef QMultiMap<QString, QSharedPointer<OverlayItem>> EntityMap;
   const EntityMap& getEntityMap() const;
 
  signals:
