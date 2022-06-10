@@ -70,16 +70,16 @@ void BlockInfo::setName(const QString & newname) {
          || this->name.contains("Bubble_Column", Qt::CaseInsensitive);
 }
 
-const QString & BlockInfo::getName() { return name; }
+const QString & BlockInfo::getName() const { return name; }
 
 
-bool BlockInfo::isBedrock()  { return bedrock; }
-bool BlockInfo::isHopper()   { return hopper; }
-bool BlockInfo::isSnow()     { return snow; }
+bool BlockInfo::isBedrock() const  { return bedrock; }
+bool BlockInfo::isHopper() const   { return hopper; }
+bool BlockInfo::isSnow() const     { return snow; }
 
-bool BlockInfo::biomeWater()   { return water; }
-bool BlockInfo::biomeGrass()   { return grass; }
-bool BlockInfo::biomeFoliage() { return foliage; }
+bool BlockInfo::biomeWater() const   { return water; }
+bool BlockInfo::biomeGrass() const   { return grass; }
+bool BlockInfo::biomeFoliage() const { return foliage; }
 
 void BlockInfo::setBiomeGrass(bool value)   { grass = value; }
 void BlockInfo::setBiomeFoliage(bool value) { foliage = value; }
@@ -109,7 +109,7 @@ BlockIdentifier& BlockIdentifier::Instance() {
   return singleton;
 }
 
-BlockInfo &BlockIdentifier::getBlockInfo(uint hid) {
+const BlockInfo &BlockIdentifier::getBlockInfo(uint hid) const {
   auto iter = blocks.find(hid);
   if (iter != blocks.end())
     return *iter.value();
@@ -117,7 +117,7 @@ BlockInfo &BlockIdentifier::getBlockInfo(uint hid) {
   return unknownBlock;
 }
 
-bool BlockIdentifier::hasBlockInfo(uint hid) {
+bool BlockIdentifier::hasBlockInfo(uint hid) const {
   return blocks.contains(hid);
 }
 
