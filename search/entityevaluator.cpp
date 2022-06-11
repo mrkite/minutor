@@ -97,6 +97,7 @@ void EntityEvaluator::searchProperties()
 void EntityEvaluator::searchTreeNode(const QString prefix, const QTreeWidgetItem &node)
 {
   auto keyText = prefix + node.text(0);
+  auto valueText = node.text(1);
 
   bool found = config.evalFunction(*this);
   if (found) {
