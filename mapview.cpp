@@ -441,7 +441,7 @@ void MapView::redraw() {
 
   drawOverlayItems(currentSearchResults, viewingCuboid, x1, z1, canvas);
 
-  emit(coordinatesChanged(x, depth, z));
+  emit coordinatesChanged(x, depth, z);
 
   update();
 }
