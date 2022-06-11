@@ -354,7 +354,7 @@ Tag_Compound::Tag_Compound(TagDataStream *s) {
       case Tag::TAG_LONG_ARRAY: child = new Tag_Long_Array(s); break;
       default: throw "Unknown tag";
     }
-    children[key] = child;
+    children.insert(key, child);
   }
 }
 
