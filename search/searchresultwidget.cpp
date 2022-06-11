@@ -92,6 +92,7 @@ void SearchResultWidget::setPointOfInterest(const QVector3D &centerPoint)
 
 void SearchResultWidget::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column)
 {
+  // TODO(search): unused parameter
   Q_UNUSED(column);
 
   auto properties = new Properties();
@@ -120,6 +121,7 @@ void SearchResultWidget::on_treeWidget_itemSelectionChanged()
 
 void SearchResultWidget::on_treeWidget_itemClicked(QTreeWidgetItem *item, int column)
 {
+  // TODO(search): unused parameter
   Q_UNUSED(item);
   Q_UNUSED(column);
   on_treeWidget_itemSelectionChanged();

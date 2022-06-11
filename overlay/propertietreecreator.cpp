@@ -38,7 +38,7 @@ QString EvaluateSubExpression(const QString& subexpr, const QVariant& v) {
     int rightbracket = subexpr.indexOf(']');
     if (rightbracket > 0) {
       bool ok = false;
-      int index = subexpr.mid(1, rightbracket-1).toInt(&ok);
+      int index = subexpr.midRef(1, rightbracket-1).toInt(&ok);
       if (ok && (QMetaType::Type)v.type() == QMetaType::QVariantList) {
         return EvaluateSubExpression(subexpr.mid(rightbracket + 1),
                                      v.toList().at(index));

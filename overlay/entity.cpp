@@ -17,9 +17,9 @@ QSharedPointer<OverlayItem> Entity::TryParse(const Tag* tag) {
   auto pos = tag->at("Pos");
   if (pos && pos != &NBT::Null) {
     Point p(pos->at(0)->toDouble(), pos->at(1)->toDouble(), pos->at(2)->toDouble());
-    Entity* entity = new Entity(p);
     auto id = tag->at("id");
     if (id && id != &NBT::Null) {
+      Entity* entity = new Entity(p);
       QString type = id->toString().toLower().remove("minecraft:");
       EntityInfo const & info = ei.getEntityInfo(type);
 
