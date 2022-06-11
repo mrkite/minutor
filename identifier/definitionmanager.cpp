@@ -437,7 +437,6 @@ void DefinitionManager::loadDefinition(QString path) {
     d.path = path;
     d.update = def->at("update")->asString();
     QString type = def->at("type")->asString();
-    QString key = d.name + type;
     d.enabled = true;  // should look this up
     if (type == "block") {
       d.id = flatteningConverter.addDefinitions(
@@ -487,7 +486,6 @@ void DefinitionManager::loadDefinition(QString path) {
     d.biomeid = -1;
     d.dimensionid = -1;
     d.entityid = -1;
-    QString key = d.name+"pack";
     for (int i = 0; i < info->at("data")->length(); i++) {
       std::unique_ptr<JSONData> def;
       try {
