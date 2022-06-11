@@ -354,7 +354,7 @@ Tag_Compound::Tag_Compound(TagDataStream *s) {
       case Tag::TAG_LONG_ARRAY: child = new Tag_Long_Array(s); break;
       default: throw "Unknown tag";
     }
-    children[key] = child;
+    children.insert(key, child);
   }
 }
 
@@ -368,9 +368,10 @@ bool Tag_Compound::has(const QString key) const {
 }
 
 const Tag *Tag_Compound::at(const QString key) const {
-  if (!children.contains(key))
+  auto iter = children.find(key);
+  if (iter == children.end())
     return &NBT::Null;
-  return children[key];
+  return iter.value();
 }
 
 int Tag_Compound::length() const {

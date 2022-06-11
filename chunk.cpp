@@ -79,8 +79,9 @@ const ChunkSection *Chunk::getSectionByY(int y) const {
 
 //inline
 const ChunkSection *Chunk::getSectionByIdx(qint8 y) const {
-  if (sections.contains(y))
-    return sections[y];
+  auto iter = sections.find(y);
+  if (iter != sections.end())
+    return iter.value();
 
   return nullptr;
 }
@@ -106,8 +107,9 @@ int Chunk::getBiomeID(int x, int y, int z) const {
     int z_idx = z          >> 2;
     offset = x_idx + 4*z_idx + 16*y_idx;
     int s_idx = (y >> 4);
-    if (this->sections.contains(s_idx) && this->sections[s_idx])
-      return this->sections[s_idx]->getBiome(offset);
+    auto s_iter = this->sections.find(s_idx);
+    if (s_iter != this->sections.end() && s_iter.value())
+      return s_iter.value()->getBiome(offset);
     else {
       #if defined(DEBUG) || defined(_DEBUG) || defined(QT_DEBUG)
       qWarning() << "Section not found for Biome lookup!";
