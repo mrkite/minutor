@@ -10,7 +10,7 @@
     <height>25</height>
    </rect>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout">
+  <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,4,0">
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -32,12 +32,6 @@
    </item>
    <item>
     <widget class="QComboBox" name="comboBox_text">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
      <property name="editable">
       <bool>true</bool>
      </property>

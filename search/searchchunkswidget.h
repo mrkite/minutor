@@ -8,7 +8,7 @@
 #include "search/searchplugininterface.h"
 #include "chunkid.h"
 
-#include <QWidget>
+#include <QDialog>
 #include <QFuture>
 #include <QVector3D>
 
@@ -22,7 +22,7 @@ class ChunkCache;
 class Chunk;
 class SearchResultWidget;
 
-class SearchChunksWidget : public QWidget
+class SearchChunksWidget : public QDialog
 {
   Q_OBJECT
 

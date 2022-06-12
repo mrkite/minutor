@@ -11,13 +11,14 @@
 #include <QtConcurrent/QtConcurrent>
 
 SearchChunksWidget::SearchChunksWidget(QSharedPointer<SearchPluginI> searchPlugin_, QWidget *parent)
-  : QWidget(parent)
+  : QDialog(parent)
   , ui(new Ui::SearchChunksWidget)
   , searchPlugin(searchPlugin_)
 {
   ui->setupUi(this);
 
   auto layout = new QHBoxLayout(ui->plugin_context);
+  layout->setContentsMargins(0, 0, 0, 0);
   ui->plugin_context->setLayout(layout);
   layout->setSizeConstraint(QLayout::SizeConstraint::SetMinimumSize);
   layout->addWidget(&searchPlugin->getWidget());

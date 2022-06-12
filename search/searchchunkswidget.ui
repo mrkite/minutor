@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>SearchChunksWidget</class>
- <widget class="QWidget" name="SearchChunksWidget">
+ <widget class="QDialog" name="SearchChunksWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -13,11 +13,11 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QGroupBox" name="plugin_context">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>20</height>
-      </size>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
      <property name="title">
       <string>Search for:</string>
@@ -26,71 +26,95 @@
    </item>
    <item>
     <widget class="QGroupBox" name="groupBox">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="title">
       <string>Search in:</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
-       <layout class="QFormLayout" name="formLayout">
-        <item row="1" column="0">
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Radius</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QSpinBox" name="sb_radius">
-          <property name="maximum">
-           <number>999999999</number>
-          </property>
-          <property name="value">
-           <number>2000</number>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QCheckBox" name="check_range_y">
-          <property name="text">
-           <string>Range Y</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <layout class="QHBoxLayout" name="horizontalLayout_2">
-          <item>
-           <widget class="QSpinBox" name="sb_y_start">
-            <property name="minimum">
-             <number>-999999999</number>
-            </property>
-            <property name="maximum">
-             <number>999999999</number>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QSpinBox" name="sb_y_end">
-            <property name="minimum">
-             <number>-999999999</number>
-            </property>
-            <property name="maximum">
-             <number>999999999</number>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item row="4" column="1">
-         <widget class="QProgressBar" name="progressBar"/>
-        </item>
-        <item row="4" column="0">
-         <widget class="QPushButton" name="pb_search">
-          <property name="text">
-           <string>Search</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Radius</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QSpinBox" name="sb_radius">
+        <property name="maximum">
+         <number>999999999</number>
+        </property>
+        <property name="value">
+         <number>2000</number>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="0" column="3">
+       <widget class="QCheckBox" name="check_range_y">
+        <property name="text">
+         <string>Range Y</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="4">
+       <widget class="QSpinBox" name="sb_y_start">
+        <property name="minimum">
+         <number>-999999999</number>
+        </property>
+        <property name="maximum">
+         <number>999999999</number>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="5">
+       <widget class="QSpinBox" name="sb_y_end">
+        <property name="minimum">
+         <number>-999999999</number>
+        </property>
+        <property name="maximum">
+         <number>999999999</number>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="6">
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>30</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="0" column="7">
+       <widget class="QPushButton" name="pb_search">
+        <property name="text">
+         <string>Search</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="8">
+       <widget class="QProgressBar" name="progressBar"/>
       </item>
      </layout>
     </widget>
