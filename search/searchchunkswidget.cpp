@@ -11,7 +11,7 @@
 #include <QtConcurrent/QtConcurrent>
 
 SearchChunksWidget::SearchChunksWidget(QSharedPointer<SearchPluginI> searchPlugin_, QWidget *parent)
-  : QWidget(parent)
+  : QDialog(parent)
   , ui(new Ui::SearchChunksWidget)
   , searchPlugin(searchPlugin_)
 {
