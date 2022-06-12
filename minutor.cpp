@@ -877,12 +877,14 @@ SearchChunksWidget* Minutor::prepareSearchForm(const QSharedPointer<SearchPlugin
 void Minutor::openSearchBlockWidget() {
   auto searchPlugin = QSharedPointer<SearchBlockPluginWidget>::create();
   auto searchBlockForm = prepareSearchForm(searchPlugin);
+  searchBlockForm->setWindowTitle(m_ui.action_SearchBlock->statusTip());
   searchBlockForm->showNormal();
 }
 
 void Minutor::openSearchEntityWidget() {
   auto searchPlugin = QSharedPointer<SearchEntityPluginWidget>::create();
   auto searchEntityForm = prepareSearchForm(searchPlugin);
+  searchEntityForm->setWindowTitle(m_ui.action_SearchEntity->statusTip());
   searchEntityForm->showNormal();
 }
 
