@@ -18,6 +18,7 @@ SearchChunksWidget::SearchChunksWidget(QSharedPointer<SearchPluginI> searchPlugi
   ui->setupUi(this);
 
   auto layout = new QHBoxLayout(ui->plugin_context);
+  layout->setContentsMargins(0, 0, 0, 0);
   ui->plugin_context->setLayout(layout);
   layout->setSizeConstraint(QLayout::SizeConstraint::SetMinimumSize);
   layout->addWidget(&searchPlugin->getWidget());
