@@ -6,8 +6,8 @@
 #include <QList>
 #include <QString>
 #include <QColor>
-class JSONArray;
-class JSONObject;
+#include <QJsonArray>
+#include <QJsonObject>
 
 
 class BiomeInfo {
@@ -56,7 +56,7 @@ class BiomeIdentifier {
   // singleton: access to global usable instance
   static BiomeIdentifier &Instance();
 
-  int  addDefinitions(JSONArray * data, JSONArray *data18, int pack = -1);
+  int  addDefinitions(QJsonArray data, QJsonArray data18, int pack = -1);
   void enableDefinitions(int id);
   void disableDefinitions(int id);
   void updateBiomeDefinition();
@@ -71,9 +71,9 @@ private:
   BiomeIdentifier(const BiomeIdentifier &);
   BiomeIdentifier &operator=(const BiomeIdentifier &);
 
-  void parseBiomeDefinitions0000(JSONArray *data, int pack);
-  void parseBiomeDefinitions2800(JSONArray *data18, int pack);
-  void guessSpecialBiomes(JSONObject *b, BiomeInfo *biome);
+  void parseBiomeDefinitions0000(QJsonArray data, int pack);
+  void parseBiomeDefinitions2800(QJsonArray data18, int pack);
+  void guessSpecialBiomes(QJsonObject b, BiomeInfo *biome);
 
   // legacy Biomes
   QHash<int, BiomeInfo*>    biomes;   // consolidated Biome mapping

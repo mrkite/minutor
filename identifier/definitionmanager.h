@@ -18,7 +18,6 @@ class DimensionIdentifier;
 class EntityIdentifier;
 class FlatteningConverter;
 class MapView;
-class JSONData;
 class DefinitionUpdater;
 
 struct Definition {
@@ -68,7 +67,6 @@ class DefinitionManager : public QWidget {
   void installZip(QString path, bool overwrite = true, bool install = true);
   void checkAndRepair();
   void loadDefinition(QString path);
-  void loadDefinition(JSONData *, int pack = -1);
   void removeDefinition(QString path);
   void refresh();
   QHash<QString, Definition> definitions;

@@ -6,9 +6,8 @@
 #include <QColor>
 #include <QList>
 #include <QMap>
-
-class JSONArray;
-class JSONObject;
+#include <QJsonArray>
+#include <QJsonObject>
 
 
 class EntityInfo {
@@ -26,7 +25,7 @@ class EntityIdentifier {
   // singleton: access to global usable instance
   static EntityIdentifier &Instance();
 
-  int addDefinitions(JSONArray *, int packID = -1);
+  int addDefinitions(QJsonArray defs, int packID = -1);
   void enableDefinitions(int id);
   void disableDefinitions(int id);
 
@@ -50,8 +49,8 @@ class EntityIdentifier {
   EntityIdentifier(const EntityIdentifier &);
   EntityIdentifier &operator=(const EntityIdentifier &);
 
-  void parseCategoryDefinition(JSONObject *data, int packID);
-  void parseEntityDefinition(JSONObject *entity, QString const &category,
+  void parseCategoryDefinition(QJsonObject data, int packID);
+  void parseEntityDefinition(QJsonObject entity, QString const &category,
                              QColor catcolor, int packID);
 
   TcatList categories;  // main categories for entities

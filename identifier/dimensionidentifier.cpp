@@ -1,7 +1,8 @@
 /** Copyright (c) 2013, Sean Kasun */
 
+#include <QJsonObject>
+
 #include "dimensionidentifier.h"
-#include "json/json.h"
 #include "worldinfo.h"
 
 
@@ -56,20 +57,20 @@ void DimensionIdentifier::disableDefinitions(int pack) {
     packs[pack][i]->enabled = false;
 }
 
-int DimensionIdentifier::addDefinitions(JSONArray *defs, int pack) {
+int DimensionIdentifier::addDefinitions(QJsonArray defs, int pack) {
   if (pack == -1) {
     pack = packs.length();
     packs.append(QList<DimensionInfo*>());
   }
 
-  int len = defs->length();
+  int len = defs.size();
   for (int i = 0; i < len; i++) {
-    JSONObject *dimTag = dynamic_cast<JSONObject *>(defs->at(i));
+    QJsonObject dimTag = defs.at(i).toObject();
     DimensionInfo *dim = new DimensionInfo();
     dim->enabled = true;
     // Minecraft namespace ID
-    if (dimTag->has("id")) {
-      dim->id = dimTag->at("id")->asString();
+    if (dimTag.contains("id")) {
+      dim->id = dimTag.value("id").toString();
       // construct a default name from ID
       QString nid = QString(dim->id).replace("minecraft:","").replace("_"," ");
       QStringList parts = nid.toLower().split(' ', QString::SkipEmptyParts);
@@ -78,23 +79,23 @@ int DimensionIdentifier::addDefinitions(JSONArray *defs, int pack) {
       dim->name = parts.join(" ");
     }
     // explicit name given
-    if (dimTag->has("name"))
-      dim->name = dimTag->at("name")->asString();
+    if (dimTag.contains("name"))
+      dim->name = dimTag.value("name").toString();
     // path is where the region folder is located
-    if (dimTag->has("path"))
-      dim->path = dimTag->at("path")->asString();
+    if (dimTag.contains("path"))
+      dim->path = dimTag.value("path").toString();
     // scale
-    if (dimTag->has("scale"))
-      dim->scale = dimTag->at("scale")->asNumber();
+    if (dimTag.contains("scale"))
+      dim->scale = dimTag.value("scale").toInt();
     // unused feature for RegEx in path
-    if (dimTag->has("regex"))
-      dim->pathIsRegEx = dimTag->at("regex")->asBool();
-    if (dimTag->has("minY"))
-      dim->minY = dimTag->at("minY")->asNumber();
-    if (dimTag->has("maxY"))
-      dim->maxY = dimTag->at("maxY")->asNumber();
-    if (dimTag->has("defaultY"))
-      dim->defaultY = dimTag->at("defaultY")->asNumber();
+    if (dimTag.contains("regex"))
+      dim->pathIsRegEx = dimTag.value("regex").toBool();
+    if (dimTag.contains("minY"))
+      dim->minY = dimTag.value("minY").toInt();
+    if (dimTag.contains("maxY"))
+      dim->maxY = dimTag.value("maxY").toInt();
+    if (dimTag.contains("defaultY"))
+      dim->defaultY = dimTag.value("defaultY").toInt();
 
     definitions.append(dim);
     packs[pack].append(dim);

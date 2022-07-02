@@ -7,9 +7,8 @@
 #include <QHash>
 #include <QList>
 #include <QColor>
-
-class JSONArray;
-class JSONObject;
+#include <QJsonArray>
+#include <QJsonObject>
 
 
 class BlockInfo {
@@ -74,7 +73,7 @@ class BlockIdentifier {
   // singleton: access to global usable instance
   static BlockIdentifier &Instance();
 
-  int  addDefinitions(JSONArray *, int pack = -1);
+  int  addDefinitions(QJsonArray defs, int pack = -1);
   void enableDefinitions(int id);
   void disableDefinitions(int id);
   const BlockInfo &getBlockInfo(uint hid) const;
@@ -89,7 +88,7 @@ class BlockIdentifier {
   BlockIdentifier(const BlockIdentifier &);
   BlockIdentifier &operator=(const BlockIdentifier &);
 
-  void parseDefinition(JSONObject *block, BlockInfo *parent, int pack);
+  void parseDefinition(QJsonObject block, BlockInfo *parent, int pack);
   QHash<uint, BlockInfo*>   blocks;
   QList<QList<BlockInfo*> > packs;
 };

@@ -2,10 +2,10 @@
 #ifndef FLATTENINGCONVERTER_H_
 #define FLATTENINGCONVERTER_H_
 
-#include "paletteentry.h"
+#include <QJsonArray>
+#include <QJsonObject>
 
-class JSONArray;
-class JSONObject;
+#include "paletteentry.h"
 
 
 class FlatteningConverter {
@@ -13,7 +13,7 @@ public:
   // singleton: access to global usable instance
   static FlatteningConverter &Instance();
 
-  int addDefinitions(JSONArray *, int pack = -1);
+  int addDefinitions(QJsonArray defs, int pack = -1);
   void enableDefinitions(int id);
   void disableDefinitions(int id);
 //  const BlockData * getPalette();
@@ -27,7 +27,7 @@ private:
   FlatteningConverter(const FlatteningConverter &);
   FlatteningConverter &operator=(const FlatteningConverter &);
 
-  void parseDefinition(JSONObject *block, int *parentID, int pack);
+  void parseDefinition(QJsonObject block, int *parentID, int pack);
   PaletteEntry palette[paletteLength];
 //  QList<QList<BlockInfo*> > packs;
 };
