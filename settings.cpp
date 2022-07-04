@@ -7,6 +7,15 @@
 
 Settings::Settings(QWidget *parent) : QDialog(parent) {
   m_ui.setupUi(this);
+
+  // macOS dependand button renaming
+  #ifdef Q_OS_MAC
+  m_ui.radioButton_depth_ctrl->setText("Command");
+  m_ui.radioButton_depth_alt ->setText("Option");
+  m_ui.radioButton_zoom_ctrl ->setText("Command");
+  m_ui.radioButton_zoom_alt  ->setText("Option");
+  #endif
+
   // remove "question mark" in title bar
   setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
