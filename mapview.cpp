@@ -270,15 +270,18 @@ void MapView::wheelEvent(QWheelEvent *event) {
   Qt::KeyboardModifier modifier4DepthSlider = Qt::KeyboardModifier(QSettings().value("modifier4DepthSlider", Qt::ShiftModifier).toUInt());
   Qt::KeyboardModifier modifier4ZoomOut     = Qt::KeyboardModifier(QSettings().value("modifier4ZoomOut",     Qt::ControlModifier).toUInt());
 
+  // ignore if vertical/horizontal scroll wheel was used
+  float angle = (event->angleDelta().x() + event->angleDelta().y()) / 120.0;
+
   if ((event->modifiers() & modifier4DepthSlider) == modifier4DepthSlider) {
     // change depth
-    emit demandDepthChange(event->angleDelta().y() / 120.0);
+    emit demandDepthChange(angle);
   } else if ((event->modifiers() & modifier4ZoomOut) == modifier4ZoomOut) {
     // allow change zoom also to zoom OUT
-    adjustZoom(event->angleDelta().y() / 120.0, true, true);
+    adjustZoom(angle, true, true);
   } else {
     // normal change zoom
-    adjustZoom(event->angleDelta().y() / 120.0, false, true);
+    adjustZoom(angle, false, true);
   }
 }
 
