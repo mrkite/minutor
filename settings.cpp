@@ -7,6 +7,15 @@
 
 Settings::Settings(QWidget *parent) : QDialog(parent) {
   m_ui.setupUi(this);
+
+  // macOS dependand button renaming
+  #ifdef Q_OS_MAC
+  m_ui.radioButton_depth_ctrl->setText("Command");
+  m_ui.radioButton_depth_alt ->setText("Option");
+  m_ui.radioButton_zoom_ctrl ->setText("Command");
+  m_ui.radioButton_zoom_alt  ->setText("Option");
+  #endif
+
   // remove "question mark" in title bar
   setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
@@ -61,8 +70,8 @@ Settings::Settings(QWidget *parent) : QDialog(parent) {
   autoUpdate    = info.value("autoupdate", true).toBool();
   verticalDepth = info.value("verticaldepth", true).toBool();
   zoomFollowsCursor = info.value("zoomFollowsCursor", true).toBool();
-  modifier4DepthSlider = Qt::KeyboardModifier(info.value("modifier4DepthSlider", 0x02000000).toUInt());
-  modifier4ZoomOut     = Qt::KeyboardModifier(info.value("modifier4ZoomOut",     0x04000000).toUInt());
+  modifier4DepthSlider = Qt::KeyboardModifier(info.value("modifier4DepthSlider", Qt::ShiftModifier  ).toUInt());
+  modifier4ZoomOut     = Qt::KeyboardModifier(info.value("modifier4ZoomOut",     Qt::ControlModifier).toUInt());
 
   // Set the UI to the current settings' values:
   m_ui.lineEdit_Location->setText(mcpath);
