@@ -112,10 +112,7 @@ Minutor::Minutor()
   connect(this, SIGNAL(worldLoaded(bool)),
           depth, SLOT(setEnabled(bool)));
 
-  QWidget *central = new QWidget;
-  central->setLayout(mainLayout);
-
-  setCentralWidget(central);
+  m_ui.centralwidget->setLayout(mainLayout);
   layout()->setContentsMargins(0, 0, 0, 0);
 
   propView = new Properties(this);
