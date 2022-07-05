@@ -14,6 +14,9 @@
    <string>Location</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="sizeConstraint">
+    <enum>QLayout::SetFixedSize</enum>
+   </property>
    <item>
     <layout class="QGridLayout" name="gridLayout" columnstretch="0,2,1,2">
      <item row="0" column="1">
