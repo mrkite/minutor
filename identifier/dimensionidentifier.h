@@ -6,8 +6,7 @@
 #include <QList>
 #include <QHash>
 #include <QDir>
-
-#include "json/json.h"
+#include <QJsonArray>
 
 
 class DimensionInfo {
@@ -32,7 +31,7 @@ class DimensionIdentifier {
   static DimensionIdentifier &Instance();
 
   // definition parsing
-  int  addDefinitions(JSONArray *, int pack = -1);
+  int  addDefinitions(QJsonArray defs, int pack = -1);
   void enableDefinitions(int id);
   void disableDefinitions(int id);
 

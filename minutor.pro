@@ -32,7 +32,6 @@ HEADERS += \
     identifier/entityidentifier.h \
     identifier/flatteningconverter.h \
     jumpto.h \
-    json/json.h \
     mapview.h \
     minutor.h \
     nbt/nbt.h \
@@ -75,7 +74,6 @@ SOURCES += \
     identifier/entityidentifier.cpp \
     identifier/flatteningconverter.cpp \
     jumpto.cpp \
-    json/json.cpp \
     main.cpp \
     mapview.cpp \
     minutor.cpp \

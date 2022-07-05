@@ -5,7 +5,6 @@
 #include <cmath>
 
 #include "flatteningconverter.h"
-#include "json/json.h"
 
 const QString PaletteEntry::legacyBlockIdProperty = "lbid";
 
@@ -50,25 +49,24 @@ void FlatteningConverter::disableDefinitions(int /*pack*/) {
 //    packs[pack][i]->enabled = false;
 }
 
-int FlatteningConverter::addDefinitions(JSONArray *defs, int pack) {
+int FlatteningConverter::addDefinitions(QJsonArray defs, int pack) {
 //  if (pack == -1) {
 //    pack = packs.length();
 //    packs.append(QList<BlockInfo*>());
 //  }
-  int len = defs->length();
+  int len = defs.size();
   for (int i = 0; i < len; i++)
-    parseDefinition(dynamic_cast<JSONObject *>(defs->at(i)), NULL, pack);
+    parseDefinition(defs.at(i).toObject(), NULL, pack);
   return pack;
 }
 
-void FlatteningConverter::parseDefinition(
-        JSONObject *b,
+void FlatteningConverter::parseDefinition(QJsonObject b,
         int *parentID,
         int pack) {
   // try to translate old block name into new flatname
   QString flatname;
-  if (b->has("name")) {
-    flatname = b->at("name")->asString().toLower().replace(" ", "_");
+  if (b.contains("name")) {
+    flatname = b.value("name").toString().toLower().replace(" ", "_");
     // Put in minecraft: namespace if not in another (e.g., mod) one
     if (flatname.indexOf(':') == -1) {
         flatname = "minecraft:" + flatname;
@@ -80,16 +78,16 @@ void FlatteningConverter::parseDefinition(
   }
 
   // or use provided flatname instead
-  if (b->has("flatname"))
-    flatname = b->at("flatname")->asString();
+  if (b.contains("flatname"))
+    flatname = b.value("flatname").toString();
 
   // get the ancient block ID
   int bid, data(0);
   if (parentID == NULL) {
-    bid = b->at("id")->asNumber();
+    bid = b.value("id").toInt();
   } else {
     bid = *parentID;
-    data = b->at("data")->asNumber();
+    data = b.value("data").toInt();
     // Shift enough to never overlap 0-4095 range
     bid |= data << 12;
   }
@@ -110,18 +108,18 @@ void FlatteningConverter::parseDefinition(
 
   // get optional mask value (or guess default)
   int mask = 0;
-  if (b->has("mask")) {
-    mask = b->at("mask")->asNumber();
-  } else if (b->has("variants")) {
+  if (b.contains("mask")) {
+    mask = b.value("mask").toInt();
+  } else if (b.contains("variants")) {
     mask = 0x0f;
   }
 
   // recursive parsing of variants (with data)
-  if (b->has("variants")) {
-    JSONArray *variants = dynamic_cast<JSONArray *>(b->at("variants"));
-    int vlen = variants->length();
+  if (b.contains("variants")) {
+    QJsonArray variants = b.value("variants").toArray();
+    int vlen = variants.size();
     for (int j = 0; j < vlen; j++) {
-      parseDefinition(dynamic_cast<JSONObject *>(variants->at(j)), &bid, pack);
+      parseDefinition(variants.at(j).toObject(), &bid, pack);
     }
     // spread variants in masked bid
     // Variants must be spaced at least 4096 apart to ensure

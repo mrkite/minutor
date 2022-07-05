@@ -8,7 +8,6 @@ Copyright (c) 2016, EtlamGit
 #include <QtCore>
 
 #include "biomeidentifier.h"
-#include "json/json.h"
 #include "clamp.h"
 
 // --------- --------- --------- ---------
@@ -246,45 +245,45 @@ void BiomeIdentifier::disableDefinitions(int pack) {
   updateBiomeDefinition();
 }
 
-int BiomeIdentifier::addDefinitions(JSONArray *data, JSONArray *data18, int pack) {
+int BiomeIdentifier::addDefinitions(QJsonArray data, QJsonArray data18, int pack) {
   if (pack == -1) {
     pack = packs.length();
     packs  .append(QList<BiomeInfo *>());
     packs18.append(QList<BiomeInfo *>());
   }
 
-  if (data)   parseBiomeDefinitions0000(data, pack);
-  if (data18) parseBiomeDefinitions2800(data18, pack);
+  if (!data.isEmpty())   parseBiomeDefinitions0000(data, pack);
+  if (!data18.isEmpty()) parseBiomeDefinitions2800(data18, pack);
 
   updateBiomeDefinition();
   return pack;
 }
 
 // define some special Biome category by (optional) tag or guess from name
-void BiomeIdentifier::guessSpecialBiomes(JSONObject *b, BiomeInfo *biome)
+void BiomeIdentifier::guessSpecialBiomes(QJsonObject b, BiomeInfo *biome)
 {
-  if (b->has("ocean")) {
-    biome->ocean = b->at("ocean")->asBool();
+  if (b.contains("ocean")) {
+    biome->ocean = b.value("ocean").toBool();
   } else if (biome->name.contains("ocean", Qt::CaseInsensitive)) {
     biome->ocean = true;
   }
-  if (b->has("river")) {
-    biome->river = b->at("river")->asBool();
+  if (b.contains("river")) {
+    biome->river = b.value("river").toBool();
   } else if (biome->name.contains("river", Qt::CaseInsensitive)) {
     biome->river = true;
   }
-  if (b->has("swamp")) {
-    biome->swamp = b->at("swamp")->asBool();
+  if (b.contains("swamp")) {
+    biome->swamp = b.value("swamp").toBool();
   } else if (biome->name.contains("swamp", Qt::CaseInsensitive)) {
     biome->swamp = true;
   }
-  if (b->has("darkforest")) {
-    biome->darkforest = b->at("darkforest")->asBool();
+  if (b.contains("darkforest")) {
+    biome->darkforest = b.value("darkforest").toBool();
   } else if (biome->name.contains("dark forest", Qt::CaseInsensitive)) {
     biome->darkforest = true;
   }
-  if (b->has("badlands")) {
-    biome->badlands = b->at("badlands")->asBool();
+  if (b.contains("badlands")) {
+    biome->badlands = b.value("badlands").toBool();
   } else if ((biome->name.contains("mesa", Qt::CaseInsensitive)) ||
              (biome->name.contains("badlands", Qt::CaseInsensitive))) {
     biome->badlands = true;
@@ -292,41 +291,41 @@ void BiomeIdentifier::guessSpecialBiomes(JSONObject *b, BiomeInfo *biome)
 }
 
 // legacy Biome definitions before Cliffs & Caves (up to 1.17)
-void BiomeIdentifier::parseBiomeDefinitions0000(JSONArray *data, int pack) {
-  int len = data->length();
+void BiomeIdentifier::parseBiomeDefinitions0000(QJsonArray data, int pack) {
+  int len = data.size();
   for (int i = 0; i < len; i++) {
-    JSONObject *b = dynamic_cast<JSONObject *>(data->at(i));
-    if (b->has("id")) {
-      int id = b->at("id")->asNumber();
+    QJsonObject b = data.at(i).toObject();
+    if (b.contains("id")) {
+      int id = b.value("id").toInt();
 
       BiomeInfo *biome = new BiomeInfo();
       biome->enabled = true;
       biome->id = id;
-      if (b->has("name"))
-        biome->name = b->at("name")->asString();
+      if (b.contains("name"))
+        biome->name = b.value("name").toString();
 
       // define some special Biome category by (optional) tag or guess from name
       guessSpecialBiomes(b, biome);
 
       // get temperature definition
-      if (b->has("temperature"))
-        biome->temperature = b->at("temperature")->asNumber();
+      if (b.contains("temperature"))
+        biome->temperature = b.value("temperature").toDouble();
 
       // get humidity definition
-      if (b->has("humidity"))
-        biome->humidity = b->at("humidity")->asNumber();
+      if (b.contains("humidity"))
+        biome->humidity = b.value("humidity").toDouble();
 
       // get watermodifier definition
-      if (b->has("watermodifier")) {
-        biome->watermodifier.setNamedColor(b->at("watermodifier")->asString());
+      if (b.contains("watermodifier")) {
+        biome->watermodifier.setNamedColor(b.value("watermodifier").toString());
         biome->enabledwatermodifier = true;
         assert(biome->watermodifier.isValid());
       }
 
       // get color definition
       QColor biomecolor;
-      if (b->has("color")) {
-        QString colorname = b->at("color")->asString();
+      if (b.contains("color")) {
+        QString colorname = b.value("color").toString();
         if (colorname.length() == 6) {
           // check if this is an old color definition with missing '#'
           bool ok;
@@ -358,17 +357,17 @@ void BiomeIdentifier::parseBiomeDefinitions0000(JSONArray *data, int pack) {
 }
 
 // new Biome definitions with Cliffs & Caves (1.18)
-void BiomeIdentifier::parseBiomeDefinitions2800(JSONArray *data18, int pack) {
-  int len = data18->length();
+void BiomeIdentifier::parseBiomeDefinitions2800(QJsonArray data18, int pack) {
+  int len = data18.size();
   for (int i = 0; i < len; i++) {
-    JSONObject *b = dynamic_cast<JSONObject *>(data18->at(i));
-    if (b->has("id")) {
+    QJsonObject b = data18.at(i).toObject();
+    if (b.contains("id")) {
       BiomeInfo *biome = new BiomeInfo();
       biome->enabled = true;
-      biome->nid = b->at("id")->asString();
+      biome->nid = b.value("id").toString();
 
-      if (b->has("name"))
-        biome->name = b->at("name")->asString();
+      if (b.contains("name"))
+        biome->name = b.value("name").toString();
       else {
         // construct the name from NID
         QString nid = QString(biome->nid).replace("minecraft:","").replace("_"," ").replace(":",": ");
@@ -382,24 +381,24 @@ void BiomeIdentifier::parseBiomeDefinitions2800(JSONArray *data18, int pack) {
       guessSpecialBiomes(b, biome);
 
       // get temperature definition
-      if (b->has("temperature"))
-        biome->temperature = b->at("temperature")->asNumber();
+      if (b.contains("temperature"))
+        biome->temperature = b.value("temperature").toDouble();
 
       // get humidity definition
-      if (b->has("humidity"))
-        biome->humidity = b->at("humidity")->asNumber();
+      if (b.contains("humidity"))
+        biome->humidity = b.value("humidity").toDouble();
 
       // get watermodifier definition
       biome->enabledwatermodifier = true;
-      if (b->has("watermodifier")) {
-        biome->watermodifier.setNamedColor(b->at("watermodifier")->asString());
+      if (b.contains("watermodifier")) {
+        biome->watermodifier.setNamedColor(b.value("watermodifier").toString());
         assert(biome->watermodifier.isValid());
       } else biome->watermodifier.setNamedColor("#3f76e4");
 
       // get color definition
       QColor biomecolor;
-      if (b->has("color")) {
-        QString colorname = b->at("color")->asString();
+      if (b.contains("color")) {
+        QString colorname = b.value("color").toString();
         if (colorname.length() == 6) {
           // check if this is an old color definition with missing '#'
           bool ok;

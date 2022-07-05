@@ -9,6 +9,10 @@
 #include <QtWidgets/QPushButton>
 #include <QStandardPaths>
 #include <QtWidgets/QFileDialog>
+#include <QtCore/QJsonDocument>
+#include <QtCore/QJsonParseError>
+#include <QtCore/QJsonArray>
+#include <QtCore/QJsonObject>
 #include <algorithm>
 #include "definitionmanager.h"
 #include "biomeidentifier.h"
@@ -17,7 +21,6 @@
 #include "entityidentifier.h"
 #include "flatteningconverter.h"
 #include "mapview.h"
-#include "json/json.h"
 #include "zipreader.h"
 #include "definitionupdater.h"
 
@@ -249,22 +252,21 @@ void DefinitionManager::installJson(QString path, bool overwrite,
   QString destdir = QStandardPaths::writableLocation(
       QStandardPaths::DataLocation);
 
-  std::unique_ptr<JSONData> def;
   QFile f(path);
   f.open(QIODevice::ReadOnly);
-  try {
-    def = JSON::parse(f.readAll());
-    f.close();
-  } catch (JSONParseException e) {
-    f.close();
+  QJsonParseError e;
+  QJsonDocument json_doc = QJsonDocument::fromJson(f.readAll(), &e);
+  f.close();
+  if (json_doc.isNull()) {
     QMessageBox::warning(this, tr("Couldn't install %1").arg(path),
-                         e.reason,
+                         e.errorString(),
                          QMessageBox::Cancel);
     return;
   }
+  QJsonObject def = json_doc.object();
 
-  QString key = def->at("name")->asString() + def->at("type")->asString();
-  QString exeversion = def->at("version")->asString();
+  QString key = def.value("name").toString() + def.value("type").toString();
+  QString exeversion = def.value("version").toString();
 
   // check if intermediate qHash(..,0) name is present
   QString dest0 = destdir + "/" + QString("%1").arg(qHash(key, 0)) + ".json";
@@ -279,14 +281,12 @@ void DefinitionManager::installJson(QString path, bool overwrite,
   if (QFile::exists(dest)) {
     QFile f(dest);
     f.open(QIODevice::ReadOnly);
-    try {
-      def = JSON::parse(f.readAll());
-      f.close();
-    } catch (JSONParseException e) {
-      f.close();
+    json_doc = QJsonDocument::fromJson(f.readAll());
+    if (json_doc.isNull()) {
       return;
     }
-    QString fileversion = def->at("version")->asString();
+    def = json_doc.object();
+    QString fileversion = def.value("version").toString();
 
     if (DefinitionUpdater::versionCompare(exeversion, fileversion) > 0) {
       // force overwriting outdated local copy
@@ -328,32 +328,32 @@ void DefinitionManager::installZip(QString path, bool overwrite,
     return;
   }
   // fetch the pack info
-  std::unique_ptr<JSONData> info;
-  try {
-    info = JSON::parse(zip.get("pack_info.json"));
-  } catch (JSONParseException e) {
+  QJsonObject info;
+  QJsonParseError e;
+  QJsonDocument json_doc = QJsonDocument::fromJson(zip.get("pack_info.json"), &e);
+  if (json_doc.isEmpty()) {
     QMessageBox::warning(this, tr("Couldn't install %1").arg(path),
-                         tr("pack_info.json : %1").arg(e.reason),
+                         tr("pack_info.json : %1").arg(e.errorString()),
                          QMessageBox::Cancel);
     zip.close();
     return;
   }
+  info = json_doc.object();
   // let's verify all the jsons in the pack
-  for (int i = 0; i < info->at("data")->length(); i++) {
-    std::unique_ptr<JSONData> def;
-    try {
-      def = JSON::parse(zip.get(info->at("data")->at(i)->asString()));
-    } catch (JSONParseException e) {
+  for (int i = 0; i < info.value("data").toArray().size(); i++) {
+    QJsonDocument def = QJsonDocument::fromJson(zip.get(info.value("data").toArray().at(i).toString()), &e);
+    if (def.isEmpty()) {
       QMessageBox::warning(this, tr("Couldn't install %1").arg(path),
                            tr("%1: %2")
-                           .arg(info->at("data")->at(i)->asString(),
-                                e.reason), QMessageBox::Cancel);
+                           .arg(info.value("data").toArray().at(i).toString(),
+                                e.errorString()), QMessageBox::Cancel);
       zip.close();
       return;
     }
   }
+  zip.close();
 
-  QString key = info->at("name")->asString() + info->at("type")->asString();
+  QString key = info.value("name").toString() + info.value("type").toString();
   QString dest = destdir + "/" + QString("%1").arg(qHash(key,42)) + ".zip";
   if (!QFile::exists(dest) || overwrite) {
     if (QFile::exists(dest) && install)
@@ -421,43 +421,41 @@ QSize DefinitionManager::sizeHint() const {
 void DefinitionManager::loadDefinition(QString path) {
   // determine if we're loading a single json or a pack
   if (path.endsWith(".json", Qt::CaseInsensitive)) {
-    std::unique_ptr<JSONData> def;
     QFile f(path);
     if (!f.open(QIODevice::ReadOnly)) return;
-    try {
-      def = JSON::parse(f.readAll());
-      f.close();
-    } catch (JSONParseException e) {
-      f.close();
+    QJsonDocument json_doc = QJsonDocument::fromJson(f.readAll());
+    f.close();
+    if (json_doc.isNull()) {
       return;
     }
+    QJsonObject def = json_doc.object();
     Definition d;
-    d.name = def->at("name")->asString();
-    d.version = def->at("version")->asString();
+    d.name = def.value("name").toString();
+    d.version = def.value("version").toString();
     d.path = path;
-    d.update = def->at("update")->asString();
-    QString type = def->at("type")->asString();
+    d.update = def.value("update").toString();
+    QString type = def.value("type").toString();
     d.enabled = true;  // should look this up
     if (type == "block") {
       d.id = flatteningConverter.addDefinitions(
-          dynamic_cast<JSONArray*>(def->at("data")));
+          def.value("data").toArray());
       d.type = Definition::Converter;
     } else if (type == "flatblock") {
       d.id = blockManager.addDefinitions(
-          dynamic_cast<JSONArray*>(def->at("data")));
+          def.value("data").toArray());
       d.type = Definition::Block;
     } else if (type == "biome") {
       d.id = biomeManager.addDefinitions(
-            dynamic_cast<JSONArray*>(def->at("data")),
-            dynamic_cast<JSONArray*>(def->at("data18")));
+            def.value("data").toArray(),
+            def.value("data18").toArray());
       d.type = Definition::Biome;
     } else if (type == "dimension") {
       d.id = dimensionManager.addDefinitions(
-          dynamic_cast<JSONArray*>(def->at("data")));
+          def.value("data").toArray());
       d.type = Definition::Dimension;
     } else if (type == "entity") {
       d.id = entityManager.addDefinitions(
-          dynamic_cast<JSONArray*>(def->at("data")));
+          def.value("data").toArray());
       d.type = Definition::Entity;
     } else {
       return; // unknown type
@@ -467,17 +465,16 @@ void DefinitionManager::loadDefinition(QString path) {
     ZipReader zip(path);
     if (!zip.open())
       return;
-    std::unique_ptr<JSONData> info;
-    try {
-      info = JSON::parse(zip.get("pack_info.json"));
-    } catch (JSONParseException e) {
+    QJsonDocument json_doc = QJsonDocument::fromJson(zip.get("pack_info.json"));
+    if (json_doc.isNull()) {
       zip.close();
       return;
     }
+    QJsonObject info = json_doc.object();
     Definition d;
-    d.name = info->at("name")->asString();
-    d.version = info->at("version")->asString();
-    d.update = info->at("update")->asString();
+    d.name = info.value("name").toString();
+    d.version = info.value("version").toString();
+    d.update = info.value("update").toString();
     d.path = path;
     d.enabled = true;
     d.id = 0;
@@ -486,30 +483,29 @@ void DefinitionManager::loadDefinition(QString path) {
     d.biomeid = -1;
     d.dimensionid = -1;
     d.entityid = -1;
-    for (int i = 0; i < info->at("data")->length(); i++) {
-      std::unique_ptr<JSONData> def;
-      try {
-        def = JSON::parse(zip.get(info->at("data")->at(i)->asString()));
-      } catch (JSONParseException e) {
+    for (int i = 0; i < info.value("data").toArray().size(); i++) {
+      QJsonDocument json_doc = QJsonDocument::fromJson(zip.get(info.value("data").toArray().at(i).toString()));
+      if (json_doc.isNull()) {
         continue;
       }
-      QString type = def->at("type")->asString();
+      QJsonObject def = json_doc.object();
+      QString type = def.value("type").toString();
       if (type == "block") {
 //        d.blockid = flatteningConverter->addDefinitions(
-//            dynamic_cast<JSONArray*>(def->at("data")), d.blockid);
+//            def.value("data").toArray(), d.blockid);
       } else if (type == "flatblock") {
           d.blockid = blockManager.addDefinitions(
-              dynamic_cast<JSONArray*>(def->at("data")), d.blockid);
+              def.value("data").toArray(), d.blockid);
       } else if (type == "biome") {
         d.biomeid = biomeManager.addDefinitions(
-              dynamic_cast<JSONArray*>(def->at("data")),
-              dynamic_cast<JSONArray*>(def->at("data18")), d.biomeid);
+              def.value("data").toArray(),
+              def.value("data18").toArray(), d.biomeid);
       } else if (type == "dimension") {
         d.dimensionid = dimensionManager.addDefinitions(
-            dynamic_cast<JSONArray*>(def->at("data")), d.dimensionid);
+            def.value("data").toArray(), d.dimensionid);
       } else if (type == "entity") {
         d.entityid = entityManager.addDefinitions(
-            dynamic_cast<JSONArray*>(def->at("data")), d.entityid);
+            def.value("data").toArray(), d.entityid);
       }
     }
     definitions.insert(path, d);

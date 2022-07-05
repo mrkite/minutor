@@ -3,7 +3,6 @@
 #include <assert.h>
 
 #include "entityidentifier.h"
-#include "json/json.h"
 
 EntityInfo::EntityInfo(QString name, QString category, QColor brushColor,
                        QColor penColor) : name(name), category(category),
@@ -44,7 +43,7 @@ void EntityIdentifier::disableDefinitions(int packID) {
   }
 }
 
-int EntityIdentifier::addDefinitions(JSONArray *defs, int packID) {
+int EntityIdentifier::addDefinitions(QJsonArray defs, int packID) {
   if (packID == -1) {
     // find largest used packID
     for (auto it = packs.constBegin(); it != packs.constEnd(); ++it) {
@@ -54,9 +53,9 @@ int EntityIdentifier::addDefinitions(JSONArray *defs, int packID) {
     packID++;  // use one higher than largest found
     packs.append(TpackInfo(packID));
   }
-  int len = defs->length();
+  int len = defs.size();
   for (int i = 0; i < len; i++)
-    parseCategoryDefinition(dynamic_cast<JSONObject *>(defs->at(i)), packID);
+    parseCategoryDefinition(defs.at(i).toObject(), packID);
   return packID;
 }
 
@@ -68,16 +67,16 @@ EntityIdentifier::TentityMap& EntityIdentifier::getMapForPackID(int packID) {
   return dummyMap;
 }
 
-void EntityIdentifier::parseCategoryDefinition(JSONObject *data, int packID) {
+void EntityIdentifier::parseCategoryDefinition(QJsonObject data, int packID) {
   QString category;
-  if (data->has("category"))
-    category = data->at("category")->asString();
+  if (data.contains("category"))
+    category = data.value("category").toString();
   else
     category = "Unknown";
 
   QColor catcolor;
-  if (data->has("catcolor")) {
-    QString colorname = data->at("catcolor")->asString();
+  if (data.contains("catcolor")) {
+    QString colorname = data.value("catcolor").toString();
     catcolor.setNamedColor(colorname);
     assert(catcolor.isValid());
   } else {  // use hashed by name instead
@@ -86,32 +85,32 @@ void EntityIdentifier::parseCategoryDefinition(JSONObject *data, int packID) {
   }
   addCategory(qMakePair(category, catcolor));
 
-  if (data->has("entity")) {
-    JSONArray *entities = dynamic_cast<JSONArray *>(data->at("entity"));
-    int len = entities->length();
+  if (data.contains("entity")) {
+    QJsonArray entities = data.value("entity").toArray();
+    int len = entities.size();
 
     for (int e = 0; e < len; e++)
-      parseEntityDefinition(dynamic_cast<JSONObject *>(entities->at(e)),
+      parseEntityDefinition(entities.at(e).toObject(),
                             category, catcolor, packID);
   }
 }
 
-void EntityIdentifier::parseEntityDefinition(JSONObject *entity,
+void EntityIdentifier::parseEntityDefinition(QJsonObject entity,
                                              QString const &category,
                                              QColor catcolor, int packID) {
   QString id("unknown");
-  if (entity->has("id"))
-    id = entity->at("id")->asString().toLower();
+  if (entity.contains("id"))
+    id = entity.value("id").toString().toLower();
 
-  if (entity->has("catcolor")) {
-    QString colorname = entity->at("catcolor")->asString();
+  if (entity.contains("catcolor")) {
+    QString colorname = entity.value("catcolor").toString();
     catcolor.setNamedColor(colorname);
     assert(catcolor.isValid());
   }
 
   QColor color;
-  if (entity->has("color")) {
-    QString colorname = entity->at("color")->asString();
+  if (entity.contains("color")) {
+    QString colorname = entity.value("color").toString();
     color.setNamedColor(colorname);
     assert(color.isValid());
   } else {  // use hashed by name instead
@@ -120,9 +119,9 @@ void EntityIdentifier::parseEntityDefinition(JSONObject *entity,
   }
 
   QString name;
-  if (entity->has("name")) {
+  if (entity.contains("name")) {
     // use provided name
-    name = entity->at("name")->asString();
+    name = entity.value("name").toString();
   } else {
     // or try to build name automatically
     // split at underscores
@@ -140,11 +139,11 @@ void EntityIdentifier::parseEntityDefinition(JSONObject *entity,
 
   // add duplicates: when new 1.11+ or 1.13+ id definitions are available
   // legacy id is stored in own definition element (duplicates automatically)
-  if (entity->has("idlist")) {
-    JSONArray *idlist = dynamic_cast<JSONArray *>(entity->at("idlist"));
-    int len = idlist->length();
+  if (entity.contains("idlist")) {
+    QJsonArray idlist = entity.value("idlist").toArray();
+    int len = idlist.size();
     for (int j = 0; j < len; j++) {
-      QString idl = entity->at("idlist")->at(j)->asString().toLower();
+      QString idl = idlist.at(j).toString().toLower();
       map.insert(idl, EntityInfo(name, category, catcolor, color));
     }
   }

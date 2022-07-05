@@ -10,6 +10,9 @@
 #include <QProgressDialog>
 #include <QDir>
 #include <QRegExp>
+#include <QtCore/QJsonDocument>
+#include <QtCore/QJsonArray>
+#include <QtCore/QJsonObject>
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
 
@@ -18,7 +21,6 @@
 #include "labelledseparator.h"
 #include "labelledslider.h"
 #include "nbt/nbt.h"
-#include "json/json.h"
 #include "identifier/definitionmanager.h"
 #include "identifier/entityidentifier.h"
 #include "identifier/dimensionidentifier.h"
@@ -752,11 +754,11 @@ void Minutor::updatePlayerCache(QNetworkReply* reply) {
   auto response = reply->readAll();
   if (response.length() > 0) {
     // we got a response
-    auto json = JSON::parse(QString(response));
-    if (json->length() > 0) {
+    auto json = QJsonDocument::fromJson(response).array();
+    if (json.size() > 0) {
       // at least one entry available, last one is the current one
-      JSONData* name0 = json->at(json->length()-1);
-      if (name0->has("name")) {
+      QJsonObject name0 = json.at(json.size()-1).toObject();
+      if (name0.contains("name")) {
         // reconstruct player UUID
         QString playerUUID = reply->url().path().mid(15, 32);
         playerUUID.insert(20, '-');
@@ -765,7 +767,7 @@ void Minutor::updatePlayerCache(QNetworkReply* reply) {
         playerUUID.insert(8, '-');
         // store in player cache
         QSettings settings;
-        QString playerName = name0->at("name")->asString();
+        QString playerName = name0.value("name").toString();
         settings.setValue("PlayerCache/"+playerUUID, playerName);
       }
     }

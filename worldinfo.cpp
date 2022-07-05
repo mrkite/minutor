@@ -4,10 +4,11 @@
 
 #include <QtWidgets/QMenu>
 #include <QDirIterator>
+#include <QJsonDocument>
+#include <QJsonObject>
 
 #include "nbt/nbt.h"
 #include "zipreader.h"
-#include "json/json.h"
 
 
 WorldInfo::WorldInfo()
@@ -105,13 +106,12 @@ bool WorldInfo::parseDimensions()
         for (auto & file: zip.getFileList()) {
           if (file.startsWith("data/" + pack_name + "/dimension/") &&
               file.endsWith(".json")) {
-            std::unique_ptr<JSONData> json;
-            try {
-              json = JSON::parse(zip.get(file));
-            } catch (JSONParseException e) {
+            QJsonDocument json_doc = QJsonDocument::fromJson(zip.get(file));
+            if (json_doc.isNull()) {
               // file was not parsable -> silently try next one
               continue;
             }
+            QJsonObject json = json_doc.object();
             // now 'json' should contain the Dimension description
             QFileInfo f(file);
             QString dim_name = f.baseName();
@@ -119,8 +119,8 @@ bool WorldInfo::parseDimensions()
             dim.path = "./dimensions/" + pack_name + "/" + dim_name;
             dim.name = pack_name + ":" + dim_name;
 
-            if (json->has("type")) {
-              dim.id = json->at("type")->asString();
+            if (json.contains("type")) {
+              dim.id = json.value("type").toString();
               parseDimensionType(dim, dim.id);
             } else {
               // mandatory field, in case it is missing -> silently try next one
@@ -157,33 +157,32 @@ bool WorldInfo::parseDimensionType(DimensionInfo & dim, const QString & dim_type
 
   } else {
     // parse custom Dimension Type data
-    std::unique_ptr<JSONData> json;
+    QJsonObject json;
     // located in ./datapacks/<packname>.zip -> ./data/<packname>/dimension_type/<dimensions>.json
     ZipReader zip(folder.path() + "/datapacks/" + dim_type_list[0] + ".zip");
     if (zip.open()) {
       QString file = "data/" + dim_type_list[0] + "/dimension_type/" + dim_type_list[1] + ".json";
-      try {
-        json = JSON::parse(zip.get(file));
-      } catch (JSONParseException e) {
+      QJsonDocument json_doc = QJsonDocument::fromJson(zip.get(file));
+      zip.close();
+      if (json_doc.isNull()) {
         // file was not parsable -> silently try next one
-        zip.close();
         return false;
       }
-      zip.close();
+      json = json_doc.object();
     }
     // now 'json' should contain the Dimension Type description
 
     // build height
-    if (json->has("min_y"))
-      dim.minY = json->at("min_y")->asNumber();
-    if (json->has("height"))
-      dim.maxY = json->at("height")->asNumber() + dim.minY;
+    if (json.contains("min_y"))
+      dim.minY = json.value("min_y").toInt();
+    if (json.contains("height"))
+      dim.maxY = json.value("height").toInt() + dim.minY;
 
-    if (json->has("coordinate_scale"))
-      dim.scale = json->at("coordinate_scale")->asNumber();
+    if (json.contains("coordinate_scale"))
+      dim.scale = json.value("coordinate_scale").toInt();
 
     dim.defaultY = dim.maxY;
-    if ((json->has("has_ceiling")) && (json->at("has_ceiling")->asBool()))
+    if ((json.contains("has_ceiling")) && (json.value("has_ceiling").toBool()))
       dim.defaultY = (dim.minY + dim.maxY) / 2;
   }
 

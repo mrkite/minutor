@@ -6,7 +6,6 @@
 #include <cmath>
 
 #include "blockidentifier.h"
-#include "json/json.h"
 
 static BlockInfo unknownBlock;
 
@@ -140,35 +139,35 @@ void BlockIdentifier::disableDefinitions(int pack) {
     packs[pack][i]->enabled = false;
 }
 
-int BlockIdentifier::addDefinitions(JSONArray *defs, int pack) {
+int BlockIdentifier::addDefinitions(QJsonArray defs, int pack) {
   if (pack == -1) {
     pack = packs.length();
     packs.append(QList<BlockInfo*>());
   }
-  int len = defs->length();
+  int len = defs.size();
   for (int i = 0; i < len; i++)
-    parseDefinition(dynamic_cast<JSONObject *>(defs->at(i)), NULL, pack);
+    parseDefinition(defs.at(i).toObject(), NULL, pack);
   return pack;
 }
 
-void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent,
+void BlockIdentifier::parseDefinition(QJsonObject b, BlockInfo *parent,
                                       int pack) {
   BlockInfo *block = new BlockInfo();
 
 //  int id;
 //  if (parent == NULL) {
-//    id = b->at("id")->asNumber();
+//    id = b.value("id").toInt();
 //  } else {
 //    id = parent->id;
-//    int data = b->at("data")->asNumber();
+//    int data = b.value("data").toInt();
 //    id |= data << 12;
 //  }
 //  block->id = id;
 
   // name of Block
   QString name;
-  if (b->has("name"))
-    name = b->at("name")->asString();
+  if (b.contains("name"))
+    name = b.value("name").toString();
   else if (parent != NULL)
     name = parent->getName();
   else
@@ -177,12 +176,12 @@ void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent,
   block->enabled = true;
 
   // optional Block State
-  if (b->has("blockstate"))
-    block->blockstate = b->at("blockstate")->asString();
+  if (b.contains("blockstate"))
+    block->blockstate = b.value("blockstate").toString();
 
-  if (b->has("transparent")) {
+  if (b.contains("transparent")) {
     // default setting for a transparent Block
-    block->transparent = b->at("transparent")->asBool();
+    block->transparent = b.value("transparent").toBool();
     block->rendernormal = false;
     block->spawninside = false;
     block->spawnontop = false;
@@ -200,39 +199,39 @@ void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent,
     block->spawnontop = true;
   }
   // override these attributes when explicitly given
-  if (b->has("rendercube"))
-    block->rendernormal = b->at("rendercube")->asBool();
-  if (b->has("spawninside"))
-    block->spawninside = b->at("spawninside")->asBool();
-  if (b->has("spawnontop"))
-    block->spawnontop = b->at("spawnontop")->asBool();
+  if (b.contains("rendercube"))
+    block->rendernormal = b.value("rendercube").toBool();
+  if (b.contains("spawninside"))
+    block->spawninside = b.value("spawninside").toBool();
+  if (b.contains("spawnontop"))
+    block->spawnontop = b.value("spawnontop").toBool();
 
 
   // generic attributes
-  if (b->has("liquid"))
-    block->liquid = b->at("liquid")->asBool();
+  if (b.contains("liquid"))
+    block->liquid = b.value("liquid").toBool();
   else if (parent != NULL)
     block->liquid = parent->liquid;
   else
     block->liquid = false;
 
-  if (b->has("canProvidePower"))
-    block->providepower = b->at("canProvidePower")->asBool();
+  if (b.contains("canProvidePower"))
+    block->providepower = b.value("canProvidePower").toBool();
   else if (parent != NULL)
     block->providepower = parent->providepower;
   else
     block->providepower = false;
 
-  if (b->has("alpha"))
-    block->alpha = b->at("alpha")->asNumber();
+  if (b.contains("alpha"))
+    block->alpha = b.value("alpha").toDouble();
   else if (parent != NULL)
     block->alpha = parent->alpha;
   else
     block->alpha = 1.0;
 
   QColor blockcolor;
-  if (b->has("color")) {
-    QString colorname = b->at("color")->asString();
+  if (b.contains("color")) {
+    QString colorname = b.value("color").toString();
     if (colorname.length() == 6) {
       // check if this is an old color definition with missing '#'
       bool ok;
@@ -263,18 +262,18 @@ void BlockIdentifier::parseDefinition(JSONObject *b, BlockInfo *parent,
   }
 
   // biome dependant color
-  if (b->has("biomeGrass"))
-    block->setBiomeGrass( b->at("biomeGrass")->asBool() );
-  if (b->has("biomeFoliage"))
-    block->setBiomeFoliage( b->at("biomeFoliage")->asBool() );
+  if (b.contains("biomeGrass"))
+    block->setBiomeGrass( b.value("biomeGrass").toBool() );
+  if (b.contains("biomeFoliage"))
+    block->setBiomeFoliage( b.value("biomeFoliage").toBool() );
 
   // variants due to block_state difference
-  if (b->has("variants")) {
+  if (b.contains("variants")) {
     block->variants = true;
-    JSONArray *variants = dynamic_cast<JSONArray *>(b->at("variants"));
-    int vlen = variants->length();
+    QJsonArray variants = b.value("variants").toArray();
+    int vlen = variants.size();
     for (int j = 0; j < vlen; j++)
-      parseDefinition(dynamic_cast<JSONObject *>(variants->at(j)), block, pack);
+      parseDefinition(variants.at(j).toObject(), block, pack);
   }
 
   uint hid = qHash(name);
