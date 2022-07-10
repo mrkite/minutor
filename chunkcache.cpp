@@ -8,6 +8,9 @@
 #include <unistd.h>
 #elif defined(_WIN32) || defined(WIN32)
 #include <windows.h>
+#elif __APPLE__
+#include <unistd.h>
+#include <sys/sysctl.h>
 #endif
 
 ChunkCache::ChunkCache() {
@@ -32,6 +35,12 @@ ChunkCache::ChunkCache() {
   status.dwLength = sizeof(status);
   GlobalMemoryStatusEx(&status);
   DWORDLONG available = qMin(status.ullAvailPhys, status.ullAvailVirtual);
+  chunks   = available / sizeChunkMax;
+  maxcache = available / sizeChunkTypical;  // most chunks are less filled with sections
+#elif __APPLE__
+  uint64_t available;
+  size_t len = sizeof(available);
+  sysctlbyname("hw.memsize", &available, &len, NULL, 0);
   chunks   = available / sizeChunkMax;
   maxcache = available / sizeChunkTypical;  // most chunks are less filled with sections
 #endif
