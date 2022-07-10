@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
   app.installTranslator(&translator);
 
   app.setApplicationName("Minutor");
-  app.setApplicationVersion("2.18.0");
+  app.setApplicationVersion("2.19.1");
   app.setOrganizationName("seancode");
 
   Minutor minutor;
