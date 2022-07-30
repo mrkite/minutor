@@ -4,9 +4,7 @@
 
 #include <QtWidgets/QWidget>
 #include <QHash>
-#include <QString>
-#include <QList>
-#include <QVariant>
+#include <QStringList>
 #include <QDateTime>
 
 class QTableWidget;
@@ -76,7 +74,7 @@ class DefinitionManager : public QWidget {
   EntityIdentifier    &entityManager;
   FlatteningConverter &flatteningConverter;
   QString selected;
-  QList<QVariant> sorted;
+  QStringList sorted;
 
   bool isUpdating;
   QList<DefinitionUpdater *> updateQueue;
