@@ -97,8 +97,7 @@ void DefinitionManager::checkAndRepair()
 {
   // create definition data folder on disk
   QString destdir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
-  QDir dir;
-  dir.mkpath(destdir);
+  QDir::root().mkpath(destdir);
 
   // get known definition packs from application default settings storage
   QSettings settings;
@@ -271,8 +270,7 @@ void DefinitionManager::installJson(QString path, bool overwrite,
   // check if intermediate qHash(..,0) name is present
   QString dest0 = destdir + "/" + QString("%1").arg(qHash(key, 0)) + ".json";
   if (QFile::exists(dest0)) {
-    QFile file (dest0);
-    file.remove();
+    QFile::remove(dest0);
   }
 
   QString dest = destdir + "/" + QString("%1").arg(qHash(key,42)) + ".json";
@@ -300,7 +298,6 @@ void DefinitionManager::installJson(QString path, bool overwrite,
   if (!QFile::exists(dest) || overwrite) {
     if (QFile::exists(dest) && install) {
       removeDefinition(dest);
-      QFile::remove(dest);
     }
     if (!QFile::copy(path, dest)) {
       QMessageBox::warning(this, tr("Couldn't install %1").arg(path),
