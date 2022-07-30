@@ -14,6 +14,7 @@
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonObject>
 #include <algorithm>
+#include <zlib.h>
 #include "definitionmanager.h"
 #include "biomeidentifier.h"
 #include "blockidentifier.h"
@@ -23,6 +24,34 @@
 #include "mapview.h"
 #include "zipreader.h"
 #include "definitionupdater.h"
+
+
+static quint32 stableHash(const quint8 *data, int size)
+{
+  constexpr const int step = sizeof(void *);
+  quint32 crc = crc32(0L, Z_NULL, 0);
+  for (int i = 0; i < size; i += step)
+    crc = crc32(crc, data + i, std::min(step, size - i));
+  return crc;
+}
+
+static quint32 stableHash(const char *data, int size = -1)
+{
+  if (size < 0)
+    size = strlen(data);
+  return stableHash(reinterpret_cast<const quint8 *>(data), size);
+}
+
+static quint32 stableHash(const QByteArray &data)
+{
+  return stableHash(data.data(), data.size());
+}
+
+static quint32 stableHash(const QString &str)
+{
+  return stableHash(str.toUtf8());
+}
+
 
 DefinitionManager::DefinitionManager(QWidget *parent) :
     QWidget(parent),
@@ -106,7 +135,10 @@ void DefinitionManager::checkAndRepair()
   // in Minutor up to 2.2.0 we used hash without seed, which is incompatible to Qt5.12
   // force clean old hashed files generated without an extra seed
   // this assumes, that these hashes will never occur otherwise
-  const QStringList old_hashed_list { "1050220429", "1241760321", "1443276275", "1798448990", "2422344665" };
+  const QStringList old_hashed_list {
+    "1050220429", "1241760321", "1443276275", "1798448990", "2422344665",
+    "797458294", "1758375291", "1959512777", "2171806498", "4286207260",
+  };
   for ( const auto& old_hashed_file : old_hashed_list  ) {
     QString old_path = destdir + "/" + old_hashed_file + ".json";
     QFile::remove(old_path);
@@ -273,7 +305,7 @@ void DefinitionManager::installJson(QString path, bool overwrite,
     QFile::remove(dest0);
   }
 
-  QString dest = destdir + "/" + QString("%1").arg(qHash(key,42)) + ".json";
+  QString dest = destdir + "/" + QString("%1").arg(stableHash(key)) + ".json";
 
   // check if build in version is newer than version on disk
   if (QFile::exists(dest)) {
@@ -351,7 +383,7 @@ void DefinitionManager::installZip(QString path, bool overwrite,
   zip.close();
 
   QString key = info.value("name").toString() + info.value("type").toString();
-  QString dest = destdir + "/" + QString("%1").arg(qHash(key,42)) + ".zip";
+  QString dest = destdir + "/" + QString("%1").arg(stableHash(key)) + ".zip";
   if (!QFile::exists(dest) || overwrite) {
     if (QFile::exists(dest) && install)
       removeDefinition(dest);
