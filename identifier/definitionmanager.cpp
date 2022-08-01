@@ -79,9 +79,9 @@ DefinitionManager::DefinitionManager(QWidget *parent) :
 
   // we load the definitions in backwards order for priority
   QSettings settings;
-  sorted = settings.value("packs").toList();
+  sorted = settings.value("packs").toStringList();
   for (int i = sorted.length() - 1; i >= 0; i--)
-    loadDefinition(sorted[i].toString());
+    loadDefinition(sorted[i]);
 
   // hook up table selection signal
   connect(table,
@@ -97,12 +97,11 @@ void DefinitionManager::checkAndRepair()
 {
   // create definition data folder on disk
   QString destdir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
-  QDir dir;
-  dir.mkpath(destdir);
+  QDir::root().mkpath(destdir);
 
   // get known definition packs from application default settings storage
   QSettings settings;
-  QList<QVariant> known_packs = settings.value("packs").toList();
+  QStringList known_packs = settings.value("packs").toStringList();
 
   // in Minutor up to 2.2.0 we used hash without seed, which is incompatible to Qt5.12
   // force clean old hashed files generated without an extra seed
@@ -133,16 +132,16 @@ void DefinitionManager::checkAndRepair()
   known_packs.append(sorted);
 
   // remove duplicates
-  QMutableListIterator<QVariant> itD(known_packs);
+  QMutableListIterator<QString> itD(known_packs);
   while (itD.hasNext()) {
     if (known_packs.count(itD.next()) > 1)
       itD.remove();
   }
 
   // repair when definition is in settings, but file is missing
-  QMutableListIterator<QVariant> itF(known_packs);
+  QMutableListIterator<QString> itF(known_packs);
   while (itF.hasNext()) {
-    if (!QFile::exists(itF.next().toString()))
+    if (!QFile::exists(itF.next()))
       itF.remove();
   }
 
@@ -157,7 +156,7 @@ void DefinitionManager::refresh() {
   types << tr("block") << tr("biome") << tr("dimension")
         << tr("entity") << tr("pack") << tr("converter");
   for (int i = 0; i < sorted.length(); i++) {
-    Definition &def = definitions[sorted[i].toString()];
+    Definition &def = definitions[sorted[i]];
     int row = table->rowCount();
     table->insertRow(row);
     QTableWidgetItem *name = new QTableWidgetItem(def.name);
@@ -271,8 +270,7 @@ void DefinitionManager::installJson(QString path, bool overwrite,
   // check if intermediate qHash(..,0) name is present
   QString dest0 = destdir + "/" + QString("%1").arg(qHash(key, 0)) + ".json";
   if (QFile::exists(dest0)) {
-    QFile file (dest0);
-    file.remove();
+    QFile::remove(dest0);
   }
 
   QString dest = destdir + "/" + QString("%1").arg(qHash(key,42)) + ".json";
@@ -300,7 +298,6 @@ void DefinitionManager::installJson(QString path, bool overwrite,
   if (!QFile::exists(dest) || overwrite) {
     if (QFile::exists(dest) && install) {
       removeDefinition(dest);
-      QFile::remove(dest);
     }
     if (!QFile::copy(path, dest)) {
       QMessageBox::warning(this, tr("Couldn't install %1").arg(path),
@@ -558,7 +555,7 @@ void DefinitionManager::checkForUpdates() {
 
 void DefinitionManager::autoUpdate() {
   for (int i = 0; i < sorted.length(); i++) {
-    QString name = sorted[i].toString();
+    QString name = sorted[i];
     Definition &def = definitions[name];
     if (!def.update.isEmpty()) {
       isUpdating = true;
