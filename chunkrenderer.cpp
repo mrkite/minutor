@@ -111,8 +111,8 @@ void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
 
         // get Biome
         const BiomeInfo &biome = (chunk->version >=2800) ?
-            BiomeIdentifier::Instance().getBiome((quint8)chunk->getBiomeID(x,y,z)) :
-            BiomeIdentifier::Instance().getBiome((qint32)chunk->getBiomeID(x,y,z));
+            BiomeIdentifier::Instance().getBiomeBySection(chunk->getBiomeID(x,y,z)) :
+            BiomeIdentifier::Instance().getBiomeByChunk  (chunk->getBiomeID(x,y,z));
         // get current block color
         QColor blockcolor = block.colors[15];  // get the color from Block definition
         if (block.biomeWater()) {

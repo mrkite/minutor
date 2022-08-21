@@ -202,7 +202,7 @@ BiomeIdentifier& BiomeIdentifier::Instance() {
 }
 
 // legacy Biomes
-const BiomeInfo &BiomeIdentifier::getBiome(int id) const {
+const BiomeInfo &BiomeIdentifier::getBiomeByChunk(qint32 id) const {
   auto itr = this->biomes.find(id);
   if (itr == this->biomes.end()) {
     return unknownBiome;
@@ -212,14 +212,14 @@ const BiomeInfo &BiomeIdentifier::getBiome(int id) const {
 }
 
 // new Biomes after Cliffs & Caves update (1.18)
-const BiomeInfo &BiomeIdentifier::getBiome(quint8 id) const {
+const BiomeInfo &BiomeIdentifier::getBiomeBySection(qint32 id) const {
   if (id < this->biomes18.length())
     return *(this->biomes18.at(id));
   else
     return unknownBiome;
 }
 
-const BiomeInfo &BiomeIdentifier::getBiome(QString id) const {
+const BiomeInfo &BiomeIdentifier::getBiomeByName(QString id) const {
   for (const BiomeInfo* biome : this->biomes18) {
     if (biome->nid == id) return *(biome);
   }

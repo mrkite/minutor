@@ -570,8 +570,8 @@ void MapView::getToolTip(int x, int z) {
     }
     int biomeID = chunk->getBiomeID((x & 0xf), y, (z & 0xf));
     const BiomeInfo &biome = (chunk->version >=2800) ?
-        BiomeIdentifier::Instance().getBiome((quint8)biomeID) :
-        BiomeIdentifier::Instance().getBiome((qint32)biomeID);
+        BiomeIdentifier::Instance().getBiomeBySection(biomeID) :
+        BiomeIdentifier::Instance().getBiomeByChunk  (biomeID);
     biomename = biome.name;
 
     // count Entity of each display type

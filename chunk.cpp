@@ -591,7 +591,7 @@ bool Chunk::loadSection_decodeBiomePalette(ChunkSection * cs, const Tag * biomes
     for (int j = 0; j < biomePaletteLength; j++) {
       biomePalette[j].name = paletteTag->at(j)->toString();
       // query BiomeIdentifer for that Biome
-      quint8 bID = bi.getBiome(biomePalette[j].name).id;
+      quint32 bID = bi.getBiomeByName(biomePalette[j].name).id;
       // get name and hash it to hid
       biomePalette[j].hid  = bID;
     }
@@ -658,20 +658,20 @@ const PaletteEntry & ChunkSection::getPaletteEntry(int offset) const {
     return blockPalette[0];
 }
 
-quint8 ChunkSection::getBiome(int x, int y, int z) const {
+quint16 ChunkSection::getBiome(int x, int y, int z) const {
   int xoffset = x;
   int yoffset = (y & 0x0f) << 8;
   int zoffset = z << 4;
   return getBiome(xoffset + yoffset + zoffset);
 }
 
-quint8 ChunkSection::getBiome(int offset, int y) const {
+quint16 ChunkSection::getBiome(int offset, int y) const {
   int yoffset = (y & 0x0f) << 8;
   return getBiome(offset + yoffset);
 }
 
 inline
-quint8 ChunkSection::getBiome(int offset) const {
+quint16 ChunkSection::getBiome(int offset) const {
   return biomes[offset];
 }
 
