@@ -19,9 +19,9 @@ class ChunkSection {
   const PaletteEntry & getPaletteEntry(int x, int y, int z) const;
   const PaletteEntry & getPaletteEntry(int offset, int y) const;
   const PaletteEntry & getPaletteEntry(int offset) const;
-  quint8 getBiome(int x, int y, int z) const;
-  quint8 getBiome(int offset, int y) const;
-  quint8 getBiome(int offset) const;
+  quint16 getBiome(int x, int y, int z) const;
+  quint16 getBiome(int offset, int y) const;
+  quint16 getBiome(int offset) const;
   //quint8 getSkyLight(int x, int y, int z);
   //quint8 getSkyLight(int offset, int y);
   //quint8 getSkyLight(int offset);
@@ -34,7 +34,7 @@ class ChunkSection {
   bool       blockPaletteIsShared;
 
   quint16 blocks[16*16*16];       // index into blockPalette for each Block
-  quint8  biomes[4*4*4];          // key into BiomeIdentifer for each 4x4x4 volume of Blocks defining the Biome
+  quint16 biomes[4*4*4];          // key into BiomeIdentifer for each 4x4x4 volume of Blocks defining the Biome
 //quint8  skyLight[16*16*16/2];   // not needed in Minutor
   quint8  blockLight[16*16*16/2]; // light value for each Block
 };
@@ -85,7 +85,7 @@ class Chunk : public QObject {
   long long inhabitedTime;
 
   QMap<qint8, ChunkSection*> sections;
-  qint32 biomes[16 * 16 * 4];
+  qint32 biomes[16 * 16 * 4]; // before "The Flattining" it was 1*16*16*Bytes, then it got 16*4*4*4*Int before it moved into Sections
   uchar  image[16 * 16 * 4];  // cached render: RGBA for 16*16 Blocks
   short  depth[16 * 16];      // cached depth map to create shadow
   EntityMap entities;

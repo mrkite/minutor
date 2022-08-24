@@ -60,9 +60,9 @@ class BiomeIdentifier {
   void enableDefinitions(int id);
   void disableDefinitions(int id);
   void updateBiomeDefinition();
-  const BiomeInfo &getBiome(int id) const;
-  const BiomeInfo &getBiome(quint8 id) const;
-  const BiomeInfo &getBiome(QString id) const;
+  const BiomeInfo &getBiomeByChunk  (qint32 id) const;
+  const BiomeInfo &getBiomeBySection(qint32 id) const;
+  const BiomeInfo &getBiomeByName   (QString id) const;
 
 private:
   // singleton: prevent access to constructor and copyconstructor
@@ -71,7 +71,7 @@ private:
   BiomeIdentifier(const BiomeIdentifier &);
   BiomeIdentifier &operator=(const BiomeIdentifier &);
 
-  void parseBiomeDefinitions0000(QJsonArray data, int pack);
+  void parseBiomeDefinitions0000(QJsonArray data,   int pack);
   void parseBiomeDefinitions2800(QJsonArray data18, int pack);
   void guessSpecialBiomes(QJsonObject b, BiomeInfo *biome);
 
