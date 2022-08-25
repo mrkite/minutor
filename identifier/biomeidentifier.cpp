@@ -213,7 +213,7 @@ const BiomeInfo &BiomeIdentifier::getBiomeByChunk(qint32 id) const {
 
 // new Biomes after Cliffs & Caves update (1.18)
 const BiomeInfo &BiomeIdentifier::getBiomeBySection(qint32 id) const {
-  if (id < this->biomes18.length())
+  if (0 <= id && id < this->biomes18.length())
     return *(this->biomes18.at(id));
   else
     return unknownBiome;

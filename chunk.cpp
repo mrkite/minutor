@@ -127,12 +127,12 @@ int Chunk::getBiomeID(int x, int y, int z) const {
     offset = x + 16*z;
   }
 
-  #if defined(DEBUG) || defined(_DEBUG) || defined(QT_DEBUG)
   if ((offset < 0) || ((unsigned long long)(offset) > sizeof(this->biomes)/sizeof(this->biomes[0]))) {
+    #if defined(DEBUG) || defined(_DEBUG) || defined(QT_DEBUG)
     qWarning() << "Biome index out of range!";
+    #endif
     return -1;
   }
-  #endif
   return this->biomes[offset];
 }
 
