@@ -49,15 +49,28 @@ bool WorldInfo::parseFolder(const QDir &path)
 
   NBT level(path.filePath("level.dat"));
   auto data = level.at("Data");
+  if (!data) return false;
 
   if (data->has("LevelName"))
     levelName = data->at("LevelName")->toString();
 
-  if (data->has("DataVersion"))
-    dataVersion = dynamic_cast<const Tag_Int *>(data->at("DataVersion"))->toUInt();
+  if (data->has("DataVersion")) {
+    const Tag_Int * dataversiontag = dynamic_cast<const Tag_Int *>(data->at("DataVersion"));
+    if (dataversiontag)
+      dataVersion = dataversiontag->toUInt();
+  }
 
-  if (data->has("DayTime"))
-    dayTime = dynamic_cast<const Tag_Long *>(data->at("DayTime"))->toULong();
+  if (data->has("DayTime")) {
+    const Tag_Long * daytimetag = dynamic_cast<const Tag_Long *>(data->at("DayTime"));
+    if (daytimetag) {
+      dayTime = daytimetag->toULong();
+    } else {
+      // wrong type, but observed in issue #329
+      const Tag_Int * daytimeinttag = dynamic_cast<const Tag_Int *>(data->at("DayTime"));
+      if (daytimeinttag)
+        dayTime = daytimeinttag->toUInt();
+    }
+  }
 
   // Spawn
   spawnX = data->at("SpawnX")->toInt();
@@ -66,11 +79,13 @@ bool WorldInfo::parseFolder(const QDir &path)
   // Seed
   if (data->has("RandomSeed")) {
     const Tag_Long * seedtag = dynamic_cast<const Tag_Long *>(data->at("RandomSeed"));
-    seed = seedtag->toLong();
+    if (seedtag)
+      seed = seedtag->toLong();
   }
   if (data->has("WorldGenSettings") && data->at("WorldGenSettings")->has("seed")) {
     const Tag_Long * seedtag = dynamic_cast<const Tag_Long *>(data->at("WorldGenSettings")->at("seed"));
-    seed = seedtag->toLong();
+    if (seedtag)
+      seed = seedtag->toLong();
   }
 
   return true;
@@ -84,6 +99,7 @@ bool WorldInfo::parseDimensions()
 
   NBT level(folder.filePath("level.dat"));
   auto data = level.at("Data");
+  if (!data) return false;
 
   // check all enabled datapacks for custom dimensions
   if (data->has("DataPacks") && data->at("DataPacks")->has("Enabled")) {
