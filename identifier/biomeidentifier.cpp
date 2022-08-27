@@ -131,7 +131,7 @@ QColor BiomeInfo::getBiomeGrassColor( QColor blockcolor, int elevation ) const
   if (this->swamp) {
     // perlin noise generator omitted due to performance reasons
     // otherwise the random temperature distribution selects
-    // (below -0.1°C) ‭4C.76.3C‬ or ‭6A.70.39 (above -0.1°C)
+    // (below -0.1°C) 4C.76.3C or 6A.70.39 (above -0.1°C)
     colorizer = QColor::fromRgb(0x6a,0x70,0x39);  // hard wired
   }
   // mesa / badlands
