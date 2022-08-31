@@ -82,20 +82,20 @@ DefinitionManager::DefinitionManager(QWidget *parent) :
   QWidget *buttonBar = new QWidget;
   QHBoxLayout *buttons = new QHBoxLayout;
   QPushButton *add = new QPushButton(tr("Add Pack..."));
-  connect(add, SIGNAL(clicked()),
-          this, SLOT(addPack()));
+  connect(add,  &QPushButton::clicked,
+          this, &DefinitionManager::addPack);
   buttons->addWidget(add);
   QPushButton *remove = new QPushButton(tr("Remove Pack"));
-  connect(remove, SIGNAL(clicked()),
-          this, SLOT(removePack()));
-  connect(this, SIGNAL(packSelected(bool)),
-          remove, SLOT(setEnabled(bool)));
+  connect(remove, &QPushButton::clicked,
+          this,   &DefinitionManager::removePack);
+  connect(this,   &DefinitionManager::packSelected,
+          remove, &QPushButton::setEnabled);
   buttons->addWidget(remove);
   QPushButton *save = new QPushButton(tr("Export Pack..."));
-  connect(save, SIGNAL(clicked()),
-          this, SLOT(exportPack()));
-  connect(this, SIGNAL(packSelected(bool)),
-          save, SLOT(setEnabled(bool)));
+  connect(save, &QPushButton::clicked,
+          this, &DefinitionManager::exportPack);
+  connect(this, &DefinitionManager::packSelected,
+          save, &QPushButton::setEnabled);
   buttons->addWidget(save);
   buttonBar->setLayout(buttons);
   layout->addWidget(buttonBar, 0);
@@ -113,9 +113,8 @@ DefinitionManager::DefinitionManager(QWidget *parent) :
     loadDefinition(sorted[i]);
 
   // hook up table selection signal
-  connect(table,
-          SIGNAL(currentItemChanged(QTableWidgetItem*, QTableWidgetItem*)),
-          this, SLOT(selectedPack(QTableWidgetItem*, QTableWidgetItem*)));
+  connect(table, &QTableWidget::currentItemChanged,
+          this,  &DefinitionManager::selectedPack );
   // fill out table
   refresh();
 }
@@ -312,6 +311,7 @@ void DefinitionManager::installJson(QString path, bool overwrite,
     QFile f(dest);
     f.open(QIODevice::ReadOnly);
     json_doc = QJsonDocument::fromJson(f.readAll());
+    f.close();
     if (json_doc.isNull()) {
       return;
     }
@@ -592,8 +592,8 @@ void DefinitionManager::autoUpdate() {
     if (!def.update.isEmpty()) {
       isUpdating = true;
       auto updater = new DefinitionUpdater(name, def.update, def.version);
-      connect(updater, SIGNAL(updated   (DefinitionUpdater *, QString, QString)),
-              this,    SLOT  (updatePack(DefinitionUpdater *, QString, QString)));
+      connect(updater, &DefinitionUpdater::updated,
+              this,    &DefinitionManager::updatePack);
       updateQueue.append(updater);
       updater->update();
     }
