@@ -37,15 +37,6 @@ void SearchChunksWidget::setSearchCenter(int x, int y, int z)
   ui->resultList->setPointOfInterest(searchCenter);
 }
 
-static Range<float> helperRangeCreation(const QCheckBox& checkBox, const QSpinBox& sb1, const QSpinBox& sb2)
-{
-  if (!checkBox.isChecked()) {
-    return Range<float>::max();
-  } else {
-    return Range<float>::createFromUnorderedParams(sb1.value(), sb2.value());
-  }
-}
-
 void SearchChunksWidget::on_pb_search_clicked()
 {
   if (!currentfuture.isCanceled()) {
@@ -53,14 +44,14 @@ void SearchChunksWidget::on_pb_search_clicked()
     return;
   }
 
-  const Range<float> range_y = helperRangeCreation(*ui->check_range_y, *ui->sb_y_start, *ui->sb_y_end);
+  const Range<float> range_y = ui->range->getRangeY();
   currentSearch = QSharedPointer<AsyncSearch>::create(*this, range_y, searchPlugin);
 
-  ui->pb_search->setText("Cancel");
+  ui->range->setButtonText("Cancel");
 
   ui->resultList->clearResults();
 
-  const int radius = 1 + (ui->sb_radius->value() / 16);
+  const int radius = ui->range->getRadiusChunks();
 
   const bool successfull_init = searchPlugin->initSearch();
   if (!successfull_init)
@@ -79,8 +70,8 @@ void SearchChunksWidget::on_pb_search_clicked()
     chunks->append(id);
   }
 
-  ui->progressBar->setMaximum(chunks->size());
-  ui->progressBar->setValue(0);
+  ui->range->setProgressMax(chunks->size());
+  ui->range->setProgressValue(0);
 
   currentfuture = QtConcurrent::map(*chunks, [currentSearch = currentSearch, chunks /* needed to keep list alive during search */](const ChunkID& id){
     currentSearch->loadAndSearchChunk_async(id);
@@ -141,9 +132,7 @@ void SearchChunksWidget::displayResultsOfSingleChunk(QSharedPointer<SearchPlugin
 
 void SearchChunksWidget::addOneToProgress()
 {
-  ui->progressBar->setValue(ui->progressBar->value() + 1);
-
-  if (ui->progressBar->maximum() == ui->progressBar->value()) {
+  if (ui->range->incrementProgressValue()) {
     cancelSearch();
   }
 }
@@ -153,7 +142,7 @@ void SearchChunksWidget::cancelSearch()
   currentfuture.cancel();
   currentfuture.waitForFinished();
 
-  ui->pb_search->setText("Search");
+  ui->range->setButtonText("Search");
 
   ui->resultList->searchDone();
 

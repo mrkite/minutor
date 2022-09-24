@@ -14,9 +14,8 @@
 
 #include <set>
 
-namespace Ui {
-class SearchChunksWidget;
-}
+#include "ui_searchchunkswidget.h"
+
 
 class ChunkCache;
 class Chunk;
@@ -46,13 +45,9 @@ class SearchChunksWidget : public QDialog
   void displayResultsOfSingleChunk(QSharedPointer<SearchPluginI::ResultListT> results);
 
  private:
-  QSharedPointer<Ui::SearchChunksWidget> ui;
+  Ui::SearchChunksWidget *ui;
   QSharedPointer<SearchPluginI> searchPlugin;
   QVector3D searchCenter;
-
-  class AsyncSearch;
-  QSharedPointer<AsyncSearch> currentSearch;
-  QFuture<void> currentfuture;
 
   class AsyncSearch
   {
@@ -76,6 +71,9 @@ class SearchChunksWidget : public QDialog
     const Range<float> range_y;
     QWeakPointer<SearchPluginI> searchPlugin;
   };
+
+  QSharedPointer<AsyncSearch> currentSearch;
+  QFuture<void> currentfuture;
 
   void addOneToProgress();
 

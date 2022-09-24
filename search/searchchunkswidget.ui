@@ -35,86 +35,9 @@
      <property name="title">
       <string>Search in:</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Radius</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QSpinBox" name="sb_radius">
-        <property name="maximum">
-         <number>999999999</number>
-        </property>
-        <property name="value">
-         <number>2000</number>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="0" column="3">
-       <widget class="QCheckBox" name="check_range_y">
-        <property name="text">
-         <string>Range Y</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="4">
-       <widget class="QSpinBox" name="sb_y_start">
-        <property name="minimum">
-         <number>-999999999</number>
-        </property>
-        <property name="maximum">
-         <number>999999999</number>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="5">
-       <widget class="QSpinBox" name="sb_y_end">
-        <property name="minimum">
-         <number>-999999999</number>
-        </property>
-        <property name="maximum">
-         <number>999999999</number>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="6">
-       <spacer name="horizontalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>30</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="0" column="7">
-       <widget class="QPushButton" name="pb_search">
-        <property name="text">
-         <string>Search</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0" colspan="8">
-       <widget class="QProgressBar" name="progressBar"/>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="SearchRangeWidget" name="range" native="true"/>
       </item>
      </layout>
     </widget>
@@ -129,6 +52,12 @@
    <class>SearchResultWidget</class>
    <extends>QWidget</extends>
    <header>search/searchresultwidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SearchRangeWidget</class>
+   <extends>QWidget</extends>
+   <header>searchrangewidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
