@@ -1,5 +1,5 @@
-#ifndef SEARCHENTITYWIDGET_H
-#define SEARCHENTITYWIDGET_H
+#ifndef SEARCHENTITYDIALOG_H
+#define SEARCHENTITYDIALOG_H
 
 #include "overlay/overlayitem.h"
 #include "overlay/propertietreecreator.h"
@@ -14,20 +14,20 @@
 
 #include <set>
 
-#include "ui_searchchunkswidget.h"
+#include "ui_searchchunksdialog.h"
 
 
 class ChunkCache;
 class Chunk;
 class SearchResultWidget;
 
-class SearchChunksWidget : public QDialog
+class SearchChunksDialog : public QDialog
 {
   Q_OBJECT
 
  public:
-  explicit SearchChunksWidget(QSharedPointer<SearchPluginI> searchPlugin, QWidget *parent = nullptr);
-  ~SearchChunksWidget();
+  explicit SearchChunksDialog(QSharedPointer<SearchPluginI> searchPlugin, QWidget *parent = nullptr);
+  ~SearchChunksDialog();
 
  public slots:
   void setSearchCenter(int x, int y, int z);
@@ -45,14 +45,14 @@ class SearchChunksWidget : public QDialog
   void displayResultsOfSingleChunk(QSharedPointer<SearchPluginI::ResultListT> results);
 
  private:
-  Ui::SearchChunksWidget *ui;
+  Ui::SearchChunksDialog *ui;
   QSharedPointer<SearchPluginI> searchPlugin;
   QVector3D searchCenter;
 
   class AsyncSearch
   {
    public:
-    AsyncSearch(SearchChunksWidget& parent_,
+    AsyncSearch(SearchChunksDialog& parent_,
                 const Range<float>& range_y_,
                 const QWeakPointer<SearchPluginI>& searchPlugin_)
       : parent(parent_)
@@ -67,7 +67,7 @@ class SearchChunksWidget : public QDialog
     QSharedPointer<SearchPluginI::ResultListT> searchExistingChunk_async(const QSharedPointer<Chunk> &chunk);
 
    private:
-    SearchChunksWidget& parent;
+    SearchChunksDialog& parent;
     const Range<float> range_y;
     QWeakPointer<SearchPluginI> searchPlugin;
   };
@@ -80,4 +80,4 @@ class SearchChunksWidget : public QDialog
   void cancelSearch();
 };
 
-#endif // SEARCHENTITYWIDGET_H
+#endif // SEARCHENTITYDIALOG_H

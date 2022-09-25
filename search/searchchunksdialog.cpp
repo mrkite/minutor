@@ -1,5 +1,5 @@
-#include "search/searchchunkswidget.h"
-#include "ui_searchchunkswidget.h"
+#include "search/searchchunksdialog.h"
+#include "ui_searchchunksdialog.h"
 
 #include "chunkcache.h"
 #include "search/range.h"
@@ -10,34 +10,30 @@
 #include <QTreeWidgetItem>
 #include <QtConcurrent/QtConcurrent>
 
-SearchChunksWidget::SearchChunksWidget(QSharedPointer<SearchPluginI> searchPlugin_, QWidget *parent)
+
+SearchChunksDialog::SearchChunksDialog(QSharedPointer<SearchPluginI> searchPlugin_, QWidget *parent)
   : QDialog(parent)
-  , ui(new Ui::SearchChunksWidget)
+  , ui(new Ui::SearchChunksDialog)
   , searchPlugin(searchPlugin_)
 {
   ui->setupUi(this);
-
-  auto layout = new QHBoxLayout(ui->plugin_context);
-  layout->setContentsMargins(0, 0, 0, 0);
-  ui->plugin_context->setLayout(layout);
-  layout->setSizeConstraint(QLayout::SizeConstraint::SetMinimumSize);
-  layout->addWidget(&searchPlugin->getWidget());
+  ui->layout_plugin->addWidget(&searchPlugin->getWidget());
 
   qRegisterMetaType<QSharedPointer<SearchPluginI::ResultListT> >("QSharedPointer<SearchPluginI::ResultListT>");
 }
 
-SearchChunksWidget::~SearchChunksWidget()
+SearchChunksDialog::~SearchChunksDialog()
 {
   cancelSearch();
 }
 
-void SearchChunksWidget::setSearchCenter(int x, int y, int z)
+void SearchChunksDialog::setSearchCenter(int x, int y, int z)
 {
   searchCenter = QVector3D(x,y,z);
   ui->resultList->setPointOfInterest(searchCenter);
 }
 
-void SearchChunksWidget::on_pb_search_clicked()
+void SearchChunksDialog::on_pb_search_clicked()
 {
   if (!currentfuture.isCanceled()) {
     cancelSearch();
@@ -78,14 +74,14 @@ void SearchChunksWidget::on_pb_search_clicked()
   });
 }
 
-void SearchChunksWidget::AsyncSearch::loadAndSearchChunk_async(ChunkID id)
+void SearchChunksDialog::AsyncSearch::loadAndSearchChunk_async(ChunkID id)
 {
   auto chunk = ChunkCache::Instance().getChunkSynchronously(id);
 
   searchLoadedChunk_async(chunk);
 }
 
-void SearchChunksWidget::AsyncSearch::searchLoadedChunk_async(const QSharedPointer<Chunk>& chunk)
+void SearchChunksDialog::AsyncSearch::searchLoadedChunk_async(const QSharedPointer<Chunk>& chunk)
 {
   QSharedPointer<SearchPluginI::ResultListT> results;
 
@@ -97,7 +93,7 @@ void SearchChunksWidget::AsyncSearch::searchLoadedChunk_async(const QSharedPoint
                             Q_ARG(QSharedPointer<SearchPluginI::ResultListT>, results));
 }
 
-QSharedPointer<SearchPluginI::ResultListT> SearchChunksWidget::AsyncSearch::searchExistingChunk_async(const QSharedPointer<Chunk>& chunk)
+QSharedPointer<SearchPluginI::ResultListT> SearchChunksDialog::AsyncSearch::searchExistingChunk_async(const QSharedPointer<Chunk>& chunk)
 {
   ChunkID id(chunk->getChunkX(), chunk->getChunkZ());
 
@@ -119,7 +115,7 @@ QSharedPointer<SearchPluginI::ResultListT> SearchChunksWidget::AsyncSearch::sear
 }
 
 
-void SearchChunksWidget::displayResultsOfSingleChunk(QSharedPointer<SearchPluginI::ResultListT> results)
+void SearchChunksDialog::displayResultsOfSingleChunk(QSharedPointer<SearchPluginI::ResultListT> results)
 {
   if (results) {
     for (const auto& result: *results) {
@@ -130,14 +126,14 @@ void SearchChunksWidget::displayResultsOfSingleChunk(QSharedPointer<SearchPlugin
   addOneToProgress();
 }
 
-void SearchChunksWidget::addOneToProgress()
+void SearchChunksDialog::addOneToProgress()
 {
   if (ui->range->incrementProgressValue()) {
     cancelSearch();
   }
 }
 
-void SearchChunksWidget::cancelSearch()
+void SearchChunksDialog::cancelSearch()
 {
   currentfuture.cancel();
   currentfuture.waitForFinished();
@@ -149,12 +145,12 @@ void SearchChunksWidget::cancelSearch()
   currentSearch.reset();
 }
 
-void SearchChunksWidget::on_resultList_jumpTo(const QVector3D &pos)
+void SearchChunksDialog::on_resultList_jumpTo(const QVector3D &pos)
 {
   emit jumpTo(pos);
 }
 
-void SearchChunksWidget::on_resultList_updateSearchResultPositions(QVector<QSharedPointer<OverlayItem> > item)
+void SearchChunksDialog::on_resultList_updateSearchResultPositions(QVector<QSharedPointer<OverlayItem> > item)
 {
   emit updateSearchResultPositions(item);
 }

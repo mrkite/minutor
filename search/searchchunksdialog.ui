@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>SearchChunksWidget</class>
- <widget class="QDialog" name="SearchChunksWidget">
+ <class>SearchChunksDialog</class>
+ <widget class="QDialog" name="SearchChunksDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>659</width>
-    <height>703</height>
+    <width>400</width>
+    <height>600</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -22,6 +22,20 @@
      <property name="title">
       <string>Search for:</string>
      </property>
+     <layout class="QVBoxLayout" name="layout_plugin">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+     </layout>
     </widget>
    </item>
    <item>
@@ -33,9 +47,21 @@
       </sizepolicy>
      </property>
      <property name="title">
-      <string>Search in:</string>
+      <string>Search Range</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
        <widget class="SearchRangeWidget" name="range" native="true"/>
       </item>
@@ -57,7 +83,7 @@
   <customwidget>
    <class>SearchRangeWidget</class>
    <extends>QWidget</extends>
-   <header>searchrangewidget.h</header>
+   <header>search/searchrangewidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

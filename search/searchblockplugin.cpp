@@ -1,4 +1,4 @@
-#include "search/searchblockpluginwidget.h"
+#include "search/searchblockplugin.h"
 #include "search/searchresultwidget.h"
 
 #include "chunk.h"
@@ -6,13 +6,16 @@
 
 #include <algorithm>
 
-SearchBlockPluginWidget::SearchBlockPluginWidget(QWidget* parent)
+SearchBlockPlugin::SearchBlockPlugin(QWidget* parent)
   : QWidget(parent)
   , layout(new QVBoxLayout(this))
 {
 
   layout->addWidget(stw_blockId   = new SearchTextWidget("block id"));
   layout->addWidget(stw_blockName = new SearchTextWidget("block name"));
+  stw_blockName->setActive(true);
+  //stw_blockName->hideActive(true);
+  stw_blockName->setExactMatch(true);
 
   // add suggestions for "block name"
   auto idList = BlockIdentifier::Instance().getKnownIds();
@@ -31,21 +34,21 @@ SearchBlockPluginWidget::SearchBlockPluginWidget(QWidget* parent)
   }
 }
 
-SearchBlockPluginWidget::~SearchBlockPluginWidget()
+SearchBlockPlugin::~SearchBlockPlugin()
 {
   delete layout;
 }
 
-QWidget &SearchBlockPluginWidget::getWidget()
+QWidget &SearchBlockPlugin::getWidget()
 {
   return *this;
 }
 
-bool SearchBlockPluginWidget::initSearch()
+bool SearchBlockPlugin::initSearch()
 {
   m_searchForIds.clear();
 
-  if (stw_blockId->isActive()) {
+  if (stw_blockId->active()) {
     bool ok = true;
     m_searchForIds.insert(stw_blockId->getSearchText().toUInt());
     if (!ok) {
@@ -53,7 +56,7 @@ bool SearchBlockPluginWidget::initSearch()
     }
   }
 
-  if (stw_blockName->isActive()) {
+  if (stw_blockName->active()) {
     auto idList = BlockIdentifier::Instance().getKnownIds();
     for (auto id: idList) {
       auto blockInfo = BlockIdentifier::Instance().getBlockInfo(id);
@@ -66,7 +69,7 @@ bool SearchBlockPluginWidget::initSearch()
   return (m_searchForIds.size() > 0);
 }
 
-SearchPluginI::ResultListT SearchBlockPluginWidget::searchChunk(const Chunk &chunk)
+SearchPluginI::ResultListT SearchBlockPlugin::searchChunk(const Chunk &chunk)
 {
   SearchPluginI::ResultListT results;
 

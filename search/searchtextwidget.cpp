@@ -14,15 +14,38 @@ SearchTextWidget::~SearchTextWidget()
   delete ui;
 }
 
-bool SearchTextWidget::isActive() const
+
+bool SearchTextWidget::active() const
 {
   return ui->checkBox_active->isChecked();
 }
+
+void SearchTextWidget::setActive(bool flag)
+{
+  ui->checkBox_active->setChecked(flag);
+}
+
+void SearchTextWidget::hideActive(bool flag)
+{
+  ui->checkBox_active->setVisible(!flag);
+}
+
 
 bool SearchTextWidget::exactMatch() const
 {
   return ui->checkBox_exact_match->isChecked();
 }
+
+void SearchTextWidget::setExactMatch(bool flag)
+{
+  ui->checkBox_exact_match->setChecked(flag);
+}
+
+void SearchTextWidget::hideExactMatch(bool flag)
+{
+  ui->checkBox_exact_match->setVisible(!flag);
+}
+
 
 void SearchTextWidget::addSuggestion(const QString &item)
 {

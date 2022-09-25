@@ -32,10 +32,10 @@
 #include "overlay/village.h"
 #include "jumpto.h"
 #include "pngexport.h"
-#include "search/searchchunkswidget.h"
-#include "search/searchentitypluginwidget.h"
-#include "search/searchblockpluginwidget.h"
-#include "search/searchresultwidget.h"
+#include "search/searchchunksdialog.h"
+#include "search/searchentityplugin.h"
+#include "search/searchblockplugin.h"
+#include "search/statisticdialog.h"
 
 Minutor::Minutor()
 {
@@ -493,15 +493,20 @@ void Minutor::createActions() {
           mapview,             SLOT(clearCache()));
 
   // [Search]
-  connect(m_ui.action_SearchEntity, SIGNAL(triggered()),
-          this,                     SLOT(openSearchEntityWidget()));
-  connect(this,                     SIGNAL(worldLoaded(bool)),
-          m_ui.action_SearchEntity, SLOT(setEnabled(bool)));
+  connect(m_ui.action_SearchEntity,   &QAction::triggered,
+          this,                       &Minutor::openSearchEntityDialog);
+  connect(this,                       &Minutor::worldLoaded,
+          m_ui.action_SearchEntity,   &QAction::setEnabled);
 
-  connect(m_ui.action_SearchBlock, SIGNAL(triggered()), this,
-                                   SLOT(openSearchBlockWidget()));
-  connect(this,                    SIGNAL(worldLoaded(bool)),
-          m_ui.action_SearchBlock, SLOT(setEnabled(bool)));
+  connect(m_ui.action_SearchBlock,    &QAction::triggered,
+          this,                       &Minutor::openSearchBlockDialog);
+  connect(this,                       &Minutor::worldLoaded,
+          m_ui.action_SearchBlock,    &QAction::setEnabled);
+
+  connect(m_ui.action_StatisticBlock, &QAction::triggered,
+          this,                       &Minutor::openStatisticBlockDialog);
+  connect(this,                       &Minutor::worldLoaded,
+          m_ui.action_StatisticBlock, &QAction::setEnabled);
 
   // [Help]
   m_ui.action_About->setStatusTip(tr("About %1").arg(qApp->applicationName()));
@@ -850,8 +855,8 @@ void Minutor::showProperties(QVariant props) {
   }
 }
 
-SearchChunksWidget* Minutor::prepareSearchForm(const QSharedPointer<SearchPluginI>& searchPlugin) {
-  SearchChunksWidget* form = new SearchChunksWidget(searchPlugin);
+SearchChunksDialog* Minutor::prepareSearchForm(const QSharedPointer<SearchPluginI>& searchPlugin) {
+  SearchChunksDialog* form = new SearchChunksDialog(searchPlugin);
 
   form->setAttribute(Qt::WA_DeleteOnClose);
 
@@ -873,18 +878,24 @@ SearchChunksWidget* Minutor::prepareSearchForm(const QSharedPointer<SearchPlugin
   return form;
 }
 
-void Minutor::openSearchBlockWidget() {
-  auto searchPlugin = QSharedPointer<SearchBlockPluginWidget>::create();
+void Minutor::openSearchEntityDialog() {
+  auto searchPlugin = QSharedPointer<SearchEntityPlugin>::create();
+  auto searchEntityForm = prepareSearchForm(searchPlugin);
+  searchEntityForm->setWindowTitle(m_ui.action_SearchEntity->statusTip());
+  searchEntityForm->showNormal();
+}
+
+void Minutor::openSearchBlockDialog() {
+  auto searchPlugin = QSharedPointer<SearchBlockPlugin>::create();
   auto searchBlockForm = prepareSearchForm(searchPlugin);
   searchBlockForm->setWindowTitle(m_ui.action_SearchBlock->statusTip());
   searchBlockForm->showNormal();
 }
 
-void Minutor::openSearchEntityWidget() {
-  auto searchPlugin = QSharedPointer<SearchEntityPluginWidget>::create();
-  auto searchEntityForm = prepareSearchForm(searchPlugin);
-  searchEntityForm->setWindowTitle(m_ui.action_SearchEntity->statusTip());
-  searchEntityForm->showNormal();
+void Minutor::openStatisticBlockDialog() {
+  StatisticDialog *dialog = new StatisticDialog(this);
+  dialog->setWindowTitle(m_ui.action_StatisticBlock->statusTip());
+  dialog->showNormal();
 }
 
 void Minutor::triggerJumpToPosition(QVector3D pos) {
