@@ -54,6 +54,27 @@ void LabelledSlider::setRange(int minVal, int maxVal)
   slider->setRange(minVal, maxVal);
 }
 
+void LabelledSlider::setMinimum(int minVal)
+{
+  slider->setMinimum(minVal);
+}
+
+void LabelledSlider::setMaximum(int maxVal)
+{
+  slider->setMaximum(maxVal);
+}
+
+int LabelledSlider::minimum() const
+{
+  return slider->minimum();
+}
+
+int LabelledSlider::maximum() const
+{
+  return slider->maximum();
+}
+
+
 // private slot
 void LabelledSlider::intValueChange(int v) {
   // update preciceValue in case slider is moved by other means

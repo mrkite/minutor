@@ -79,6 +79,7 @@
     </property>
     <addaction name="action_SearchEntity"/>
     <addaction name="action_SearchBlock"/>
+    <addaction name="action_StatisticBlock"/>
    </widget>
    <widget class="QMenu" name="menu_Help">
     <property name="title">
@@ -382,6 +383,14 @@ but keeps the same position / dimension</string>
    </property>
    <property name="statusTip">
     <string>toggle inhabited time on/off</string>
+   </property>
+  </action>
+  <action name="action_StatisticBlock">
+   <property name="text">
+    <string>Statistic for Block</string>
+   </property>
+   <property name="statusTip">
+    <string>Statistic for Block</string>
    </property>
   </action>
  </widget>

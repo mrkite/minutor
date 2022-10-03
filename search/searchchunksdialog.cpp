@@ -27,73 +27,119 @@ SearchChunksDialog::~SearchChunksDialog()
   cancelSearch();
 }
 
-void SearchChunksDialog::setSearchCenter(int x, int y, int z)
+void SearchChunksDialog::setRangeY(int minimum, int maximum)
 {
-  searchCenter = QVector3D(x,y,z);
+  ui->range->setRangeY(Range<int>(minimum, maximum));
+}
+
+void SearchChunksDialog::setSearchCenter(const QVector3D &centerPoint)
+{
+  searchCenter = centerPoint;
   ui->resultList->setPointOfInterest(searchCenter);
 }
 
+void SearchChunksDialog::setSearchCenter(int x, int y, int z)
+{
+  setSearchCenter(QVector3D(x,y,z));
+}
+
+
+// auto-magically connected via name match
 void SearchChunksDialog::on_pb_search_clicked()
 {
+  // when search is pending -> cancel and return
   if (!currentfuture.isCanceled()) {
     cancelSearch();
     return;
   }
 
-  const Range<float> range_y = ui->range->getRangeY();
-  currentSearch = QSharedPointer<AsyncSearch>::create(*this, range_y, searchPlugin);
-
-  ui->range->setButtonText("Cancel");
-
-  ui->resultList->clearResults();
-
-  const int radius = ui->range->getRadiusChunks();
-
   const bool successfull_init = searchPlugin->initSearch();
   if (!successfull_init)
     return;
 
-  QVector2D poi(int(searchCenter.x()) >> 4,
-                int(searchCenter.z()) >> 4);
-  const QVector2D radius2d(radius, radius);
+  // prepare UI
+  ui->range->setButtonText("Cancel");
+  ui->resultList->clearResults();
 
-  QRect searchRange((poi - radius2d).toPoint(), (poi + radius2d).toPoint());
-
+  // determine Chunks to be searched
   auto chunks = QSharedPointer<QList<ChunkID> >::create();
-
-  for (RectangleInnerToOuterIterator it(searchRange); it != it.end(); ++it) {
+  const int radius = ui->range->getRadiusChunks();
+  for (RectangleInnerToOuterIterator it(searchCenter, radius); it != it.end(); ++it) {
     const ChunkID id(it->x(), it->y());
     chunks->append(id);
   }
 
-  ui->range->setProgressMax(chunks->size());
+  ui->range->setProgressMaximum(chunks->size());
   ui->range->setProgressValue(0);
 
+  // start search
+  const Range<int> range_y = ui->range->getRangeY();
+  currentSearch = QSharedPointer<AsyncSearch>::create(*this, range_y, searchPlugin);
+
   currentfuture = QtConcurrent::map(*chunks, [currentSearch = currentSearch, chunks /* needed to keep list alive during search */](const ChunkID& id){
-    currentSearch->loadAndSearchChunk_async(id);
+    currentSearch->loadChunk_async(id);
   });
 }
 
-void SearchChunksDialog::AsyncSearch::loadAndSearchChunk_async(ChunkID id)
-{
-  auto chunk = ChunkCache::Instance().getChunkSynchronously(id);
 
-  searchLoadedChunk_async(chunk);
+
+void SearchChunksDialog::displayResultsOfSingleChunk(QSharedPointer<SearchPluginI::ResultListT> results)
+{
+  if (results) {
+    for (const auto& result: *results) {
+      ui->resultList->addResult(result);
+    }
+  }
+
+  addOneToProgress();
 }
 
-void SearchChunksDialog::AsyncSearch::searchLoadedChunk_async(const QSharedPointer<Chunk>& chunk)
+void SearchChunksDialog::addOneToProgress()
 {
+  if (ui->range->incrementProgressValue()) {
+    cancelSearch(); // finished
+  }
+}
+
+void SearchChunksDialog::cancelSearch()
+{
+  currentfuture.cancel();
+  currentfuture.waitForFinished();
+  currentSearch.reset();
+
+  ui->resultList->searchDone();
+  ui->range->setButtonText("Search");
+}
+
+void SearchChunksDialog::on_resultList_jumpTo(const QVector3D &pos)
+{
+  emit jumpTo(pos);
+}
+
+void SearchChunksDialog::on_resultList_updateSearchResultPositions(QVector<QSharedPointer<OverlayItem> > item)
+{
+  emit updateSearchResultPositions(item);
+}
+
+
+// AsyncSearch
+
+void SearchChunksDialog::AsyncSearch::loadChunk_async(ChunkID id)
+{
+  QSharedPointer<Chunk> chunk = ChunkCache::Instance().getChunkSynchronously(id);
+
   QSharedPointer<SearchPluginI::ResultListT> results;
 
   if (chunk) {
-    results = searchExistingChunk_async(chunk);
+    results = processChunk_async(chunk);
   }
 
   QMetaObject::invokeMethod(&parent, "displayResultsOfSingleChunk", Qt::QueuedConnection,
                             Q_ARG(QSharedPointer<SearchPluginI::ResultListT>, results));
 }
 
-QSharedPointer<SearchPluginI::ResultListT> SearchChunksDialog::AsyncSearch::searchExistingChunk_async(const QSharedPointer<Chunk>& chunk)
+
+QSharedPointer<SearchPluginI::ResultListT> SearchChunksDialog::AsyncSearch::processChunk_async(const QSharedPointer<Chunk>& chunk)
 {
   ChunkID id(chunk->getChunkX(), chunk->getChunkZ());
 
@@ -112,45 +158,4 @@ QSharedPointer<SearchPluginI::ResultListT> SearchChunksDialog::AsyncSearch::sear
   }
 
   return results;
-}
-
-
-void SearchChunksDialog::displayResultsOfSingleChunk(QSharedPointer<SearchPluginI::ResultListT> results)
-{
-  if (results) {
-    for (const auto& result: *results) {
-      ui->resultList->addResult(result);
-    }
-  }
-
-  addOneToProgress();
-}
-
-void SearchChunksDialog::addOneToProgress()
-{
-  if (ui->range->incrementProgressValue()) {
-    cancelSearch();
-  }
-}
-
-void SearchChunksDialog::cancelSearch()
-{
-  currentfuture.cancel();
-  currentfuture.waitForFinished();
-
-  ui->range->setButtonText("Search");
-
-  ui->resultList->searchDone();
-
-  currentSearch.reset();
-}
-
-void SearchChunksDialog::on_resultList_jumpTo(const QVector3D &pos)
-{
-  emit jumpTo(pos);
-}
-
-void SearchChunksDialog::on_resultList_updateSearchResultPositions(QVector<QSharedPointer<OverlayItem> > item)
-{
-  emit updateSearchResultPositions(item);
 }

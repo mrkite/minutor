@@ -21,17 +21,18 @@ public:
   unsigned int getRadius();
   unsigned int getRadiusChunks();
 
-  void         setRangeY(Range<float> range);
-  Range<float> getRangeY();
+  void         setRangeY(Range<int> range);
+  Range<int>   getRangeY();
 
   void setButtonText(const QString &text);
 
   void setProgressValue(const unsigned int value);
-  void setProgressMax(const unsigned int value);
+  void setProgressMaximum(const unsigned int value);
   bool incrementProgressValue();
 
 private:
   Ui::SearchRangeWidget *ui;
+  Range<int>            max_range;
 };
 
 #endif // SEARCHRANGEWIDGET_H

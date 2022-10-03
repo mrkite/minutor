@@ -7,11 +7,14 @@
 template <typename ValueT>
 class Range
 {
-  public:
+public:
   Range(ValueT start_including, ValueT end_including)
-    : start(start_including)
-    , end(end_including)
+    : m_begin(start_including)
+    , m_end(end_including)
   {}
+
+  ValueT begin() const {return m_begin;};
+  ValueT end() const   {return m_end;};
 
   static Range createFromUnorderedParams(ValueT v1, ValueT v2)
   {
@@ -28,13 +31,13 @@ class Range
     return Range(std::numeric_limits<ValueT>::lowest(), std::numeric_limits<ValueT>::max());
   }
 
-  const ValueT start;
-  const ValueT end;
-
   bool isInsideRange(ValueT value) const
   {
-    return (value >= start) && (value <= end);
+    return (value >= m_begin) && (value <= m_end);
   }
+private:
+  ValueT m_begin;
+  ValueT m_end;
 };
 
 #endif // RANGE_H

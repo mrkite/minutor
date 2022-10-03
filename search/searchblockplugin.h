@@ -18,7 +18,8 @@ class SearchBlockPlugin : public QWidget, public SearchPluginI
   ~SearchBlockPlugin();
 
   QWidget &getWidget() override;
-  bool initSearch() override;
+
+  bool    initSearch() override;
   SearchPluginI::ResultListT searchChunk(const Chunk &chunk) override;
 
  private:

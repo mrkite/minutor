@@ -73,6 +73,8 @@ const Chunk::EntityMap &Chunk::getEntityMap() const {
 
 //inline
 const ChunkSection *Chunk::getSectionByY(int y) const {
+  if (y < -2048) return NULL;
+  if (y >= 2048) return NULL;
   qint8 section_idx = (y >> 4);
   return getSectionByIdx(section_idx);
 }

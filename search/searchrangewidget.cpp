@@ -2,9 +2,10 @@
 #include "ui_searchrangewidget.h"
 
 
-SearchRangeWidget::SearchRangeWidget(QWidget *parent) :
-  QWidget(parent),
-  ui(new Ui::SearchRangeWidget)
+SearchRangeWidget::SearchRangeWidget(QWidget *parent)
+  : QWidget(parent)
+  , ui(new Ui::SearchRangeWidget)
+  , max_range(-64,319)
 {
   ui->setupUi(this);
 }
@@ -25,18 +26,23 @@ unsigned int SearchRangeWidget::getRadiusChunks()
   return getRadius() / 16;
 }
 
-void SearchRangeWidget::setRangeY(Range<float> range)
+void SearchRangeWidget::setRangeY(Range<int> range)
 {
-  ui->sb_y_start->setValue(range.start);
-  ui->sb_y_end  ->setValue(range.end);
+  max_range = Range<int>(range);
+  ui->sb_y_start->setMinimum(range.begin());
+  ui->sb_y_start->setMaximum(range.end());
+  ui->sb_y_start->setValue(range.begin());
+  ui->sb_y_end  ->setMinimum(range.begin());
+  ui->sb_y_end  ->setMaximum(range.end());
+  ui->sb_y_end  ->setValue(range.end());
 }
 
-Range<float> SearchRangeWidget::getRangeY()
+Range<int> SearchRangeWidget::getRangeY()
 {
   if (!ui->check_range_y->isChecked()) {
-    return Range<float>::max();
+    return max_range;
   } else {
-    return Range<float>::createFromUnorderedParams(ui->sb_y_start->value(), ui->sb_y_end->value());
+    return Range<int>::createFromUnorderedParams(ui->sb_y_start->value(), ui->sb_y_end->value());
   }
 }
 
@@ -53,7 +59,7 @@ void SearchRangeWidget::setProgressValue(const unsigned int value)
   ui->progressBar->setValue(value);
 }
 
-void SearchRangeWidget::setProgressMax(const unsigned int value)
+void SearchRangeWidget::setProgressMaximum(const unsigned int value)
 {
   ui->progressBar->setMaximum(value);
 }
