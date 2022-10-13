@@ -81,11 +81,9 @@ class StatisticDialog : public QDialog
       , block_hid(hid_)
     {}
 
-    t_result loadChunk_async   (const ChunkID &id);
-    t_result processChunk_async(const QSharedPointer<Chunk> &chunk);
+    t_result processChunk_async(const ChunkID &id);
 
-//    static t_result mapResult(const ChunkID &id);
-    static void     reduceResults(t_result &result, const t_result &intermediate);
+    static void reduceResults(t_result &result, const t_result &intermediate);
 
    private:
     StatisticDialog& parent;

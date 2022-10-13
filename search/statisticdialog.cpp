@@ -103,7 +103,7 @@ void StatisticDialog::on_pb_search_clicked() {
   std::function<t_result(const ChunkID &)> mapper =
       [currentStatistic = currentStatistic, chunks /* needed to keep list alive during search */]
       (const ChunkID &id) -> t_result
-      { return currentStatistic->loadChunk_async(id); };
+      { return currentStatistic->processChunk_async(id); };
 
   currentFuture = QtConcurrent::mappedReduced(
         *chunks,
@@ -233,40 +233,30 @@ void StatisticDialog::updateResultImage()
 
 // AsyncStatistic
 
-StatisticDialog::t_result StatisticDialog::AsyncStatistic::loadChunk_async(const ChunkID &id)
+StatisticDialog::t_result StatisticDialog::AsyncStatistic::processChunk_async(const ChunkID &id)
 {
-  QSharedPointer<Chunk> chunk = ChunkCache::Instance().getChunkSynchronously(id);
-
   t_result results;
 
+  QSharedPointer<Chunk> chunk = ChunkCache::Instance().getChunkSynchronously(id);
   if (chunk) {
-    results = processChunk_async(chunk);
+    for (auto y = range_y.begin(); y <= range_y.end(); y++) {
+      ResultItem ri; // init to empty Chunk layer
+      const ChunkSection * const section = chunk->getSectionByY(y);
+      if (section) {
+        int offset = (y & 0x0f) * (16*16);
+        for (int z = 0; z < 16; z++) {  // n->s
+          for (int x = 0; x < 16; x++, offset++) {  // e->w
+            quint16 hid = section->getPaletteEntry(offset).hid;
+            if (hid != parent.air_hid) ri.air--;
+            if (hid == block_hid)      ri.count++;
+          }
+        }
+      }
+      results[y] = ri;
+    }
   }
 
   QMetaObject::invokeMethod(&parent, "updateProgress", Qt::QueuedConnection);
-
-  return results;
-}
-
-StatisticDialog::t_result StatisticDialog::AsyncStatistic::processChunk_async(const QSharedPointer<Chunk>& chunk)
-{
-  t_result results;
-
-  for (auto y = range_y.begin(); y <= range_y.end(); y++) {
-    ResultItem ri; // init to empty Chunk layer
-    const ChunkSection * section = chunk->getSectionByY(y);
-    if (section) {
-      int offset = (y & 0x0f) * (16*16);
-      for (int z = 0; z < 16; z++) {  // n->s
-        for (int x = 0; x < 16; x++, offset++) {  // e->w
-          quint16 hid = section->getPaletteEntry(offset).hid;
-          if (hid != parent.air_hid) ri.air--;
-          if (hid == block_hid)      ri.count++;
-        }
-      }
-    }
-    results[y] = ri;
-  }
 
   return results;
 }

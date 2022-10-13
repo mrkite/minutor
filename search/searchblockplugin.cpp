@@ -77,19 +77,23 @@ SearchPluginI::ResultListT SearchBlockPlugin::searchChunk(const Chunk &chunk)
     return results;
   }
 
-  for (int z = 0; z < 16; z++) {
-    for (int y = chunk.getLowest(); y < chunk.getHighest() ; y++) {
-      for (int x = 0; x < 16; x++) {
-        const uint blockHid = chunk.getBlockHID(x,y,z);
-        const auto it = m_searchForIds.find(blockHid);
-        if (it != m_searchForIds.end()) {
-          auto info = BlockIdentifier::Instance().getBlockInfo(blockHid);
+  for (int y = chunk.getLowest(); y < chunk.getHighest() ; y++) {
+    int offset = (y & 0x0f) * (16*16);
+    const ChunkSection * const section = chunk.getSectionByY(y);
+    if (section) {
+      for (int z = 0; z < 16; z++) {
+        for (int x = 0; x < 16; x++, offset++) {
+          quint16 blockHid = section->getPaletteEntry(offset).hid;
+          const auto it = m_searchForIds.find(blockHid);
+          if (it != m_searchForIds.end()) {
+            auto info = BlockIdentifier::Instance().getBlockInfo(blockHid);
 
-          SearchResultItem item;
-          item.name = info.getName();
-          item.pos = QVector3D(chunk.getChunkX() * 16 + x, y, chunk.getChunkZ() * 16 + z) + QVector3D(0.5,0.0,0.5); // mark center of block, not origin
-          item.entity = QSharedPointer<Entity>::create(OverlayItem::Point(item.pos));
-          results.push_back(item);
+            SearchResultItem item;
+            item.name = info.getName();
+            item.pos = QVector3D(chunk.getChunkX() * 16 + x, y, chunk.getChunkZ() * 16 + z) + QVector3D(0.5,0.0,0.5); // mark center of block, not origin
+            item.entity = QSharedPointer<Entity>::create(OverlayItem::Point(item.pos));
+            results.push_back(item);
+          }
         }
       }
     }
