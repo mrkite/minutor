@@ -1,6 +1,10 @@
 /** Copyright (c) 2022, EtlamGit */
 
 #include <algorithm>
+#include <iostream>
+#include <fstream>
+#include <QFileDialog>
+#include <QtConcurrent/QtConcurrent>
 
 #include "statisticdialog.h"
 #include "ui_statisticdialog.h"
@@ -8,8 +12,6 @@
 #include "chunkcache.h"
 #include "identifier/blockidentifier.h"
 #include "search/rectangleinnertoouteriterator.h"
-
-#include <QtConcurrent/QtConcurrent>
 
 
 StatisticDialog::StatisticDialog(QWidget *parent)
@@ -39,7 +41,6 @@ StatisticDialog::StatisticDialog(QWidget *parent)
   }
 
   setFixedSize(sizeHint());
-  //ui->tableWidget->sortByColumn(1, Qt::SortOrder::AscendingOrder);
 }
 
 StatisticDialog::~StatisticDialog()
@@ -113,14 +114,50 @@ void StatisticDialog::on_pb_search_clicked() {
 }
 
 
-
-
 // auto-magically connected via name match
 void StatisticDialog::on_pb_save_clicked() {
-  // todo
+  if (currentFuture.isFinished()) {
+    const auto &resultList = currentFuture.results();
+    if (resultList.size() == 1) {
+      const auto &resultMap  = resultList[0];
+
+      // get filename to save to
+      QFileDialog fileDialog(this);
+      fileDialog.setDefaultSuffix("csv");
+      QString filename = fileDialog.getSaveFileName(this, tr("Save statistic results into file"),
+                                                    QString(), "Comma Separated Value (*.csv)");
+      // check if filename was given
+      if (filename.isEmpty())
+        return;
+
+      // add .csv suffix if not present
+      QFile file(filename);
+      QFileInfo fileinfo(file);
+      if (fileinfo.suffix().isEmpty()) {
+        filename.append(".csv");
+      }
+
+      // write
+      std::ofstream myfile(filename.toStdString());
+      if (myfile.is_open()) {
+        // CSV header
+        myfile << "Y;count;air;total" << std::endl;
+        // results in reverse order
+        QMapIterator<int, ResultItem> key(resultMap);
+        key.toBack();
+        while (key.hasPrevious()) {
+          key.previous();
+          const ResultItem &result = resultMap.value(key.key());
+          myfile << key.key() << ";"
+                 << result.count << ";"
+                 << result.air << ";"
+                 << result.total << std::endl;
+        }
+        myfile.close();
+      }
+    }
+  }
 }
-
-
 
 
 void StatisticDialog::updateStatusText()
@@ -149,7 +186,8 @@ void StatisticDialog::updateProgress() {
 
 void StatisticDialog::clearResults()
 {
-//  ui->tableWidget->clear();
+  ui->label_graph->clear();
+  setFixedSize(sizeHint());
 }
 
 
@@ -160,9 +198,6 @@ void StatisticDialog::finishSearch() {
 
   // update search status
   updateStatusText();
-  // adapt width of result columns
-//  for (int i = 0; i < ui->tableWidget->columnCount(); i++)
-//      ui->tableWidget->resizeColumnToContents(i);
 
   ui->range->setButtonText("Search");
 }
@@ -172,7 +207,6 @@ void StatisticDialog::finishSearch() {
 void StatisticDialog::cancelSearch() {
   if (!currentFuture.isFinished()) {
     currentFuture.cancel();
-//    currentFuture.waitForFinished();
   }
   finishSearch();
 }
@@ -231,6 +265,7 @@ void StatisticDialog::updateResultImage()
 }
 
 
+//-------------------------------------------------------------------------------------------------
 // AsyncStatistic
 
 StatisticDialog::t_result StatisticDialog::AsyncStatistic::processChunk_async(const ChunkID &id)
