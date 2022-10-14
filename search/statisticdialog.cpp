@@ -93,10 +93,10 @@ void StatisticDialog::on_pb_search_clicked() {
   const Range<int>   rangeY  = ui->range->getRangeY();
 
   // get HID for selected "block name"
-  quint16 blockHID = 0;
+  QList<quint16> blockHID;
   for (const auto hid: BlockIdentifier::Instance().getKnownIds()) {
     auto blockInfo = BlockIdentifier::Instance().getBlockInfo(hid);
-    if (blockInfo.getName() == stw_blockName->getSearchText()) blockHID = hid;
+    if (stw_blockName->matches(blockInfo.getName())) blockHID.append(hid);
   }
 
   currentStatistic = QSharedPointer<AsyncStatistic>::create(*this, rangeY, blockHID);
@@ -282,8 +282,8 @@ StatisticDialog::t_result StatisticDialog::AsyncStatistic::processChunk_async(co
         for (int z = 0; z < 16; z++) {  // n->s
           for (int x = 0; x < 16; x++, offset++) {  // e->w
             quint16 hid = section->getPaletteEntry(offset).hid;
-            if (hid != parent.air_hid) ri.air--;
-            if (hid == block_hid)      ri.count++;
+            if (hid != parent.air_hid)   ri.air--;
+            if (block_hid.contains(hid)) ri.count++;
           }
         }
       }

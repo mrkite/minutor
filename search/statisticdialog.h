@@ -75,7 +75,7 @@ class StatisticDialog : public QDialog
    public:
     AsyncStatistic(StatisticDialog  &parent_,
                    const Range<int> &range_y_,
-                   quint16           hid_)
+                   const QList<quint16> &hid_)
       : parent(parent_)
       , range_y(range_y_)
       , block_hid(hid_)
@@ -88,7 +88,7 @@ class StatisticDialog : public QDialog
    private:
     StatisticDialog& parent;
     const Range<int> range_y;
-    quint16          block_hid;
+    QList<quint16>   block_hid;
   };
 
   QSharedPointer<AsyncStatistic> currentStatistic;
