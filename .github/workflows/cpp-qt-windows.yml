@@ -25,20 +25,20 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - uses: ilammy/msvc-dev-cmd@v1
       with:
         toolset: ${{ matrix.msvc_toolset }}
 
     - name: Cache Qt
       id: cache-qt
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: ${{ runner.workspace }}/Qt
         key: ${{ runner.os }}-QtCache-${{ matrix.qt }}
 
     - name: Install Qt
-      uses: jurplel/install-qt-action@v2
+      uses: jurplel/install-qt-action@v3
       with:
         version: ${{ matrix.qt }}
         target: 'desktop'
@@ -49,7 +49,7 @@ jobs:
       run: |
         mkdir ../build
         mkdir ../deploy
-    
+
     - name: Build (Windows)
       working-directory: ../build
       shell: cmd
@@ -66,8 +66,8 @@ jobs:
 # todo: we have to add OpenSSL DLLs here
 
     - name: Archive build result
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: Binary ${{ matrix.name }}
         path: ${{ runner.workspace }}/deploy/*
-        
+

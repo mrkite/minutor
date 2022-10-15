@@ -23,7 +23,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Install Qt
       run: |
@@ -33,7 +33,7 @@ jobs:
     - name: Create BUILD folder
       run: |
         mkdir ../build
-    
+
     - name: Build (Ubuntu)
       working-directory: ../build
       run: |
@@ -42,9 +42,9 @@ jobs:
       env:
         # only needed for Ubuntu-16.04
         LD_LIBRARY_PATH: '${{ runner.workspace }}/Qt/5.5/gcc_64/lib'
-   
+
     - name: Archive build result
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: Binary ${{ matrix.name }}
         path: ${{ runner.workspace }}/build/${{ matrix.artifact }}
