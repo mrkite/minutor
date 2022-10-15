@@ -27,19 +27,21 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Cache Qt
-      id: cache-qt
-      uses: actions/cache@v3
-      with:
-        path: ${{ runner.workspace }}/Qt
-        key: ${{ runner.os }}-QtCache-${{ matrix.qt }}
+#    - name: Cache Qt
+#      id: cache-qt
+#      uses: actions/cache@v3
+#      with:
+#        path: ${{ runner.workspace }}/Qt
+#        key: ${{ runner.os }}-QtCache-${{ matrix.qt }}
 
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
       with:
         version: ${{ matrix.qt }}
         target: 'desktop'
-        cached: ${{ steps.cache-qt.outputs.cache-hit }}
+#       manually-cached: ${{ steps.cache-qt.outputs.cache-hit }}
+        cache: 'true'
+        cache-key-prefix: ${{ runner.os }}-QtCache-${{ matrix.qt }}
 
     - name: Create BUILD folder
       run: |

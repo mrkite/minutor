@@ -30,12 +30,12 @@ jobs:
       with:
         toolset: ${{ matrix.msvc_toolset }}
 
-    - name: Cache Qt
-      id: cache-qt
-      uses: actions/cache@v3
-      with:
-        path: ${{ runner.workspace }}/Qt
-        key: ${{ runner.os }}-QtCache-${{ matrix.qt }}
+#    - name: Cache Qt
+#      id: cache-qt
+#      uses: actions/cache@v3
+#      with:
+#        path: ${{ runner.workspace }}/Qt
+#        key: ${{ runner.os }}-QtCache-${{ matrix.qt }}
 
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
@@ -43,7 +43,9 @@ jobs:
         version: ${{ matrix.qt }}
         target: 'desktop'
 #       tools: 'tools_openssl_x64,1.1.1-10,qt.tools.openssl.win_x64'
-        cached: ${{ steps.cache-qt.outputs.cache-hit }}
+#       manually-cached: ${{ steps.cache-qt.outputs.cache-hit }}
+        cache: 'true'
+        cache-key-prefix: ${{ runner.os }}-QtCache-${{ matrix.qt }}
 
     - name: Create BUILD folder
       run: |
