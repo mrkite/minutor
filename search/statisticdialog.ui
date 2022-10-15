@@ -83,7 +83,10 @@
     </layout>
    </item>
    <item>
-    <widget class="QLabel" name="label_graph">
+    <widget class="StatisticLabel" name="label_graph">
+     <property name="mouseTracking">
+      <bool>true</bool>
+     </property>
      <property name="text">
       <string/>
      </property>
@@ -97,6 +100,11 @@
    <extends>QWidget</extends>
    <header>search/searchrangewidget.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>StatisticLabel</class>
+   <extends>QLabel</extends>
+   <header>search/statisticlabel.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

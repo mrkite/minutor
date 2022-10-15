@@ -9,6 +9,7 @@
 
 #include "search/searchtextwidget.h"
 #include "search/range.h"
+#include "search/statisticresultitem.h"
 
 #include "chunkid.h"
 #include "chunk.h"
@@ -50,26 +51,6 @@ class StatisticDialog : public QDialog
   QPixmap             result_image;
   quint16             air_hid;
 
-  class ResultItem {
-  public:
-    ResultItem () : count(0), air(16*16), total(16*16) {}
-    ResultItem& operator+=(const ResultItem& rhs) {
-      this->count += rhs.count;
-      this->air   += rhs.air;
-      this->total += rhs.total;
-      return *this;
-    }
-    friend ResultItem operator+(ResultItem lhs, const ResultItem& rhs) {
-      lhs += rhs;
-      return lhs;
-
-    }
-    int count;
-    int air;
-    int total;
-  };
-  typedef QMap<int,ResultItem> t_result;
-
   class AsyncStatistic
   {
    public:
@@ -81,9 +62,9 @@ class StatisticDialog : public QDialog
       , block_hid(hid_)
     {}
 
-    t_result processChunk_async(const ChunkID &id);
+    StatisticResultMap processChunk_async(const ChunkID &id);
 
-    static void reduceResults(t_result &result, const t_result &intermediate);
+    static void reduceResults(StatisticResultMap &result, const StatisticResultMap &intermediate);
 
    private:
     StatisticDialog& parent;
@@ -92,8 +73,8 @@ class StatisticDialog : public QDialog
   };
 
   QSharedPointer<AsyncStatistic> currentStatistic;
-  QFuture<t_result>              currentFuture;
-  ResultItem                     resultSum;
+  QFuture<StatisticResultMap>    currentFuture;
+  StatisticResultItem            resultSum;
 };
 
 #endif // STATISTICDIALOG_H

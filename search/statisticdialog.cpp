@@ -101,9 +101,9 @@ void StatisticDialog::on_pb_search_clicked() {
 
   currentStatistic = QSharedPointer<AsyncStatistic>::create(*this, rangeY, blockHID);
 
-  std::function<t_result(const ChunkID &)> mapper =
+  std::function<StatisticResultMap(const ChunkID &)> mapper =
       [currentStatistic = currentStatistic, chunks /* needed to keep list alive during search */]
-      (const ChunkID &id) -> t_result
+      (const ChunkID &id) -> StatisticResultMap
       { return currentStatistic->processChunk_async(id); };
 
   currentFuture = QtConcurrent::mappedReduced(
@@ -143,11 +143,11 @@ void StatisticDialog::on_pb_save_clicked() {
         // CSV header
         myfile << "Y;count;air;total" << std::endl;
         // results in reverse order
-        QMapIterator<int, ResultItem> key(resultMap);
+        QMapIterator<int, StatisticResultItem> key(resultMap);
         key.toBack();
         while (key.hasPrevious()) {
           key.previous();
-          const ResultItem &result = resultMap.value(key.key());
+          const StatisticResultItem &result = resultMap.value(key.key());
           myfile << key.key() << ";"
                  << result.count << ";"
                  << result.air << ";"
@@ -229,7 +229,7 @@ void StatisticDialog::updateResultImage()
       int max_key   = ui->range->getRangeY().begin();
       int max_count = 0;
       for (auto key: resultMap.keys()) {
-        const ResultItem &result = resultMap.value(key);
+        const StatisticResultItem &result = resultMap.value(key);
         resultSum += result;
         if (result.count > 0) {
           min_key   = std::min<int>(min_key, key);
@@ -244,7 +244,7 @@ void StatisticDialog::updateResultImage()
       QImage image = QPixmap(width, height).toImage();
       for (auto key: resultMap.keys()) {
         int y = (height-1) - key + ui->range->getRangeY().begin();
-        const ResultItem &result = resultMap.value(key);
+        const StatisticResultItem &result = resultMap.value(key);
         float scaleR = float(result.count) / float(max_count);
         float scaleW = 1.0 / float(width);
         for (int x = 0; x < width; x++) {
@@ -259,6 +259,7 @@ void StatisticDialog::updateResultImage()
       }
       result_image = QPixmap::fromImage(image);
       ui->label_graph->setPixmap(result_image);
+      ui->label_graph->setResultMap(resultMap, ui->range->getRangeY().end());
       setFixedSize(sizeHint());
     }
   }
@@ -268,14 +269,14 @@ void StatisticDialog::updateResultImage()
 //-------------------------------------------------------------------------------------------------
 // AsyncStatistic
 
-StatisticDialog::t_result StatisticDialog::AsyncStatistic::processChunk_async(const ChunkID &id)
+StatisticResultMap StatisticDialog::AsyncStatistic::processChunk_async(const ChunkID &id)
 {
-  t_result results;
+  StatisticResultMap results;
 
   QSharedPointer<Chunk> chunk = ChunkCache::Instance().getChunkSynchronously(id);
   if (chunk) {
     for (auto y = range_y.begin(); y <= range_y.end(); y++) {
-      ResultItem ri; // init to empty Chunk layer
+      StatisticResultItem ri; // init to empty Chunk layer
       const ChunkSection * const section = chunk->getSectionByY(y);
       if (section) {
         int offset = (y & 0x0f) * (16*16);
@@ -296,15 +297,16 @@ StatisticDialog::t_result StatisticDialog::AsyncStatistic::processChunk_async(co
   return results;
 }
 
-void StatisticDialog::AsyncStatistic::reduceResults(t_result &result, const t_result &intermediate)
+void StatisticDialog::AsyncStatistic::reduceResults(StatisticResultMap &result, const StatisticResultMap &intermediate)
 {
   for (auto key: intermediate.keys()) {
-    if (result.contains(key)) {
+    auto it = result.find(key);
+    if (it != result.end()) {
       // combine
-      result[key] += intermediate[key];
+      result.insert(key, it.value() + intermediate[key]);
     } else {
       // just move over
-      result[key] = intermediate[key];
+      result.insert(key, intermediate[key]);
     }
   }
 }

@@ -56,6 +56,8 @@ HEADERS += \
     search/searchresultwidget.h \
     search/searchtextwidget.h \
     search/statisticdialog.h \
+    search/statisticlabel.h \
+    search/statisticresultitem.h \
     settings.h \
     worldinfo.h \
     worldsave.h \
