@@ -32,10 +32,10 @@
 #include "overlay/village.h"
 #include "jumpto.h"
 #include "pngexport.h"
-#include "search/searchchunkswidget.h"
-#include "search/searchentitypluginwidget.h"
-#include "search/searchblockpluginwidget.h"
-#include "search/searchresultwidget.h"
+#include "search/searchchunksdialog.h"
+#include "search/searchentityplugin.h"
+#include "search/searchblockplugin.h"
+#include "search/statisticdialog.h"
 
 Minutor::Minutor()
 {
@@ -101,16 +101,16 @@ Minutor::Minutor()
   mainLayout->setSpacing(0);
   mainLayout->setContentsMargins(0, 0, 0, 0);
 
-  connect(depth, SIGNAL(valueChanged(int)),
-          mapview, SLOT(setDepth(int)));
+  connect(depth,   SIGNAL(valueChanged(int)),
+          mapview, SLOT  (setDepth(int)));
   connect(mapview, SIGNAL(demandDepthChange(double)),
-          depth, SLOT(changeValue(double)));
+          depth,   SLOT  (changeValue(double)));
   connect(mapview, SIGNAL(demandDepthValue(double)),
-          depth, SLOT(setValue(double)));
-  connect(this, SIGNAL(worldLoaded(bool)),
-          mapview, SLOT(setEnabled(bool)));
-  connect(this, SIGNAL(worldLoaded(bool)),
-          depth, SLOT(setEnabled(bool)));
+          depth,   SLOT  (setValue(double)));
+  connect(this,    SIGNAL(worldLoaded(bool)),
+          mapview, SLOT  (setEnabled(bool)));
+  connect(this,    SIGNAL(worldLoaded(bool)),
+          depth,   SLOT  (setEnabled(bool)));
 
   m_ui.centralwidget->setLayout(mainLayout);
   layout()->setContentsMargins(0, 0, 0, 0);
@@ -493,15 +493,20 @@ void Minutor::createActions() {
           mapview,             SLOT(clearCache()));
 
   // [Search]
-  connect(m_ui.action_SearchEntity, SIGNAL(triggered()),
-          this,                     SLOT(openSearchEntityWidget()));
-  connect(this,                     SIGNAL(worldLoaded(bool)),
-          m_ui.action_SearchEntity, SLOT(setEnabled(bool)));
+  connect(m_ui.action_SearchEntity,   &QAction::triggered,
+          this,                       &Minutor::openSearchEntityDialog);
+  connect(this,                       &Minutor::worldLoaded,
+          m_ui.action_SearchEntity,   &QAction::setEnabled);
 
-  connect(m_ui.action_SearchBlock, SIGNAL(triggered()), this,
-                                   SLOT(openSearchBlockWidget()));
-  connect(this,                    SIGNAL(worldLoaded(bool)),
-          m_ui.action_SearchBlock, SLOT(setEnabled(bool)));
+  connect(m_ui.action_SearchBlock,    &QAction::triggered,
+          this,                       &Minutor::openSearchBlockDialog);
+  connect(this,                       &Minutor::worldLoaded,
+          m_ui.action_SearchBlock,    &QAction::setEnabled);
+
+  connect(m_ui.action_StatisticBlock, &QAction::triggered,
+          this,                       &Minutor::openStatisticBlockDialog);
+  connect(this,                       &Minutor::worldLoaded,
+          m_ui.action_StatisticBlock, &QAction::setEnabled);
 
   // [Help]
   m_ui.action_About->setStatusTip(tr("About %1").arg(qApp->applicationName()));
@@ -850,41 +855,63 @@ void Minutor::showProperties(QVariant props) {
   }
 }
 
-SearchChunksWidget* Minutor::prepareSearchForm(const QSharedPointer<SearchPluginI>& searchPlugin) {
-  SearchChunksWidget* form = new SearchChunksWidget(searchPlugin);
+SearchChunksDialog* Minutor::prepareSearchForm(const QSharedPointer<SearchPluginI>& searchPlugin) {
+  SearchChunksDialog* form = new SearchChunksDialog(searchPlugin, this);
 
   form->setAttribute(Qt::WA_DeleteOnClose);
 
-  const auto currentLocation = mapview->getLocation();
-  form->setSearchCenter(currentLocation->x, currentLocation->y, currentLocation->z);
+  form->setSearchCenter(mapview->getLocation()->getPos3D());
 
-  connect(mapview, SIGNAL(coordinatesChanged(int,int,int)),
-          form, SLOT(setSearchCenter(int,int,int))
-          );
+  // map is moved
+  connect(mapview, &MapView::coordinatesChanged,
+          form,    qOverload<int,int,int>(&SearchChunksDialog::setSearchCenter) );
+  // item from result list is highlighted -> jump
+  connect(form,    &SearchChunksDialog::jumpTo,
+          this,    &Minutor::triggerJumpToPosition );
+  // update overlay elements
+  connect(form,    &SearchChunksDialog::updateSearchResultPositions,
+          this,    &Minutor::updateSearchResultPositions );
 
-  connect(form, SIGNAL(jumpTo(QVector3D)),
-          this, SLOT(triggerJumpToPosition(QVector3D))
-          );
-
-  connect(form, SIGNAL(updateSearchResultPositions(QVector<QSharedPointer<OverlayItem> >)),
-          this, SLOT(updateSearchResultPositions(QVector<QSharedPointer<OverlayItem> >))
-          );
+  // pre-fill depth range
+  form->setRangeY(depth->minimum(), depth->maximum());
 
   return form;
 }
 
-void Minutor::openSearchBlockWidget() {
-  auto searchPlugin = QSharedPointer<SearchBlockPluginWidget>::create();
+void Minutor::openSearchEntityDialog() {
+  // prepare dialog
+  auto searchPlugin = QSharedPointer<SearchEntityPlugin>::create();
+  auto searchEntityForm = prepareSearchForm(searchPlugin);
+  // show dialog
+  searchEntityForm->setWindowTitle(m_ui.action_SearchEntity->statusTip());
+  searchEntityForm->showNormal();
+}
+
+void Minutor::openSearchBlockDialog() {
+  // prepare dialog
+  auto searchPlugin = QSharedPointer<SearchBlockPlugin>::create();
   auto searchBlockForm = prepareSearchForm(searchPlugin);
+  // show dialog
   searchBlockForm->setWindowTitle(m_ui.action_SearchBlock->statusTip());
   searchBlockForm->showNormal();
 }
 
-void Minutor::openSearchEntityWidget() {
-  auto searchPlugin = QSharedPointer<SearchEntityPluginWidget>::create();
-  auto searchEntityForm = prepareSearchForm(searchPlugin);
-  searchEntityForm->setWindowTitle(m_ui.action_SearchEntity->statusTip());
-  searchEntityForm->showNormal();
+void Minutor::openStatisticBlockDialog() {
+  // prepare dialog
+  StatisticDialog *dialog = new StatisticDialog(this);
+
+  // update current location
+  dialog->setSearchCenter(mapview->getLocation()->getPos3D());
+
+  connect(mapview, &MapView::coordinatesChanged,
+          dialog,  qOverload<int,int,int>(&StatisticDialog::setSearchCenter) );
+
+  // pre-fill depth range
+  dialog->setRangeY(depth->minimum(), depth->maximum());
+
+  // show dialog
+  dialog->setWindowTitle(m_ui.action_StatisticBlock->statusTip());
+  dialog->showNormal();
 }
 
 void Minutor::triggerJumpToPosition(QVector3D pos) {

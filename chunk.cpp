@@ -8,6 +8,7 @@
 #include "identifier/blockidentifier.h"
 #include "identifier/biomeidentifier.h"
 
+
 template<typename ValueT>
 inline void* safeMemCpy(void* dest, const std::vector<ValueT>& srcVec, size_t length)
 {
@@ -73,6 +74,8 @@ const Chunk::EntityMap &Chunk::getEntityMap() const {
 
 //inline
 const ChunkSection *Chunk::getSectionByY(int y) const {
+  if (y < -2048) return NULL;
+  if (y >= 2048) return NULL;
   qint8 section_idx = (y >> 4);
   return getSectionByIdx(section_idx);
 }
@@ -649,7 +652,6 @@ const PaletteEntry & ChunkSection::getPaletteEntry(int offset, int y) const {
   return getPaletteEntry(offset + yoffset);
 }
 
-inline
 const PaletteEntry & ChunkSection::getPaletteEntry(int offset) const {
   quint16 blockid = blocks[offset];
   if (blockid < blockPaletteLength)
@@ -670,7 +672,6 @@ quint16 ChunkSection::getBiome(int offset, int y) const {
   return getBiome(offset + yoffset);
 }
 
-inline
 quint16 ChunkSection::getBiome(int offset) const {
   return biomes[offset];
 }

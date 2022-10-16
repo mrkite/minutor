@@ -48,12 +48,16 @@ HEADERS += \
     search/entityevaluator.h \
     search/range.h \
     search/rectangleinnertoouteriterator.h \
-    search/searchblockpluginwidget.h \
-    search/searchchunkswidget.h \
-    search/searchentitypluginwidget.h \
+    search/searchblockplugin.h \
+    search/searchchunksdialog.h \
+    search/searchentityplugin.h \
     search/searchplugininterface.h \
+    search/searchrangewidget.h \
     search/searchresultwidget.h \
     search/searchtextwidget.h \
+    search/statisticdialog.h \
+    search/statisticlabel.h \
+    search/statisticresultitem.h \
     settings.h \
     worldinfo.h \
     worldsave.h \
@@ -87,11 +91,13 @@ SOURCES += \
     overlay/village.cpp \
     pngexport.cpp \
     search/entityevaluator.cpp \
-    search/searchblockpluginwidget.cpp \
-    search/searchchunkswidget.cpp \
-    search/searchentitypluginwidget.cpp \
+    search/searchblockplugin.cpp \
+    search/searchchunksdialog.cpp \
+    search/searchentityplugin.cpp \
+    search/searchrangewidget.cpp \
     search/searchresultwidget.cpp \
     search/searchtextwidget.cpp \
+    search/statisticdialog.cpp \
     settings.cpp \
     worldinfo.cpp \
     worldsave.cpp \
@@ -144,7 +150,9 @@ FORMS += \
     jumpto.ui \
     pngexport.ui \
     overlay/properties.ui \
-    search/searchchunkswidget.ui \
+    search/searchchunksdialog.ui \
+    search/searchrangewidget.ui \
     search/searchresultwidget.ui \
     search/searchtextwidget.ui \
+    search/statisticdialog.ui \
     settings.ui

@@ -15,9 +15,13 @@ class SearchTextWidget : public QWidget
   explicit SearchTextWidget(const QString& name, QWidget *parent = nullptr);
   ~SearchTextWidget();
 
-  bool isActive() const;
+  bool active() const;
+  void setActive (bool flag = true);
+  void hideActive(bool flag = true);
 
   bool exactMatch() const;
+  void setExactMatch (bool flag = true);
+  void hideExactMatch(bool flag = true);
 
   void addSuggestion(const QString& item);
 

@@ -27,7 +27,7 @@ class WorldSave;
 class Properties;
 class OverlayItem;
 class JumpTo;
-class SearchChunksWidget;
+class SearchChunksDialog;
 class SearchPluginI;
 
 class Location {
@@ -88,8 +88,9 @@ private slots:
   void addOverlayItemType(QString type, QColor color, QString dimension = "");
   void showProperties(QVariant props);
 
-  void openSearchBlockWidget();
-  void openSearchEntityWidget();
+  void openSearchEntityDialog();
+  void openSearchBlockDialog();
+  void openStatisticBlockDialog();
 
   void triggerJumpToPosition(QVector3D pos);
 
@@ -100,7 +101,7 @@ signals:
 
  private:
   Ui::Minutor m_ui;
-  SearchChunksWidget* prepareSearchForm(const QSharedPointer<SearchPluginI> &searchPlugin);
+  SearchChunksDialog* prepareSearchForm(const QSharedPointer<SearchPluginI> &searchPlugin);
 
   void createActions();
   void createMenus();

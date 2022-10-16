@@ -4,13 +4,13 @@
 
 #include <QtCore>
 #include <QVector>
+#include <array>
 
 #include "nbt/nbt.h"
 #include "overlay/entity.h"
 #include "overlay/generatedstructure.h"
 #include "paletteentry.h"
 
-#include <array>
 
 class ChunkSection {
  public:

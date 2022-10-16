@@ -74,6 +74,9 @@
      <property name="sortingEnabled">
       <bool>true</bool>
      </property>
+     <attribute name="headerDefaultSectionSize">
+      <number>80</number>
+     </attribute>
      <column>
       <property name="text">
        <string>Name</string>

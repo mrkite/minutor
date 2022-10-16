@@ -3,6 +3,8 @@
 
 #include <QRect>
 #include <QPoint>
+#include <QVector3D>
+
 
 class RectangleInnerToOuterIterator
 {
@@ -10,11 +12,19 @@ class RectangleInnerToOuterIterator
   RectangleInnerToOuterIterator(const QRect& rect_)
     : rect(rect_)
     , center(rect_.center())
-    , currentPos(0,0)
-    , shellNr(0)
-    , subNr(0)
-    , stepNr(0)
   {
+    reset();
+  }
+
+  RectangleInnerToOuterIterator(const QVector3D searchCenter, const unsigned int radius)
+  {
+    // determine Chunks to be searched
+    const QPoint radius2d(radius, radius);
+    QPoint poi(int(searchCenter.x()) >> 4, int(searchCenter.z()) >> 4);
+
+    rect = QRect((poi - radius2d), (poi + radius2d));
+    center = rect.center();
+
     reset();
   }
 

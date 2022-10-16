@@ -38,7 +38,7 @@ static quint32 stableHash(const quint8 *data, int size)
 static quint32 stableHash(const char *data, int size = -1)
 {
   if (size < 0)
-    size = strlen(data);
+    size = static_cast<int>(strlen(data));
   return stableHash(reinterpret_cast<const quint8 *>(data), size);
 }
 

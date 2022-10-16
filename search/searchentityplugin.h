@@ -1,5 +1,5 @@
-#ifndef SEARCHENTITYPLUGINWIDGET_H
-#define SEARCHENTITYPLUGINWIDGET_H
+#ifndef SEARCHENTITYPLUGIN_H
+#define SEARCHENTITYPLUGIN_H
 
 #include "search/entityevaluator.h"
 #include "search/searchplugininterface.h"
@@ -9,13 +9,13 @@
 #include <QLayout>
 
 
-class SearchEntityPluginWidget : public QWidget, public SearchPluginI
+class SearchEntityPlugin : public QWidget, public SearchPluginI
 {
   Q_OBJECT
 
  public:
-  explicit SearchEntityPluginWidget();
-  ~SearchEntityPluginWidget() override;
+  explicit SearchEntityPlugin();
+  ~SearchEntityPlugin() override;
 
   QWidget &getWidget() override;
 
@@ -34,4 +34,4 @@ class SearchEntityPluginWidget : public QWidget, public SearchPluginI
   bool findBuyOrSell(EntityEvaluator& entity, SearchTextWidget &searchText, int index);
 };
 
-#endif // SEARCHENTITYPLUGINWIDGET_H
+#endif // SEARCHENTITYPLUGIN_H

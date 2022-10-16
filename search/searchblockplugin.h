@@ -1,5 +1,5 @@
-#ifndef SEARCHBLOCKPLUGINWIDGET_H
-#define SEARCHBLOCKPLUGINWIDGET_H
+#ifndef SEARCHBLOCKPLUGIN_H
+#define SEARCHBLOCKPLUGIN_H
 
 #include "search/searchplugininterface.h"
 #include "search/searchtextwidget.h"
@@ -9,16 +9,17 @@
 #include <set>
 
 
-class SearchBlockPluginWidget : public QWidget, public SearchPluginI
+class SearchBlockPlugin : public QWidget, public SearchPluginI
 {
   Q_OBJECT
 
  public:
-  explicit SearchBlockPluginWidget(QWidget* parent = nullptr);
-  ~SearchBlockPluginWidget();
+  explicit SearchBlockPlugin(QWidget* parent = nullptr);
+  ~SearchBlockPlugin();
 
   QWidget &getWidget() override;
-  bool initSearch() override;
+
+  bool    initSearch() override;
   SearchPluginI::ResultListT searchChunk(const Chunk &chunk) override;
 
  private:
@@ -30,4 +31,4 @@ class SearchBlockPluginWidget : public QWidget, public SearchPluginI
   std::set<quint32> m_searchForIds;
 };
 
-#endif // SEARCHBLOCKPLUGINWIDGET_H
+#endif // SEARCHBLOCKPLUGIN_H

@@ -1,5 +1,5 @@
-#ifndef SEARCHENTITYWIDGET_H
-#define SEARCHENTITYWIDGET_H
+#ifndef SEARCHENTITYDIALOG_H
+#define SEARCHENTITYDIALOG_H
 
 #include "overlay/overlayitem.h"
 #include "overlay/propertietreecreator.h"
@@ -14,23 +14,24 @@
 
 #include <set>
 
-namespace Ui {
-class SearchChunksWidget;
-}
+#include "ui_searchchunksdialog.h"
+
 
 class ChunkCache;
 class Chunk;
 class SearchResultWidget;
 
-class SearchChunksWidget : public QDialog
+class SearchChunksDialog : public QDialog
 {
   Q_OBJECT
 
  public:
-  explicit SearchChunksWidget(QSharedPointer<SearchPluginI> searchPlugin, QWidget *parent = nullptr);
-  ~SearchChunksWidget();
+  explicit SearchChunksDialog(QSharedPointer<SearchPluginI> searchPlugin, QWidget *parent = nullptr);
+  ~SearchChunksDialog();
 
  public slots:
+  void setRangeY(int minimum, int maximum);
+  void setSearchCenter(const QVector3D &centerPoint);
   void setSearchCenter(int x, int y, int z);
 
  signals:
@@ -45,41 +46,38 @@ class SearchChunksWidget : public QDialog
 
   void displayResultsOfSingleChunk(QSharedPointer<SearchPluginI::ResultListT> results);
 
+  void addOneToProgress();
+
+  void cancelSearch();
+
  private:
-  QSharedPointer<Ui::SearchChunksWidget> ui;
+  Ui::SearchChunksDialog *ui;
   QSharedPointer<SearchPluginI> searchPlugin;
   QVector3D searchCenter;
-
-  class AsyncSearch;
-  QSharedPointer<AsyncSearch> currentSearch;
-  QFuture<void> currentfuture;
 
   class AsyncSearch
   {
    public:
-    AsyncSearch(SearchChunksWidget& parent_,
-                const Range<float>& range_y_,
+    AsyncSearch(SearchChunksDialog& parent_,
+                const Range<int>& range_y_,
                 const QWeakPointer<SearchPluginI>& searchPlugin_)
       : parent(parent_)
       , range_y(range_y_)
       , searchPlugin(searchPlugin_)
     {}
 
-    void loadAndSearchChunk_async(ChunkID id);
+    void loadChunk_async(ChunkID id);
 
-    void searchLoadedChunk_async(const QSharedPointer<Chunk> &chunk);
-
-    QSharedPointer<SearchPluginI::ResultListT> searchExistingChunk_async(const QSharedPointer<Chunk> &chunk);
+    QSharedPointer<SearchPluginI::ResultListT> processChunk_async(const QSharedPointer<Chunk> &chunk);
 
    private:
-    SearchChunksWidget& parent;
-    const Range<float> range_y;
+    SearchChunksDialog& parent;
+    const Range<int> range_y;
     QWeakPointer<SearchPluginI> searchPlugin;
   };
 
-  void addOneToProgress();
-
-  void cancelSearch();
+  QSharedPointer<AsyncSearch> currentSearch;
+  QFuture<void> currentfuture;
 };
 
-#endif // SEARCHENTITYWIDGET_H
+#endif // SEARCHENTITYDIALOG_H

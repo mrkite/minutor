@@ -28,7 +28,7 @@ class MapView : public QWidget {
     flgInhabitedTime  = 1 << 8
   };
 
-  typedef struct {
+  typedef struct struct_BlockLocation {
     float x, y, z;
     int scale;
     QVector3D getPos3D() const {

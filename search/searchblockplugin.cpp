@@ -1,4 +1,4 @@
-#include "search/searchblockpluginwidget.h"
+#include "search/searchblockplugin.h"
 #include "search/searchresultwidget.h"
 
 #include "chunk.h"
@@ -6,13 +6,16 @@
 
 #include <algorithm>
 
-SearchBlockPluginWidget::SearchBlockPluginWidget(QWidget* parent)
+SearchBlockPlugin::SearchBlockPlugin(QWidget* parent)
   : QWidget(parent)
   , layout(new QVBoxLayout(this))
 {
 
   layout->addWidget(stw_blockId   = new SearchTextWidget("block id"));
   layout->addWidget(stw_blockName = new SearchTextWidget("block name"));
+  stw_blockName->setActive(true);
+  //stw_blockName->hideActive(true);
+  stw_blockName->setExactMatch(true);
 
   // add suggestions for "block name"
   auto idList = BlockIdentifier::Instance().getKnownIds();
@@ -31,21 +34,21 @@ SearchBlockPluginWidget::SearchBlockPluginWidget(QWidget* parent)
   }
 }
 
-SearchBlockPluginWidget::~SearchBlockPluginWidget()
+SearchBlockPlugin::~SearchBlockPlugin()
 {
   delete layout;
 }
 
-QWidget &SearchBlockPluginWidget::getWidget()
+QWidget &SearchBlockPlugin::getWidget()
 {
   return *this;
 }
 
-bool SearchBlockPluginWidget::initSearch()
+bool SearchBlockPlugin::initSearch()
 {
   m_searchForIds.clear();
 
-  if (stw_blockId->isActive()) {
+  if (stw_blockId->active()) {
     bool ok = true;
     m_searchForIds.insert(stw_blockId->getSearchText().toUInt());
     if (!ok) {
@@ -53,7 +56,7 @@ bool SearchBlockPluginWidget::initSearch()
     }
   }
 
-  if (stw_blockName->isActive()) {
+  if (stw_blockName->active()) {
     auto idList = BlockIdentifier::Instance().getKnownIds();
     for (auto id: idList) {
       auto blockInfo = BlockIdentifier::Instance().getBlockInfo(id);
@@ -66,7 +69,7 @@ bool SearchBlockPluginWidget::initSearch()
   return (m_searchForIds.size() > 0);
 }
 
-SearchPluginI::ResultListT SearchBlockPluginWidget::searchChunk(const Chunk &chunk)
+SearchPluginI::ResultListT SearchBlockPlugin::searchChunk(const Chunk &chunk)
 {
   SearchPluginI::ResultListT results;
 
@@ -74,19 +77,23 @@ SearchPluginI::ResultListT SearchBlockPluginWidget::searchChunk(const Chunk &chu
     return results;
   }
 
-  for (int z = 0; z < 16; z++) {
-    for (int y = chunk.getLowest(); y < chunk.getHighest() ; y++) {
-      for (int x = 0; x < 16; x++) {
-        const uint blockHid = chunk.getBlockHID(x,y,z);
-        const auto it = m_searchForIds.find(blockHid);
-        if (it != m_searchForIds.end()) {
-          auto info = BlockIdentifier::Instance().getBlockInfo(blockHid);
+  for (int y = chunk.getLowest(); y < chunk.getHighest() ; y++) {
+    int offset = (y & 0x0f) * (16*16);
+    const ChunkSection * const section = chunk.getSectionByY(y);
+    if (section) {
+      for (int z = 0; z < 16; z++) {
+        for (int x = 0; x < 16; x++, offset++) {
+          quint16 blockHid = section->getPaletteEntry(offset).hid;
+          const auto it = m_searchForIds.find(blockHid);
+          if (it != m_searchForIds.end()) {
+            auto info = BlockIdentifier::Instance().getBlockInfo(blockHid);
 
-          SearchResultItem item;
-          item.name = info.getName();
-          item.pos = QVector3D(chunk.getChunkX() * 16 + x, y, chunk.getChunkZ() * 16 + z) + QVector3D(0.5,0.0,0.5); // mark center of block, not origin
-          item.entity = QSharedPointer<Entity>::create(OverlayItem::Point(item.pos));
-          results.push_back(item);
+            SearchResultItem item;
+            item.name = info.getName();
+            item.pos = QVector3D(chunk.getChunkX() * 16 + x, y, chunk.getChunkZ() * 16 + z) + QVector3D(0.5,0.0,0.5); // mark center of block, not origin
+            item.entity = QSharedPointer<Entity>::create(OverlayItem::Point(item.pos));
+            results.push_back(item);
+          }
         }
       }
     }

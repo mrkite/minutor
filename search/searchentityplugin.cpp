@@ -1,4 +1,4 @@
-#include "search/searchentitypluginwidget.h"
+#include "search/searchentityplugin.h"
 #include "search/searchresultwidget.h"
 
 #include "chunk.h"
@@ -6,7 +6,7 @@
 #include <set>
 
 
-SearchEntityPluginWidget::SearchEntityPluginWidget()
+SearchEntityPlugin::SearchEntityPlugin()
   : QWidget()
   , layout(new QVBoxLayout(this))
 {
@@ -33,17 +33,17 @@ SearchEntityPluginWidget::SearchEntityPluginWidget()
 
 }
 
-SearchEntityPluginWidget::~SearchEntityPluginWidget()
+SearchEntityPlugin::~SearchEntityPlugin()
 {
   delete layout;
 }
 
-QWidget &SearchEntityPluginWidget::getWidget()
+QWidget &SearchEntityPlugin::getWidget()
 {
   return *this;
 }
 
-SearchPluginI::ResultListT SearchEntityPluginWidget::searchChunk(const Chunk &chunk)
+SearchPluginI::ResultListT SearchEntityPlugin::searchChunk(const Chunk &chunk)
 {
   SearchPluginI::ResultListT results;
 
@@ -53,7 +53,7 @@ SearchPluginI::ResultListT SearchEntityPluginWidget::searchChunk(const Chunk &ch
     EntityEvaluator evaluator(
       EntityEvaluatorConfig(results,
                             entity,
-                            std::bind(&SearchEntityPluginWidget::evaluateEntity, this, std::placeholders::_1)
+                            std::bind(&SearchEntityPlugin::evaluateEntity, this, std::placeholders::_1)
                             )
       );
   }
@@ -61,37 +61,37 @@ SearchPluginI::ResultListT SearchEntityPluginWidget::searchChunk(const Chunk &ch
   return results;
 }
 
-bool SearchEntityPluginWidget::evaluateEntity(EntityEvaluator &entity)
+bool SearchEntityPlugin::evaluateEntity(EntityEvaluator &entity)
 {
   bool result = true;
 
-  if (stw_entity->isActive()) {
+  if (stw_entity->active()) {
     QString id = entity.getTypeId();
     result = result && stw_entity->matches(id);
   }
 
-  if (stw_villager->isActive()) {
+  if (stw_villager->active()) {
     QString searchFor = stw_villager->getSearchText();
     QString career = entity.getVillagerProfession();
     result = result && (career.contains(searchFor, Qt::CaseInsensitive));
   }
 
-  if (stw_buys->isActive()) {
+  if (stw_buys->active()) {
     result = result && findBuyOrSell(entity, *stw_buys, 0);
   }
 
-  if (stw_sells->isActive()) {
+  if (stw_sells->active()) {
     result = result && findBuyOrSell(entity, *stw_sells, 1);
   }
 
-  if (stw_special->isActive()) {
+  if (stw_special->active()) {
     result = result && stw_special->matches(entity.getSpecialParams());
   }
 
   return result;
 }
 
-bool SearchEntityPluginWidget::findBuyOrSell(EntityEvaluator &entity, SearchTextWidget& searchText, int index)
+bool SearchEntityPlugin::findBuyOrSell(EntityEvaluator &entity, SearchTextWidget& searchText, int index)
 {
   bool foundOffer = false;
   auto offers = entity.getVillagerOffers();
