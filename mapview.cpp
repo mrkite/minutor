@@ -97,6 +97,7 @@ void MapView::setDimension(QString path, int scale) {
     this->x = 0;  // and we jump to the center spawn automatically
     this->z = 0;
   }
+  clearOverlayItems();
   cache.clear();
   cache.setPath(path);
   redraw();
