@@ -85,7 +85,7 @@ void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
 
         // get BlockInfo from block value
         const BlockInfo &block = BlockIdentifier::Instance().getBlockInfo(section->getPaletteEntry(offset, y).hid);
-        if (block.alpha == 0.0) continue;
+        if ((block.alpha == 0.0) && !(this->flags & MapView::flgBiomeColors)) continue;
 
         if (this->flags & MapView::flgSeaGround && block.isLiquid()) continue;
 
