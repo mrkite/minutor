@@ -64,6 +64,9 @@ void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
     regionalDifficulty = 6.0 * static_cast<double>(inhabitedTime) / 3600000.0;
   }
 
+  // flag to enable skipping all rendering stuff when transparent block is detected
+  bool doFastTransparentSkip = !((this->flags & MapView::flgBiomeColors) && (this->flags & MapView::flgSingleLayer));
+
   // render loop
   for (int z = 0; z < 16; z++) {  // n->s
     // we do not know the last y value from Chunk to the east, -> set special value
@@ -85,7 +88,7 @@ void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
 
         // get BlockInfo from block value
         const BlockInfo &block = BlockIdentifier::Instance().getBlockInfo(section->getPaletteEntry(offset, y).hid);
-        if ((block.alpha == 0.0) && !(this->flags & MapView::flgBiomeColors)) continue;
+        if ((block.alpha == 0.0) && doFastTransparentSkip) continue;
 
         if (this->flags & MapView::flgSeaGround && block.isLiquid()) continue;
 
