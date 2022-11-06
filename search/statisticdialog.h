@@ -49,14 +49,14 @@ class StatisticDialog : public QDialog
   SearchTextWidget    *stw_blockName;
   QVector3D           searchCenter;
   QPixmap             result_image;
-  quint16             air_hid;
+  quint32             air_hid;
 
   class AsyncStatistic
   {
    public:
     AsyncStatistic(StatisticDialog  &parent_,
                    const Range<int> &range_y_,
-                   const QList<quint16> &hid_)
+                   const QList<quint32> &hid_)
       : parent(parent_)
       , range_y(range_y_)
       , block_hid(hid_)
@@ -69,7 +69,7 @@ class StatisticDialog : public QDialog
    private:
     StatisticDialog& parent;
     const Range<int> range_y;
-    QList<quint16>   block_hid;
+    QList<quint32>   block_hid;
   };
 
   QSharedPointer<AsyncStatistic> currentStatistic;
