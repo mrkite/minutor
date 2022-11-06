@@ -25,7 +25,7 @@ StatisticDialog::StatisticDialog(QWidget *parent)
   stw_blockName->setExactMatch(true);
 
   // add suggestions for "block name"
-  auto idList = BlockIdentifier::Instance().getKnownIds();
+  const auto idList = BlockIdentifier::Instance().getKnownIds();
 
   std::set<QString> nameList;   // std::set<> is sorted, QSet<> not
 
@@ -93,7 +93,7 @@ void StatisticDialog::on_pb_search_clicked() {
   const Range<int>   rangeY  = ui->range->getRangeY();
 
   // get HID for selected "block name"
-  QList<quint16> blockHID;
+  QList<quint32> blockHID;
   for (const auto hid: BlockIdentifier::Instance().getKnownIds()) {
     auto blockInfo = BlockIdentifier::Instance().getBlockInfo(hid);
     if (stw_blockName->matches(blockInfo.getName())) blockHID.append(hid);
@@ -282,7 +282,7 @@ StatisticResultMap StatisticDialog::AsyncStatistic::processChunk_async(const Chu
         int offset = (y & 0x0f) * (16*16);
         for (int z = 0; z < 16; z++) {  // n->s
           for (int x = 0; x < 16; x++, offset++) {  // e->w
-            quint16 hid = section->getPaletteEntry(offset).hid;
+            quint32 hid = section->getPaletteEntry(offset).hid;
             if (hid != parent.air_hid)   ri.air--;
             if (block_hid.contains(hid)) ri.count++;
           }

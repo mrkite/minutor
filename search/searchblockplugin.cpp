@@ -57,11 +57,10 @@ bool SearchBlockPlugin::initSearch()
   }
 
   if (stw_blockName->active()) {
-    auto idList = BlockIdentifier::Instance().getKnownIds();
-    for (auto id: idList) {
-      auto blockInfo = BlockIdentifier::Instance().getBlockInfo(id);
+    for (const auto hid: BlockIdentifier::Instance().getKnownIds()) {
+      auto blockInfo = BlockIdentifier::Instance().getBlockInfo(hid);
       if (stw_blockName->matches(blockInfo.getName())) {
-        m_searchForIds.insert(id);
+        m_searchForIds.insert(hid);
       }
     }
   }
@@ -83,7 +82,7 @@ SearchPluginI::ResultListT SearchBlockPlugin::searchChunk(const Chunk &chunk)
     if (section) {
       for (int z = 0; z < 16; z++) {
         for (int x = 0; x < 16; x++, offset++) {
-          quint16 blockHid = section->getPaletteEntry(offset).hid;
+          quint32 blockHid = section->getPaletteEntry(offset).hid;
           const auto it = m_searchForIds.find(blockHid);
           if (it != m_searchForIds.end()) {
             auto info = BlockIdentifier::Instance().getBlockInfo(blockHid);
