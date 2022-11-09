@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "biome",
-  "version": "1.19.2",
+  "version": "1.19.2.22w45a",
   "data18": [
     {
       "id": "minecraft:ocean",
@@ -446,7 +446,8 @@
     {
       "id": 9,
       "name": "The End",
-      "color": "#8080ff"
+      "color": "#8080ff",
+      "watermodifier": "#3f76e4"
     },
     {
       "id": 10,
