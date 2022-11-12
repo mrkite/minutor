@@ -82,7 +82,7 @@ void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
         int sec = y >> 4;
         const ChunkSection *section = chunk->getSectionByIdx(sec);
         if (!section) {
-          y = (sec << 4) - 1;  // skip whole section
+          y = (sec << 4);  // skip whole section (for loop will do an additional decrement)
           continue;
         }
 
