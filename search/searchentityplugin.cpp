@@ -66,7 +66,7 @@ bool SearchEntityPlugin::evaluateEntity(EntityEvaluator &entity)
   bool result = true;
 
   if (stw_entity->active()) {
-    QString id = entity.getTypeId();
+    QString id = entity.getTypeId().remove("minecraft:");
     result = result && stw_entity->matches(id);
   }
 
