@@ -788,51 +788,88 @@ void Minutor::rescanWorlds() {
   // on startup anyway.
 }
 
+QMenu* Minutor::addOverlayItemMenu(QString type) {
+  // split type name to get nested menu levels
+  QList<QString> path = type.split('.');
+  QList<QString>::const_iterator pathIt, nextIt;
+  nextIt = path.begin();
+  nextIt++;  // skip first part "Structure."
+  pathIt = nextIt++;
+
+  // generate a nested menu structure to match the path
+  QMenu* menu = m_ui.menu_Overlay;
+  while (nextIt != path.end()) {
+    QMenu* submenu = menu->findChild<QMenu*>(*pathIt);
+    if (!submenu) {
+      // create new sub-menu
+      QMenu * submenu = new QMenu("&" + *pathIt, menu);
+      submenu->setObjectName(*pathIt);
+      menu->insertMenu(separatorEntityOverlay, submenu);
+      menu = submenu;
+    } else {
+      // continue with this sub-menu as parent
+      menu = submenu;
+    }
+    pathIt = nextIt++;
+  }
+  return menu;
+}
+
 void Minutor::addOverlayItemType(QString type, QColor color,
                                  QString dimension) {
   if (!overlayItemTypes.contains(type)) {
     overlayItemTypes.insert(type);
-    QList<QString> path = type.split('.');
-    QList<QString>::const_iterator pathIt, nextIt, endPathIt = path.end();
-    nextIt = path.begin();
-    nextIt++;  // skip first part
-    pathIt = nextIt++;
-    QMenu* cur = m_ui.menu_Overlay;
 
-    // generate a nested menu structure to match the path
-    while (nextIt != endPathIt) {
-      QList<QMenu*> results =
-          cur->findChildren<QMenu*>(*pathIt, Qt::FindDirectChildrenOnly);
-      if (results.empty()) {
-        cur = cur->addMenu("&" + *pathIt);
-        cur->setObjectName(*pathIt);
-      } else {
-        cur->addMenu( results.front() );
-      }
-      pathIt = ++nextIt;
-    }
+    // generate a nested menu structure to match the type path
+    QMenu* menu = addOverlayItemMenu(type);
+
     // generate a unique keyboard shortcut
-    QString actionName = path.last();
-    QKeySequence sequence = generateUniqueKeyboardShortcut(&actionName);
+    QString actionName = type.split('.').last();
+    QString actionNameShortcut = actionName;
+    QKeySequence sequence = generateUniqueKeyboardShortcut(&actionNameShortcut);
 
+    // define color pixmap
     QPixmap pixmap(16, 16);
     QColor solidColor(color);
     solidColor.setAlpha(255);
     pixmap.fill(solidColor);
 
+    // create Action
     QMap<QString, QVariant> entityData;
     entityData["type"] = type;
     entityData["dimension"] = dimension;
 
-    structureOverlayActions.push_back(new QAction(pixmap, actionName, this));
+    structureOverlayActions.push_back(new QAction(pixmap, actionNameShortcut, this));
     structureOverlayActions.last()->setShortcut(sequence);
     structureOverlayActions.last()->setStatusTip(tr("Toggle viewing of %1")
                                           .arg(type));
     structureOverlayActions.last()->setEnabled(true);
     structureOverlayActions.last()->setData(entityData);
     structureOverlayActions.last()->setCheckable(true);
-    // insert before Entitys
-    cur->insertAction(separatorEntityOverlay, structureOverlayActions.last());
+
+    // insert at alphabetically position
+    QAction* insertBeforeAction = NULL;
+    for (QAction * action: menu->actions()) {
+      if (action == separatorEntityOverlay) {
+        // insert at least before Entities
+        insertBeforeAction = separatorEntityOverlay;
+        break;
+      } else if (action->menu()) {
+        // sub-menu means nested structures from a mod -> place before
+        insertBeforeAction = action;
+        break;
+      } else if (action->isSeparator() || (action == separatorStructureOverlay)) {
+        // separator or other stuff we want to ignore
+      } else { // action
+        QString actionText = action->text();
+        actionText.remove('&');
+        if (actionName < actionText) {
+          insertBeforeAction = action;
+          break;
+        }
+      }
+    }
+    menu->insertAction(insertBeforeAction, structureOverlayActions.last());
     connect(structureOverlayActions.last(), SIGNAL(triggered()),
             this, SLOT(toggleFlags()));
   }
