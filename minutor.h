@@ -85,6 +85,7 @@ private slots:
   void saveProgress(QString status, double value);
   void saveFinished();
   void addOverlayItem(QSharedPointer<OverlayItem> item);
+  QMenu* addOverlayItemMenu(QString type);
   void addOverlayItemType(QString type, QColor color, QString dimension = "");
   void showProperties(QVariant props);
 

@@ -616,7 +616,14 @@ void MapView::getToolTip(int x, int z) {
 
 void MapView::addStructureFromChunk(QSharedPointer<GeneratedStructure> structure) {
   // update menu (if necessary)
-  emit addOverlayItemType(structure->type(), structure->color());
+  QString structuretype = structure->type();
+  if (!structuretype.contains("minecraft:")) {
+    // not vanilla -> structure from a mod
+    QStringList mod = structuretype.split(QRegularExpression("[.:]"));
+    structuretype.insert(mod[0].size(), "." + mod[1]);
+  }
+
+  emit addOverlayItemType(structuretype, structure->color());
   // add to list with overlays
   addOverlayItem(structure);
 }
