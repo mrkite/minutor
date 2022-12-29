@@ -12,6 +12,7 @@
 #include <QWidgetAction>
 
 #include "ui_minutor.h"
+#include "generatedstructure.h"
 
 class QAction;
 class QActionGroup;
@@ -84,9 +85,10 @@ private slots:
   void rescanWorlds();
   void saveProgress(QString status, double value);
   void saveFinished();
+  void addStructureFromChunk(QSharedPointer<GeneratedStructure> structure);
   void addOverlayItem(QSharedPointer<OverlayItem> item);
-  QMenu* addOverlayItemMenu(QString type);
-  void addOverlayItemType(QString type, QColor color, QString dimension = "");
+  QMenu* addOverlayItemMenu(QString path);
+  void addOverlayItemType(QString path, QString type, QColor color, QString dimension = "");
   void showProperties(QVariant props);
 
   void openSearchEntityDialog();

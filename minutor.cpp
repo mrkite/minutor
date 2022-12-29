@@ -32,10 +32,12 @@
 #include "overlay/village.h"
 #include "jumpto.h"
 #include "pngexport.h"
+#include "chunkcache.h"
 #include "search/searchchunksdialog.h"
 #include "search/searchentityplugin.h"
 #include "search/searchblockplugin.h"
 #include "search/statisticdialog.h"
+
 
 Minutor::Minutor()
 {
@@ -47,12 +49,17 @@ Minutor::Minutor()
           statusBar(), SLOT(showMessage(QString)));
   connect(mapview, SIGNAL(showProperties(QVariant)),
           this,    SLOT(showProperties(QVariant)));
-  connect(mapview, SIGNAL(addOverlayItemType(QString, QColor)),
-          this,    SLOT(addOverlayItemType(QString, QColor)));
+
+  ChunkCache const & cache = ChunkCache::Instance();
+  connect(&cache, &ChunkCache::structureFound,
+          this,   &Minutor::addStructureFromChunk);
+
+  // Definition manager
   dm = new DefinitionManager(this);
   mapview->attach(dm);
   connect(dm,   SIGNAL(packsChanged()),
           this, SLOT(updateDimensions()));
+  // world information
   WorldInfo & wi = WorldInfo::Instance();
   connect(&wi,  SIGNAL(dimensionChanged(const DimensionInfo &)),
           this, SLOT(viewDimension(const DimensionInfo &)));
@@ -788,40 +795,56 @@ void Minutor::rescanWorlds() {
   // on startup anyway.
 }
 
-QMenu* Minutor::addOverlayItemMenu(QString type) {
+QMenu* Minutor::addOverlayItemMenu(QString path) {
+  // for vanilla the path is empty (minecraft:)
+  if ((path == "") || (path == "minecraft"))
+    return m_ui.menu_Overlay;
+
   // split type name to get nested menu levels
-  QList<QString> path = type.split('.');
-  QList<QString>::const_iterator pathIt, nextIt;
-  nextIt = path.begin();
-  nextIt++;  // skip first part "Structure."
-  pathIt = nextIt++;
+  QList<QString> pathlist = path.split('.');
 
   // generate a nested menu structure to match the path
   QMenu* menu = m_ui.menu_Overlay;
-  while (nextIt != path.end()) {
-    QMenu* submenu = menu->findChild<QMenu*>(*pathIt);
+  for (auto &p: pathlist) {
+    QMenu* submenu = menu->findChild<QMenu*>(p);
     if (!submenu) {
       // create new sub-menu
-      QMenu * submenu = new QMenu("&" + *pathIt, menu);
-      submenu->setObjectName(*pathIt);
-      menu->insertMenu(separatorEntityOverlay, submenu);
+      QMenu * submenu = new QMenu("&" + p, menu);
+      submenu->setObjectName(p);
+      // insert at alphabetical correct position
+      QList<QMenu *> menulist = menu->findChildren<QMenu*>();
+      QAction * insertBeforeAction;
+      for (QAction * action: menu->actions()) {
+        if (action == separatorEntityOverlay) {
+          // insert at least before Entities
+          insertBeforeAction = separatorEntityOverlay;
+          break;
+        } else if (action->menu()) {
+          // sub-menu means nested structures from a mod -> place before
+          if (action->text() > submenu->title()) {
+            insertBeforeAction = action;
+            break;
+          }
+        } // ignore all other actions
+      }
+      menu->insertMenu(insertBeforeAction, submenu);
       menu = submenu;
     } else {
       // continue with this sub-menu as parent
       menu = submenu;
     }
-    pathIt = nextIt++;
   }
   return menu;
 }
 
-void Minutor::addOverlayItemType(QString type, QColor color,
+void Minutor::addOverlayItemType(QString path, QString type,
+                                 QColor color,
                                  QString dimension) {
   if (!overlayItemTypes.contains(type)) {
     overlayItemTypes.insert(type);
 
-    // generate a nested menu structure to match the type path
-    QMenu* menu = addOverlayItemMenu(type);
+    // generate a nested menu structure to match the path
+    QMenu* menu = addOverlayItemMenu(path);
 
     // generate a unique keyboard shortcut
     QString actionName = type.split('.').last();
@@ -875,9 +898,26 @@ void Minutor::addOverlayItemType(QString type, QColor color,
   }
 }
 
+void Minutor::addStructureFromChunk(QSharedPointer<GeneratedStructure> structure) {
+  // update menu (if necessary)
+  QString type = structure->type();
+  QString path;
+  if (!type.contains("minecraft:")) {
+    // not vanilla -> structure from a mod
+    QStringList mod = type.split(QRegularExpression("[.:]"));
+    path = mod[1];
+  }
+
+  addOverlayItemType(path, type, structure->color());
+  // add to list with overlays
+  mapview->addOverlayItem(structure);
+}
+
 void Minutor::addOverlayItem(QSharedPointer<OverlayItem> item) {
   // create menu entries (if necessary)
-  addOverlayItemType(item->type(), item->color(), item->dimension());
+  QString type = item->type();
+  QString path;
+  addOverlayItemType(path, type, item->color(), item->dimension());
 
 //  const OverlayItem::Point& p = item->midpoint();
 //  overlayItems[item->type()].insertMulti(QPair<int, int>(p.x, p.z), item);

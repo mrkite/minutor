@@ -74,7 +74,6 @@ class MapView : public QWidget {
   void demandDepthChange(double value);
   void demandDepthValue(double value);
   void showProperties(QVariant properties);
-  void addOverlayItemType(QString type, QColor color);
   void coordinatesChanged(int x, int y, int z);
 
  protected:
@@ -86,9 +85,6 @@ class MapView : public QWidget {
   void keyPressEvent(QKeyEvent *event);
   void resizeEvent(QResizeEvent *event);
   void paintEvent(QPaintEvent *event);
-
- private slots:
-  void addStructureFromChunk(QSharedPointer<GeneratedStructure> structure);
 
  private:
   void drawChunk(int x, int z);
