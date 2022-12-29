@@ -109,7 +109,7 @@ signals:
   void createActions();
   void createMenus();
   void createStatusBar();
-  void loadStructures(const QDir &dataPath);
+  void loadStructures(QDir path);
   QKeySequence generateUniqueKeyboardShortcut(QString *actionName);
 
   void getWorldList();

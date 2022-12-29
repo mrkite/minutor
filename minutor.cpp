@@ -418,6 +418,8 @@ void Minutor::viewDimension(const DimensionInfo &dim) {
   // clear current map & update scale
   QString path = QDir(currentWorld).absoluteFilePath(dim.path);
   mapview->setDimension(path, dim.scale);
+  // reload structures for that dimension (old format from data directory)
+  loadStructures(path);
 }
 
 void Minutor::about() {
@@ -745,11 +747,6 @@ void Minutor::loadWorld(QDir path) {
     path.cdUp();
   }
 
-  if (path.cd("data")) {
-    loadStructures(path);
-    path.cdUp();
-  }
-
   // create Dimensions menu
   WorldInfo::Instance().getDimensionsInWorld(path, m_ui.menu_Dimension, this);
 
@@ -1000,11 +997,14 @@ void Minutor::updateSearchResultPositions(QVector<QSharedPointer<OverlayItem> > 
   mapview->redraw();
 }
 
-void Minutor::loadStructures(const QDir &dataPath) {
+void Minutor::loadStructures(QDir path) {
+  // check if data directory is present
+  if (!path.cd("data")) return;
+
   // attempt to parse all of the files in the data directory, looking for
   // generated structures
-  for (auto &fileName : dataPath.entryList(QStringList() << "*.dat")) {
-    NBT file(dataPath.filePath(fileName));
+  for (auto &fileName : path.entryList(QStringList() << "*.dat")) {
+    NBT file(path.filePath(fileName));
     auto data = file.at("data");
 
     auto items = GeneratedStructure::tryParseDatFile(data);
