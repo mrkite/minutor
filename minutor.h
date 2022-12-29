@@ -12,7 +12,7 @@
 #include <QWidgetAction>
 
 #include "ui_minutor.h"
-#include "generatedstructure.h"
+#include "overlay/generatedstructure.h"
 
 class QAction;
 class QActionGroup;
