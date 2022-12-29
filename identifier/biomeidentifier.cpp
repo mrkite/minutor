@@ -187,7 +187,10 @@ QColor BiomeInfo::getBiomeWaterColor( QColor watercolor ) const
 // BiomeIdentifier
 // --------- --------- --------- ---------
 
-BiomeIdentifier::BiomeIdentifier() {}
+BiomeIdentifier::BiomeIdentifier() {
+  unknownBiome.watermodifier.setNamedColor("#3f76e4");
+  unknownBiome.enabledwatermodifier = true;
+}
 
 BiomeIdentifier::~BiomeIdentifier() {
   for (int i = 0; i < packs.length(); i++) {

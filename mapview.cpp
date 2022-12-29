@@ -21,10 +21,9 @@ MapView::MapView(QWidget *parent)
   , cache(ChunkCache::Instance())
 {
   adjustZoom(0, false, false);
-  connect(&cache, SIGNAL(chunkLoaded(int, int)),
-          this,   SLOT  (chunkUpdated(int, int)));
-  connect(&cache, SIGNAL(structureFound(QSharedPointer<GeneratedStructure>)),
-          this,   SLOT  (addStructureFromChunk(QSharedPointer<GeneratedStructure>)));
+  connect(&cache, &ChunkCache::chunkLoaded,
+          this,   &MapView::chunkUpdated);
+
   setMouseTracking(true);
   setFocusPolicy(Qt::StrongFocus);
 
@@ -612,20 +611,6 @@ void MapView::getToolTip(int x, int z) {
 #endif
 
   emit hoverTextChanged(hovertext);
-}
-
-void MapView::addStructureFromChunk(QSharedPointer<GeneratedStructure> structure) {
-  // update menu (if necessary)
-  QString structuretype = structure->type();
-  if (!structuretype.contains("minecraft:")) {
-    // not vanilla -> structure from a mod
-    QStringList mod = structuretype.split(QRegularExpression("[.:]"));
-    structuretype.insert(mod[0].size(), "." + mod[1]);
-  }
-
-  emit addOverlayItemType(structuretype, structure->color());
-  // add to list with overlays
-  addOverlayItem(structure);
 }
 
 void MapView::addOverlayItem(QSharedPointer<OverlayItem> item) {
