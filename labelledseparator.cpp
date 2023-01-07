@@ -8,8 +8,10 @@ LabeledSeparator::LabeledSeparator(QWidget* parent)
   line.setFrameShadow(QFrame::Sunken);
   line.setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
 
+  layout.addWidget(&checkbox);
   layout.addWidget(&label);
   layout.addWidget(&line);
+  checkbox.setVisible(false);
   widget.setLayout(&layout);
   widget.setEnabled(false);
   this->setDefaultWidget(&widget);

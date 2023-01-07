@@ -3,6 +3,7 @@
 #define LABELEDSEPARATOR_H
 
 #include <QWidgetAction>
+#include <QCheckBox>
 #include <QLabel>
 #include <QFrame>
 #include <QLayout>
@@ -20,6 +21,7 @@ class LabeledSeparator: public QWidgetAction
  private:
   QWidget widget;
   QHBoxLayout layout;
+  QCheckBox checkbox;
   QLabel label;
   QFrame line;
 };
