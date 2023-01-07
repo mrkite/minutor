@@ -78,6 +78,7 @@ private slots:
   void jumpToLocation();
   void viewDimension(const DimensionInfo &dim);
   void toggleFlags();
+  void toggleOverlays();
 
   void about();
 
@@ -98,6 +99,9 @@ private slots:
   void triggerJumpToPosition(QVector3D pos);
 
   void updateSearchResultPositions(QVector<QSharedPointer<OverlayItem> >);
+
+  void toggleStructures();
+  void toggleEntities();
 
 signals:
   void worldLoaded(bool isLoaded);

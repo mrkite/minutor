@@ -335,7 +335,11 @@ void Minutor::toggleFlags() {
   if (m_ui.action_SlimeChunks->isChecked())   flags |= MapView::flgSlimeChunks;
   if (m_ui.action_InhabitedTime->isChecked()) flags |= MapView::flgInhabitedTime;
   mapview->setFlags(flags);
+  mapview->redraw();
+}
 
+void Minutor::toggleOverlays()
+{
   QSet<QString> overlayTypes;
   for (auto action : structureOverlayActions) {
     if (action->isChecked()) {
@@ -350,6 +354,46 @@ void Minutor::toggleFlags() {
   mapview->setVisibleOverlayItemTypes(overlayTypes);
   mapview->redraw();
 }
+
+void Minutor::toggleStructures()
+{
+  bool toggleEnabled = false;
+  for (QAction * action: m_ui.menu_Overlay->actions()) {
+    if (action == separatorStructureOverlay) {
+      // start after this separator
+      toggleEnabled = true;
+    } else if (action == separatorEntityOverlay) {
+      // stop before this separator
+      toggleEnabled = false;
+    } else if (action->menu() || action->isSeparator()) {
+      // stuff we want to ignore
+    } else { // action
+      if (toggleEnabled)
+        action->toggle();
+    }
+  }
+
+  toggleOverlays();
+}
+
+void Minutor::toggleEntities()
+{
+  bool toggleEnabled = false;
+  for (QAction * action: m_ui.menu_Overlay->actions()) {
+    if (action == separatorEntityOverlay) {
+      // start after this separator
+      toggleEnabled = true;
+    } else if (action->menu() || action->isSeparator() || (action == separatorStructureOverlay)) {
+      // stuff we want to ignore
+    } else { // action
+      if (toggleEnabled)
+        action->toggle();
+    }
+  }
+
+  toggleOverlays();
+}
+
 
 void Minutor::viewDimension(QString dim_string)
 {
@@ -374,7 +418,6 @@ void Minutor::viewDimension(QString dim_string)
     }
   }
 }
-
 
 void Minutor::viewDimension(const DimensionInfo &dim) {
   // update visability of Structure Overlays
@@ -421,6 +464,7 @@ void Minutor::viewDimension(const DimensionInfo &dim) {
   // reload structures for that dimension (old format from data directory)
   loadStructures(path);
 }
+
 
 void Minutor::about() {
   QMessageBox::about(this, tr("About %1").arg(qApp->applicationName()),
@@ -576,6 +620,11 @@ void Minutor::createMenus() {
   m_ui.menu_Overlay->addAction(separatorStructureOverlay);
   m_ui.menu_Overlay->addAction(separatorEntityOverlay);
 
+  connect(separatorStructureOverlay, &LabeledSeparator::triggered,
+          this,                      &Minutor::toggleStructures);
+  connect(separatorEntityOverlay,    &LabeledSeparator::triggered,
+          this,                      &Minutor::toggleEntities);
+
   EntityIdentifier &ei = EntityIdentifier::Instance();
   for (auto it = ei.getCategoryList().constBegin();
        it != ei.getCategoryList().constEnd(); it++) {
@@ -602,7 +651,7 @@ void Minutor::createMenus() {
     m_ui.menu_Overlay->addAction(action); // add at bottom
     // connect handler
     connect(action, SIGNAL(triggered()),
-            this,   SLOT(toggleFlags()));
+            this,   SLOT(toggleOverlays()));
   }
 
   // [Search]
@@ -754,6 +803,7 @@ void Minutor::loadWorld(QDir path) {
   emit worldLoaded(true);
   mapview->setLocation(locations.first().x, locations.first().z);
   toggleFlags();
+  toggleOverlays();
 }
 
 void Minutor::updatePlayerCache(QNetworkReply* reply) {
@@ -826,6 +876,11 @@ QMenu* Minutor::addOverlayItemMenu(QString path) {
       }
       menu->insertMenu(insertBeforeAction, submenu);
       menu = submenu;
+      // add a "toggle all" action for this new sub-menu
+      menu->addAction(new LabeledSeparator("toggle all", menu));
+      // todo: find good name
+      // todo: configure tri-state-checkbox
+      // todo: wire up signal-slot (probably not here, but in addOverlayItemType)
     } else {
       // continue with this sub-menu as parent
       menu = submenu;
@@ -891,7 +946,7 @@ void Minutor::addOverlayItemType(QString path, QString type,
     }
     menu->insertAction(insertBeforeAction, structureOverlayActions.last());
     connect(structureOverlayActions.last(), SIGNAL(triggered()),
-            this, SLOT(toggleFlags()));
+            this,                           SLOT(toggleOverlays()));
   }
 }
 
