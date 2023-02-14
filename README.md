@@ -18,4 +18,4 @@ We also use clang's static analyzer.  The options tested are in `check.sh`.
 COMPILING:
 ---------
 
-[Is described in the Wiki](https://github.com/mrkite/minutor/wiki/Self-Compile)
+[Is described in the Wiki](https://github.com/mrkite/minutor/wiki/How-to-Build-yourself-from-source)
