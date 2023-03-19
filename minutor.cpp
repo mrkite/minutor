@@ -355,7 +355,7 @@ void Minutor::toggleOverlays()
   mapview->redraw();
 }
 
-void Minutor::toggleStructures()
+void Minutor::toggleStructures(bool checked)
 {
   bool toggleEnabled = false;
   for (QAction * action: m_ui.menu_Overlay->actions()) {
@@ -369,14 +369,14 @@ void Minutor::toggleStructures()
       // stuff we want to ignore
     } else { // action
       if (toggleEnabled)
-        action->toggle();
+        action->setChecked(checked);
     }
   }
 
   toggleOverlays();
 }
 
-void Minutor::toggleEntities()
+void Minutor::toggleEntities(bool checked)
 {
   bool toggleEnabled = false;
   for (QAction * action: m_ui.menu_Overlay->actions()) {
@@ -387,11 +387,41 @@ void Minutor::toggleEntities()
       // stuff we want to ignore
     } else { // action
       if (toggleEnabled)
-        action->toggle();
+        action->setChecked(checked);
     }
   }
 
   toggleOverlays();
+}
+
+template<typename CheckBox, typename Iter>
+void updateTristateCheckBox(CheckBox* cbox, Iter b_iter, Iter e_iter)
+{
+  auto is_checked = [](auto action) { return action->isChecked(); };
+  if (std::any_of(b_iter, e_iter, is_checked)) {
+    if (std::all_of(b_iter, e_iter, is_checked)) {
+      cbox->setCheckState(Qt::Checked);
+    } else {
+      cbox->setCheckState(Qt::PartiallyChecked);
+    }
+  } else {
+    cbox->setCheckState(Qt::Unchecked);
+  }
+}
+
+void Minutor::updateToggleAllStructuresState()
+{
+  auto actions = m_ui.menu_Overlay->actions();
+  auto b_iter = std::next(actions.begin(), actions.indexOf(separatorStructureOverlay) + 1);
+  auto e_iter = std::next(actions.begin(), actions.indexOf(separatorEntityOverlay));
+  updateTristateCheckBox(qobject_cast<LabeledSeparator*>(separatorStructureOverlay), b_iter, e_iter);
+}
+
+void Minutor::updateToggleAllEntitiesState()
+{
+  auto actions = m_ui.menu_Overlay->actions();
+  auto b_iter = std::next(actions.begin(), actions.indexOf(separatorEntityOverlay) + 1);
+  updateTristateCheckBox(qobject_cast<LabeledSeparator*>(separatorEntityOverlay), b_iter, actions.end());
 }
 
 
@@ -605,6 +635,29 @@ QKeySequence Minutor::generateUniqueKeyboardShortcut(QString *actionName) {
   return sequence;
 }
 
+void Minutor::insertToggleAllAction(QMenu* menu)
+{
+  Q_ASSERT(menu);
+  // todo: find good name
+  auto action = new LabeledSeparator(tr("toggle all"), menu);
+  menu->addAction(action);
+  connect(action, &QAction::triggered, menu, [=](bool checked) {
+    auto actions = menu->actions();
+    std::for_each(std::next(actions.begin()), actions.end(),
+                  [=](auto action) { action->setChecked(checked); });
+  });
+  connect(action, &QAction::triggered, this, &Minutor::toggleOverlays);
+}
+
+void Minutor::updateToggleAllState(QMenu* menu)
+{
+  Q_ASSERT(menu);
+  auto actions = menu->actions();
+  auto toggle_all_action = qobject_cast<LabeledSeparator*>(actions.constFirst());
+  Q_ASSERT(toggle_all_action);
+  updateTristateCheckBox(toggle_all_action, std::next(actions.begin()), actions.end());
+}
+
 
 void Minutor::createMenus() {
   // [File]
@@ -652,6 +705,8 @@ void Minutor::createMenus() {
     // connect handler
     connect(action, SIGNAL(triggered()),
             this,   SLOT(toggleOverlays()));
+    connect(action, SIGNAL(triggered()),
+            this,   SLOT(updateToggleAllEntitiesState()));
   }
 
   // [Search]
@@ -876,10 +931,7 @@ QMenu* Minutor::addOverlayItemMenu(QString path) {
       menu->insertMenu(insertBeforeAction, submenu);
       menu = submenu;
       // add a "toggle all" action for this new sub-menu
-      menu->addAction(new LabeledSeparator("toggle all", menu));
-      // todo: find good name
-      // todo: configure tri-state-checkbox
-      // todo: wire up signal-slot (probably not here, but in addOverlayItemType)
+      insertToggleAllAction(menu);
     } else {
       // continue with this sub-menu as parent
       menu = submenu;
@@ -946,6 +998,13 @@ void Minutor::addOverlayItemType(QString path, QString type,
     menu->insertAction(insertBeforeAction, structureOverlayActions.last());
     connect(structureOverlayActions.last(), SIGNAL(triggered()),
             this,                           SLOT(toggleOverlays()));
+    if (menu != m_ui.menu_Overlay) {
+      connect(structureOverlayActions.last(), &QAction::triggered,
+              menu, [this, menu]() { updateToggleAllState(menu); });
+    } else {
+      connect(structureOverlayActions.last(), SIGNAL(triggered()),
+              this,                           SLOT(updateToggleAllStructuresState()));
+    }
   }
 }
 

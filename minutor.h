@@ -99,8 +99,11 @@ private slots:
 
   void updateSearchResultPositions(QVector<QSharedPointer<OverlayItem> >);
 
-  void toggleStructures();
-  void toggleEntities();
+  void toggleStructures(bool checked);
+  void toggleEntities(bool checked);
+
+  void updateToggleAllStructuresState();
+  void updateToggleAllEntitiesState();
 
 signals:
   void worldLoaded(bool isLoaded);
@@ -114,6 +117,9 @@ signals:
   void createStatusBar();
   void loadStructures(QDir path);
   QKeySequence generateUniqueKeyboardShortcut(QString *actionName);
+
+  void insertToggleAllAction(QMenu* menu);
+  void updateToggleAllState(QMenu* menu);
 
   void getWorldList();
 
