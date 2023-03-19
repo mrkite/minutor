@@ -9,7 +9,6 @@
 #include <QSet>
 #include <QVector3D>
 #include <QtNetwork/QNetworkReply>
-#include <QWidgetAction>
 
 #include "ui_minutor.h"
 #include "overlay/generatedstructure.h"
@@ -127,8 +126,8 @@ signals:
   QList<QAction*> playerActions;
   QList<QAction*> entityOverlayActions;
   QList<QAction*> structureOverlayActions;
-  QWidgetAction* separatorEntityOverlay;
-  QWidgetAction* separatorStructureOverlay;
+  QAction* separatorEntityOverlay;
+  QAction* separatorStructureOverlay;
 
   // loaded world data
   QList<Location> locations;  // data of player related locations in this world
