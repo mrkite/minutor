@@ -1003,9 +1003,11 @@ void Minutor::addOverlayItemType(QString path, QString type,
     if (menu != m_ui.menu_Overlay) {
       connect(structureOverlayActions.last(), &QAction::triggered,
               menu, [this, menu]() { updateToggleAllState(menu); });
+      updateToggleAllState(menu);
     } else {
       connect(structureOverlayActions.last(), SIGNAL(triggered()),
               this,                           SLOT(updateToggleAllStructuresState()));
+      updateToggleAllStructuresState();
     }
   }
 }
