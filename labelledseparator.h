@@ -18,6 +18,9 @@ class LabeledSeparator: public QWidgetAction
 
   void setText(const QString& text);
 
+  void setCheckState(Qt::CheckState state);
+  Qt::CheckState checkState() const;
+
  private:
   QWidget widget;
   QHBoxLayout layout;

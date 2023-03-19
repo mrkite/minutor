@@ -12,6 +12,7 @@ LabeledSeparator::LabeledSeparator(QWidget* parent)
   layout.addWidget(&label);
   layout.addWidget(&line);
   checkbox.setVisible(false);
+  checkbox.setTristate(true);
   widget.setLayout(&layout);
   widget.setEnabled(false);
   this->setDefaultWidget(&widget);
@@ -26,4 +27,14 @@ LabeledSeparator::LabeledSeparator(const QString& text, QWidget* parent)
 void LabeledSeparator::setText(const QString& text)
 {
   label.setText(text);
+}
+
+void LabeledSeparator::setCheckState(Qt::CheckState state)
+{
+  checkbox.setCheckState(state);
+}
+
+Qt::CheckState LabeledSeparator::checkState() const
+{
+  return checkbox.checkState();
 }
