@@ -254,6 +254,8 @@ void Minutor::closeWorld() {
   }
   structureOverlayActions.clear();
   overlayItemTypes.clear();
+  auto submenues = m_ui.menu_Overlay->findChildren<QMenu*>();
+  qDeleteAll(submenues);
 }
 
 void Minutor::jumpToLocation() {
