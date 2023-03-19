@@ -11,10 +11,8 @@ LabeledSeparator::LabeledSeparator(QWidget* parent)
   layout.addWidget(&checkbox);
   layout.addWidget(&label);
   layout.addWidget(&line);
-  checkbox.setVisible(false);
   checkbox.setTristate(true);
   widget.setLayout(&layout);
-  widget.setEnabled(false);
   this->setDefaultWidget(&widget);
 }
 
