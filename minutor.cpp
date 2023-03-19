@@ -859,7 +859,6 @@ QMenu* Minutor::addOverlayItemMenu(QString path) {
       QMenu * submenu = new QMenu("&" + p, menu);
       submenu->setObjectName(p);
       // insert at alphabetical correct position
-      QList<QMenu *> menulist = menu->findChildren<QMenu*>();
       QAction * insertBeforeAction;
       for (QAction * action: menu->actions()) {
         if (action == separatorEntityOverlay) {
