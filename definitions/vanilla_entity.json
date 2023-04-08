@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "entity",
-  "version": "1.19.22w15a",
+  "version": "1.20.22w42a",
   "data": [
     {
       "category": "Hostile",
@@ -388,6 +388,10 @@
         {
           "id": "allay",
           "color": "#68ffff"
+        },
+        {
+          "id": "camel",
+          "color": "#eab156"
         }
       ]
     },
@@ -438,7 +442,8 @@
           "id": "chest_boat",
           "catcolor": "DarkOrange",
           "color": "Sienna"
-        },        {
+        },
+        {
           "note": "old naming scheme until 1.10",
           "id": "MinecartCommandBlock",
           "name": "CommandBlock Minecart",
