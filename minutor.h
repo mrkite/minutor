@@ -9,7 +9,6 @@
 #include <QSet>
 #include <QVector3D>
 #include <QtNetwork/QNetworkReply>
-#include <QWidgetAction>
 
 #include "ui_minutor.h"
 #include "overlay/generatedstructure.h"
@@ -78,6 +77,7 @@ private slots:
   void jumpToLocation();
   void viewDimension(const DimensionInfo &dim);
   void toggleFlags();
+  void toggleOverlays();
 
   void about();
 
@@ -99,6 +99,12 @@ private slots:
 
   void updateSearchResultPositions(QVector<QSharedPointer<OverlayItem> >);
 
+  void toggleStructures(bool checked);
+  void toggleEntities(bool checked);
+
+  void updateToggleAllStructuresState();
+  void updateToggleAllEntitiesState();
+
 signals:
   void worldLoaded(bool isLoaded);
 
@@ -112,6 +118,9 @@ signals:
   void loadStructures(QDir path);
   QKeySequence generateUniqueKeyboardShortcut(QString *actionName);
 
+  void insertToggleAllAction(QMenu* menu);
+  void updateToggleAllState(QMenu* menu);
+
   void getWorldList();
 
   MapView *mapview;
@@ -123,8 +132,8 @@ signals:
   QList<QAction*> playerActions;
   QList<QAction*> entityOverlayActions;
   QList<QAction*> structureOverlayActions;
-  QWidgetAction* separatorEntityOverlay;
-  QWidgetAction* separatorStructureOverlay;
+  QAction* separatorEntityOverlay;
+  QAction* separatorStructureOverlay;
 
   // loaded world data
   QList<Location> locations;  // data of player related locations in this world

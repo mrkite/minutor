@@ -254,6 +254,8 @@ void Minutor::closeWorld() {
   }
   structureOverlayActions.clear();
   overlayItemTypes.clear();
+  auto submenues = m_ui.menu_Overlay->findChildren<QMenu*>();
+  qDeleteAll(submenues);
 }
 
 void Minutor::jumpToLocation() {
@@ -335,7 +337,11 @@ void Minutor::toggleFlags() {
   if (m_ui.action_SlimeChunks->isChecked())   flags |= MapView::flgSlimeChunks;
   if (m_ui.action_InhabitedTime->isChecked()) flags |= MapView::flgInhabitedTime;
   mapview->setFlags(flags);
+  mapview->redraw();
+}
 
+void Minutor::toggleOverlays()
+{
   QSet<QString> overlayTypes;
   for (auto action : structureOverlayActions) {
     if (action->isChecked()) {
@@ -350,6 +356,76 @@ void Minutor::toggleFlags() {
   mapview->setVisibleOverlayItemTypes(overlayTypes);
   mapview->redraw();
 }
+
+void Minutor::toggleStructures(bool checked)
+{
+  bool toggleEnabled = false;
+  for (QAction * action: m_ui.menu_Overlay->actions()) {
+    if (action == separatorStructureOverlay) {
+      // start after this separator
+      toggleEnabled = true;
+    } else if (action == separatorEntityOverlay) {
+      // stop before this separator
+      toggleEnabled = false;
+    } else if (action->menu() || action->isSeparator()) {
+      // stuff we want to ignore
+    } else { // action
+      if (toggleEnabled)
+        action->setChecked(checked);
+    }
+  }
+
+  toggleOverlays();
+}
+
+void Minutor::toggleEntities(bool checked)
+{
+  bool toggleEnabled = false;
+  for (QAction * action: m_ui.menu_Overlay->actions()) {
+    if (action == separatorEntityOverlay) {
+      // start after this separator
+      toggleEnabled = true;
+    } else if (action->menu() || action->isSeparator() || (action == separatorStructureOverlay)) {
+      // stuff we want to ignore
+    } else { // action
+      if (toggleEnabled)
+        action->setChecked(checked);
+    }
+  }
+
+  toggleOverlays();
+}
+
+template<typename CheckBox, typename Iter>
+void updateTristateCheckBox(CheckBox* cbox, Iter b_iter, Iter e_iter)
+{
+  auto is_checked = [](auto action) { return action->isChecked(); };
+  if (std::any_of(b_iter, e_iter, is_checked)) {
+    if (std::all_of(b_iter, e_iter, is_checked)) {
+      cbox->setCheckState(Qt::Checked);
+    } else {
+      cbox->setCheckState(Qt::PartiallyChecked);
+    }
+  } else {
+    cbox->setCheckState(Qt::Unchecked);
+  }
+}
+
+void Minutor::updateToggleAllStructuresState()
+{
+  auto actions = m_ui.menu_Overlay->actions();
+  auto b_iter = std::next(actions.begin(), actions.indexOf(separatorStructureOverlay) + 1);
+  auto e_iter = std::next(actions.begin(), actions.indexOf(separatorEntityOverlay));
+  updateTristateCheckBox(qobject_cast<LabeledSeparator*>(separatorStructureOverlay), b_iter, e_iter);
+}
+
+void Minutor::updateToggleAllEntitiesState()
+{
+  auto actions = m_ui.menu_Overlay->actions();
+  auto b_iter = std::next(actions.begin(), actions.indexOf(separatorEntityOverlay) + 1);
+  updateTristateCheckBox(qobject_cast<LabeledSeparator*>(separatorEntityOverlay), b_iter, actions.end());
+}
+
 
 void Minutor::viewDimension(QString dim_string)
 {
@@ -374,7 +450,6 @@ void Minutor::viewDimension(QString dim_string)
     }
   }
 }
-
 
 void Minutor::viewDimension(const DimensionInfo &dim) {
   // update visability of Structure Overlays
@@ -421,6 +496,7 @@ void Minutor::viewDimension(const DimensionInfo &dim) {
   // reload structures for that dimension (old format from data directory)
   loadStructures(path);
 }
+
 
 void Minutor::about() {
   QMessageBox::about(this, tr("About %1").arg(qApp->applicationName()),
@@ -561,6 +637,29 @@ QKeySequence Minutor::generateUniqueKeyboardShortcut(QString *actionName) {
   return sequence;
 }
 
+void Minutor::insertToggleAllAction(QMenu* menu)
+{
+  Q_ASSERT(menu);
+  // todo: find good name
+  auto action = new LabeledSeparator(tr("toggle all"), menu);
+  menu->addAction(action);
+  connect(action, &QAction::triggered, menu, [=](bool checked) {
+    auto actions = menu->actions();
+    std::for_each(std::next(actions.begin()), actions.end(),
+                  [=](auto action) { action->setChecked(checked); });
+  });
+  connect(action, &QAction::triggered, this, &Minutor::toggleOverlays);
+}
+
+void Minutor::updateToggleAllState(QMenu* menu)
+{
+  Q_ASSERT(menu);
+  auto actions = menu->actions();
+  auto toggle_all_action = qobject_cast<LabeledSeparator*>(actions.constFirst());
+  Q_ASSERT(toggle_all_action);
+  updateTristateCheckBox(toggle_all_action, std::next(actions.begin()), actions.end());
+}
+
 
 void Minutor::createMenus() {
   // [File]
@@ -575,6 +674,11 @@ void Minutor::createMenus() {
   separatorStructureOverlay = new LabeledSeparator("Structure Overlays", this);
   m_ui.menu_Overlay->addAction(separatorStructureOverlay);
   m_ui.menu_Overlay->addAction(separatorEntityOverlay);
+
+  connect(separatorStructureOverlay, &LabeledSeparator::triggered,
+          this,                      &Minutor::toggleStructures);
+  connect(separatorEntityOverlay,    &LabeledSeparator::triggered,
+          this,                      &Minutor::toggleEntities);
 
   EntityIdentifier &ei = EntityIdentifier::Instance();
   for (auto it = ei.getCategoryList().constBegin();
@@ -602,7 +706,9 @@ void Minutor::createMenus() {
     m_ui.menu_Overlay->addAction(action); // add at bottom
     // connect handler
     connect(action, SIGNAL(triggered()),
-            this,   SLOT(toggleFlags()));
+            this,   SLOT(toggleOverlays()));
+    connect(action, SIGNAL(triggered()),
+            this,   SLOT(updateToggleAllEntitiesState()));
   }
 
   // [Search]
@@ -754,6 +860,7 @@ void Minutor::loadWorld(QDir path) {
   emit worldLoaded(true);
   mapview->setLocation(locations.first().x, locations.first().z);
   toggleFlags();
+  toggleOverlays();
 }
 
 void Minutor::updatePlayerCache(QNetworkReply* reply) {
@@ -809,8 +916,7 @@ QMenu* Minutor::addOverlayItemMenu(QString path) {
       QMenu * submenu = new QMenu("&" + p, menu);
       submenu->setObjectName(p);
       // insert at alphabetical correct position
-      QList<QMenu *> menulist = menu->findChildren<QMenu*>();
-      QAction * insertBeforeAction;
+      QAction * insertBeforeAction = nullptr;
       for (QAction * action: menu->actions()) {
         if (action == separatorEntityOverlay) {
           // insert at least before Entities
@@ -826,6 +932,8 @@ QMenu* Minutor::addOverlayItemMenu(QString path) {
       }
       menu->insertMenu(insertBeforeAction, submenu);
       menu = submenu;
+      // add a "toggle all" action for this new sub-menu
+      insertToggleAllAction(menu);
     } else {
       // continue with this sub-menu as parent
       menu = submenu;
@@ -891,7 +999,16 @@ void Minutor::addOverlayItemType(QString path, QString type,
     }
     menu->insertAction(insertBeforeAction, structureOverlayActions.last());
     connect(structureOverlayActions.last(), SIGNAL(triggered()),
-            this, SLOT(toggleFlags()));
+            this,                           SLOT(toggleOverlays()));
+    if (menu != m_ui.menu_Overlay) {
+      connect(structureOverlayActions.last(), &QAction::triggered,
+              menu, [this, menu]() { updateToggleAllState(menu); });
+      updateToggleAllState(menu);
+    } else {
+      connect(structureOverlayActions.last(), SIGNAL(triggered()),
+              this,                           SLOT(updateToggleAllStructuresState()));
+      updateToggleAllStructuresState();
+    }
   }
 }
 
