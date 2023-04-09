@@ -14,11 +14,14 @@ jobs:
       matrix:
         name: [ubuntu-18.04, ubuntu-20.04]
         include:
-          - name: ubuntu-18.04
-            os: ubuntu-18.04
-            artifact: minutor
+        # - name: ubuntu-18.04
+        #   os: ubuntu-18.04
+        #   artifact: minutor
           - name: ubuntu-20.04
             os: ubuntu-20.04
+            artifact: minutor
+          - name: ubuntu-22.04
+            os: ubuntu-22.04
             artifact: minutor
     runs-on: ${{ matrix.os }}
 
@@ -28,7 +31,7 @@ jobs:
     - name: Install Qt
       run: |
         sudo apt-get update
-        sudo apt-get install qt5-default -y
+        sudo apt-get install qtbase5-dev qt5-qmake qtbase5-dev-tools -y
 
     - name: Create BUILD folder
       run: |
