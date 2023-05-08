@@ -152,8 +152,10 @@ void MapView::adjustZoom(double steps, bool allowZoomOut, bool cursorSource)
   const int zoomMin = allowZoomOut ? -4 : 0;
   const int zoomMax = (sizeof(zoomTable) / sizeof(float)) -1;
 
-  if (zoomLevel < zoomMin) zoomLevel = zoomMin;
-  if (zoomLevel > zoomMax) zoomLevel = zoomMax;
+  // snap the zoom level to bounds when the user scrolls too far
+  // do not force zoom-in when trying to zoom-out with allowZoomOut=false
+  if (zoomLevel < zoomMin && steps < 0) zoomLevel = std::min(zoomMin, oldZoomIndex);
+  else if (zoomLevel > zoomMax) zoomLevel = zoomMax;
 
   int zoomIndex = (int)(floor(zoomLevel + 0.5 ));
 
@@ -162,7 +164,7 @@ void MapView::adjustZoom(double steps, bool allowZoomOut, bool cursorSource)
   if (zoomIndex == oldZoomIndex && steps != 0) return;
 
   // determine minimal zoomed value that is allowed
-  // with current window size and available pyhiscal memory
+  // with current window size and available physical memory
   bool restrictZoom = true;
   int maxchunks = cache.getMemoryMax();
   int chunks    = cache.getCacheMax();
