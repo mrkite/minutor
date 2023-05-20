@@ -182,8 +182,12 @@ void MapView::adjustZoom(double steps, bool allowZoomOut, bool cursorSource)
     chunks = cx * cz;
     if ((1.2 * chunks) <= maxchunks)
       restrictZoom = false; // everything matches with a low margin of 20%
-    else
-      zoomIndex++;          // restrict zoom
+    else {
+      // restrict zoom
+      zoomIndex++;
+      // since zoom index is forced, reset stored zoom level to be the same value
+      zoomLevel = static_cast<double>(zoomIndex);
+    }
   } while (restrictZoom);
 
   // we try to set higher margin than above (100%)!
