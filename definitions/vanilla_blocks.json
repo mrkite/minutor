@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.19.22w42a",
+  "version": "1.20.22w45a",
   "data": [
     {
       "name": "minecraft:air",
@@ -406,6 +406,10 @@
       "transparent": true
     },
     {
+      "name": "minecraft:block_of_bamboo",
+      "color": "#8b8e3e"
+    },
+    {
       "name": "minecraft:bamboo_planks",
       "color": "#c1ad50"
     },
@@ -489,6 +493,32 @@
     {
       "name": "minecraft:bamboo_mosaik",
       "color": "#9d804f"
+    },
+    {
+      "name": "minecraft:bamboo_mosaik_slab",
+      "color": "#c7b251",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:bamboo_mosaik_stairs",
+      "color": "#b4a14a",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:bedrock",
@@ -759,6 +789,10 @@
     {
       "name": "minecraft:stripped_mangrove_wood",
       "color": "#783630"
+    },
+    {
+      "name": "minecraft:block_of_stripped_bamboo",
+      "color": "#b29f49"
     },
     {
       "name": "minecraft:oak_leaves",
