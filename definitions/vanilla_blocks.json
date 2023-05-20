@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.19.22w13a",
+  "version": "1.19.22w42a",
   "data": [
     {
       "name": "minecraft:air",
@@ -386,15 +386,15 @@
       "spawninside": true
     },
     {
-      "name": "minecraft:bamboo_sapling",
-      "color": "#5c5924",
+      "name": "minecraft:mangrove_propagule",
+      "color": "#60af54",
       "alpha": 0.3,
       "transparent": true,
       "spawninside": true
     },
     {
-      "name": "minecraft:mangrove_propagule",
-      "color": "#60af54",
+      "name": "minecraft:bamboo_sapling",
+      "color": "#5c5924",
       "alpha": 0.3,
       "transparent": true,
       "spawninside": true
@@ -404,6 +404,91 @@
       "color": "#5e9014",
       "alpha": 0.75,
       "transparent": true
+    },
+    {
+      "name": "minecraft:bamboo_planks",
+      "color": "#c1ad50"
+    },
+    {
+      "name": "minecraft:bamboo_button",
+      "color": "#c1ad50",
+      "alpha": 0.25,
+      "transparent": true,
+      "spawninside": true,
+      "canprovidepower": true
+    },
+    {
+      "name": "minecraft:bamboo_door",
+      "color": "#bfab51",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:bamboo_fence_gate",
+      "color": "#c1ad50",
+      "alpha": 0.60,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:bamboo_fence",
+      "color": "#c1ad50",
+      "alpha": 0.75,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:bamboo_pressure_plate",
+      "color": "#c1ad50",
+      "transparent": true,
+      "spawninside": true,
+      "canprovidepower": true
+    },
+    {
+      "name": "minecraft:bamboo_slab",
+      "color": "#cab554",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:bamboo_stairs",
+      "color": "#b7a44c",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:bamboo_sign",
+      "color": "#c1ad50",
+      "alpha": 0.3,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
+      "name": "minecraft:bamboo_wall_sign",
+      "color": "#c1ad50",
+      "alpha": 0.3,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
+      "name": "minecraft:bamboo_trapdoor",
+      "color": "#c7b355",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:bamboo_mosaik",
+      "color": "#9d804f"
     },
     {
       "name": "minecraft:bedrock",
@@ -1253,6 +1338,10 @@
       "color": "#6c583a"
     },
     {
+      "name": "minecraft:chiseled_bookshelf",
+      "color": "#b29159"
+    },
+    {
       "name": "minecraft:mossy_cobblestone",
       "color": "#687968"
     },
@@ -1498,7 +1587,21 @@
       "spawninside": true
     },
     {
+      "name": "minecraft:oak_hanging_sign",
+      "color": "#9d804f",
+      "alpha": 0.3,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
       "name": "minecraft:spruce_sign",
+      "color": "#684e2f",
+      "alpha": 0.3,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
+      "name": "minecraft:spruce_hanging_sign",
       "color": "#684e2f",
       "alpha": 0.3,
       "transparent": true,
@@ -1512,7 +1615,21 @@
       "spawninside": true
     },
     {
+      "name": "minecraft:birch_hanging_sign",
+      "color": "#c4b37b",
+      "alpha": 0.3,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
       "name": "minecraft:jungle_sign",
+      "color": "#9a6e4d",
+      "alpha": 0.3,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
+      "name": "minecraft:jungle_hanging_sign",
       "color": "#9a6e4d",
       "alpha": 0.3,
       "transparent": true,
@@ -1526,7 +1643,21 @@
       "spawninside": true
     },
     {
+      "name": "minecraft:acacia_hanging_sign",
+      "color": "#a95c33",
+      "alpha": 0.3,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
       "name": "minecraft:dark_oak_sign",
+      "color": "#3d2812",
+      "alpha": 0.3,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
+      "name": "minecraft:dark_oak_hanging_sign",
       "color": "#3d2812",
       "alpha": 0.3,
       "transparent": true,
@@ -1571,7 +1702,21 @@
       "spawninside": true
     },
     {
+      "name": "minecraft:oak_wall_hanging_sign",
+      "color": "#9d804f",
+      "alpha": 0.3,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
       "name": "minecraft:spruce_wall_sign",
+      "color": "#684e2f",
+      "alpha": 0.3,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
+      "name": "minecraft:spruce_wall_hanging_sign",
       "color": "#684e2f",
       "alpha": 0.3,
       "transparent": true,
@@ -1585,7 +1730,21 @@
       "spawninside": true
     },
     {
+      "name": "minecraft:birch_wall_hanging_sign",
+      "color": "#c4b37b",
+      "alpha": 0.3,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
       "name": "minecraft:jungle_wall_sign",
+      "color": "#9a6e4d",
+      "alpha": 0.3,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
+      "name": "minecraft:jungle_wall_hanging_sign",
       "color": "#9a6e4d",
       "alpha": 0.3,
       "transparent": true,
@@ -1599,7 +1758,21 @@
       "spawninside": true
     },
     {
+      "name": "minecraft:acacia_wall_hanging_sign",
+      "color": "#a95c33",
+      "alpha": 0.3,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
       "name": "minecraft:dark_oak_wall_sign",
+      "color": "#3d2812",
+      "alpha": 0.3,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
+      "name": "minecraft:dark_oak_wall_hanging_sign",
       "color": "#3d2812",
       "alpha": 0.3,
       "transparent": true,
@@ -4654,7 +4827,15 @@
       "color": "#653147"
     },
     {
+      "name": "minecraft:crimson_hanging_sign",
+      "color": "#653147"
+    },
+    {
       "name": "minecraft:crimson_wall_sign",
+      "color": "#653147"
+    },
+    {
+      "name": "minecraft:crimson_wall_hanging_sign",
       "color": "#653147"
     },
     {
@@ -4738,7 +4919,15 @@
       "color": "#2b6963"
     },
     {
+      "name": "minecraft:warped_hanging_sign",
+      "color": "#2b6963"
+    },
+    {
       "name": "minecraft:warped_wall_sign",
+      "color": "#2b6963"
+    },
+    {
+      "name": "minecraft:warped_wall_hanging_sign",
       "color": "#2b6963"
     },
     {
@@ -5922,10 +6111,6 @@
       "color": "#763631"
     },
     {
-      "name": "minecraft:mangrove_sign",
-      "color": "#763631"
-    },
-    {
       "name": "minecraft:mangrove_slab",
       "color": "#7B3833",
       "transparent": true,
@@ -5955,7 +6140,19 @@
       "color": "#6F2F2A"
     },
     {
+      "name": "minecraft:mangrove_sign",
+      "color": "#763631"
+    },
+    {
+      "name": "minecraft:mangrove_hanging_sign",
+      "color": "#763631"
+    },
+    {
       "name": "minecraft:mangrove_wall_sign",
+      "color": "#763631"
+    },
+    {
+      "name": "minecraft:mangrove_wall_hanging_sign",
       "color": "#763631"
     },
     {
