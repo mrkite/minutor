@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.20.22w45a",
+  "version": "1.20.22w46a",
   "data": [
     {
       "name": "minecraft:air",
@@ -2946,6 +2946,16 @@
     },
     {
       "name": "minecraft:dragon_wall_head",
+      "color": "#1a1a1a",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:piglin_head",
+      "color": "#1a1a1a",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:piglin_wall_head",
       "color": "#1a1a1a",
       "transparent": true
     },
