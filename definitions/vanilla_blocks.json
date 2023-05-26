@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.20.22w46a",
+  "version": "1.20.23w07a",
   "data": [
     {
       "name": "minecraft:air",
@@ -406,7 +406,7 @@
       "transparent": true
     },
     {
-      "name": "minecraft:block_of_bamboo",
+      "name": "minecraft:bamboo_block",
       "color": "#8b8e3e"
     },
     {
@@ -479,7 +479,21 @@
       "spawninside": true
     },
     {
+      "name": "minecraft:bamboo_hanging_sign",
+      "color": "#c1ad50",
+      "alpha": 0.3,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
       "name": "minecraft:bamboo_wall_sign",
+      "color": "#c1ad50",
+      "alpha": 0.3,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
+      "name": "minecraft:bamboo_wall_hanging_sign",
       "color": "#c1ad50",
       "alpha": 0.3,
       "transparent": true,
@@ -491,11 +505,11 @@
       "transparent": true
     },
     {
-      "name": "minecraft:bamboo_mosaik",
+      "name": "minecraft:bamboo_mosaic",
       "color": "#9d804f"
     },
     {
-      "name": "minecraft:bamboo_mosaik_slab",
+      "name": "minecraft:bamboo_mosaic_slab",
       "color": "#c7b251",
       "transparent": true,
       "variants": [
@@ -510,7 +524,7 @@
       ]
     },
     {
-      "name": "minecraft:bamboo_mosaik_stairs",
+      "name": "minecraft:bamboo_mosaic_stairs",
       "color": "#b4a14a",
       "transparent": true,
       "variants": [
@@ -523,6 +537,136 @@
     {
       "name": "minecraft:bedrock",
       "color": "#545454"
+    },
+    {
+      "name": "minecraft:cherry_log",
+      "color": "#b98d89",
+      "variants": [
+        {
+          "blockstate": "axis:y",
+          "color": "#37212C"
+        }
+      ]
+    },
+    {
+      "name": "minecraft:cherry_wood",
+      "color": "#b98d89"
+    },
+    {
+      "name": "minecraft:stripped_cherry_log",
+      "color": "#d79195",
+      "variants": [
+        {
+          "blockstate": "axis:y",
+          "color": "#dda59e"
+        }
+      ]
+    },
+    {
+      "name": "minecraft:stripped_cherry_wood",
+      "color": "#b98d89"
+    },
+    {
+      "name": "minecraft:cherry_button",
+      "color": "#e3b3ad",
+      "alpha": 0.25,
+      "transparent": true,
+      "spawninside": true,
+      "canprovidepower": true
+    },
+    {
+      "name": "minecraft:cherry_door",
+      "color": "#dfaba5",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:cherry_fence",
+      "color": "#e3b3ad",
+      "alpha": 0.75,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:cherry_fence_gate",
+      "color": "#e3b3ad",
+      "alpha": 0.60,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:cherry_planks",
+      "color": "#e3b3ad"
+    },
+    {
+      "name": "minecraft:cherry_pressure_plate",
+      "color": "#e3b3ad",
+      "transparent": true,
+      "spawninside": true,
+      "canprovidepower": true
+    },
+    {
+      "name": "minecraft:cherry_sapling",
+      "color": "#a4768f",
+      "alpha": 0.3,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
+      "name": "minecraft:cherry_slab",
+      "color": "#e3b3ad",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:cherry_stairs",
+      "color": "#e3b3ad",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:cherry_sign",
+      "color": "#e3b3ad",
+      "alpha": 0.3,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
+      "name": "minecraft:cherry_hanging_sign",
+      "color": "#e3b3ad",
+      "alpha": 0.3,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
+      "name": "minecraft:cherry_wall_sign",
+      "color": "#e3b3ad",
+      "alpha": 0.3,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
+      "name": "minecraft:cherry_wall_hanging_sign",
+      "color": "#e3b3ad",
+      "alpha": 0.3,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
+      "name": "minecraft:cherry_trapdoor",
+      "color": "#e3b3ad",
+      "transparent": true
     },
     {
       "name": "minecraft:flowing_water",
@@ -791,7 +935,7 @@
       "color": "#783630"
     },
     {
-      "name": "minecraft:block_of_stripped_bamboo",
+      "name": "minecraft:stripped_bamboo_block",
       "color": "#b29f49"
     },
     {
@@ -856,6 +1000,13 @@
       "transparent": true,
       "rendercube": true,
       "biomeFoliage": true
+    },
+    {
+      "name": "minecraft:cherry_leaves",
+      "color": "#e5adc2",
+      "transparent": true,
+      "rendercube": true,
+      "biomeFoliage": false
     },
     {
       "name": "minecraft:sponge",
@@ -2780,6 +2931,16 @@
     {
       "name": "minecraft:potted_flowering_azalea_bush",
       "color": "#707a40",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:potted_cherry_sapling",
+      "color": "#a4768f",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:potted_torchflower",
+      "color": "#e87272",
       "transparent": true
     },
     {
@@ -6230,6 +6391,42 @@
     {
       "name": "minecraft:reinforced_deepslate",
       "color": "#50534F"
+    },
+    {
+      "name": "minecraft:suspicious_sand",
+      "color": "#dacc9f"
+    },
+    {
+      "name": "minecraft:decorated_pod",
+      "color": "#7d4639",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:pink_petals",
+      "color": "#f7b2d8",
+      "alpha": 0.7,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:torchflower",
+      "color": "#e87272",
+      "alpha": 0.7,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:torchflower_crop",
+      "alpha": 0.7,
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "age:0",
+          "color": "#1a583c"
+        },
+        {
+          "blockstate": "age:1",
+          "color": "#ebdf5d"
+        }
+      ]
     }
   ],
   "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_blocks.json"
