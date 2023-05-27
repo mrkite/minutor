@@ -513,12 +513,26 @@ void Chunk::loadSection_decodeBlockPalette(ChunkSection * cs, const Tag * palett
     // check vor variants
     BlockInfo const & block = bi.getBlockInfo(hid);
     if (block.hasVariants()) {
-    // test all available properties
-    for (auto key : cs->blockPalette[j].properties.keys()) {
-      QString vname = cs->blockPalette[j].name + ":" + key + ":" + cs->blockPalette[j].properties[key].toString();
-      uint vhid = qHash(vname);
-      if (bi.hasBlockInfo(vhid))
-        hid = vhid; // use this vaiant instead
+      // test all available properties
+      for (auto key : cs->blockPalette[j].properties.keys()) {
+        QString vname = cs->blockPalette[j].name + ":" + key + ":" + cs->blockPalette[j].properties[key].toString();
+        uint vhid = qHash(vname);
+        if (bi.hasBlockInfo(vhid))
+          hid = vhid; // use this vaiant instead
+      }
+      // test all possible combinations of 2 combined properties
+      if (cs->blockPalette[j].properties.keys().length() > 1) {
+        for (auto key1 : cs->blockPalette[j].properties.keys()) {
+          for (auto key2 : cs->blockPalette[j].properties.keys()) {
+            if (key1 == key2) continue;
+            QString vname = cs->blockPalette[j].name + ":" +
+                key1 + ":" + cs->blockPalette[j].properties[key1].toString() + " " +
+                key2 + ":" + cs->blockPalette[j].properties[key2].toString();
+            uint vhid = qHash(vname);
+            if (bi.hasBlockInfo(vhid))
+              hid = vhid; // use this vaiant instead
+          }
+        }
       }
     }
     // store hash of found variant
