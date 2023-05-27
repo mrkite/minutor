@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.20.23w07a",
+  "version": "1.20.23w12a",
   "data": [
     {
       "name": "minecraft:air",
@@ -5940,11 +5940,6 @@
       "transparent": true
     },
     {
-      "name": "minecraft:sculk_sensor",
-      "color": "#074654",
-      "transparent": true
-    },
-    {
       "name": "minecraft:glow_lichen",
       "color": "#70837a",
       "alpha": 0.3,
@@ -6389,15 +6384,29 @@
       ]
     },
     {
+      "name": "minecraft:sculk_sensor",
+      "color": "#074654",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:calibrated_sculk_sensor",
+      "color": "#5f598b",
+      "transparent": true
+    },
+    {
       "name": "minecraft:reinforced_deepslate",
       "color": "#50534F"
+    },
+    {
+      "name": "minecraft:suspicious_gravel",
+      "color": "#827d7c"
     },
     {
       "name": "minecraft:suspicious_sand",
       "color": "#dacc9f"
     },
     {
-      "name": "minecraft:decorated_pod",
+      "name": "minecraft:decorated_pot",
       "color": "#7d4639",
       "transparent": true
     },
@@ -6425,6 +6434,89 @@
         {
           "blockstate": "age:1",
           "color": "#ebdf5d"
+        }
+      ]
+    },
+    {
+      "name": "minecraft:pitcher_crop",
+      "color": "#9585e6",
+      "alpha": 0.7,
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "age:0 half:lower",
+          "color": "#9b935c"
+        },
+        {
+          "blockstate": "age:1 half:lower",
+          "color": "#a5ad5e"
+        },
+        {
+          "blockstate": "age:2 half:lower",
+          "color": "#c2c06e"
+        },
+        {
+          "blockstate": "age:3 half:lower",
+          "color": "#c2c06e"
+        },
+        {
+          "blockstate": "age:4 half:lower",
+          "color": "#7086b5"
+        },
+        {
+          "blockstate": "age:0 half:upper",
+          "alpha": 0.0
+        },
+        {
+          "blockstate": "age:1 half:upper",
+          "alpha": 0.0
+        },
+        {
+          "blockstate": "age:2 half:upper",
+          "alpha": 0.0
+        },
+        {
+          "blockstate": "age:3 half:upper",
+          "color": "#8cf5cb"
+        },
+        {
+          "blockstate": "age:4 half:upper",
+          "color": "#9585e6"
+        }
+      ]
+    },
+    {
+      "name": "minecraft:pitcher_plant",
+      "alpha": 0.7,
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:lower",
+          "color": "#7086b5"
+        },
+        {
+          "blockstate": "half:upper",
+          "color": "#9585e6"
+        }
+      ]
+    },
+    {
+      "name": "minecraft:sniffer_egg",
+      "color": "#876944",
+      "alpha": 0.9,
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "hatch:0",
+          "color": "#876944"
+        },
+        {
+          "blockstate": "hatch:1",
+          "color": "#81613e"
+        },
+        {
+          "blockstate": "hatch:2",
+          "color": "#78593a"
         }
       ]
     }
