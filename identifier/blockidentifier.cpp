@@ -176,8 +176,22 @@ void BlockIdentifier::parseDefinition(QJsonObject b, BlockInfo *parent,
   block->enabled = true;
 
   // optional Block State
-  if (b.contains("blockstate"))
-    block->blockstate = b.value("blockstate").toString();
+  if (b.contains("blockstate")) {
+    QJsonValueRef value_ref = b["blockstate"];
+    if (value_ref.isArray()) {
+      // parse complete array of blockstates
+      // !!! this is for the far future, older Minutor would struggle with duplicated Blocks !!!
+      // !!! for now we have to do this task manually in the definition file !!!
+      block->blockstate.clear();
+      int blen = value_ref.toArray().size();
+      for (int b = 0; b < blen; b++) {
+        if (b > 0)
+          block->blockstate.append(" ");
+        block->blockstate.append(value_ref.toArray()[b].toString());
+      }
+    } else  // only single item blockstate
+      block->blockstate = b.value("blockstate").toString();
+  }
 
   if (b.contains("transparent")) {
     // default setting for a transparent Block
@@ -272,8 +286,9 @@ void BlockIdentifier::parseDefinition(QJsonObject b, BlockInfo *parent,
     block->variants = true;
     QJsonArray variants = b.value("variants").toArray();
     int vlen = variants.size();
-    for (int j = 0; j < vlen; j++)
+    for (int j = 0; j < vlen; j++) {
       parseDefinition(variants.at(j).toObject(), block, pack);
+    }
   }
 
   uint hid = qHash(name);
