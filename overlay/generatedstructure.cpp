@@ -231,8 +231,12 @@ GeneratedStructure::tryParseFeatures(QVariant &maybeFeatureMap) {
             }
           }
 
-          structure->setBounds( Point(minX, minY, minZ), Point(maxX, maxY, maxZ));
-          ret.append( QSharedPointer<GeneratedStructure>(structure) );
+          // Only add the structure if it has a non-zero bounding box.
+          // This removes Terralith's bogus zpointer nonsense.
+          if (minX != maxX || minY != maxY || minZ != maxZ) {
+            structure->setBounds( Point(minX, minY, minZ), Point(maxX, maxY, maxZ));
+            ret.append( QSharedPointer<GeneratedStructure>(structure) );
+          }
         }
       }
     }
