@@ -3497,11 +3497,11 @@
     },
     {
       "name": "minecraft:dark_prismarine",
-      "color": "#3c584b"
+      "color": "#345c4c"
     },
     {
       "name": "minecraft:dark_prismarine_slab",
-      "color": "#3f5ce4",
+      "color": "#36604f",
       "transparent": true,
       "variants": [
         {
@@ -3516,7 +3516,7 @@
     },
     {
       "name": "minecraft:dark_prismarine_stairs",
-      "color": "#395347",
+      "color": "#3155748",
       "transparent": true,
       "variants": [
         {
