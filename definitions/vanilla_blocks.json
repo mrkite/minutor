@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.20.23w12a",
+  "version": "1.20.23w26fix",
   "data": [
     {
       "name": "minecraft:air",
