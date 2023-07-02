@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.20.23w26fix",
+  "version": "1.20.23w26z",
   "data": [
     {
       "name": "minecraft:air",
@@ -3516,7 +3516,7 @@
     },
     {
       "name": "minecraft:dark_prismarine_stairs",
-      "color": "#3155748",
+      "color": "#315748",
       "transparent": true,
       "variants": [
         {
