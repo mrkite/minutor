@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "biome",
-  "version": "1.20.23w07a",
+  "version": "1.20.23w07a_1",
   "data18": [
     {
       "id": "minecraft:ocean",
@@ -306,7 +306,21 @@
       "humidity": 0.0
     },
     {
+      "id": "minecraft:dripstone_caves",
+      "color": "#c1a58f",
+      "temperature": 0.8,
+      "humidity": 0.4,
+      "river": true
+    },
+    {
+      "id": "minecraft:lush_caves",
+      "color": "#df9634",
+      "temperature": 0.5,
+      "humidity": 0.5
+    },
+    {
       "id": "minecraft:meadow",
+      "color": "#60a445",
       "temperature": 0.5,
       "humidity": 0.8
     },
@@ -315,6 +329,7 @@
     },
     {
       "id": "minecraft:grove",
+      "color": "#47726c",
       "temperature": -0.2,
       "humidity": 0.8
     },
@@ -323,50 +338,36 @@
     },
     {
       "id": "minecraft:snowy_slopes",
+      "color": "#e8e8e8",
       "temperature": -0.3,
       "humidity": 0.9
     },
     {
       "id": "minecraft:frozen_peaks",
+      "color": "#b0b3df",
       "temperature": -0.7,
       "humidity": 0.9
     },
     {
-      "id": "minecraft:lofty_peaks"
-    },
-    {
-      "id": "minecraft:snow_capped_peaks"
+      "id": "minecraft:jagged_peaks",
+      "color": "#dcdcc8",
+      "temperature": -0.7,
+      "humidity": 0.9
     },
     {
       "id": "minecraft:stony_peaks",
+      "color": "#7b8f74",
       "temperature": 1.0,
       "humidity": 0.3
     },
     {
-      "id": "minecraft:jagged_peaks",
-      "temperature": -0.7,
-      "humidity": 0.9
-    },
-    {
-      "id": "minecraft:lush_caves",
-      "temperature": 0.5,
-      "humidity": 0.5
-    },
-    {
-      "id": "minecraft:dripstone_caves",
-      "color": "RosyBrown",
-      "temperature": 0.8,
-      "humidity": 0.4,
-      "river": true
-    },
-    {
       "id": "minecraft:deep_dark",
-      "color": "#101B1B",
+      "color": "#101b1b",
       "temperature": 0.8
     },
     {
       "id": "minecraft:mangrove_swamp",
-      "color": "LightSeaGreen",
+      "color": "#24c48e",
       "watermodifier": "#3a7a6a",
       "temperature": 0.8,
       "humidity": 0.2,
