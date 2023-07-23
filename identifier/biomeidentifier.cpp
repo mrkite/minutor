@@ -6,7 +6,6 @@ Copyright (c) 2016, EtlamGit
 #include <assert.h>
 #include <cmath>
 #include <QtCore>
-  #include <QDebug>
 
 #include "biomeidentifier.h"
 #include "clamp.h"
@@ -429,10 +428,6 @@ void BiomeIdentifier::parseBiomeDefinitions2800(QJsonArray data18, int pack) {
       }
 
       packs18[pack].append(biome);
-      qDebug() << biome->name + ": #" +
-               QStringLiteral("%1").arg(biomecolor.red(),   2, 16, QLatin1Char('0')) +
-               QStringLiteral("%1").arg(biomecolor.green(), 2, 16, QLatin1Char('0')) +
-               QStringLiteral("%1").arg(biomecolor.blue(),  2, 16, QLatin1Char('0'));
     }
   }
 }
