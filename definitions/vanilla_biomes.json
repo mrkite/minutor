@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "biome",
-  "version": "1.20.23w07a_1",
+  "version": "1.20.23w07a_2",
   "data18": [
     {
       "id": "minecraft:ocean",
@@ -320,7 +320,7 @@
     },
     {
       "id": "minecraft:meadow",
-      "color": "#60a445",
+      "color": "#74b77e",
       "temperature": 0.5,
       "humidity": 0.8
     },
@@ -338,25 +338,25 @@
     },
     {
       "id": "minecraft:snowy_slopes",
-      "color": "#e8e8e8",
+      "color": "#f2f2f2",
       "temperature": -0.3,
       "humidity": 0.9
     },
     {
       "id": "minecraft:frozen_peaks",
-      "color": "#b0b3df",
+      "color": "#99b9f2",
       "temperature": -0.7,
       "humidity": 0.9
     },
     {
       "id": "minecraft:jagged_peaks",
-      "color": "#dcdcc8",
+      "color": "#dfe8e9",
       "temperature": -0.7,
       "humidity": 0.9
     },
     {
       "id": "minecraft:stony_peaks",
-      "color": "#7b8f74",
+      "color": "#d1d1d1",
       "temperature": 1.0,
       "humidity": 0.3
     },
