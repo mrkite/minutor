@@ -245,12 +245,15 @@ void StatisticDialog::updateResultImage()
       for (auto key: resultMap.keys()) {
         int y = (height-1) - key + ui->range->getRangeY().begin();
         const StatisticResultItem &result = resultMap.value(key);
-        float scaleR = float(result.count) / float(max_count);
+        float scaleR = float(result.count) / float(max_count);                // searched Blocks
+        float scaleA = float(result.total - result.air) / float(max_count);   // non Air Blocks
         float scaleW = 1.0 / float(width);
         for (int x = 0; x < width; x++) {
           QColor color;
           if (x*scaleW < scaleR) {
             color = QColor(64,192,64);
+          } else if (x*scaleW > scaleA) {
+            color = QColor(108,156,240);
           } else {
             color = QColor(128,128,128);
           }
