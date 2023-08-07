@@ -1,5 +1,6 @@
 /** Copyright 2014 Rian Shelley */
 #include <QPainter>
+#include <QRegularExpression>
 
 #include "overlay/generatedstructure.h"
 #include "nbt/nbt.h"
@@ -100,7 +101,7 @@ GeneratedStructure::tryParseSpawner(const Tag* tagSpawner) {
     mobType = tagSpawner->at("EntityId")->toString();
     // reformat CamelCase text to flattening
     // split at uppercase characters
-    QStringList tokens = mobType.split(QRegExp("(?<=[a-z])(?=[A-Z])"), QString::SkipEmptyParts);
+    QStringList tokens = mobType.split(QRegularExpression("(?<=[a-z])(?=[A-Z])"), QString::SkipEmptyParts);
     mobType = tokens.join("_").toLower();
   }
   // after "The Flattening"
