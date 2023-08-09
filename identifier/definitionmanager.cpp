@@ -124,7 +124,7 @@ DefinitionManager::~DefinitionManager() {}
 void DefinitionManager::checkAndRepair()
 {
   // create definition data folder on disk
-  QString destdir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+  QString destdir = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
   QDir::root().mkpath(destdir);
 
   // get known definition packs from application default settings storage
@@ -280,7 +280,7 @@ void DefinitionManager::addPack() {
 void DefinitionManager::installJson(QString path, bool overwrite,
                                     bool install) {
   QString destdir = QStandardPaths::writableLocation(
-      QStandardPaths::DataLocation);
+      QStandardPaths::AppLocalDataLocation);
 
   QFile f(path);
   f.open(QIODevice::ReadOnly);
@@ -348,7 +348,7 @@ void DefinitionManager::installJson(QString path, bool overwrite,
 void DefinitionManager::installZip(QString path, bool overwrite,
                                    bool install) {
   QString destdir = QStandardPaths::writableLocation(
-      QStandardPaths::DataLocation);
+      QStandardPaths::AppLocalDataLocation);
   ZipReader zip(path);
   if (!zip.open()) {
     QMessageBox::warning(this, tr("Couldn't install %1").arg(path),
