@@ -3,6 +3,7 @@
 #include "worldinfo.h"
 
 #include <QtWidgets/QMenu>
+#include <QActionGroup>
 #include <QDirIterator>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -113,7 +114,7 @@ bool WorldInfo::parseDimensions()
       }
       // we only support this style "file/<packname>.zip" -> skip otherwise
       if (!dp.startsWith("file")) continue;
-      QStringRef pack_name(&dp, 5, dp.size()-5-4);
+      QString pack_name = dp.mid(5, dp.size()-5-4);
 
       // parse custom Dimension data
       // located in ./datapacks/<packname>.zip -> ./data/<packname>/dimension/<dimensions>.json
