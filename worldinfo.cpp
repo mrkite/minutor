@@ -6,6 +6,7 @@
 #include <QDirIterator>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QRegularExpression>
 
 #include "nbt/nbt.h"
 #include "zipreader.h"
@@ -245,13 +246,14 @@ void WorldInfo::getDimensionsInWorld(QDir path, QMenu *menu, QObject *parent) {
       // check path for regex
       if (dim.pathIsRegEx) {
         QDirIterator it(path.absolutePath(), QDir::Dirs);
-        QRegExp rx(dim.path);
+        QRegularExpression rx(dim.path);
         while (it.hasNext()) {
           it.next();
-          if (rx.indexIn(it.fileName()) != -1) {
+          auto m = rx.match(it.fileName());
+          if (m.hasMatch()) {
             QString name = dim.name;
             for (int c = 0; c < rx.captureCount(); c++)
-              name = name.arg(rx.cap(c + 1));
+              name = name.arg(m.captured(c + 1));
             addDimensionToMenu(path, it.fileName(), name, parent);
           }
         }

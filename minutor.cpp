@@ -9,7 +9,7 @@
 #include <QtWidgets/QTreeWidget>
 #include <QProgressDialog>
 #include <QDir>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonObject>
@@ -783,9 +783,9 @@ void Minutor::loadWorld(QDir path) {
         QString playerName = it.fileInfo().completeBaseName();
         if (path.dirName() == "playerdata") {
           // player name via UUID
-          QRegExp id("[0-9a-z]{8,8}\\-[0-9a-z]{4,4}\\-[0-9a-z]{4,4}"
-                     "\\-[0-9a-z]{4,4}\\-[0-9a-z]{12,12}");
-          if (id.exactMatch(playerName)) {
+          QRegularExpression id("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}"
+                     "-[0-9a-f]{4}-[0-9a-f]{12}$");
+          if (id.match(playerName).hasMatch()) {
             QSettings settings;
             if (settings.contains("PlayerCache/"+playerName)) {
               playerName = settings.value("PlayerCache/"+playerName, playerName).toString();
