@@ -1,6 +1,5 @@
 /** Copyright (c) 2013, Sean Kasun */
 #include <QtWidgets/QVBoxLayout>
-#include <QtWidgets/QAction>
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QMenu>

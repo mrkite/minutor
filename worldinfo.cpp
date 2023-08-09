@@ -3,6 +3,7 @@
 #include "worldinfo.h"
 
 #include <QtWidgets/QMenu>
+#include <QActionGroup>
 #include <QDirIterator>
 #include <QJsonDocument>
 #include <QJsonObject>
