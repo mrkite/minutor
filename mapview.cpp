@@ -515,6 +515,17 @@ void MapView::drawChunk(int x, int z) {
   if (this->zoom < 1.0)
       canvas.setRenderHint(QPainter::SmoothPixmapTransform);
   canvas.drawImage(targetRect, srcImage);
+
+  // Draw the ChunkLock overlay:
+  if (this->flags & flgChunkLock) {
+    if (chunk && chunk->getIsChunkLocked()) {
+      canvas.setPen(QColor::fromRgb(0xff0000));
+      canvas.setBrush(Qt::transparent);
+      double xAdj = (centerx > 0) ? 1 : 2;  // Adjustments are needed for chunks crossing the X or Y axis in viewspace
+      double yAdj = (centery > 0) ? 1 : 2;  // Otherwise their bottom / right edges are missing, most likely due to rounding.
+      canvas.drawRect(centerx, centery, chunksize - xAdj, chunksize - yAdj);
+    }
+  }
 }
 
 void MapView::getToolTip(int x, int z) {
@@ -616,6 +627,9 @@ void MapView::getToolTip(int x, int z) {
   hovertext += " Zoom:" + QString().number(zoomLevel);
 #endif
 
+  if (chunk && chunk->getIsChunkLocked()) {
+    hovertext += QString(" (ChunkLocked, needs %1)").arg(chunk->getChunkLockItemName());
+  }
   emit hoverTextChanged(hovertext);
 }
 

@@ -114,6 +114,10 @@ int main(int argc, char *argv[]) {
       minutor.setViewInhabitedTime(true);
       continue;
     }
+    if (args[i] == "-chl" || args[i] == "--chunklock") {
+      minutor.setViewChunkLock(true);
+      continue;
+    }
   }
 
   minutor.show();

@@ -61,6 +61,7 @@ class Minutor : public QMainWindow {
   void setViewSingleLayer(bool value);    // set View->Single_Layer
   void setViewSlimeChunks(bool value);    // set View->Slime_Chunks
   void setViewInhabitedTime(bool value);  // set View->Inhabited_Time
+  void setViewChunkLock(bool value);      // set View->ChunkLock
   void setDepth(int value);               // set Depth-Slider
 
   MapView *getMapview() const;
@@ -80,6 +81,9 @@ private slots:
   void toggleOverlays();
 
   void about();
+
+  /** Updates the visibility of datapack-specific actions based on the current world's loaded datapacks. */
+  void updateDatapackActions();
 
   void updateDimensions();
   void rescanWorlds();
