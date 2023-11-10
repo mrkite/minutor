@@ -722,30 +722,44 @@ void Minutor::createStatusBar() {
 
 void Minutor::getWorldList() {
   QDir mc(dialogSettings->mcpath);
-  if (mc.exists("saves"))
+  if (mc.exists("saves")) {
     mc.cd("saves");
+  }
 
+  // Create an action for each world found:
   WorldInfo & wi(WorldInfo::Instance());
   QDirIterator it(mc);
-  int key = 1;
   while (it.hasNext()) {
     it.next();
-    if (it.fileInfo().isDir()) {
-      if (wi.parseFolder(it.filePath())) {
-        QAction *w = new QAction(this);
-        w->setText(wi.getLevelName());
-        w->setData(it.filePath());
-        if (key < 10) {
-          w->setShortcut("Ctrl+"+QString::number(key));
-          key++;
-        }
-        connect(w, SIGNAL(triggered()),
-                this, SLOT(openWorld()));
-        worldActions.append(w);
-      }
+    if (!it.fileInfo().isDir() || !wi.parseFolder(it.filePath())) {
+      continue;
     }
+    auto * w = new QAction(this);
+    w->setText(wi.getLevelName());
+    w->setData(it.filePath());
+    connect(w, SIGNAL(triggered()),
+            this, SLOT(openWorld()));
+    worldActions.append(w);
   }
   wi.clear();
+
+  // Sort the actions by the world name:
+  std::sort(worldActions.begin(), worldActions.end(),
+    [](auto * act1, auto * act2) {
+      return (act1->text() < act2->text());
+    }
+  );
+
+  // Assign Ctrl+number shortcuts to the first 10 worlds:
+  int key = 1;
+  for (auto & act: worldActions)
+  {
+    act->setShortcut("Ctrl+" + QString::number(key));
+    key++;
+    if (key >= 10) {
+      break;
+    }
+  }
 }
 
 MapView *Minutor::getMapview() const

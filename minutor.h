@@ -121,6 +121,9 @@ signals:
   void insertToggleAllAction(QMenu* menu);
   void updateToggleAllState(QMenu* menu);
 
+  /** Populates worldActions with one action for each world encountered in the default Minecraft saves directory.
+  Each action opens the linked world upon triggering.
+  The actions are sorted by world's folder name. */
   void getWorldList();
 
   MapView *mapview;
