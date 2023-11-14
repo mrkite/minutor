@@ -39,7 +39,11 @@ void WorldInfo::clear() {
 }
 
 
-bool WorldInfo::parseFolder(const QDir &path)
+// used to generate menu File->Open World
+// parse only basic stuff in the world folder:
+//  does it look like a Minecraft world
+//  does the world have a custom name
+bool WorldInfo::parseWorldFolder(const QDir &path)
 {
   clear();
   if (!path.exists("level.dat")) // no level.dat?  no world
@@ -48,6 +52,21 @@ bool WorldInfo::parseFolder(const QDir &path)
   folder = path;
 
   NBT level(path.filePath("level.dat"));
+  auto data = level.at("Data");
+  if (!data) return false;
+
+  if (data->has("LevelName"))
+    levelName = data->at("LevelName")->toString();
+
+  return true;
+}
+
+
+// used when opening a world
+// parse more stuff relevant later for rendering
+bool WorldInfo::parseWorldInfo()
+{
+  NBT level(folder.filePath("level.dat"));
   auto data = level.at("Data");
   if (!data) return false;
 
@@ -88,73 +107,129 @@ bool WorldInfo::parseFolder(const QDir &path)
       seed = seedtag->toLong();
   }
 
+  // collect information about installed datapacks (mods)
+  datapacks.clear();
+  parseDatapacks(data);
+
   return true;
 }
 
 
-bool WorldInfo::parseDimensions()
+void WorldInfo::parseDatapacks(const Tag * data)
 {
-  if (!folder.exists("level.dat")) // no level.dat?  no world
-    return false;
-
-  NBT level(folder.filePath("level.dat"));
-  auto data = level.at("Data");
-  if (!data) return false;
-
-  // check all enabled datapacks for custom dimensions
+  // check all enabled datapacks
   if (data->has("DataPacks") && data->at("DataPacks")->has("Enabled")) {
     auto datapacks = data->at("DataPacks")->at("Enabled");
     int num = datapacks->length();
     for (int d = 0; d < num; d++) {
       QString dp = datapacks->at(d)->toString();
-      // Vanilla Dimensions
+
+      // skip Vanilla
       if (dp == "vanilla") {
         continue;
       }
-      // we only support this style "file/<packname>.zip" -> skip otherwise
+
+      // we only support this style "file/<packname>"
+      // we only support this style "file/<packname>.zip"
+      // -> skip otherwise
       if (!dp.startsWith("file")) continue;
-      QStringRef pack_name(&dp, 5, dp.size()-5-4);
 
-      // parse custom Dimension data
-      // located in ./datapacks/<packname>.zip -> ./data/<packname>/dimension/<dimensions>.json
-      ZipReader zip(folder.path() + "/datapacks/" + pack_name + ".zip");
-      if (zip.open()) {
-        for (auto & file: zip.getFileList()) {
-          if (file.startsWith("data/" + pack_name + "/dimension/") &&
-              file.endsWith(".json")) {
-            QJsonDocument json_doc = QJsonDocument::fromJson(zip.get(file));
-            if (json_doc.isNull()) {
-              // file was not parsable -> silently try next one
-              continue;
-            }
-            QJsonObject json = json_doc.object();
-            // now 'json' should contain the Dimension description
-            QFileInfo f(file);
-            QString dim_name = f.baseName();
-            DimensionInfo dim;
-            dim.path = "./dimensions/" + pack_name + "/" + dim_name;
-            dim.name = pack_name + ":" + dim_name;
+      // "file/<packname>.zip" -> zipped
+      if (dp.endsWith(".zip")) {
+        QStringRef pack_name(&dp, 5, dp.size()-5-4);
+        QString    zip_file = folder.path() + "/datapacks/" + pack_name + ".zip";
+        ZipReader zip(zip_file);
+        if (zip.open()) {
+          for (auto & file: zip.getFileList()) {
 
-            if (json.contains("type")) {
-              dim.id = json.value("type").toString();
-              parseDimensionType(dim, dim.id);
-            } else {
-              // mandatory field, in case it is missing -> silently try next one
-              continue;
+            // name of datapack
+            // -> ./pack.mcmeta
+            if (file == "pack.mcmeta") {
+              QJsonDocument json_doc = QJsonDocument::fromJson(zip.get(file));
+              if (!json_doc.isNull())
+                parsePackMcmeta(json_doc, zip_file, true, true);
             }
 
-            // store it in list
-            dimensions.append(dim);
+            // custom Dimensions
+            // ./data/<packname>/dimension/<dimensions>.json
+            if (file.startsWith("data/" + pack_name + "/dimension/") &&
+                file.endsWith(".json")) {
+              QJsonDocument json_doc = QJsonDocument::fromJson(zip.get(file));
+              if (!json_doc.isNull())
+                parseDimension(json_doc, pack_name.toString(), QFileInfo(file).baseName());
+            }
+
           }
+          zip.close();
+        }
+        continue;
+      }
+
+      // "file/<packname>" -> unzipped
+      {
+        QStringRef pack_name(&dp, 5, dp.size()-5);
+        QString    pack_path(folder.path() + "/datapacks/" + pack_name + "/");
+        // name of datapack
+        // -> ./pack.mcmeta
+        QFile f(pack_path + "pack.mcmeta");
+        if (f.open(QIODevice::ReadOnly)) {
+          QByteArray data = f.readAll();
+          f.close();
+          QJsonDocument json_doc = QJsonDocument::fromJson(data);
+          if (!json_doc.isNull())
+            parsePackMcmeta(json_doc, pack_path, true, false);
         }
 
-        zip.close();
+        // custom Dimensions
+        // ./data/<packname>/dimension/<dimensions>.json
+        // -> todo
+
       }
     }
   }
-
-  return true;
 }
+
+
+bool WorldInfo::parsePackMcmeta(const QJsonDocument & json_doc, const QString path, bool enabled, bool zipped)
+{
+  QJsonObject json = json_doc.object();
+  if (json.contains("pack")) {
+    QJsonObject pack =  json.value("pack").toObject();
+    if (pack.contains("description")) {
+      DatapackInfo dp;
+      dp.name    = pack.value("description").toString();
+      dp.path    = path;
+      dp.enabled = enabled;
+      dp.zipped  = zipped;
+      // store it in list
+      datapacks.append(dp);
+      return true;
+    }
+  }
+  return false;
+}
+
+
+bool WorldInfo::parseDimension(const QJsonDocument & json_doc, QString pack_name, QString dim_name)
+{
+  QJsonObject json = json_doc.object();
+  // now 'json' should contain the Dimension description
+  DimensionInfo dim;
+  dim.path = "./dimensions/" + pack_name + "/" + dim_name;
+  dim.name = pack_name + ":" + dim_name;
+
+  if (json.contains("type")) {
+    dim.id = json.value("type").toString();
+    parseDimensionType(dim, dim.id);
+    // store it in list
+    dimensions.append(dim);
+    return true;
+  } else {
+    // mandatory field, in case it is missing -> silently try next one
+    return false;
+  }
+}
+
 
 bool WorldInfo::parseDimensionType(DimensionInfo & dim, const QString & dim_type_id)
 {
@@ -262,7 +337,7 @@ void WorldInfo::getDimensionsInWorld(QDir path, QMenu *menu, QObject *parent) {
   }
 
   // add Custom Dimensions
-  for (auto dim: dimensions) {
+  for (auto & dim: dimensions) {
     addDimensionToMenu(path, dim.path, dim.name, parent);
   }
 
@@ -339,4 +414,16 @@ void WorldInfo::changeViewToDimension() {
       emit dimensionChanged(dimensions[idx-DIM_MAGIC]);
     }
   }
+}
+
+
+// datapack stuff
+
+bool WorldInfo::isDatapackEnabled(const QString name) const
+{
+  for (auto & dp: datapacks) {
+    if (dp.name == name)
+      return true;
+  }
+  return false;
 }

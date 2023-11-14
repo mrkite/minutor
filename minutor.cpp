@@ -731,7 +731,7 @@ void Minutor::getWorldList() {
   QDirIterator it(mc);
   while (it.hasNext()) {
     it.next();
-    if (!it.fileInfo().isDir() || !wi.parseFolder(it.filePath())) {
+    if (!it.fileInfo().isDir() || !wi.parseWorldFolder(it.filePath())) {
       continue;
     }
     auto * w = new QAction(this);
@@ -773,8 +773,8 @@ void Minutor::loadWorld(QDir path) {
   currentWorld = path;
 
   WorldInfo & wi(WorldInfo::Instance());
-  wi.parseFolder(path);
-  wi.parseDimensions();
+  wi.parseWorldFolder(path);
+  wi.parseWorldInfo();
 
   // add level name to window title
   setWindowTitle(qApp->applicationName() + " - " + wi.getLevelName());

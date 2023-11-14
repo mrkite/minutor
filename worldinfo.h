@@ -8,6 +8,22 @@
 #include <QMenu>
 
 #include "identifier/dimensionidentifier.h"
+#include "nbt/nbt.h"
+
+
+class DatapackInfo {
+ public:
+  DatapackInfo()
+  : name("")
+  , path("")
+  , enabled(false)
+  , zipped(false) {}
+
+  QString name;
+  QString path;
+  bool enabled;
+  bool zipped;
+};
 
 
 class WorldInfo : public QObject
@@ -19,8 +35,8 @@ class WorldInfo : public QObject
   static WorldInfo &Instance();
 
   void clear();
-  bool parseFolder(const QDir &path);
-  bool parseDimensions();
+  bool parseWorldFolder(const QDir &path);
+  bool parseWorldInfo();
 
   QString             getLevelName() const   { return levelName; };
   unsigned int        getDataVersion() const { return dataVersion; };
@@ -28,6 +44,8 @@ class WorldInfo : public QObject
   int                 getSpawnX() const      { return spawnX; };
   int                 getSpawnZ() const      { return spawnZ; };
   signed long long    getSeed() const        { return seed; };
+
+  bool                isDatapackEnabled(const QString name) const;
 
   const QList<DimensionInfo> & getDimensions() const { return dimensions; };
 
@@ -48,6 +66,9 @@ class WorldInfo : public QObject
   WorldInfo(const WorldInfo &);
   WorldInfo &operator=(const WorldInfo &);
 
+  void parseDatapacks(const Tag * data);
+  bool parsePackMcmeta(const QJsonDocument & json_doc, const QString path, bool enabled, bool zipped);
+  bool parseDimension(const QJsonDocument & json_doc, QString pack_name, QString dim_name);
   bool parseDimensionType(DimensionInfo & dim, const QString & dim_type_id);
 
   QDir                  folder;       // base folder of world
@@ -59,6 +80,7 @@ class WorldInfo : public QObject
   long long             seed;
 
   QList<DimensionInfo>  dimensions;
+  QList<DatapackInfo>   datapacks;
 
   // Dimension view menu
   void addDimensionToMenu(QDir path, QString dir, QString name, QObject *parent);
