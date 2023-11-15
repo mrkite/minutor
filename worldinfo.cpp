@@ -39,10 +39,10 @@ void WorldInfo::clear() {
 }
 
 
-// used to generate menu File->Open World
-// parse only basic stuff in the world folder:
-//  does it look like a Minecraft world
-//  does the world have a custom name
+/// used to generate menu File->Open World
+/// parse only basic stuff in the world folder:
+///  does it look like a Minecraft world
+///  does the world have a custom name
 bool WorldInfo::parseWorldFolder(const QDir &path)
 {
   clear();
@@ -62,8 +62,8 @@ bool WorldInfo::parseWorldFolder(const QDir &path)
 }
 
 
-// used when opening a world
-// parse more stuff relevant later for rendering
+/// used when opening a world
+/// parse more stuff relevant later for rendering
 bool WorldInfo::parseWorldInfo()
 {
   NBT level(folder.filePath("level.dat"));
@@ -141,13 +141,12 @@ void WorldInfo::parseDatapacks(const Tag * data)
         ZipReader zip(zip_file);
         if (zip.open()) {
           for (auto & file: zip.getFileList()) {
-
-            // name of datapack
-            // -> ./pack.mcmeta
-            if (file == "pack.mcmeta") {
-              QJsonDocument json_doc = QJsonDocument::fromJson(zip.get(file));
-              if (!json_doc.isNull())
-                parsePackMcmeta(json_doc, zip_file, true, true);
+            // determine name of datapack
+            // -> ./data/<namespace>/*
+            if (file.startsWith("data/")) {
+              QStringList folders(file.split("/"));
+              if (folders.length() > 2)  // only when 2 subfolders
+                parseDatapackNamespace(folders[1], zip_file, true, true);
             }
 
             // custom Dimensions
@@ -169,15 +168,12 @@ void WorldInfo::parseDatapacks(const Tag * data)
       {
         QStringRef pack_name(&dp, 5, dp.size()-5);
         QString    pack_path(folder.path() + "/datapacks/" + pack_name + "/");
-        // name of datapack
-        // -> ./pack.mcmeta
-        QFile f(pack_path + "pack.mcmeta");
-        if (f.open(QIODevice::ReadOnly)) {
-          QByteArray data = f.readAll();
-          f.close();
-          QJsonDocument json_doc = QJsonDocument::fromJson(data);
-          if (!json_doc.isNull())
-            parsePackMcmeta(json_doc, pack_path, true, false);
+        // determine name of datapack
+        // -> ./data/<namespace>/*
+        QDirIterator data(pack_path + "data", QDir::Dirs | QDir::NoDotAndDotDot);
+        while (data.hasNext()) {
+          data.next();
+          parseDatapackNamespace(data.fileName(), pack_path, true, false);
         }
 
         // custom Dimensions
@@ -190,23 +186,27 @@ void WorldInfo::parseDatapacks(const Tag * data)
 }
 
 
-bool WorldInfo::parsePackMcmeta(const QJsonDocument & json_doc, const QString path, bool enabled, bool zipped)
+bool WorldInfo::parseDatapackNamespace(const QString name_space, const QString path, bool enabled, bool zipped)
 {
-  QJsonObject json = json_doc.object();
-  if (json.contains("pack")) {
-    QJsonObject pack =  json.value("pack").toObject();
-    if (pack.contains("description")) {
-      DatapackInfo dp;
-      dp.name    = pack.value("description").toString();
-      dp.path    = path;
-      dp.enabled = enabled;
-      dp.zipped  = zipped;
-      // store it in list
-      datapacks.append(dp);
-      return true;
+  // skip default stuff
+  if (name_space == "minecraft") return false;
+
+  // test if already there
+  if (datapacks.contains(name_space)) {
+    QMap<QString, DatapackInfo>::const_iterator it = datapacks.constFind(name_space);
+    for (; it != datapacks.constEnd(); ++it) {
+      if (it->path == path) return false;
     }
   }
-  return false;
+
+  // else insert it
+  DatapackInfo dp;
+  dp.path    = path;
+  dp.enabled = enabled;
+  dp.zipped  = zipped;
+  // store it in list
+  datapacks.insert(name_space, dp);
+  return true;
 }
 
 
@@ -419,11 +419,7 @@ void WorldInfo::changeViewToDimension() {
 
 // datapack stuff
 
-bool WorldInfo::isDatapackEnabled(const QString name) const
+bool WorldInfo::isDatapackEnabled(const QString name_space) const
 {
-  for (auto & dp: datapacks) {
-    if (dp.name == name)
-      return true;
-  }
-  return false;
+  return datapacks.contains(name_space);
 }
