@@ -14,12 +14,10 @@
 class DatapackInfo {
  public:
   DatapackInfo()
-  : name("")
-  , path("")
-  , enabled(false)
-  , zipped(false) {}
+    : path("")
+    , enabled(false)
+    , zipped(false) {}
 
-  QString name;
   QString path;
   bool enabled;
   bool zipped;
@@ -67,7 +65,7 @@ class WorldInfo : public QObject
   WorldInfo &operator=(const WorldInfo &);
 
   void parseDatapacks(const Tag * data);
-  bool parsePackMcmeta(const QJsonDocument & json_doc, const QString path, bool enabled, bool zipped);
+  bool parseDatapackNamespace(const QString name_space, const QString path, bool enabled, bool zipped);
   bool parseDimension(const QJsonDocument & json_doc, QString pack_name, QString dim_name);
   bool parseDimensionType(DimensionInfo & dim, const QString & dim_type_id);
 
@@ -80,7 +78,7 @@ class WorldInfo : public QObject
   long long             seed;
 
   QList<DimensionInfo>  dimensions;
-  QList<DatapackInfo>   datapacks;
+  QMultiMap<QString, DatapackInfo> datapacks;
 
   // Dimension view menu
   void addDimensionToMenu(QDir path, QString dir, QString name, QObject *parent);
