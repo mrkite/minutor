@@ -801,13 +801,18 @@ void Minutor::loadWorld(QDir path) {
                      "\\-[0-9a-z]{4,4}\\-[0-9a-z]{12,12}");
           if (id.exactMatch(playerName)) {
             QSettings settings;
+            // when present, remove old style cache
             if (settings.contains("PlayerCache/"+playerName)) {
-              playerName = settings.value("PlayerCache/"+playerName, playerName).toString();
+              settings.remove("PlayerCache/"+playerName);
+            }
+            // check cache for playerName
+            if (settings.contains("PlayerCache/"+playerName+"/name")) {
+              playerName = settings.value("PlayerCache/"+playerName+"/name", playerName).toString();
             } else if (playerName[14]=='4') {
               // only version 4 UUIDs can be resolved at Mojang API
               // trigger HTTPS request to get player name
               QString url = playerName;
-              url = "https://api.mojang.com/user/profiles/" + url.remove('-') + "/names";
+              url = "https://sessionserver.mojang.com/session/minecraft/profile/" + url.remove('-');
 
               QNetworkRequest request;
               request.setUrl(QUrl(url));
@@ -881,22 +886,18 @@ void Minutor::updatePlayerCache(QNetworkReply* reply) {
   auto response = reply->readAll();
   if (response.length() > 0) {
     // we got a response
-    auto json = QJsonDocument::fromJson(response).array();
-    if (json.size() > 0) {
-      // at least one entry available, last one is the current one
-      QJsonObject name0 = json.at(json.size()-1).toObject();
-      if (name0.contains("name")) {
-        // reconstruct player UUID
-        QString playerUUID = reply->url().path().mid(15, 32);
-        playerUUID.insert(20, '-');
-        playerUUID.insert(16, '-');
-        playerUUID.insert(12, '-');
-        playerUUID.insert(8, '-');
-        // store in player cache
-        QSettings settings;
-        QString playerName = name0.value("name").toString();
-        settings.setValue("PlayerCache/"+playerUUID, playerName);
-      }
+    QJsonDocument json = QJsonDocument::fromJson(response);
+    if (!json.isEmpty() && json.object().contains("name")) {
+      QString playerName = json["name"].toString();
+      // reconstruct player UUID
+      QString playerUUID = reply->url().path().split("/").last();
+      playerUUID.insert(20, '-');
+      playerUUID.insert(16, '-');
+      playerUUID.insert(12, '-');
+      playerUUID.insert(8, '-');
+      // store in player cache
+      QSettings settings;
+      settings.setValue("PlayerCache/"+playerUUID+"/name", playerName);
     }
   }
 
