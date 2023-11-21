@@ -119,6 +119,10 @@ Minutor::Minutor()
   connect(this,    SIGNAL(worldLoaded(bool)),
           depth,   SLOT  (setEnabled(bool)));
 
+  // player cache request/response to Mojang API
+  connect(&this->qnam, &QNetworkAccessManager::finished,
+          this,        &Minutor::updatePlayerCache);
+
   m_ui.centralwidget->setLayout(mainLayout);
   layout()->setContentsMargins(0, 0, 0, 0);
 
@@ -453,7 +457,7 @@ void Minutor::viewDimension(QString dim_string)
 
 void Minutor::viewDimension(const DimensionInfo &dim) {
   // update visability of Structure Overlays
-  for (auto action : structureOverlayActions) {
+  for (QAction * action : qAsConst(structureOverlayActions)) {
     QString dimension = action->data().toMap()["dimension"].toString();
     if (dimension.isEmpty() ||
         !dimension.compare(dim.name, Qt::CaseInsensitive)) {
@@ -794,32 +798,39 @@ void Minutor::loadWorld(QDir path) {
         NBT player(it.filePath());
 
         // player name from file name (old)
-        QString playerName = it.fileInfo().completeBaseName();
+        QString playerUUID = it.fileInfo().completeBaseName();
+        QString playerName = playerUUID;
+        QIcon   playerIcon;
         if (path.dirName() == "playerdata") {
           // player name via UUID
           QRegExp id("[0-9a-z]{8,8}\\-[0-9a-z]{4,4}\\-[0-9a-z]{4,4}"
                      "\\-[0-9a-z]{4,4}\\-[0-9a-z]{12,12}");
-          if (id.exactMatch(playerName)) {
+          if (id.exactMatch(playerUUID)) {
             QSettings settings;
             // when present, remove old style cache
-            if (settings.contains("PlayerCache/"+playerName)) {
-              settings.remove("PlayerCache/"+playerName);
+            if (settings.contains("PlayerCache/"+playerUUID)) {
+              settings.remove("PlayerCache/"+playerUUID);
             }
-            // check cache for playerName
-            if (settings.contains("PlayerCache/"+playerName+"/name")) {
-              playerName = settings.value("PlayerCache/"+playerName+"/name", playerName).toString();
-            } else if (playerName[14]=='4') {
+            // check cache for player name
+            if (settings.contains("PlayerCache/"+playerUUID+"/name")) {
+              playerName = settings.value("PlayerCache/"+playerUUID+"/name", playerUUID).toString();
+            } else if (playerUUID[14]=='4') {
               // only version 4 UUIDs can be resolved at Mojang API
               // trigger HTTPS request to get player name
-              QString url = playerName;
+              QString url = playerUUID;
               url = "https://sessionserver.mojang.com/session/minecraft/profile/" + url.remove('-');
 
               QNetworkRequest request;
               request.setUrl(QUrl(url));
               request.setRawHeader("User-Agent", "Minutor");
-              connect(&this->qnam, &QNetworkAccessManager::finished,
-                      this,        &Minutor::updatePlayerCache);
-              this->qnam.get(request);
+              pendingNetworkAccess[this->qnam.get(request)] = playerUUID;
+            }
+            // check cache for player texture
+            if (settings.contains("PlayerCache/"+playerUUID+"/texture")) {
+              QString  data64 = settings.value("PlayerCache/"+playerUUID+"/texture", playerUUID).toString();
+              QByteArray data = QByteArray::fromBase64(data64.toUtf8());
+              QImage head(reinterpret_cast<unsigned char *>(data.data()), 8, 8, QImage::Format_ARGB32);
+              playerIcon = QIcon(QPixmap::fromImage(head).scaled(16,16));
             }
           } else continue;
         }
@@ -844,6 +855,7 @@ void Minutor::loadWorld(QDir path) {
         }
         QAction *p = new QAction(this);
         p->setText(playerName);
+        p->setIcon(playerIcon);
         p->setData(locations.count());
         locations.append(Location(posX, posZ, dimension));
         connect(p, SIGNAL(triggered()),
@@ -857,6 +869,7 @@ void Minutor::loadWorld(QDir path) {
             dimension = player.at("SpawnDimension")->toString();
           p = new QAction(this);
           p->setText(playerName+"'s Bed");
+          p->setIcon(playerIcon);
           p->setData(locations.count());
           locations.append(Location(player.at("SpawnX")->toDouble(),
                                     player.at("SpawnZ")->toDouble(),
@@ -882,27 +895,57 @@ void Minutor::loadWorld(QDir path) {
   toggleOverlays();
 }
 
-void Minutor::updatePlayerCache(QNetworkReply* reply) {
+void Minutor::updatePlayerCache(QNetworkReply * reply) {
   auto response = reply->readAll();
-  if (response.length() > 0) {
-    // we got a response
+  if (response.length() == 0) {
+    reply->deleteLater();
+    return;
+  }
+  // we got a response
+  // response to initial profil query
+  if (reply->request().url().toString().contains("sessionserver.mojang.com")) {
     QJsonDocument json = QJsonDocument::fromJson(response);
     if (!json.isEmpty() && json.object().contains("name")) {
       QString playerName = json["name"].toString();
       // reconstruct player UUID
-      QString playerUUID = reply->url().path().split("/").last();
-      playerUUID.insert(20, '-');
-      playerUUID.insert(16, '-');
-      playerUUID.insert(12, '-');
-      playerUUID.insert(8, '-');
+      QString playerUUID = pendingNetworkAccess[reply];
       // store in player cache
       QSettings settings;
       settings.setValue("PlayerCache/"+playerUUID+"/name", playerName);
+
+      // get URL to skin texture
+      QString value = json["properties"][0]["value"].toString();
+      QJsonDocument vjson = QJsonDocument::fromJson(QByteArray::fromBase64(value.toUtf8()));
+      if (!vjson.isEmpty()) {
+        QString url = vjson.object()["textures"].toObject()["SKIN"].toObject()["url"].toString();
+        if (!url.isEmpty()) {
+          QNetworkRequest request;
+          request.setUrl(QUrl(url));
+          request.setRawHeader("User-Agent", "Minutor");
+          pendingNetworkAccess[this->qnam.get(request)] = playerUUID;
+        }
+      }
     }
+    pendingNetworkAccess.remove(reply);
+  }
+  // response with skin texture
+  if (reply->request().url().toString().contains("textures.minecraft.net")) {
+    QImage skin;
+    skin.loadFromData(response);
+    QImage head(skin.copy(QRect(8,8,8,8)));
+    // reconstruct player UUID
+    QString playerUUID = pendingNetworkAccess[reply];
+    // store in player cache
+    QSettings settings;
+    QString data = QByteArray(reinterpret_cast<char*>(head.bits()), 4*8*8).toBase64();
+    settings.setValue("PlayerCache/"+playerUUID+"/texture", data);
+
+    pendingNetworkAccess.remove(reply);
   }
 
   reply->deleteLater();
 }
+
 
 void Minutor::rescanWorlds() {
   worldActions.clear();

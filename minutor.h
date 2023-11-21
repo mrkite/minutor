@@ -72,7 +72,7 @@ private slots:
   void closeWorld();
   void reload();
   void save();
-  void updatePlayerCache(QNetworkReply*);
+  void updatePlayerCache(QNetworkReply * reply);
 
   void jumpToLocation();
   void viewDimension(const DimensionInfo &dim);
@@ -145,6 +145,7 @@ signals:
   JumpTo *dialogJumpTo;
   QDir currentWorld;
   QNetworkAccessManager qnam;
+  QMap<QNetworkReply*, QString> pendingNetworkAccess;
 
   QSet<QString> overlayItemTypes;
   Properties * propView;
