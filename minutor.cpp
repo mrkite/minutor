@@ -906,7 +906,7 @@ void Minutor::updatePlayerCache(QNetworkReply * reply) {
   if (reply->request().url().toString().contains("sessionserver.mojang.com")) {
     QJsonDocument json = QJsonDocument::fromJson(response);
     if (!json.isEmpty() && json.object().contains("name")) {
-      QString playerName = json["name"].toString();
+      QString playerName = json.object().value("name").toString();
       // reconstruct player UUID
       QString playerUUID = pendingNetworkAccess[reply];
       // store in player cache
@@ -914,7 +914,7 @@ void Minutor::updatePlayerCache(QNetworkReply * reply) {
       settings.setValue("PlayerCache/"+playerUUID+"/name", playerName);
 
       // get URL to skin texture
-      QString value = json["properties"][0]["value"].toString();
+      QString value = json.object().value("properties").toArray()[0].toObject().value("value").toString();
       QJsonDocument vjson = QJsonDocument::fromJson(QByteArray::fromBase64(value.toUtf8()));
       if (!vjson.isEmpty()) {
         QString url = vjson.object()["textures"].toObject()["SKIN"].toObject()["url"].toString();
