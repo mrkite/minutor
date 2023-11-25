@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.20.23w26z",
+  "version": "1.20.3",
   "data": [
     {
       "name": "minecraft:air",
@@ -1240,6 +1240,14 @@
     },
     {
       "name": "minecraft:grass",
+      "color": "#888888",
+      "biomeGrass": true,
+      "alpha": 0.3,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
+      "name": "minecraft:short_grass",
       "color": "#888888",
       "biomeGrass": true,
       "alpha": 0.3,
