@@ -25,7 +25,8 @@ class MapView : public QWidget {
     flgSeaGround      = 1 << 5,
     flgSingleLayer    = 1 << 6,
     flgSlimeChunks    = 1 << 7,
-    flgInhabitedTime  = 1 << 8
+    flgInhabitedTime  = 1 << 8,
+    flgChunkLock      = 1 << 9,
   };
 
   typedef struct struct_BlockLocation {

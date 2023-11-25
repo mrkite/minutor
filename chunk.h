@@ -65,6 +65,13 @@ class Chunk : public QObject {
   typedef QMultiMap<QString, QSharedPointer<OverlayItem>> EntityMap;
   const EntityMap& getEntityMap() const;
 
+  /** Returns whether the chunk is locked by the ChunkLock resourcepack. */
+  bool getIsChunkLocked() const { return isChunkLocked; }
+
+  /** Returns the name of the item needed for unlocking the ChunkLock.
+  Only valid if getIsChunkLocked() returns true. */
+  const QString & getChunkLockItemName() const { return chunkLockItemName; }
+
  signals:
   void structureFound(QSharedPointer<GeneratedStructure> structure);
 
@@ -89,6 +96,14 @@ class Chunk : public QObject {
   uchar  image[16 * 16 * 4];  // cached render: RGBA for 16*16 Blocks
   short  depth[16 * 16];      // cached depth map to create shadow
   EntityMap entities;
+
+  /** Specifies whether the chunk is locked by the ChunkLock resourcepack. */
+  bool isChunkLocked;
+
+  /** The name of the item needed for unlocking the chunk.
+  Only valid if isChunkLocked is true. */
+  QString chunkLockItemName;
+
   friend class MapView;
   friend class ChunkRenderer;
   friend class ChunkCache;
@@ -101,6 +116,9 @@ class Chunk : public QObject {
   void loadSection_createDummyPalette(ChunkSection * cs);
   void loadSection_loadBlockStates(ChunkSection *cs, const Tag * blockStateTag);
   bool loadSection_decodeBiomePalette(ChunkSection * cs, const Tag * biomesTag);
+
+  /** Checks whether the specified entity NBT is relevant to ChunkLock; if so, updates the ChunkLock-related state. */
+  void loadCheckEntityChunkLock(const Tag * entityNbt);
 };
 
 #endif  // CHUNK_H_

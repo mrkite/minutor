@@ -30,6 +30,7 @@ Chunk::Chunk()
   , loaded(false)
   , rendering(false)
   , inhabitedTime(0)
+  , isChunkLocked(false)
 {}
 
 Chunk::~Chunk() {
@@ -348,13 +349,72 @@ void Chunk::loadEntities(const NBT &nbt) {
       auto entitylist = nbt.at("Entities");
       int numEntities = entitylist->length();
       for (int i = 0; i < numEntities; ++i) {
-        auto e = Entity::TryParse(entitylist->at(i));
-        if (e)
+        auto entityNbt = entitylist->at(i);
+        auto e = Entity::TryParse(entityNbt);
+        if (e) {
           entities.insert(e->type(), e);
+
+          // Check for ChunkLock-related entities:
+          loadCheckEntityChunkLock(entityNbt);
+        }
       }
     }
   }
 }
+
+void Chunk::loadCheckEntityChunkLock(const Tag * entityNbt)
+{
+  /* ChunkLock uses a "minecraft:marker" entity to store the state:
+  - the entity has a "chunklock" Tag
+  - the entity has a Tag either "locked" or "unlocked"
+  - the entity has "data"."source"."id" data specifying the item needed for unlocking
+  - the item count needed for unlocking is stored in scoreboard, not in the entity itself (!)
+  */
+
+  // Check if this is a "locked" marker:
+  if (entityNbt->at("id")->toString() != "minecraft:marker") {
+    return;
+  }
+  auto tags = dynamic_cast<const Tag_List *>(entityNbt->at("Tags"));
+  if (tags == nullptr) {
+    return;
+  }
+  auto len = tags->length();
+  bool hasChunklockTag = false;
+  bool hasLockedTag = false;
+  for (int i = 0; i < len; ++i)
+  {
+    auto tagStr = dynamic_cast<const Tag_String *>(tags->at(i));
+    if (tagStr == nullptr) {
+      continue;
+    }
+    auto tagStrVal = tagStr->toString();
+    if (tagStrVal == "chunklock") {
+      hasChunklockTag = true;
+    } else if (tagStrVal == "locked") {
+      hasLockedTag = true;
+    }
+  }
+  this->isChunkLocked = hasChunklockTag && hasLockedTag;
+  if (!this->isChunkLocked) {
+    return;
+  }
+
+  // Find the name of the item needed for unlocking:
+  auto tData = dynamic_cast<const Tag_Compound *>(entityNbt->at("data"));
+  if (tData == nullptr) {
+    return;
+  }
+  auto tDataSource = dynamic_cast<const Tag_Compound *>(tData->at("source"));
+  if (tDataSource == nullptr) {
+    return;
+  }
+  auto tId = dynamic_cast<const Tag_String *>(tDataSource->at("id"));
+  if (tId != nullptr) {
+    this->chunkLockItemName = tId->toString();
+  }
+}
+
 
 
 // supported DataVersions:

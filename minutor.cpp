@@ -324,6 +324,11 @@ void Minutor::setViewInhabitedTime(bool value) {
   toggleFlags();
 }
 
+void Minutor::setViewChunkLock(bool value) {
+  m_ui.action_ChunkLock->setChecked(value);
+  toggleFlags();
+}
+
 void Minutor::setDepth(int value) {
   depth->setValue(value);
 }
@@ -340,6 +345,7 @@ void Minutor::toggleFlags() {
   if (m_ui.action_SingleLayer->isChecked())   flags |= MapView::flgSingleLayer;
   if (m_ui.action_SlimeChunks->isChecked())   flags |= MapView::flgSlimeChunks;
   if (m_ui.action_InhabitedTime->isChecked()) flags |= MapView::flgInhabitedTime;
+  if (m_ui.action_ChunkLock->isChecked())     flags |= MapView::flgChunkLock;
   mapview->setFlags(flags);
   mapview->redraw();
 }
@@ -512,6 +518,11 @@ void Minutor::about() {
                      .arg(qApp->organizationName()));
 }
 
+void Minutor::updateDatapackActions()
+{
+  m_ui.action_ChunkLock->setVisible(WorldInfo::Instance().isDatapackEnabled("chunklock"));
+}
+
 void Minutor::updateDimensions() {
   WorldInfo::Instance().getDimensionsInWorld(currentWorld, m_ui.menu_Dimension, this);
 }
@@ -574,6 +585,9 @@ void Minutor::createActions() {
 
   connect(m_ui.action_InhabitedTime, SIGNAL(triggered()),
           this,                      SLOT(toggleFlags()));
+
+  connect(m_ui.action_ChunkLock, SIGNAL(triggered()),
+          this,                  SLOT(toggleFlags()));
 
   // [View->Others]
 //  m_ui.action_Refresh->setStatusTip(tr("Reloads all chunks, "
@@ -779,6 +793,7 @@ void Minutor::loadWorld(QDir path) {
   WorldInfo & wi(WorldInfo::Instance());
   wi.parseWorldFolder(path);
   wi.parseWorldInfo();
+  updateDatapackActions();
 
   // add level name to window title
   setWindowTitle(qApp->applicationName() + " - " + wi.getLevelName());

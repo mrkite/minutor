@@ -66,6 +66,8 @@
     <addaction name="action_SlimeChunks"/>
     <addaction name="action_InhabitedTime"/>
     <addaction name="separator"/>
+    <addaction name="action_ChunkLock"/>
+    <addaction name="separator"/>
     <addaction name="action_Refresh"/>
    </widget>
    <widget class="QMenu" name="menu_Overlay">
@@ -391,6 +393,17 @@ but keeps the same position / dimension</string>
    </property>
    <property name="statusTip">
     <string>Statistic for Block</string>
+   </property>
+  </action>
+  <action name="action_ChunkLock">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>ChunkLock</string>
+   </property>
+   <property name="toolTip">
+    <string>Displays chunks locked by ChunkLock (if installed)</string>
    </property>
   </action>
  </widget>
