@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "entity",
-  "version": "1.20.23w07a",
+  "version": "1.20.23w51a",
   "data": [
     {
       "category": "Hostile",
@@ -396,6 +396,10 @@
         {
           "id": "sniffer",
           "color": "#256f4d"
+        },
+        {
+          "id": "armadillo",
+          "color": "#c68884"
         }
       ]
     },
