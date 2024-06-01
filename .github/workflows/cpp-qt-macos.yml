@@ -23,7 +23,7 @@ jobs:
             qt: '5.12.12'
             artifact: minutor.dmg
           - name: macos-5.15
-            os: macos-13
+            os: macos-latest
             qt: '5.15.2'
             artifact: minutor.dmg
     runs-on: ${{ matrix.os }}
@@ -54,7 +54,7 @@ jobs:
     - name: Build (MacOS)
       working-directory: ../build
       run: |
-        qmake ${{ github.workspace }}/minutor.pro
+        qmake ${{ github.workspace }}/minutor.pro -early QMAKE_DEFAULT_LIBDIRS=$(xcrun -show-sdk-path)/usr/lib
         make
 
     - name: Deploy Qt (macOS)
