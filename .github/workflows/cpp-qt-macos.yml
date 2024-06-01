@@ -23,7 +23,7 @@ jobs:
             qt: '5.12.12'
             artifact: minutor.dmg
           - name: macos-5.15
-            os: macos-latest
+            os: macos-13
             qt: '5.15.2'
             artifact: minutor.dmg
     runs-on: ${{ matrix.os }}
