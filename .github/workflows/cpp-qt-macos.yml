@@ -12,15 +12,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        name: [macos-5.9, macos-5.12]
+        name: [macos-5.9, macos-5.12, macos-5.15]
         include:
           - name: macos-5.9
-            os: macos-latest
+            os: macos-11
             qt: '5.9.9'
             artifact: minutor.dmg
           - name: macos-5.12
+            os: macos-12
+            qt: '5.12.12'
+            artifact: minutor.dmg
+          - name: macos-5.15
             os: macos-latest
-            qt: '5.12.10'
+            qt: '5.15.2'
             artifact: minutor.dmg
     runs-on: ${{ matrix.os }}
 
