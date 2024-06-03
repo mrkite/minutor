@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.21.23w42a",
+  "version": "1.21.23w43a",
   "data": [
     {
       "name": "minecraft:air",
@@ -5514,20 +5514,37 @@
       "transparent": true
     },
     {
+      "name": "minecraft:chiseled_copper",
+      "color": "#b8654a"
+    },
+    {
       "name": "minecraft:copper_block",
       "color": "#c06c50"
     },
     {
-      "name": "minecraft:exposed_copper",
-      "color": "#a17e68"
+      "name": "minecraft:copper_bulb",
+      "color": "#9c5739",
+      "variants": [
+        {
+          "blockstate": "lit:true",
+          "color": "#d8976b"
+        }
+      ]
     },
     {
-      "name": "minecraft:weathered_copper",
-      "color": "#6c996e"
+      "name": "minecraft:copper_door",
+      "color": "#c16d53",
+      "transparent": true
     },
     {
-      "name": "minecraft:oxidized_copper",
-      "color": "#52a385"
+      "name": "minecraft:copper_grate",
+      "color": "#c06c4f",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:copper_trapdoor",
+      "color": "#bf6a50",
+      "transparent": true
     },
     {
       "name": "minecraft:cut_copper",
@@ -5575,6 +5592,39 @@
       ]
     },
     {
+      "name": "minecraft:exposed_chiseled_copper",
+      "color": "#9b7765"
+    },
+    {
+      "name": "minecraft:exposed_copper",
+      "color": "#a17e68"
+    },
+    {
+      "name": "minecraft:exposed_copper_bulb",
+      "color": "#876c5a",
+      "variants": [
+        {
+          "blockstate": "lit:true",
+          "color": "#c29164"
+        }
+      ]
+    },
+    {
+      "name": "minecraft:exposed_copper_door",
+      "color": "#a47b6a",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:exposed_copper_grate",
+      "color": "#a27e69",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:exposed_copper_trapdoor",
+      "color": "#a17d69",
+      "transparent": true
+    },
+    {
       "name": "minecraft:exposed_cut_copper",
       "color": "#9b7a65"
     },
@@ -5620,49 +5670,37 @@
       ]
     },
     {
-      "name": "minecraft:weathered_cut_copper",
-      "color": "#6d916c"
+      "name": "minecraft:oxidized_chiseled_copper",
+      "color": "#54a284"
     },
     {
-      "name": "minecraft:weathered_cut_copper_stairs",
-      "color": "#669168",
-      "transparent": true,
+      "name": "minecraft:oxidized_copper",
+      "color": "#52a385"
+    },
+    {
+      "name": "minecraft:oxidized_copper_bulb",
+      "color": "#46846d",
       "variants": [
         {
-          "blockstate": "half:top",
-          "spawnontop": true
+          "blockstate": "lit:true",
+          "color": "#879a68"
         }
       ]
     },
     {
-      "name": "minecraft:weathered_cut_copper_slab",
-      "color": "#71a073",
-      "transparent": true,
-      "variants": [
-        {
-          "blockstate": "type:top",
-          "spawnontop": true
-        },
-        {
-          "blockstate": "type:double",
-          "spawnontop": true
-        }
-      ]
+      "name": "minecraft:oxidized_copper_door",
+      "color": "#52a085",
+      "transparent": true
     },
     {
-      "name": "minecraft:double_weathered_cut_copper_slab",
-      "color": "#71a073",
-      "transparent": true,
-      "variants": [
-        {
-          "blockstate": "type:top",
-          "spawnontop": true
-        },
-        {
-          "blockstate": "type:double",
-          "spawnontop": true
-        }
-      ]
+      "name": "minecraft:oxidized_copper_grate",
+      "color": "#52a183",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:oxidized_copper_trapdoor",
+      "color": "#54a184",
+      "transparent": true
     },
     {
       "name": "minecraft:oxidized_cut_copper",
@@ -5710,20 +5748,115 @@
       ]
     },
     {
+      "name": "minecraft:weathered_chiseled_copper",
+      "color": "#69976f"
+    },
+    {
+      "name": "minecraft:weathered_copper",
+      "color": "#6c996e"
+    },
+    {
+      "name": "minecraft:weathered_copper_bulb",
+      "color": "#5c7f63",
+      "variants": [
+        {
+          "blockstate": "lit:true",
+          "color": "#9c9d63"
+        }
+      ]
+    },
+    {
+      "name": "minecraft:weathered_copper_door",
+      "color": "#6e976e",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:weathered_copper_grate",
+      "color": "#6a996f",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:weathered_copper_trapdoor",
+      "color": "#6d996e",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:weathered_cut_copper",
+      "color": "#6d916c"
+    },
+    {
+      "name": "minecraft:weathered_cut_copper_stairs",
+      "color": "#669168",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:weathered_cut_copper_slab",
+      "color": "#71a073",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:double_weathered_cut_copper_slab",
+      "color": "#71a073",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:waxed_chiseled_copper",
+      "color": "#b8654a"
+    },
+    {
       "name": "minecraft:waxed_copper_block",
       "color": "#c06c50"
     },
     {
-      "name": "minecraft:waxed_exposed_copper",
-      "color": "#a17e68"
+      "name": "minecraft:waxed_copper_bulb",
+      "color": "#9c5739",
+      "variants": [
+        {
+          "blockstate": "lit:true",
+          "color": "#d8976b"
+        }
+      ]
     },
     {
-      "name": "minecraft:waxed_weathered_copper",
-      "color": "#6c996e"
+      "name": "minecraft:waxed_copper_door",
+      "color": "#c16d53",
+      "transparent": true
     },
     {
-      "name": "minecraft:waxed_oxidized_copper",
-      "color": "#52a385"
+      "name": "minecraft:waxed_copper_grate",
+      "color": "#c06c4f",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:waxed_copper_trapdoor",
+      "color": "#bf6a50",
+      "transparent": true
     },
     {
       "name": "minecraft:waxed_cut_copper",
@@ -5771,6 +5904,39 @@
       ]
     },
     {
+      "name": "minecraft:waxed_exposed_chiseled_copper",
+      "color": "#9b7765"
+    },
+    {
+      "name": "minecraft:waxed_exposed_copper",
+      "color": "#a17e68"
+    },
+    {
+      "name": "minecraft:waxed_exposed_copper_bulb",
+      "color": "#876c5a",
+      "variants": [
+        {
+          "blockstate": "lit:true",
+          "color": "#c29164"
+        }
+      ]
+    },
+    {
+      "name": "minecraft:waxed_exposed_copper_door",
+      "color": "#a47b6a",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:waxed_exposed_copper_grate",
+      "color": "#a27e69",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:waxed_exposed_copper_trapdoor",
+      "color": "#a17d69",
+      "transparent": true
+    },
+    {
       "name": "minecraft:waxed_exposed_cut_copper",
       "color": "#9b7a65"
     },
@@ -5816,49 +5982,37 @@
       ]
     },
     {
-      "name": "minecraft:waxed_weathered_cut_copper",
-      "color": "#6d916c"
+      "name": "minecraft:waxed_oxidized_chiseled_copper",
+      "color": "#54a284"
     },
     {
-      "name": "minecraft:waxed_weathered_cut_copper_stairs",
-      "color": "#669168",
-      "transparent": true,
+      "name": "minecraft:waxed_oxidized_copper",
+      "color": "#52a385"
+    },
+    {
+      "name": "minecraft:waxed_oxidized_copper_bulb",
+      "color": "#46846d",
       "variants": [
         {
-          "blockstate": "half:top",
-          "spawnontop": true
+          "blockstate": "lit:true",
+          "color": "#879a68"
         }
       ]
     },
     {
-      "name": "minecraft:waxed_weathered_cut_copper_slab",
-      "color": "#71a073",
-      "transparent": true,
-      "variants": [
-        {
-          "blockstate": "type:top",
-          "spawnontop": true
-        },
-        {
-          "blockstate": "type:double",
-          "spawnontop": true
-        }
-      ]
+      "name": "minecraft:waxed_oxidized_copper_door",
+      "color": "#52a085",
+      "transparent": true
     },
     {
-      "name": "minecraft:waxed_double_weathered_cut_copper_slab",
-      "color": "#71a073",
-      "transparent": true,
-      "variants": [
-        {
-          "blockstate": "type:top",
-          "spawnontop": true
-        },
-        {
-          "blockstate": "type:double",
-          "spawnontop": true
-        }
-      ]
+      "name": "minecraft:waxed_oxidized_copper_grate",
+      "color": "#52a183",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:waxed_oxidized_copper_trapdoor",
+      "color": "#54a184",
+      "transparent": true
     },
     {
       "name": "minecraft:waxed_oxidized_cut_copper",
@@ -5893,6 +6047,84 @@
     {
       "name": "minecraft:waxed_double_oxidized_cut_copper_slab",
       "color": "#56ab8b",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:waxed_weathered_chiseled_copper",
+      "color": "#69976f"
+    },
+    {
+      "name": "minecraft:waxed_weathered_copper",
+      "color": "#6c996e"
+    },
+    {
+      "name": "minecraft:waxed_weathered_copper_bulb",
+      "color": "#5c7f63",
+      "variants": [
+        {
+          "blockstate": "lit:true",
+          "color": "#9c9d63"
+        }
+      ]
+    },
+    {
+      "name": "minecraft:waxed_weathered_copper_door",
+      "color": "#6e976e",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:waxed_weathered_copper_grate",
+      "color": "#6a996f",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:waxed_weathered_copper_trapdoor",
+      "color": "#6d996e",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:waxed_weathered_cut_copper",
+      "color": "#6d916c"
+    },
+    {
+      "name": "minecraft:waxed_weathered_cut_copper_stairs",
+      "color": "#669168",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:waxed_weathered_cut_copper_slab",
+      "color": "#71a073",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:waxed_double_weathered_cut_copper_slab",
+      "color": "#71a073",
       "transparent": true,
       "variants": [
         {
