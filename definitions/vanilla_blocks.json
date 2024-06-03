@@ -6166,6 +6166,112 @@
       "color": "#6c6d67"
     },
     {
+      "name": "minecraft:chiseled_tuff",
+      "color": "#5e635b"
+    },
+    {
+      "name": "minecraft:tuff_slab",
+      "color": "#71726c",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:tuff_stairs",
+      "color": "#666761",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:tuff_wall",
+      "color": "#6c6d67"
+    },
+    {
+      "name": "minecraft:tuff_bricks",
+      "color": "#62675f"
+    },
+    {
+      "name": "minecraft:chiseled_tuff_bricks",
+      "color": "#6f726b"
+    },
+    {
+      "name": "minecraft:tuff_brick_slab",
+      "color": "#666c63",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:tuff_brick_stairs",
+      "color": "#5d615a",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:tuff_brick_wall",
+      "color": "#62675f"
+    },
+    {
+      "name": "minecraft:polished_tuff",
+      "color": "#626864"
+    },
+    {
+      "name": "minecraft:polished_tuff_slab",
+      "color": "#666d69",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:polished_tuff_stairs",
+      "color": "#5d625f",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:polished_tuff_wall",
+      "color": "#626864"
+    },
+    {
       "name": "minecraft:powder_snow",
       "color": "#f8fdfd"
     },
