@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.21.23w43a",
+  "version": "1.21.23w45a",
   "data": [
     {
       "name": "minecraft:air",
@@ -6869,6 +6869,10 @@
     {
       "name": "minecraft:crafter",
       "color": "#706364"
+    },
+    {
+      "name": "minecraft:trial_spawner",
+      "color": "#395363"
     }
   ],
   "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_blocks.json"
