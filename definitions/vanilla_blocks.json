@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.21.24w05a",
+  "version": "1.21.24w11a",
   "data": [
     {
       "name": "minecraft:air",
@@ -6877,6 +6877,10 @@
     {
       "name": "minecraft:vault",
       "color": "#37464f"
+    },
+    {
+      "name": "minecraft:heavy_core",
+      "color": "#52565e"
     }
   ],
   "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_blocks.json"
