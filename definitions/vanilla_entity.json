@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "entity",
-  "version": "1.21.23w45a",
+  "version": "1.21.24w07a",
   "data": [
     {
       "category": "Hostile",
@@ -189,6 +189,10 @@
         {
           "id": "breeze",
           "color": "LavenderBlush"
+        },
+        {
+          "id": "bogged",
+          "color": "#c0c0c0"
         }
       ]
     },
