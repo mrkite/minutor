@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "entity",
-  "version": "1.20.23w51a",
+  "version": "1.21.23w45a",
   "data": [
     {
       "category": "Hostile",
@@ -185,6 +185,10 @@
         {
           "id": "warden",
           "color": "#17a1c2"
+        },
+        {
+          "id": "breeze",
+          "color": "LavenderBlush"
         }
       ]
     },
@@ -437,7 +441,13 @@
           "color": "SkyBlue"
         },
         {
+          "note": "old naming scheme until 1.13",
           "id": "ender_crystal",
+          "catcolor": "Plum",
+          "color": "SkyBlue"
+        },
+        {
+          "id": "end_crystal",
           "catcolor": "Plum",
           "color": "SkyBlue"
         },
