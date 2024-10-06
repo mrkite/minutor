@@ -6,27 +6,27 @@ on:
   pull_request:
     branches: [ master ]
 
+env:
+  project: 'minutor'
+
 jobs:
   build:
 
     strategy:
       fail-fast: false
       matrix:
-        name: [ubuntu-20.04, ubuntu-22.04]
+        name: [ubuntu-20.04, ubuntu-22.04, ubuntu-24.04]
         include:
-        # - name: ubuntu-18.04
-        #   os: ubuntu-18.04
-        #   artifact: minutor
           - name: ubuntu-20.04
             os: ubuntu-20.04
-            artifact: minutor
           - name: ubuntu-22.04
             os: ubuntu-22.04
-            artifact: minutor
+          - name: ubuntu-24.04
+            os: ubuntu-24.04
     runs-on: ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Install Qt
       run: |
@@ -40,14 +40,11 @@ jobs:
     - name: Build (Ubuntu)
       working-directory: ../build
       run: |
-        qmake ${{ github.workspace }}/${{ matrix.artifact }}.pro
+        qmake ${{ github.workspace }}/${{ env.project }}.pro
         make
-      env:
-        # only needed for Ubuntu-16.04
-        LD_LIBRARY_PATH: '${{ runner.workspace }}/Qt/5.5/gcc_64/lib'
 
     - name: Archive build result
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: Binary ${{ matrix.name }}
-        path: ${{ runner.workspace }}/build/${{ matrix.artifact }}
+        path: ${{ runner.workspace }}/build/${{ env.project }}

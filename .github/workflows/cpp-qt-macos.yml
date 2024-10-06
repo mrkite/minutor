@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ master ]
 
+env:
+  project: 'minutor'
+
 jobs:
   build:
 
@@ -15,21 +18,18 @@ jobs:
         name: [macos-5.9, macos-5.12, macos-5.15]
         include:
           - name: macos-5.9
-            os: macos-11
+            os: macos-12
             qt: '5.9.9'
-            artifact: minutor.dmg
           - name: macos-5.12
             os: macos-12
             qt: '5.12.12'
-            artifact: minutor.dmg
           - name: macos-5.15
             os: macos-latest
             qt: '5.15.2'
-            artifact: minutor.dmg
     runs-on: ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
 #    - name: Cache Qt
 #      id: cache-qt
@@ -54,16 +54,16 @@ jobs:
     - name: Build (MacOS)
       working-directory: ../build
       run: |
-        qmake ${{ github.workspace }}/minutor.pro -early QMAKE_DEFAULT_LIBDIRS=$(xcrun -show-sdk-path)/usr/lib
+        qmake ${{ github.workspace }}/${{ env.project }}.pro -early QMAKE_DEFAULT_LIBDIRS=$(xcrun -show-sdk-path)/usr/lib
         make
 
     - name: Deploy Qt (macOS)
       working-directory: ../build
       run: |
-        macdeployqt minutor.app -codesign=- -dmg
+        macdeployqt ${{ env.project }}.app -codesign=- -dmg
 
     - name: Archive build result
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: Binary ${{ matrix.name }}
-        path: ${{ runner.workspace }}/build/${{ matrix.artifact }}
+        path: ${{ runner.workspace }}/build/${{ env.project }}.dmg

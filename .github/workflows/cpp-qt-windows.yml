@@ -6,26 +6,33 @@ on:
   pull_request:
     branches: [ master ]
 
+env:
+  project: 'minutor'
+
 jobs:
   build:
 
     strategy:
       fail-fast: false
       matrix:
-        name: [windows-5.9, windows-5.12]
+        name: [windows-5.9, windows-5.12, windows-5.15]
         include:
           - name: windows-5.9
             os: windows-2019
             qt: '5.9.9'
             msvc_toolset: '14.16'
           - name: windows-5.12
-            os: windows-latest
+            os: windows-2022
             qt: '5.12.12'
+            msvc_toolset: '14.29'
+          - name: windows-5.15
+            os: windows-2022
+            qt: '5.15.2'
             msvc_toolset: '14.29'
     runs-on: ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: ilammy/msvc-dev-cmd@v1
       with:
         toolset: ${{ matrix.msvc_toolset }}
@@ -56,19 +63,19 @@ jobs:
       working-directory: ../build
       shell: cmd
       run: |
-        qmake ${{ github.workspace }}/minutor.pro
+        qmake ${{ github.workspace }}/${{ env.project }}.pro
         nmake
 
     - name: Deploy Qt (Windows)
       working-directory: ../build
       shell: cmd
       run: |
-        cp ..\build\release\minutor.exe ..\deploy\minutor.exe
+        cp ..\build\release\${{ env.project }}.exe ..\deploy\${{ env.project }}.exe
         windeployqt ..\deploy
 # todo: we have to add OpenSSL DLLs here
 
     - name: Archive build result
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: Binary ${{ matrix.name }}
         path: ${{ runner.workspace }}/deploy/*
