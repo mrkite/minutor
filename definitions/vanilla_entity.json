@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "entity",
-  "version": "1.21.24w07a",
+  "version": "1.21.24w40a",
   "data": [
     {
       "category": "Hostile",
@@ -193,6 +193,10 @@
         {
           "id": "bogged",
           "color": "#c0c0c0"
+        },
+        {
+          "id": "creaking",
+          "color": "#ec7214"
         }
       ]
     },
