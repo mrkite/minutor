@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "biome",
-  "version": "1.20.23w07a_2",
+  "version": "1.21.24w40a",
   "data18": [
     {
       "id": "minecraft:ocean",
@@ -379,6 +379,13 @@
       "color": "#f7b9dc",
       "watermodifier": "#5db7ef",
       "temperature": 0.5,
+      "humidity": 0.8
+    },
+    {
+      "id": "minecraft:pale_garden",
+      "color": "#726c68",
+      "watermodifier": "#76889d",
+      "temperature": 0.7,
       "humidity": 0.8
     }
   ],
