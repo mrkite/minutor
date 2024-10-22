@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.21.24w11a",
+  "version": "1.21.24w40a",
   "data": [
     {
       "name": "minecraft:air",
@@ -400,6 +400,13 @@
       "spawninside": true
     },
     {
+      "name": "minecraft:pale_oak_sapling",
+      "color": "#6e6a64",
+      "alpha": 0.3,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
       "name": "minecraft:bamboo",
       "color": "#5e9014",
       "alpha": 0.75,
@@ -669,6 +676,75 @@
       "transparent": true
     },
     {
+      "name": "minecraft:pale_oak_planks",
+      "color": "#e4dad8"
+    },
+    {
+      "name": "minecraft:pale_oak_button",
+      "color": "#e4dad8"
+    },
+    {
+      "name": "minecraft:pale_oak_door",
+      "color": "#d8d0cf"
+    },
+    {
+      "name": "minecraft:pale_oak_fence",
+      "color": "#e4dad8"
+    },
+    {
+      "name": "minecraft:pale_oak_fence_gate",
+      "color": "#e4dad8"
+    },
+    {
+      "name": "minecraft:pale_oak_pressure_plate",
+      "color": "#e4dad8"
+    },
+    {
+      "name": "minecraft:pale_oak_slab",
+      "color": "#efe4e2",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:pale_oak_stairs",
+      "color": "#d8cfcd",
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:pale_oak_trapdoor",
+      "color": "#e6dcdb"
+    },
+    {
+      "name": "minecraft:pale_oak_sign",
+      "color": "#e4dad8"
+    },
+    {
+      "name": "minecraft:pale_oak_hanging_sign",
+      "color": "#e4dad8"
+    },
+    {
+      "name": "minecraft:pale_oak_wall_sign",
+      "color": "#e4dad8"
+    },
+    {
+      "name": "minecraft:pale_oak_wall_hanging_sign",
+      "color": "#e4dad8"
+    },
+    {
       "name": "minecraft:flowing_water",
       "color": "#a9a9a9",
       "alpha": 0.53,
@@ -809,6 +885,16 @@
       ]
     },
     {
+      "name": "minecraft:pale_oak_log",
+      "color": "#c7bdbc",
+      "variants": [
+        {
+          "blockstate": "axis:y",
+          "color": "#584e4b"
+        }
+      ]
+    },
+    {
       "name": "minecraft:stripped_spruce_log",
       "color": "#745a34",
       "variants": [
@@ -879,6 +965,16 @@
       ]
     },
     {
+      "name": "minecraft:stripped_pale_oak_log",
+      "color": "#ebe3e2",
+      "variants": [
+        {
+          "blockstate": "axis:y",
+          "color": "#ebe3e2"
+        }
+      ]
+    },
+    {
       "name": "minecraft:oak_wood",
       "color": "#665132"
     },
@@ -905,6 +1001,10 @@
     {
       "name": "minecraft:mangrove_wood",
       "color": "#544329"
+    },
+    {
+      "name": "minecraft:pale_oak_wood",
+      "color": "#c7bdbc"
     },
     {
       "name": "minecraft:stripped_oak_wood",
@@ -937,6 +1037,10 @@
     {
       "name": "minecraft:stripped_bamboo_block",
       "color": "#b29f49"
+    },
+    {
+      "name": "minecraft:stripped_pale_oak_wood",
+      "color": "#ebe3e2"
     },
     {
       "name": "minecraft:oak_leaves",
@@ -1004,6 +1108,13 @@
     {
       "name": "minecraft:cherry_leaves",
       "color": "#e5adc2",
+      "transparent": true,
+      "rendercube": true,
+      "biomeFoliage": false
+    },
+    {
+      "name": "minecraft:pale_oak_leaves",
+      "color": "#757a73",
       "transparent": true,
       "rendercube": true,
       "biomeFoliage": false
@@ -2949,6 +3060,11 @@
     {
       "name": "minecraft:potted_torchflower",
       "color": "#e87272",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:potted_pale_oak_sapling",
+      "color": "#6e6a64",
       "transparent": true
     },
     {
@@ -6360,6 +6476,21 @@
       "transparent": true
     },
     {
+      "name": "minecraft:pale_moss_block",
+      "color": "#6b7069"
+    },
+    {
+      "name": "minecraft:pale_moss_carpet",
+      "color": "#6b7069",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:pale_hanging_moss",
+      "color": "#636862",
+      "transparent": true,
+      "alpha": 0.7
+    },
+    {
       "name": "minecraft:rooted_dirt",
       "color": "#90684d"
     },
@@ -6881,6 +7012,24 @@
     {
       "name": "minecraft:heavy_core",
       "color": "#52565e"
+    },
+    {
+      "name": "minecraft:creaking_heart",
+      "color": "#52443f",
+      "variants": [
+        {
+          "blockstate": "axis:y",
+          "color": "#473a35"
+        },
+        {
+          "blockstate": "creaking:active",
+          "color": "#965431"
+        },
+        {
+          "blockstate": ["axis:y", "creaking:active"],
+          "color": "#99542d"
+        }
+      ]
     }
   ],
   "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_blocks.json"
