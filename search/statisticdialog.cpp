@@ -36,7 +36,7 @@ StatisticDialog::StatisticDialog(QWidget *parent)
     nameList.insert(blockInfo.getName());
   }
 
-  for (auto name: nameList) {
+  for (auto& name: nameList) {
     stw_blockName->addSuggestion(name);
   }
 
@@ -228,25 +228,23 @@ void StatisticDialog::updateResultImage()
       int min_key   = ui->range->getRangeY().end();
       int max_key   = ui->range->getRangeY().begin();
       int max_count = 0;
-      for (auto key: resultMap.keys()) {
-        const StatisticResultItem &result = resultMap.value(key);
-        resultSum += result;
-        if (result.count > 0) {
-          min_key   = std::min<int>(min_key, key);
-          max_key   = std::max<int>(max_key, key);
+      for (auto it = resultMap.begin(); it != resultMap.end(); it++) {
+        resultSum += it.value();
+        if (it->count > 0) {
+          min_key   = std::min<int>(min_key, it.key());
+          max_key   = std::max<int>(max_key, it.key());
         }
-        max_count = std::max<int>(max_count, result.count);
+        max_count = std::max<int>(max_count, it->count);
       }
 
       // prepare image
       int width  = ui->label_graph->width();
       int height = ui->range->getRangeY().end() - ui->range->getRangeY().begin() + 1;
       QImage image = QPixmap(width, height).toImage();
-      for (auto key: resultMap.keys()) {
-        int y = (height-1) - key + ui->range->getRangeY().begin();
-        const StatisticResultItem &result = resultMap.value(key);
-        float scaleR = float(result.count) / float(max_count);                // searched Blocks
-        float scaleA = float(result.total - result.air) / float(max_count);   // non Air Blocks
+      for (auto it = resultMap.begin(); it != resultMap.end(); it++) {
+        int y = (height-1) - it.key() + ui->range->getRangeY().begin();
+        float scaleR = float(it->count) / float(max_count);                // searched Blocks
+        float scaleA = float(it->total - it->air) / float(max_count);   // non Air Blocks
         float scaleW = 1.0 / float(width);
         for (int x = 0; x < width; x++) {
           QColor color;

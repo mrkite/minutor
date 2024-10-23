@@ -22,14 +22,14 @@ SearchBlockPlugin::SearchBlockPlugin(QWidget* parent)
 
   std::set<QString> nameList;   // std::set<> is sorted, QSet<> not
 
-  for (const auto& id: idList) {
+  for (const auto& id: qAsConst(idList)) {
     auto blockInfo = BlockIdentifier::Instance().getBlockInfo(id);
     if (blockInfo.getName() == "minecraft:air") continue;
     if (blockInfo.getName() == "minecraft:cave_air") continue;
     nameList.insert(blockInfo.getName());
   }
 
-  for (auto name: nameList) {
+  for (auto& name: nameList) {
     stw_blockName->addSuggestion(name);
   }
 }
@@ -57,7 +57,8 @@ bool SearchBlockPlugin::initSearch()
   }
 
   if (stw_blockName->active()) {
-    for (const auto hid: BlockIdentifier::Instance().getKnownIds()) {
+    const QList<quint32> &knownIds = BlockIdentifier::Instance().getKnownIds();
+    for (quint32 hid: knownIds) {
       auto blockInfo = BlockIdentifier::Instance().getBlockInfo(hid);
       if (stw_blockName->matches(blockInfo.getName())) {
         m_searchForIds.insert(hid);

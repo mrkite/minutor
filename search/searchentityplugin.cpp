@@ -17,7 +17,8 @@ SearchEntityPlugin::SearchEntityPlugin()
   layout->addWidget(stw_special  = new SearchTextWidget("special"));
 
   // add suggestions for "entity type"
-  for (const auto& name: EntityIdentifier::Instance().getKnownIds()) {
+  const QList<QString> &knownIds = EntityIdentifier::Instance().getKnownIds();
+  for (const auto& name: knownIds) {
     stw_entity->addSuggestion(name);
   }
 
@@ -27,7 +28,7 @@ SearchEntityPlugin::SearchEntityPlugin()
       << "cartographer" << "cleric" << "farmer" << "fisherman" << "fletcher"
       << "leatherworker" << "librarian" << "mason" << "shepherd"
       << "toolsmith" << "weaponsmith";
-  for (const auto& name: professions) {
+  for (const auto& name: qAsConst(professions)) {
     stw_villager->addSuggestion(name);
   }
 
