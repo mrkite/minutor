@@ -76,7 +76,7 @@ SearchPluginI::ResultListT SearchBlockPlugin::searchChunk(const Chunk &chunk)
     return results;
   }
 
-  for (int y = chunk.getLowest(); y < chunk.getHighest() ; y++) {
+  for (int y = chunk.getLowest(); y <= chunk.getHighest() ; y++) {
     int offset = (y & 0x0f) * (16*16);
     const ChunkSection * const section = chunk.getSectionByY(y);
     if (section) {
