@@ -44,19 +44,20 @@ QWidget &SearchEntityPlugin::getWidget()
   return *this;
 }
 
-SearchPluginI::ResultListT SearchEntityPlugin::searchChunk(const Chunk &chunk)
+SearchPluginI::ResultListT SearchEntityPlugin::searchChunk(const Chunk &chunk, const Range<int> &range)
 {
   SearchPluginI::ResultListT results;
 
   const auto& entityMap = chunk.getEntityMap();
 
   for (const auto& entity: entityMap) {
-    EntityEvaluator evaluator(
-      EntityEvaluatorConfig(results,
-                            entity,
-                            std::bind(&SearchEntityPlugin::evaluateEntity, this, std::placeholders::_1)
-                            )
-      );
+    if (range.isInsideRange(entity->midpoint().y))
+      EntityEvaluator evaluator(
+        EntityEvaluatorConfig(results,
+                              entity,
+                              std::bind(&SearchEntityPlugin::evaluateEntity, this, std::placeholders::_1)
+                              )
+        );
   }
 
   return results;

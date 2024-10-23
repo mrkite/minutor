@@ -53,6 +53,7 @@ HEADERS += \
     search/searchentityplugin.h \
     search/searchplugininterface.h \
     search/searchrangewidget.h \
+    search/searchresultitem.h \
     search/searchresultwidget.h \
     search/searchtextwidget.h \
     search/statisticdialog.h \

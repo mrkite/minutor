@@ -243,7 +243,7 @@ void StatisticDialog::updateResultImage()
       QImage image = QPixmap(width, height).toImage();
       for (auto it = resultMap.begin(); it != resultMap.end(); it++) {
         int y = (height-1) - it.key() + ui->range->getRangeY().begin();
-        float scaleR = float(it->count) / float(max_count);                // searched Blocks
+        float scaleR = float(it->count) / float(max_count);             // searched Blocks
         float scaleA = float(it->total - it->air) / float(max_count);   // non Air Blocks
         float scaleW = 1.0 / float(width);
         for (int x = 0; x < width; x++) {

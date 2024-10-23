@@ -1,5 +1,5 @@
 #include "search/searchblockplugin.h"
-#include "search/searchresultwidget.h"
+#include "search/searchresultitem.h"
 
 #include "chunk.h"
 #include "identifier/blockidentifier.h"
@@ -29,7 +29,7 @@ SearchBlockPlugin::SearchBlockPlugin(QWidget* parent)
     nameList.insert(blockInfo.getName());
   }
 
-  for (auto& name: nameList) {
+  for (const auto& name: nameList) {
     stw_blockName->addSuggestion(name);
   }
 }
@@ -69,7 +69,7 @@ bool SearchBlockPlugin::initSearch()
   return (m_searchForIds.size() > 0);
 }
 
-SearchPluginI::ResultListT SearchBlockPlugin::searchChunk(const Chunk &chunk)
+SearchPluginI::ResultListT SearchBlockPlugin::searchChunk(const Chunk &chunk, const Range<int> &range)
 {
   SearchPluginI::ResultListT results;
 
@@ -77,7 +77,11 @@ SearchPluginI::ResultListT SearchBlockPlugin::searchChunk(const Chunk &chunk)
     return results;
   }
 
-  for (int y = chunk.getLowest(); y <= chunk.getHighest() ; y++) {
+  // determine tight search range
+  int range_start = std::max<int>(chunk.getLowest(), range.begin());
+  int range_stop  = std::min<int>(chunk.getHighest(), range.end());
+
+  for (int y = range_start; y <= range_stop; y++) {
     int offset = (y & 0x0f) * (16*16);
     const ChunkSection * const section = chunk.getSectionByY(y);
     if (section) {

@@ -2,9 +2,9 @@
 #define SEARCHRESULTWIDGET_H
 
 #include "overlay/properties.h"
+#include "search/searchresultitem.h"
 
 #include <QWidget>
-#include <QVariant>
 #include <QVector3D>
 #include <QSharedPointer>
 
@@ -14,16 +14,6 @@ class OverlayItem;
 namespace Ui {
 class SearchResultWidget;
 }
-
-class SearchResultItem
-{
- public:
-  QString   name;
-  QVector3D pos;
-  QString   offers;
-  QVariant  properties;
-  QSharedPointer<OverlayItem> entity;
-};
 
 class SearchResultWidget : public QWidget
 {
