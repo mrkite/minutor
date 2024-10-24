@@ -1,12 +1,14 @@
 #ifndef SEARCHPLUGININTERFACE_H
 #define SEARCHPLUGININTERFACE_H
 
+#include "search/range.h"
+#include "search/searchresultitem.h"
+#include "chunk.h"
+
 #include <vector>
 
-class Chunk;
 
 class QWidget;
-class SearchResultItem;
 
 class SearchPluginI
 {
@@ -18,7 +20,12 @@ class SearchPluginI
 
   virtual bool initSearch() { return true; }
 
-  virtual ResultListT searchChunk(const Chunk &chunk) = 0;
+  virtual ResultListT searchChunk(const Chunk &chunk, const Range<int> &range) = 0;
+  ResultListT searchChunk(const Chunk &chunk)
+  {
+    Range<int> search_range(chunk.getLowest(), chunk.getHighest());
+    return searchChunk(chunk, search_range);
+  }
 
   virtual ~SearchPluginI() {}
 };

@@ -20,7 +20,7 @@ class SearchBlockPlugin : public QWidget, public SearchPluginI
   QWidget &getWidget() override;
 
   bool    initSearch() override;
-  SearchPluginI::ResultListT searchChunk(const Chunk &chunk) override;
+  SearchPluginI::ResultListT searchChunk(const Chunk &chunk, const Range<int> &range) override;
 
  private:
   QLayout* layout;

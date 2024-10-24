@@ -148,14 +148,6 @@ QSharedPointer<SearchPluginI::ResultListT> SearchChunksDialog::AsyncSearch::proc
     return QSharedPointer<SearchPluginI::ResultListT>();
   }
 
-  auto results_tmp = strong->searchChunk(*chunk);
-  auto results = QSharedPointer<SearchPluginI::ResultListT>::create();
-
-  for (const auto& result: results_tmp) {
-    if (range_y.isInsideRange(result.pos.y())) {
-      results->push_back(result);
-    }
-  }
-
-  return results;
+  auto results = strong->searchChunk(*chunk, range_y);
+  return QSharedPointer<SearchPluginI::ResultListT>::create(results);
 }
