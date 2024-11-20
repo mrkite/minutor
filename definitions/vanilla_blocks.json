@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.21.24w40a",
+  "version": "1.21.24w44a",
   "data": [
     {
       "name": "minecraft:air",
@@ -3065,6 +3065,16 @@
     {
       "name": "minecraft:potted_pale_oak_sapling",
       "color": "#6e6a64",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:potted_closed_eyeblossom",
+      "color": "#6c6265",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:potted_open_eyeblossom",
+      "color": "#857d80",
       "transparent": true
     },
     {
@@ -7030,6 +7040,68 @@
           "color": "#99542d"
         }
       ]
+    },
+    {
+      "name": "minecraft:resin_clump",
+      "color": "#df701b"
+    },
+    {
+      "name": "minecraft:resin_block",
+      "color": "#d96319"
+    },
+    {
+      "name": "minecraft:resin_brick_slab",
+      "color": "#d85d19",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:resin_brick_stairs",
+      "color": "#c35416",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:resin_brick_wall",
+      "color": "#ce5918",
+      "alpha": 0.7,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:resin_bricks",
+      "color": "#ce5918"
+    },
+    {
+      "name": "minecraft:chiseled_resin_bricks",
+      "color": "#c95419"
+    },
+    {
+      "name": "minecraft:closed_eyeblossom",
+      "color": "#6c6265",
+      "alpha": 0.7,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
+      "name": "minecraft:open_eyeblossom",
+      "color": "#857d80",
+      "alpha": 0.7,
+      "transparent": true,
+      "spawninside": true
     }
   ],
   "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_blocks.json"
