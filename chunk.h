@@ -97,12 +97,12 @@ class Chunk : public QObject {
   short  depth[16 * 16];      // cached depth map to create shadow
   EntityMap entities;
 
-  /** Specifies whether the chunk is locked by the ChunkLock resourcepack. */
-  bool isChunkLocked;
+  // ChunkLocked feature:
+  bool    isChunkLocked;      // flag specifies whether the chunk is locked by the ChunkLock resourcepack
+  QString chunkLockItemName;  // the name of the item needed for unlocking the chunk
 
-  /** The name of the item needed for unlocking the chunk.
-  Only valid if isChunkLocked is true. */
-  QString chunkLockItemName;
+  // HID used for minecraft:air
+  static const unsigned int air_hid;
 
   friend class MapView;
   friend class ChunkRenderer;

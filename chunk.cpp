@@ -50,6 +50,9 @@ Chunk::~Chunk() {
   }
 }
 
+const unsigned int Chunk::air_hid = qHash(QString("minecraft:air"));
+
+
 void Chunk::findHighestBlock()
 {
   // loop over all Sections in reverse order
@@ -59,7 +62,10 @@ void Chunk::findHighestBlock()
     it.previous();
     if (it.value()) {
       for (int j = 4095; j >= 0; j--) {
-        if (it.value()->blocks[j]) {
+        const ChunkSection* cs = it.value();
+        auto blockid = cs->blocks[j];
+        auto hid     = cs->blockPalette[blockid].hid;
+        if (hid != air_hid) {
           // found first non-air Block
           highest = it.key() * 16 + (j >> 8);
           return;
@@ -494,8 +500,11 @@ bool Chunk::loadSection1519(ChunkSection *cs, const Tag *section) {
     loadSection_loadBlockStates(cs, section->at("BlockStates"));
     sectionContainsData = true;
   } else {
-    // set everything to 0 (minecraft:air)
+    // data tag is missing -> invent empty data
     memset(cs->blocks, 0, sizeof(cs->blocks));
+    if ((cs->blockPaletteLength > 0) && (cs->blockPalette[0].name != "minecraft:air" )) {
+      sectionContainsData = true;
+    }
   }
 
   // copy Light data
@@ -527,16 +536,18 @@ bool Chunk::loadSection2844(ChunkSection * cs, const Tag * section) {
     loadSection_loadBlockStates(cs, section->at("block_states")->at("data"));
     sectionContainsData = true;
   } else {
-    // set everything to 0 (minecraft:air)
+    // data tag is missing -> invent empty data
     memset(cs->blocks, 0, sizeof(cs->blocks));
+    if ((cs->blockPaletteLength > 0) && (cs->blockPalette[0].name != "minecraft:air" )) {
+      sectionContainsData = true;
+    }
   }
 
   // decode Biomes-Palette to be able to map Biome
   if (section->has("biomes") && section->at("biomes")->has("palette")) {
     loadSection_decodeBiomePalette(cs, section->at("biomes"));
-    sectionContainsData = true;
   } else {
-    // never observed in real live
+    // observed for unused Y == 20 section
     // probably we should create some default Biome in this case
     sectionContainsData = false;
   }
@@ -605,7 +616,8 @@ void Chunk::loadSection_createDummyPalette(ChunkSection *cs) {
   // create a dummy palette
   cs->blockPalette = new PaletteEntry[1];
   cs->blockPalette[0].name = "minecraft:air";
-  cs->blockPalette[0].hid  = 0;
+  cs->blockPalette[0].hid  = air_hid;
+  cs->blockPaletteLength = 1;
 }
 
 
