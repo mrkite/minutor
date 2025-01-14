@@ -17,12 +17,12 @@ jobs:
       matrix:
         name: [macos-5.9, macos-5.12, macos-5.15]
         include:
-          - name: macos-5.9
-            os: macos-12
-            qt: '5.9.9'
-          - name: macos-5.12
-            os: macos-12
-            qt: '5.12.12'
+#         - name: macos-5.9
+#           os: macos-12
+#           qt: '5.9.9'
+#         - name: macos-5.12
+#           os: macos-12
+#           qt: '5.12.12'
           - name: macos-5.15
             os: macos-latest
             qt: '5.15.2'
