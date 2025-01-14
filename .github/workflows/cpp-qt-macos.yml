@@ -15,7 +15,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        name: [macos-5.9, macos-5.12, macos-5.15]
+        name: [macos-5.15]
+#       name: [macos-5.9, macos-5.12, macos-5.15]
         include:
 #         - name: macos-5.9
 #           os: macos-12
