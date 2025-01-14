@@ -15,6 +15,7 @@
 class ChunkSection {
  public:
   ChunkSection();
+  ~ChunkSection();
 
   const PaletteEntry & getPaletteEntry(int x, int y, int z) const;
   const PaletteEntry & getPaletteEntry(int offset, int y) const;

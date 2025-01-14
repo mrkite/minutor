@@ -34,20 +34,11 @@ Chunk::Chunk()
 {}
 
 Chunk::~Chunk() {
-  if (loaded) {
-    loaded = false;
-    for (auto sec : this->sections)
-      if (sec) {
-        if (!(sec->blockPaletteIsShared) && (sec->blockPaletteLength > 0)) {
-          delete[] sec->blockPalette;
-        }
-        sec->blockPaletteLength = 0;
-        sec->blockPalette = NULL;
-
-        delete sec;
-      }
-    this->sections.clear();
-  }
+  loaded = false;
+  for (auto sec : this->sections)
+    if (sec)
+      delete sec;
+  this->sections.clear();
 }
 
 const unsigned int Chunk::air_hid = qHash(QString("minecraft:air"));
@@ -725,6 +716,14 @@ ChunkSection::ChunkSection()
   , blockPaletteLength(0)
   , blockPaletteIsShared(false)  // only the "old" converted format is using one shared palette
 {}
+
+ChunkSection::~ChunkSection() {
+  if (!(blockPaletteIsShared) && (blockPaletteLength > 0)) {
+    delete[] blockPalette;
+  }
+  blockPaletteLength = 0;
+  blockPalette = NULL;
+}
 
 const PaletteEntry & ChunkSection::getPaletteEntry(int x, int y, int z) const {
   int xoffset = (x & 0x0f);
