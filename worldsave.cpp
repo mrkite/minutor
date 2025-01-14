@@ -116,8 +116,6 @@ void WorldSave::run() {
       } else {
         blankChunk(scanlines, width * 4 + 1, cx - left);
       }
-      // cleanup memory resources
-      chunk.reset();
     }
     // write out scanlines to disk
     strm.avail_in = insize;
