@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.21.24w44a",
+  "version": "1.21.25w02a",
   "data": [
     {
       "name": "minecraft:air",
@@ -7102,6 +7102,48 @@
       "alpha": 0.7,
       "transparent": true,
       "spawninside": true
+    },
+    {
+      "name": "minecraft:leaf_litter",
+      "color": "#a36d46",
+      "alpha": 0.5,
+      "transparent": true,
+      "spawninside": true,
+      "variants": [
+        {
+          "blockstate": "segment_amount:2",
+          "alpha": 0.6
+        },
+        {
+          "blockstate": "segment_amount:3",
+          "alpha": 0.7
+        },
+        {
+          "blockstate": "segment_amount:4",
+          "alpha": 0.8
+        }
+      ]
+    },
+    {
+      "name": "minecraft:wildflowers",
+      "color": "#edd675",
+      "alpha": 0.5,
+      "transparent": true,
+      "spawninside": true,
+      "variants": [
+        {
+          "blockstate": "flower_amount:2",
+          "alpha": 0.6
+        },
+        {
+          "blockstate": "flower_amount:3",
+          "alpha": 0.7
+        },
+        {
+          "blockstate": "flower_amount:4",
+          "alpha": 0.8
+        }
+      ]
     }
   ],
   "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_blocks.json"
