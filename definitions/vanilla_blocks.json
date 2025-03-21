@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.21.25w02a",
+  "version": "1.21.25w03a",
   "data": [
     {
       "name": "minecraft:air",
@@ -7144,6 +7144,28 @@
           "alpha": 0.8
         }
       ]
+    },
+    {
+      "name": "minecraft:test_block",
+      "color": "#bf9e78",
+      "variants": [
+        {
+          "blockstate": "test_block_mode:log",
+          "color": "#8fb0d6"
+        },
+        {
+          "blockstate": "test_block_mode:fail",
+          "color": "#7d71ab"
+        },
+        {
+          "blockstate": "test_block_mode:accept",
+          "color": "#84bf75"
+        }
+      ]
+    },
+    {
+      "name": "minecraft:test_instance_block",
+      "color": "#7f7977"
     }
   ],
   "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_blocks.json"
