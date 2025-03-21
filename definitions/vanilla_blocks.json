@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.21.25w03a",
+  "version": "1.21.25w05a",
   "data": [
     {
       "name": "minecraft:air",
@@ -7166,6 +7166,21 @@
     {
       "name": "minecraft:test_instance_block",
       "color": "#7f7977"
+    },
+    {
+      "name": "minecraft:bush",
+      "color": "#787978",
+      "biomeGrass": true,
+      "alpha": 0.7,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
+      "name": "minecraft:firefly_bush",
+      "color": "#58532b",
+      "alpha": 0.7,
+      "transparent": true,
+      "spawninside": true
     }
   ],
   "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_blocks.json"
