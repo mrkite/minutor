@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.21.25w05a",
+  "version": "1.21.25w06a",
   "data": [
     {
       "name": "minecraft:air",
@@ -7178,6 +7178,26 @@
     {
       "name": "minecraft:firefly_bush",
       "color": "#58532b",
+      "alpha": 0.7,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
+      "name": "minecraft:cactus_flower",
+      "color": "#d27987",
+      "alpha": 0.7,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:short_dry_grass",
+      "color": "#bb9f6c",
+      "alpha": 0.7,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
+      "name": "minecraft:tall_dry_grass",
+      "color": "#c5ac7b",
       "alpha": 0.7,
       "transparent": true,
       "spawninside": true
