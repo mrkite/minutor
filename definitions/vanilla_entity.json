@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "entity",
-  "version": "1.21.24w40a",
+  "version": "1.21.25w15a",
   "data": [
     {
       "category": "Hostile",
@@ -293,13 +293,13 @@
           "note": "old naming scheme until 1.10",
           "id": "SnowMan",
           "name": "Snow Golem",
-          "color": "#ffffff"
+          "color": "#f0f0ff"
         },
         {
           "id": "snow_man",
           "idlist": ["snow_man", "snow_golem"],
           "name": "Snow Golem",
-          "color": "#ffffff"
+          "color": "#f0f0ff"
         },
         {
           "id": "Squid",
@@ -412,6 +412,10 @@
         {
           "id": "armadillo",
           "color": "#c68884"
+        },
+        {
+          "id": "happy_ghast",
+          "color": "#ffffff"
         }
       ]
     },
