@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.21.25w06a",
+  "version": "1.21.25w15a",
   "data": [
     {
       "name": "minecraft:air",
@@ -7201,6 +7201,26 @@
       "alpha": 0.7,
       "transparent": true,
       "spawninside": true
+    },
+    {
+      "name": "minecraft:dried_ghast",
+      "color": "#9f9191",
+      "alpha": 0.9,
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "hydration:1",
+          "color": "#b3a8a8"
+        },
+        {
+          "blockstate": "hydration:2",
+          "color": "#c7c0c0"
+        },
+        {
+          "blockstate": "hydration:3",
+          "color": "#f1f0f0"
+        }
+      ]
     }
   ],
   "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_blocks.json"
