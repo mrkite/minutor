@@ -18,9 +18,9 @@ jobs:
         name: [windows-5.9, windows-5.12, windows-5.15]
         include:
           - name: windows-5.9
-            os: windows-2019
+            os: windows-2022
             qt: '5.9.9'
-            msvc_toolset: '14.16'
+            msvc_toolset: '14.29'
           - name: windows-5.12
             os: windows-2022
             qt: '5.12.12'
