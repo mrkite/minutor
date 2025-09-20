@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "entity",
-  "version": "1.21.25w15a",
+  "version": "1.21.25w31a",
   "data": [
     {
       "category": "Hostile",
@@ -416,6 +416,10 @@
         {
           "id": "happy_ghast",
           "color": "#ffffff"
+        },
+        {
+          "id": "copper_golem",
+          "color": "#c06c50"
         }
       ]
     },
