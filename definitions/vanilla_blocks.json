@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.21.25w15a",
+  "version": "1.21.25w31a",
   "data": [
     {
       "name": "minecraft:air",
@@ -1646,6 +1646,90 @@
       "color": "#b29159"
     },
     {
+      "name": "minecraft:acacia_shelf",
+      "color": "#9c5636",
+      "alpha": 0.5,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
+      "name": "minecraft:bamboo_shelf",
+      "color": "#b6a44c",
+      "alpha": 0.5,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
+      "name": "minecraft:birch_shelf",
+      "color": "#af9c6a",
+      "alpha": 0.5,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
+      "name": "minecraft:cherry_shelf",
+      "color": "#cb8281",
+      "alpha": 0.5,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
+      "name": "minecraft:crimson_shelf",
+      "color": "#813453",
+      "alpha": 0.5,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
+      "name": "minecraft:dark_oak_shelf",
+      "color": "#423321",
+      "alpha": 0.5,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
+      "name": "minecraft:jungle_shelf",
+      "color": "#9c7a4a",
+      "alpha": 0.5,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
+      "name": "minecraft:mangrove_shelf",
+      "color": "#6d2d2a",
+      "alpha": 0.5,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
+      "name": "minecraft:oak_shelf",
+      "color": "#917343",
+      "alpha": 0.5,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
+      "name": "minecraft:pale_oak_shelf",
+      "color": "#e4d9d8",
+      "alpha": 0.5,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
+      "name": "minecraft:spruce_shelf",
+      "color": "#685330",
+      "alpha": 0.5,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
+      "name": "minecraft:warped_shelf",
+      "color": "#338d86",
+      "alpha": 0.5,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
       "name": "minecraft:mossy_cobblestone",
       "color": "#687968"
     },
@@ -1720,6 +1804,57 @@
     {
       "name": "minecraft:chest",
       "color": "#976b20",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:trapped_chest",
+      "color": "#ab792d",
+      "transparent": true,
+      "canprovidepower": true
+    },
+    {
+      "name": "minecraft:ender_chest",
+      "color": "#2d4042",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:copper_chest",
+      "color": "#bd694d",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:exposed_copper_chest",
+      "color": "#9d7764",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:oxidized_copper_chest",
+      "color": "#50a084",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:weathered_copper_chest",
+      "color": "#689569",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:waxed_copper_chest",
+      "color": "#bd694d",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:waxed_exposed_copper_chest",
+      "color": "#9d7764",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:waxed_oxidized_copper_chest",
+      "color": "#50a084",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:waxed_weathered_copper_chest",
+      "color": "#689569",
       "transparent": true
     },
     {
@@ -2826,11 +2961,6 @@
       "color": "#17dd62"
     },
     {
-      "name": "minecraft:ender_chest",
-      "color": "#2d4042",
-      "transparent": true
-    },
-    {
       "name": "minecraft:tripwire_hook",
       "color": "#8b8172",
       "transparent": true,
@@ -3268,12 +3398,6 @@
       "name": "minecraft:damaged_anvil",
       "color": "#403d3d",
       "transparent": true
-    },
-    {
-      "name": "minecraft:trapped_chest",
-      "color": "#ab792d",
-      "transparent": true,
-      "canprovidepower": true
     },
     {
       "name": "minecraft:light_weighted_pressure_plate",
@@ -6276,8 +6400,90 @@
       "color": "#9e7564"
     },
     {
+      "name": "minecraft:copper_golem_statue",
+      "color": "#ab5c43",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:exposed_copper_golem_statue",
+      "color": "#917160",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:oxidized_copper_golem_statue",
+      "color": "#4d9378",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:weathered_copper_golem_statue",
+      "color": "#618566",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:waxed_copper_golem_statue",
+      "color": "#ab5c43",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:waxed_exposed_copper_golem_statue",
+      "color": "#917160",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:waxed_oxidized_copper_golem_statue",
+      "color": "#4d9378",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:waxed_weathered_copper_golem_statue",
+      "color": "#618566",
+      "transparent": true
+    },
+    {
       "name": "minecraft:lightning_rod",
       "color": "#c56f53",
+      "alpha": 0.3,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:exposed_lightning_rod",
+      "color": "#9f7868",
+      "alpha": 0.3,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:oxidized_lightning_rod",
+      "color": "#4f9a80",
+      "alpha": 0.3,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:weathered_lightning_rod",
+      "color": "#618e69",
+      "alpha": 0.3,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:waxed_lightning_rod",
+      "color": "#c56f53",
+      "alpha": 0.3,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:waxed_exposed_lightning_rod",
+      "color": "#9f7868",
+      "alpha": 0.3,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:waxed_oxidized_lightning_rod",
+      "color": "#4f9a80",
+      "alpha": 0.3,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:waxed_weathered_lightning_rod",
+      "color": "#618e69",
       "alpha": 0.3,
       "transparent": true
     },
