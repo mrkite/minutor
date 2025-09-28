@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.21.25w31a",
+  "version": "1.21.25w32a",
   "data": [
     {
       "name": "minecraft:air",
@@ -1780,6 +1780,24 @@
       "transparent": true
     },
     {
+      "name": "minecraft:copper_torch",
+      "color": "#a6cfa7",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:copper_wall_torch",
+      "color": "#a6cfa7",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:soul_torch",
+      "color": "#97e5e9"
+    },
+    {
+      "name": "minecraft:soul_wall_torch",
+      "color": "#97e5e9"
+    },
+    {
       "name": "minecraft:fire",
       "color": "#ff8f00",
       "transparent": true
@@ -2393,9 +2411,63 @@
     },
     {
       "name": "minecraft:lantern",
-      "color": "#6a5b54",
+      "color": "#f09149",
       "transparent": true,
-      "alpha": 0.75
+      "alpha": 0.8
+    },
+    {
+      "name": "minecraft:copper_lantern",
+      "color": "#8ad78b",
+      "transparent": true,
+      "alpha": 0.8
+    },
+    {
+      "name": "minecraft:exposed_copper_lantern",
+      "color": "#8ad78b",
+      "transparent": true,
+      "alpha": 0.8
+    },
+    {
+      "name": "minecraft:oxidized_copper_lantern",
+      "color": "#8ad78b",
+      "transparent": true,
+      "alpha": 0.8
+    },
+    {
+      "name": "minecraft:weathered_copper_lantern",
+      "color": "#8ad78b",
+      "transparent": true,
+      "alpha": 0.8
+    },
+    {
+      "name": "minecraft:waxed_copper_lantern",
+      "color": "#8ad78b",
+      "transparent": true,
+      "alpha": 0.8
+    },
+    {
+      "name": "minecraft:waxed_exposed_copper_lantern",
+      "color": "#8ad78b",
+      "transparent": true,
+      "alpha": 0.8
+    },
+    {
+      "name": "minecraft:waxed_oxidized_copper_lantern",
+      "color": "#8ad78b",
+      "transparent": true,
+      "alpha": 0.8
+    },
+    {
+      "name": "minecraft:waxed_weathered_copper_lantern",
+      "color": "#8ad78b",
+      "transparent": true,
+      "alpha": 0.8
+    },
+    {
+      "name": "minecraft:soul_lantern",
+      "color": "#6dedf1",
+      "transparent": true,
+      "alpha": 0.8
     },
     {
       "name": "minecraft:cake",
@@ -2766,6 +2838,55 @@
     {
       "name": "minecraft:iron_bars",
       "color": "#6e6c6a",
+      "alpha": 0.5,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:copper_bars",
+      "color": "#9c5137",
+      "alpha": 0.5,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:exposed_copper_bars",
+      "color": "#a17e68",
+      "alpha": 0.5,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:oxidized_copper_bars",
+      "color": "#407b65",
+      "alpha": 0.5,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:weathered_copper_bars",
+      "color": "#557b5e",
+      "alpha": 0.5,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:waxed_copper_bars",
+      "color": "#9c5137",
+      "alpha": 0.5,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:waxed_exposed_copper_bars",
+      "color": "#a17e68",
+      "alpha": 0.5,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:waxed_oxidized_copper_bars",
+      "color": "#407b65",
+      "alpha": 0.5,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:waxed_weathered_copper_bars",
+      "color": "#557b5e",
+      "alpha": 0.5,
       "transparent": true
     },
     {
@@ -5406,18 +5527,6 @@
       "color": "#6d735a"
     },
     {
-      "name": "minecraft:soul_lantern",
-      "color": "#486373"
-    },
-    {
-      "name": "minecraft:soul_torch",
-      "color": "#6d735a"
-    },
-    {
-      "name": "minecraft:soul_wall_torch",
-      "color": "#6d735a"
-    },
-    {
       "name": "minecraft:soul_soil",
       "color": "#4c3a2f"
     },
@@ -5620,8 +5729,64 @@
       "color": "#2a242a"
     },
     {
+      "comment": "old name before 1.21.9",
       "name": "minecraft:chain",
       "color": "#333a4a",
+      "alpha": 0.5,
+      "transparent": true
+    },
+    {
+      "comment": "renamed with 1.21.9",
+      "name": "minecraft:iron_chain",
+      "color": "#333a4a",
+      "alpha": 0.5,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:copper_chain",
+      "color": "#984f37",
+      "alpha": 0.5,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:exposed_copper_chain",
+      "color": "#7e6654",
+      "alpha": 0.5,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:oxidized_copper_chain",
+      "color": "#3e7663",
+      "alpha": 0.5,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:weathered_copper_chain",
+      "color": "#496d5c",
+      "alpha": 0.5,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:waxed_copper_chain",
+      "color": "#984f37",
+      "alpha": 0.5,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:waxed_exposed_copper_chain",
+      "color": "#7e6654",
+      "alpha": 0.5,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:waxed_oxidized_copper_chain",
+      "color": "#3e7663",
+      "alpha": 0.5,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:waxed_weathered_copper_chain",
+      "color": "#496d5c",
       "alpha": 0.5,
       "transparent": true
     },
