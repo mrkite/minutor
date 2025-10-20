@@ -30,6 +30,7 @@ Chunk::Chunk()
   , loaded(false)
   , rendering(false)
   , inhabitedTime(0)
+  , lowestSection(0)
   , isChunkLocked(false)
 {}
 
@@ -47,18 +48,15 @@ const unsigned int Chunk::air_hid = qHash(QString("minecraft:air"));
 void Chunk::findHighestBlock()
 {
   // loop over all Sections in reverse order
-  QMapIterator<qint8, ChunkSection*> it(this->sections);
-  it.toBack();
-  while (it.hasPrevious()) {
-    it.previous();
-    if (it.value()) {
+  for (int i = this->sections.size() - 1; i >= 0; --i) {
+    auto cs = this->sections.at(i);
+    if (cs) {
       for (int j = 4095; j >= 0; j--) {
-        const ChunkSection* cs = it.value();
         auto blockid = cs->blocks[j];
         auto hid     = cs->blockPalette[blockid].hid;
         if (hid != air_hid) {
-          // found first non-air Block
-          highest = it.key() * 16 + (j >> 8);
+          // Found the first non-air Block
+          highest = i * 16 + (j >> 8);
           return;
         }
       }
@@ -80,11 +78,25 @@ const ChunkSection *Chunk::getSectionByY(int y) const {
 
 //inline
 const ChunkSection *Chunk::getSectionByIdx(qint8 y) const {
-  auto iter = sections.find(y);
-  if (iter != sections.end())
-    return iter.value();
+  if (y < lowestSection || y - lowestSection >= sections.size())
+    return nullptr;
+  return sections[y - lowestSection];
+}
 
-  return nullptr;
+void Chunk::setSectionByIdx(qint8 y, ChunkSection *cs) {
+  if (y < lowestSection) {
+    while (sections.size() && lowestSection != y) {
+      // sections generally come in bottom-to-top order so this shouldn't happen,
+      // but we might need to insert spacers between them if we get section -1 after section 2
+      sections.push_front(nullptr);
+      lowestSection--;
+    }
+    lowestSection = y;
+  }
+  while (y - lowestSection >= this->sections.size()) { // reserve size
+    sections.push_back(nullptr);
+  }
+  sections[y - lowestSection] = cs;
 }
 
 uint Chunk::getBlockHID(int x, int y, int z) const {
@@ -108,9 +120,9 @@ int Chunk::getBiomeID(int x, int y, int z) const {
     int z_idx = z          >> 2;
     offset = x_idx + 4*z_idx + 16*y_idx;
     int s_idx = (y >> 4);
-    auto s_iter = this->sections.find(s_idx);
-    if (s_iter != this->sections.end() && s_iter.value())
-      return s_iter.value()->getBiome(offset);
+    auto section = getSectionByIdx(s_idx);
+    if (section)
+      return section->getBiome(offset);
     else {
       #if defined(DEBUG) || defined(_DEBUG) || defined(QT_DEBUG)
       qWarning() << "Section not found for Biome lookup!";
@@ -225,8 +237,7 @@ void Chunk::loadLevelTag(const Tag * level) {
       }
 
       if (sectionContainsData) {
-        // only if section contains usefull data, otherwise: delete cs
-        this->sections[idx] = cs;
+        this->setSectionByIdx(idx, cs);
         this->lowest = std::min(this->lowest, idx*16);
       } else {  // otherwise: delete cs
         delete cs;
@@ -305,7 +316,7 @@ void Chunk::loadCliffsCaves(const NBT &nbt) {
       ChunkSection *cs = new ChunkSection();
       if (loadSection2844(cs, section)) {
         // only if section contains usefull data, otherwise: delete cs
-        this->sections[idx] = cs;
+        this->setSectionByIdx(idx, cs);
         this->lowest = std::min(this->lowest, idx*16);
       } else {  // otherwise: delete cs
         delete cs;

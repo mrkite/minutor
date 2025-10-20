@@ -92,7 +92,8 @@ class Chunk : public QObject {
   bool rendering;
   long long inhabitedTime;
 
-  QMap<qint8, ChunkSection*> sections;
+  QVector<ChunkSection*> sections;
+  int lowestSection; // this allows a "bias" for the sections vector since we want negative indices
   qint32 biomes[16 * 16 * 4]; // before "The Flattining" it was 1*16*16*Bytes, then it got 16*4*4*4*Int before it moved into Sections
   uchar  image[16 * 16 * 4];  // cached render: RGBA for 16*16 Blocks
   short  depth[16 * 16];      // cached depth map to create shadow
@@ -111,6 +112,7 @@ class Chunk : public QObject {
 
  private:
   void findHighestBlock();
+  void setSectionByIdx(qint8 y, ChunkSection *cs);
   void loadLevelTag(const Tag * levelTag);  // nested structure with Level tag (up to 1.17)
   void loadCliffsCaves(const NBT &nbt);     // flat structure without Level tag (1.18+)
   void loadSection_decodeBlockPalette(ChunkSection * cs, const Tag * paletteTag);
