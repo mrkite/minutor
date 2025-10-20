@@ -92,8 +92,21 @@ bool WorldInfo::parseWorldInfo()
   }
 
   // Spawn
-  spawnX = data->at("SpawnX")->toInt();
-  spawnZ = data->at("SpawnZ")->toInt();
+  // default
+  spawnX = 0;
+  spawnZ = 0;
+  // for old worlds spawn is 2 separated tags
+  if (data->has("SpawnX")) { spawnX = data->at("SpawnX")->toInt(); }
+  if (data->has("SpawnZ")) { spawnZ = data->at("SpawnZ")->toInt(); }
+  // starting with 1.21.9 we have sub tag "spawn"
+  if (data->has("spawn")) {
+    auto spawn = data->at("spawn");
+    if (spawn->has("pos")) {
+      auto pos = spawn->at("pos")->toIntArray();
+      spawnX = pos[0];
+      spawnZ = pos[2];
+    }
+  }
 
   // Seed
   if (data->has("RandomSeed")) {
