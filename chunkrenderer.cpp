@@ -18,6 +18,13 @@ ChunkRenderer::ChunkRenderer(int cx, int cz, int y, int flags)
   , cache(ChunkCache::Instance())
 {}
 
+const std::vector<double> precomputed_light_factors = [] {
+    std::vector<double> table(16);
+    for (int i = 0; i < 16; i++) {
+        table[i] = pow(0.90, 15 - i);
+    }
+    return table;
+}();
 
 void ChunkRenderer::run() {
   // get existing Chunk entry from Cache
@@ -129,7 +136,7 @@ void ChunkRenderer::renderChunk(QSharedPointer<Chunk> chunk) {
         }
 
         // shade color based on light value
-        double light_factor = pow(0.90,15-light);
+        double light_factor = precomputed_light_factors[light];
         quint32 colr = std::clamp( int(light_factor*blockcolor.red()),   0, 255 );
         quint32 colg = std::clamp( int(light_factor*blockcolor.green()), 0, 255 );
         quint32 colb = std::clamp( int(light_factor*blockcolor.blue()),  0, 255 );
