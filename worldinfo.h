@@ -36,12 +36,13 @@ class WorldInfo : public QObject
   bool parseWorldFolder(const QDir &path);
   bool parseWorldInfo();
 
-  QString             getLevelName() const   { return levelName; };
-  unsigned int        getDataVersion() const { return dataVersion; };
-  unsigned long long  getDayTime() const     { return dayTime; };
-  int                 getSpawnX() const      { return spawnX; };
-  int                 getSpawnZ() const      { return spawnZ; };
-  signed long long    getSeed() const        { return seed; };
+  QString             getLevelName() const      { return levelName; };
+  unsigned int        getDataVersion() const    { return dataVersion; };
+  unsigned long long  getDayTime() const        { return dayTime; };
+  int                 getSpawnX() const         { return spawnX; };
+  int                 getSpawnZ() const         { return spawnZ; };
+  const QString &     getSpawnDimension() const { return spawnDimension; };
+  signed long long    getSeed() const           { return seed; };
 
   bool                isDatapackEnabled(const QString name) const;
 
@@ -75,6 +76,7 @@ class WorldInfo : public QObject
   unsigned long long    dayTime;
   int                   spawnX;
   int                   spawnZ;
+  QString               spawnDimension;
   long long             seed;
 
   QList<DimensionInfo>  dimensions;
