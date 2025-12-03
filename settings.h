@@ -35,6 +35,7 @@ class Settings : public QDialog {
   void toggleVerticalDepth(bool on);
   void toggleModifier4DepthSlider();
   void toggleModifier4ZoomOut();
+  void toggleZoomFollowsCursor(bool on);
 
  private:
   Ui::Settings m_ui;

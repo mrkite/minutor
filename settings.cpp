@@ -58,6 +58,9 @@ Settings::Settings(QWidget *parent) : QDialog(parent) {
   connect(m_ui.radioButton_zoom_alt,   &QRadioButton::toggled,
           this,                        &Settings::toggleModifier4ZoomOut);
 
+  connect(m_ui.checkBox_ZoomFollowsCursor, SIGNAL(toggled(bool)),
+          this, SLOT(toggleZoomFollowsCursor(bool)));
+
   // Load the settings:
   QSettings info;
   auto useDefault = info.value("usedefault", true).toBool();
@@ -79,6 +82,7 @@ Settings::Settings(QWidget *parent) : QDialog(parent) {
   m_ui.checkBox_DefaultLocation->setChecked(useDefault);
   m_ui.checkBox_VerticalDepth->setChecked(verticalDepth);
   m_ui.checkBox_AutoUpdate->setChecked(autoUpdate);
+  m_ui.checkBox_ZoomFollowsCursor->setChecked(zoomFollowsCursor);
   switch (modifier4DepthSlider) {
   case Qt::ControlModifier:
     m_ui.radioButton_depth_ctrl->setChecked(true);
@@ -209,4 +213,10 @@ void Settings::toggleModifier4ZoomOut() {
   }
   QSettings info;
   info.setValue("modifier4ZoomOut", modifier4ZoomOut);
+}
+
+void Settings::toggleZoomFollowsCursor(bool value) {
+  zoomFollowsCursor = value;
+  QSettings info;
+  info.setValue("zoomFollowsCursor", value);
 }
