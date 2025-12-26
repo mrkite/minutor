@@ -878,7 +878,7 @@ void Minutor::loadWorld(QDir path) {
         playerActions.append(p);
 
         // spawn location (bed)
-        if (player.has("SpawnX")) {
+        if (player.has("SpawnX") && player.has("SpawnZ")) {
           dimension = "minecraft:overworld";
           if (player.has("SpawnDimension"))
             dimension = player.at("SpawnDimension")->toString();
@@ -892,6 +892,24 @@ void Minutor::loadWorld(QDir path) {
           connect(p, SIGNAL(triggered()),
                   this, SLOT(jumpToLocation()));
           playerActions.append(p);
+        }
+        // starting with 1.21.9 player spawn is in sub-Tag "respawn"
+        if (player.has("respawn")) {
+          auto respawn = player.at("respawn");
+          dimension = "minecraft:overworld";
+          if (respawn->has("dimension"))
+            dimension = respawn->at("dimension")->toString();
+          if (respawn->has("pos")) {
+            auto pos = respawn->at("pos")->toIntArray();
+            p = new QAction(this);
+            p->setText(playerName+"'s Bed");
+            p->setIcon(playerIcon);
+            p->setData(locations.count());
+            locations.append(Location(pos[0], pos[2], dimension));
+            connect(p, SIGNAL(triggered()),
+                    this, SLOT(jumpToLocation()));
+            playerActions.append(p);
+          }
         }
       }
     }
