@@ -803,8 +803,11 @@ void Minutor::loadWorld(QDir path) {
   locations.append(Location(wi.getSpawnX(), wi.getSpawnZ() ));
 
   // Jump to: known players
-  if (path.cd("playerdata") || path.cd("players")) {
-    QDirIterator it(path.absolutePath(), {"*.dat"}, QDir::Files);
+  QDir playerpath(path);
+  if ( ((wi.getDataVersion() >= 4774) && playerpath.cd("players/data")) ||  // starting with 26.1-6 (4774) player data is stored at /players/data
+       ((wi.getDataVersion() < 4774) && playerpath.cd("playerdata")) ||     // all the time since 1.7.6 is was /playerdata
+       ((wi.getDataVersion() == 0) && playerpath.cd("players")) ) {         // and before that at /players
+    QDirIterator it(playerpath.absolutePath(), {"*.dat"}, QDir::Files);
     bool hasPlayers = false;
     while (it.hasNext()) {
       it.next();
@@ -816,7 +819,8 @@ void Minutor::loadWorld(QDir path) {
         QString playerUUID = it.fileInfo().completeBaseName();
         QString playerName = playerUUID;
         QIcon   playerIcon;
-        if (path.dirName() == "playerdata") {
+        if ( (wi.getDataVersion() > 0) ||               // when DataVersion is available, users are stored with UUID
+             (playerpath.dirName() == "playerdata") ) { // without DataVersion UUID was introduced with 1.7.6 together with playerdata folder
           // player name via UUID
           QRegExp id("[0-9a-z]{8,8}\\-[0-9a-z]{4,4}\\-[0-9a-z]{4,4}"
                      "\\-[0-9a-z]{4,4}\\-[0-9a-z]{12,12}");
@@ -915,7 +919,6 @@ void Minutor::loadWorld(QDir path) {
     }
     m_ui.menu_JumpPlayer->addActions(playerActions);
     m_ui.menu_JumpPlayer->setEnabled(hasPlayers);
-    path.cdUp();
   }
 
   // create Dimensions menu
