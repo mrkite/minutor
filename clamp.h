@@ -2,6 +2,8 @@
 #ifndef CLAMP_H_
 #define CLAMP_H_
 
+#if __cplusplus < 201703L
+
 namespace std {
 
 // will be in STD with C++17
@@ -12,4 +14,7 @@ const T& clamp( const T& value, const T& lower, const T& upper )
 }
 
 }
+
+#endif
+
 #endif  // CLAMP_H_

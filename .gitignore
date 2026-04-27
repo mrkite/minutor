@@ -17,3 +17,6 @@ Makefile.Release
 *.pdb
 *.user
 *.pro.user.*
+
+/.qtcreator/
+/build/

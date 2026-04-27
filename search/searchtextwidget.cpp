@@ -1,6 +1,8 @@
 #include "search/searchtextwidget.h"
 #include "ui_searchtextwidget.h"
 
+#include <QRegExp>
+
 SearchTextWidget::SearchTextWidget(const QString &name, QWidget *parent)
   : QWidget(parent)
   , ui(new Ui::SearchTextWidget)

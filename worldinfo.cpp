@@ -3,9 +3,12 @@
 #include "worldinfo.h"
 
 #include <QtWidgets/QMenu>
+#include <QActionGroup>
 #include <QDirIterator>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QRegExp>
+#include <QStringRef>
 
 #include "nbt/nbt.h"
 #include "zipreader.h"
@@ -210,7 +213,7 @@ bool WorldInfo::parseDatapackNamespace(const QString name_space, const QString p
 
   // test if already there
   if (datapacks.contains(name_space)) {
-    QMap<QString, DatapackInfo>::const_iterator it = datapacks.constFind(name_space);
+    auto it = datapacks.constFind(name_space);
     for (; it != datapacks.constEnd(); ++it) {
       if (it->path == path) return false;
     }
