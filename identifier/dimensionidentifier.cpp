@@ -4,6 +4,7 @@
 
 #include "dimensionidentifier.h"
 #include "worldinfo.h"
+#include "compat.h"
 
 
 //-------------------------------------------------------------------------------------------------
@@ -73,7 +74,7 @@ int DimensionIdentifier::addDefinitions(QJsonArray defs, int pack) {
       dim->id = dimTag.value("id").toString();
       // construct a default name from ID
       QString nid = QString(dim->id).replace("minecraft:","").replace("_"," ");
-      QStringList parts = nid.toLower().split(' ', QString::SkipEmptyParts);
+      QStringList parts = nid.toLower().split(' ', Qt::SkipEmptyParts);
       for (int i = 0; i < parts.size(); i++)
         parts[i].replace(0, 1, parts[i][0].toUpper());
       dim->name = parts.join(" ");
