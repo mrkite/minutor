@@ -2,6 +2,7 @@ TEMPLATE = app
 TARGET = minutor
 CONFIG += c++14
 QT += widgets network concurrent
+greaterThan(QT_MAJOR_VERSION, 5) QT += core5compat
 QMAKE_INFO_PLIST = minutor.plist
 unix:LIBS += -lz
 win32:RC_FILE += winicon.rc
