@@ -9,6 +9,7 @@ Copyright (c) 2016, EtlamGit
 
 #include "biomeidentifier.h"
 #include "clamp.h"
+#include "compat.h"
 
 // --------- --------- --------- ---------
 // BiomeInfo
@@ -376,7 +377,7 @@ void BiomeIdentifier::parseBiomeDefinitions2800(QJsonArray data18, int pack) {
       else {
         // construct the name from NID
         QString nid = QString(biome->nid).replace("minecraft:","").replace("_"," ").replace(":",": ");
-        QStringList parts = nid.toLower().split(' ', QString::SkipEmptyParts);
+        QStringList parts = nid.toLower().split(' ', Qt::SkipEmptyParts);
         for (int i = 0; i < parts.size(); i++)
           parts[i].replace(0, 1, parts[i][0].toUpper());
         biome->name = parts.join(" ");
