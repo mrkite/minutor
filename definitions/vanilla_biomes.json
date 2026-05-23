@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "biome",
-  "version": "1.21.24w40a",
+  "version": "26.2.1",
   "data18": [
     {
       "id": "minecraft:ocean",
@@ -383,10 +383,17 @@
     },
     {
       "id": "minecraft:pale_garden",
-      "color": "#726c68",
+      "color": "#696d95",
       "watermodifier": "#76889d",
       "temperature": 0.7,
       "humidity": 0.8
+    },
+    {
+      "id": "minecraft:sulfur_caves",
+      "color": "#c8c828",
+      "watermodifier": "#34bf89",
+      "temperature": 0.8,
+      "humidity": 0.4
     }
   ],
   "data": [
