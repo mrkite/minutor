@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "entity",
-  "version": "1.21.25w44a",
+  "version": "26.2.1",
   "data": [
     {
       "category": "Hostile",
@@ -436,6 +436,10 @@
         {
           "id": "camel_husk",
           "color": "#008000"
+        },
+        {
+          "id": "sulfur_cube",
+          "color": "#fffaa0"
         }
       ]
     },
