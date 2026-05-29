@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "1.21.25w32a",
+  "version": "26.2.1",
   "data": [
     {
       "name": "minecraft:air",
@@ -7592,6 +7592,155 @@
           "color": "#f1f0f0"
         }
       ]
+    },
+    {
+      "name": "minecraft:cinnabar",
+      "color": "#98534e"
+    },
+    {
+      "name": "minecraft:cinnabar_slab",
+      "color": "#9f5751",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:cinnabar_stairs",
+      "color": "#904e4a",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:cinnabar_wall",
+      "color": "#98534e",
+      "alpha": 0.7,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:cinnabar_bricks",
+      "color": "#943836"
+    },
+    {
+      "name": "minecraft:cinnabar_brick_slab",
+      "color": "#9b3a38",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:cinnabar_brick_stairs",
+      "color": "#8c3533",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:cinnabar_brick_wall",
+      "color": "#943836",
+      "alpha": 0.7,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:potent_sulfur",
+      "color": "#d3d161"
+    },
+    {
+      "name": "minecraft:sulfur",
+      "color": "#beaf66"
+    },
+    {
+      "name": "minecraft:sulfur_slab",
+      "color": "#c7b76b",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:sulfur_stairs",
+      "color": "#b4a660",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:sulfur_wall",
+      "color": "#beaf66",
+      "alpha": 0.7,
+      "transparent": true
+    },
+
+    {
+      "name": "minecraft:sulfur_bricks",
+      "color": "#bba85b"
+    },
+    {
+      "name": "minecraft:sulfur_brick_slab",
+      "color": "#c4b05f",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:sulfur_brick_stairs",
+      "color": "#b19f56",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:sulfur_brick_wall",
+      "color": "#bba85b",
+      "alpha": 0.7,
+      "transparent": true
     }
   ],
   "update": "https://github.com/mrkite/minutor/raw/master/definitions/vanilla_blocks.json"
