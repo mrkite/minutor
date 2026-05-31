@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "26.2.1",
+  "version": "26.2.3",
   "data": [
     {
       "name": "minecraft:air",
@@ -7739,6 +7739,12 @@
     {
       "name": "minecraft:sulfur_brick_wall",
       "color": "#bba85b",
+      "alpha": 0.7,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:sulfur_spike",
+      "color": "#beaf66",
       "alpha": 0.7,
       "transparent": true
     }
