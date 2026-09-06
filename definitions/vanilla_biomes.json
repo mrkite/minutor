@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "biome",
-  "version": "26.3.1",
+  "version": "26.3.1a",
   "data18": [
     {
       "id": "minecraft:ocean",
@@ -41,6 +41,8 @@
       "id": "minecraft:swamp",
       "color": "#07f9b2",
       "watermodifier": "#617b64",
+      "grassmodifier": "#6a7039",
+      "foliagemodifier": "#6a7039",
       "temperature": 0.8,
       "humidity": 0.9
     },
@@ -163,12 +165,16 @@
     {
       "id": "minecraft:badlands",
       "color": "#d94515",
+      "grassmodifier": "#90814d",
+      "foliagemodifier": "#9e814d",
       "temperature": 2.0,
       "humidity": 0.0
     },
     {
       "id": "minecraft:wooded_badlands",
       "color": "#b09765",
+      "grassmodifier": "#90814d",
+      "foliagemodifier": "#9e814d",
       "temperature": 2.0,
       "humidity": 0.0
     },
@@ -272,6 +278,8 @@
     {
       "id": "minecraft:eroded_badlands",
       "color": "#ff6d3d",
+      "grassmodifier": "#90814d",
+      "foliagemodifier": "#9e814d",
       "temperature": 2.0,
       "humidity": 0.0
     },
@@ -397,8 +405,10 @@
     },
     {
       "id": "minecraft:dappled_forest",
-      "color": "#c8c828",
-      "watermodifier": "#9a3f35",
+      "color": "#9a3f35",
+      "watermodifier": "#375154",
+      "grassmodifier": "#df6827",
+      "foliagemodifier": "#e68e30",
       "temperature": 0.6,
       "humidity": 0.6
     }
@@ -455,6 +465,8 @@
       "name": "Swamp",
       "color": "#07f9b2",
       "watermodifier": "#617b64",
+      "grassmodifier": "#6a7039",
+      "foliagemodifier": "#6a7039",
       "temperature": 0.8,
       "humidity": 0.9
     },
@@ -696,6 +708,8 @@
       "name": "Badlands",
       "color": "#d94515",
       "watermodifier": "#3f76e4",
+      "grassmodifier": "#90814d",
+      "foliagemodifier": "#9e814d",
       "temperature": 2.0,
       "humidity": 0.0
     },
@@ -704,6 +718,8 @@
       "name": "Wooded Badlands Plateau",
       "color": "#b09765",
       "watermodifier": "#3f76e4",
+      "grassmodifier": "#90814d",
+      "foliagemodifier": "#9e814d",
       "temperature": 2.0,
       "humidity": 0.0
     },
@@ -712,6 +728,8 @@
       "name": "Badlands Plateau",
       "color": "#ca8c65",
       "watermodifier": "#3f76e4",
+      "grassmodifier": "#90814d",
+      "foliagemodifier": "#9e814d",
       "temperature": 2.0,
       "humidity": 0.0
     },
@@ -832,6 +850,8 @@
       "name": "Swamp Hills",
       "color": "#2fffda",
       "watermodifier": "#617b64",
+      "grassmodifier": "#6a7039",
+      "foliagemodifier": "#6a7039",
       "temperature": 0.8,
       "humidity": 0.9
     },
@@ -936,6 +956,8 @@
       "name": "Eroded Badlands",
       "color": "#ff6d3d",
       "watermodifier": "#3f76e4",
+      "grassmodifier": "#90814d",
+      "foliagemodifier": "#9e814d",
       "temperature": 2.0,
       "humidity": 0.0
     },
@@ -944,6 +966,8 @@
       "name": "Modified Wooded Badlands Plateau",
       "color": "#d8bf8d",
       "watermodifier": "#3f76e4",
+      "grassmodifier": "#90814d",
+      "foliagemodifier": "#9e814d",
       "temperature": 2.0,
       "humidity": 0.0
     },
@@ -952,6 +976,8 @@
       "name": "Modified Badlands Plateau",
       "color": "#f2b48d",
       "watermodifier": "#3f76e4",
+      "grassmodifier": "#90814d",
+      "foliagemodifier": "#9e814d",
       "temperature": 2.0,
       "humidity": 0.0
     },

@@ -24,14 +24,18 @@ BiomeInfo::BiomeInfo()
   , enabled(false)
   , ocean(false)
   , river(false)
-  , swamp(false)
   , darkforest(false)
-  , badlands(false)
   , temperature(0.5)
   , humidity(0.5)
   , enabledwatermodifier(false)
-  , watermodifier(255,255,255)
-{}
+  , enabledgrassmodifier(false)
+  , grassmodifier(255,255,255)
+  , enabledfoliagemodifier(false)
+  , foliagemodifier(255,255,255)
+{
+  // default water color for most Biomes
+  this->watermodifier.setRgb(0x3f, 0x76, 0xe4);
+}
 
 
 // Biome based Grass and Foliage color is based on an interpolation in special
@@ -128,16 +132,13 @@ QColor BiomeInfo::mixColor( QColor colorizer, QColor blockcolor )
 QColor BiomeInfo::getBiomeGrassColor( QColor blockcolor, int elevation ) const
 {
   QColor colorizer;
-  // swampland
-  if (this->swamp) {
-    // perlin noise generator omitted due to performance reasons
-    // otherwise the random temperature distribution selects
-    // (below -0.1°C) 4C.76.3C or 6A.70.39 (above -0.1°C)
-    colorizer = QColor::fromRgb(0x6a,0x70,0x39);  // hard wired
-  }
-  // mesa / badlands
-  else if (this->badlands) {
-    colorizer = QColor::fromRgb(0x90,0x81,0x4d);  // hard wired
+  // swampland:
+  // perlin noise generator omitted due to performance reasons
+  // otherwise the random temperature distribution selects
+  // (below -0.1°C) 4C.76.3C or 6A.70.39 (above -0.1°C)
+  if (this->enabledgrassmodifier) {
+    // modifier color given via Biome JSON file
+    colorizer = grassmodifier;
   } else {
     // standard way
     colorizer = getBiomeColor( this->temperature, this->humidity, elevation, grassCorners );
@@ -156,16 +157,13 @@ QColor BiomeInfo::getBiomeGrassColor( QColor blockcolor, int elevation ) const
 QColor BiomeInfo::getBiomeFoliageColor( QColor blockcolor, int elevation ) const
 {
   QColor colorizer;
-  // swampland
-  if (this->swamp) {
-    colorizer = QColor::fromRgb(0x6a,0x70,0x39);  // hard wired
-  }
-  // mesa / badlands
-  else if (this->badlands) {
-    colorizer = QColor::fromRgb(0x9e,0x81,0x4d);  // hard wired
-  } else
+  if (this->enabledfoliagemodifier) {
+    // modifier color given via Biome JSON file
+    colorizer = foliagemodifier;
+  } else {
     // standard way
     colorizer = getBiomeColor( this->temperature, this->humidity, elevation, foliageCorners );
+  }
 
   return mixColor( colorizer, blockcolor );
 }
@@ -189,7 +187,6 @@ QColor BiomeInfo::getBiomeWaterColor( QColor watercolor ) const
 // --------- --------- --------- ---------
 
 BiomeIdentifier::BiomeIdentifier() {
-  unknownBiome.watermodifier.setNamedColor("#3f76e4");
   unknownBiome.enabledwatermodifier = true;
   for (int c = 0; c < 16; c++)
     unknownBiome.colors[c] = QColor(0,0,0);
@@ -278,21 +275,10 @@ void BiomeIdentifier::guessSpecialBiomes(QJsonObject b, BiomeInfo *biome)
   } else if (biome->name.contains("river", Qt::CaseInsensitive)) {
     biome->river = true;
   }
-  if (b.contains("swamp")) {
-    biome->swamp = b.value("swamp").toBool();
-  } else if (biome->name.contains("swamp", Qt::CaseInsensitive)) {
-    biome->swamp = true;
-  }
   if (b.contains("darkforest")) {
     biome->darkforest = b.value("darkforest").toBool();
   } else if (biome->name.contains("dark forest", Qt::CaseInsensitive)) {
     biome->darkforest = true;
-  }
-  if (b.contains("badlands")) {
-    biome->badlands = b.value("badlands").toBool();
-  } else if ((biome->name.contains("mesa", Qt::CaseInsensitive)) ||
-             (biome->name.contains("badlands", Qt::CaseInsensitive))) {
-    biome->badlands = true;
   }
 }
 
@@ -326,6 +312,20 @@ void BiomeIdentifier::parseBiomeDefinitions0000(QJsonArray data, int pack) {
         biome->watermodifier.setNamedColor(b.value("watermodifier").toString());
         biome->enabledwatermodifier = true;
         assert(biome->watermodifier.isValid());
+      }
+
+      // get grassmodifier definition
+      if (b.contains("grassmodifier")) {
+        biome->enabledgrassmodifier = true;
+        biome->grassmodifier.setNamedColor(b.value("grassmodifier").toString());
+        assert(biome->grassmodifier.isValid());
+      }
+
+      // get foliagemodifier definition
+      if (b.contains("foliagemodifier")) {
+        biome->enabledfoliagemodifier = true;
+        biome->foliagemodifier.setNamedColor(b.value("foliagemodifier").toString());
+        assert(biome->foliagemodifier.isValid());
       }
 
       // get color definition
@@ -395,11 +395,25 @@ void BiomeIdentifier::parseBiomeDefinitions2800(QJsonArray data18, int pack) {
         biome->humidity = b.value("humidity").toDouble();
 
       // get watermodifier definition
-      biome->enabledwatermodifier = true;
+      biome->enabledwatermodifier = true;   // now always used
       if (b.contains("watermodifier")) {
         biome->watermodifier.setNamedColor(b.value("watermodifier").toString());
         assert(biome->watermodifier.isValid());
-      } else biome->watermodifier.setNamedColor("#3f76e4");
+      }
+
+      // get grassmodifier definition
+      if (b.contains("grassmodifier")) {
+        biome->enabledgrassmodifier = true;
+        biome->grassmodifier.setNamedColor(b.value("grassmodifier").toString());
+        assert(biome->grassmodifier.isValid());
+      }
+
+      // get foliagemodifier definition
+      if (b.contains("foliagemodifier")) {
+        biome->enabledfoliagemodifier = true;
+        biome->foliagemodifier.setNamedColor(b.value("foliagemodifier").toString());
+        assert(biome->foliagemodifier.isValid());
+      }
 
       // get color definition
       QColor biomecolor;

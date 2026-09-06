@@ -100,7 +100,7 @@ void NBT::unpack_lz4(const unsigned char * data, unsigned long length) {
 
   const unsigned char * input = data;
 
-  while ((input - data) < length) {
+  while (static_cast<unsigned long>(input - data) < length) {
     // decode LZ4-Java block header
     for (int m=0; m<LZ4_MAGIC_LENGTH; m++) {
       if (input[m] != LZ4_MAGIC[m]) return;
@@ -109,8 +109,8 @@ void NBT::unpack_lz4(const unsigned char * data, unsigned long length) {
     const unsigned char compression_method = token & 0xF0;
 //   unsigned char compression_level  = LZ4_COMPRESSION_LEVEL_BASE + (token & 0x0F);
     if ((compression_method != LZ4_COMPRESSION_METHOD_RAW) && (compression_method != LZ4_COMPRESSION_METHOD_LZ4)) return;
-    const long length_compressed  = readIntLE(input + LZ4_MAGIC_LENGTH + 1);
-    const long length_original    = readIntLE(input + LZ4_MAGIC_LENGTH + 5);
+    const unsigned long length_compressed  = readIntLE(input + LZ4_MAGIC_LENGTH + 1);
+    const unsigned long length_original    = readIntLE(input + LZ4_MAGIC_LENGTH + 5);
     const XXH32_hash_t checksum   = readIntLE(input + LZ4_MAGIC_LENGTH + 9);
     input += LZ4_MAGIC_LENGTH + 13;
 
@@ -124,7 +124,7 @@ void NBT::unpack_lz4(const unsigned char * data, unsigned long length) {
     if ((compression_method == LZ4_COMPRESSION_METHOD_RAW) && (length_original != length_compressed)) return;
 
     // input buffer overflow check
-    if (((input - data) + length_compressed) > length) return;
+    if ((static_cast<unsigned long>(input - data) + length_compressed) > length) return;
 
     XXH32_hash_t checksum1;
 

@@ -29,9 +29,11 @@ the new tag "data18" is used to define Biomes:
 
 Some special values can be derived from the Minecraft source code:
 
-"watermodifier" - special color of water (in swamps)
-"temperature"   - default 0.5
-"humidity"      - default 0.5
+"watermodifier"   - special color of water (in swamps)
+"grassmodifier"   - special color of grass (otherwise derived by temperature and humidity)
+"foliagemodifier" - special color of leaves (otherwise derived by temperature and humidity)
+"temperature"     - default 0.5
+"humidity"        - default 0.5
 
 
 Some stuff is hard coded inside Minecraft source code. To handle these edge cases,
@@ -40,9 +42,7 @@ some additional boolean flags can be used:
 
 "ocean"      - used for Drawned spawn detection (guess trigger is "ocean")
 "river"      - used for Drawned spawn detection (guess trigger is "river")
-"swamp"      - used for hard coded foliage colors (guess trigger is "swamp")
-"darkforest" - used for hard coded foliage colors (guess trigger is "dark forest")
-"badlands"   - used for hard coded foliage colors (guess trigger is "badlands" and "mesa")
+"darkforest" - used for special blended foliage colors (guess trigger is "dark forest")
 
 
 For Minecraft up to 1.17 Biomes were stored as numerical ID for that we have

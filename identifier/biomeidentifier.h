@@ -29,13 +29,15 @@ class BiomeInfo {
   bool    enabled;
   bool    ocean;
   bool    river;
-  bool    swamp;
   bool    darkforest;
-  bool    badlands;
   double  temperature;
   double  humidity;
   bool    enabledwatermodifier;
   QColor  watermodifier;
+  bool    enabledgrassmodifier;
+  QColor  grassmodifier;
+  bool    enabledfoliagemodifier;
+  QColor  foliagemodifier;
   QColor  colors[16];
 
   // private methods and members
