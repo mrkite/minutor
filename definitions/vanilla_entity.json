@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "entity",
-  "version": "26.2.1",
+  "version": "26.3.3",
   "data": [
     {
       "category": "Hostile",
@@ -447,6 +447,10 @@
       "category": "Others",
       "catcolor": "lightgray",
       "entity": [
+        {
+          "id": "Cushion",
+          "color": "lightgray"
+        },
         {
           "note": "old naming scheme until 1.10",
           "id": "XPOrb",
