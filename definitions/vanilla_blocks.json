@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "26.3.0",
+  "version": "26.3.1",
   "data": [
     {
       "name": "minecraft:air",
@@ -400,8 +400,22 @@
       "spawninside": true
     },
     {
+      "name": "minecraft:cherry_sapling",
+      "color": "#a4768f",
+      "alpha": 0.3,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
       "name": "minecraft:pale_oak_sapling",
       "color": "#6e6a64",
+      "alpha": 0.3,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
+      "name": "minecraft:poplar_sapling",
+      "color": "#8f4f26",
       "alpha": 0.3,
       "transparent": true,
       "spawninside": true
@@ -411,10 +425,6 @@
       "color": "#5e9014",
       "alpha": 0.75,
       "transparent": true
-    },
-    {
-      "name": "minecraft:bamboo_block",
-      "color": "#8b8e3e"
     },
     {
       "name": "minecraft:bamboo_planks",
@@ -546,50 +556,6 @@
       "color": "#545454"
     },
     {
-      "name": "minecraft:cherry_log",
-      "color": "#37212C",
-      "variants": [
-        {
-          "blockstate": "axis:x",
-          "color": "#b98d89"
-        },
-        {
-          "blockstate": "axis:y",
-          "color": "#37212C"
-        },
-        {
-          "blockstate": "axis:z",
-          "color": "#b98d89"
-        }
-      ]
-    },
-    {
-      "name": "minecraft:cherry_wood",
-      "color": "#b98d89"
-    },
-    {
-      "name": "minecraft:stripped_cherry_log",
-      "color": "#dda59e",
-      "variants": [
-        {
-          "blockstate": "axis:x",
-          "color": "#d79195"
-        },
-        {
-          "blockstate": "axis:y",
-          "color": "#dda59e"
-        },
-        {
-          "blockstate": "axis:z",
-          "color": "#d79195"
-        }
-      ]
-    },
-    {
-      "name": "minecraft:stripped_cherry_wood",
-      "color": "#b98d89"
-    },
-    {
       "name": "minecraft:cherry_button",
       "color": "#e3b3ad",
       "alpha": 0.25,
@@ -626,15 +592,8 @@
       "canprovidepower": true
     },
     {
-      "name": "minecraft:cherry_sapling",
-      "color": "#a4768f",
-      "alpha": 0.3,
-      "transparent": true,
-      "spawninside": true
-    },
-    {
       "name": "minecraft:cherry_slab",
-      "color": "#e3b3ad",
+      "color": "#eebbb5",
       "transparent": true,
       "variants": [
         {
@@ -649,7 +608,7 @@
     },
     {
       "name": "minecraft:cherry_stairs",
-      "color": "#e3b3ad",
+      "color": "#d7aaa4",
       "transparent": true,
       "variants": [
         {
@@ -759,6 +718,75 @@
     {
       "name": "minecraft:pale_oak_wall_hanging_sign",
       "color": "#e4dad8"
+    },
+    {
+      "name": "minecraft:poplar_planks",
+      "color": "#96897f"
+    },
+    {
+      "name": "minecraft:poplar_button",
+      "color": "#96897f"
+    },
+    {
+      "name": "minecraft:poplar_door",
+      "color": "#988c81"
+    },
+    {
+      "name": "minecraft:poplar_fence",
+      "color": "#96897f"
+    },
+    {
+      "name": "minecraft:poplar_fence_gate",
+      "color": "#96897f"
+    },
+    {
+      "name": "minecraft:poplar_pressure_plate",
+      "color": "#96897f"
+    },
+    {
+      "name": "minecraft:poplar_slab",
+      "color": "#9d8f85",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:poplar_stairs",
+      "color": "#8e8278",
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:poplar_trapdoor",
+      "color": "#e6dcdb"
+    },
+    {
+      "name": "minecraft:poplar_sign",
+      "color": "#96897f"
+    },
+    {
+      "name": "minecraft:poplar_hanging_sign",
+      "color": "#96897f"
+    },
+    {
+      "name": "minecraft:poplar_wall_sign",
+      "color": "#96897f"
+    },
+    {
+      "name": "minecraft:poplar_wall_hanging_sign",
+      "color": "#96897f"
     },
     {
       "name": "minecraft:flowing_water",
@@ -957,6 +985,24 @@
       ]
     },
     {
+      "name": "minecraft:cherry_log",
+      "color": "#37212C",
+      "variants": [
+        {
+          "blockstate": "axis:x",
+          "color": "#b98d89"
+        },
+        {
+          "blockstate": "axis:y",
+          "color": "#37212C"
+        },
+        {
+          "blockstate": "axis:z",
+          "color": "#b98d89"
+        }
+      ]
+    },
+    {
       "name": "minecraft:pale_oak_log",
       "color": "#584e4b",
       "variants": [
@@ -971,6 +1017,24 @@
         {
           "blockstate": "axis:z",
           "color": "#c7bdbc"
+        }
+      ]
+    },
+    {
+      "name": "minecraft:poplar_log",
+      "color": "#887a6e",
+      "variants": [
+        {
+          "blockstate": "axis:x",
+          "color": "#4f3d2b"
+        },
+        {
+          "blockstate": "axis:y",
+          "color": "#887a6e"
+        },
+        {
+          "blockstate": "axis:z",
+          "color": "#4f3d2b"
         }
       ]
     },
@@ -1101,6 +1165,24 @@
       ]
     },
     {
+      "name": "minecraft:stripped_cherry_log",
+      "color": "#dda59e",
+      "variants": [
+        {
+          "blockstate": "axis:x",
+          "color": "#d79195"
+        },
+        {
+          "blockstate": "axis:y",
+          "color": "#dda59e"
+        },
+        {
+          "blockstate": "axis:z",
+          "color": "#d79195"
+        }
+      ]
+    },
+    {
       "name": "minecraft:stripped_pale_oak_log",
       "color": "#ebe3e2",
       "variants": [
@@ -1115,6 +1197,24 @@
         {
           "blockstate": "axis:z",
           "color": "#f6eeed"
+        }
+      ]
+    },
+    {
+      "name": "minecraft:stripped_poplar_log",
+      "color": "#988b81",
+      "variants": [
+        {
+          "blockstate": "axis:x",
+          "color": "#a5998c"
+        },
+        {
+          "blockstate": "axis:y",
+          "color": "#988b81"
+        },
+        {
+          "blockstate": "axis:z",
+          "color": "#a5998c"
         }
       ]
     },
@@ -1147,8 +1247,20 @@
       "color": "#544329"
     },
     {
+      "name": "minecraft:cherry_wood",
+      "color": "#b98d89"
+    },
+    {
+      "name": "minecraft:bamboo_block",
+      "color": "#8b8e3e"
+    },
+    {
       "name": "minecraft:pale_oak_wood",
       "color": "#c7bdbc"
+    },
+    {
+      "name": "minecraft:poplar_wood",
+      "color": "#887a6e"
     },
     {
       "name": "minecraft:stripped_oak_wood",
@@ -1179,12 +1291,20 @@
       "color": "#783630"
     },
     {
+      "name": "minecraft:stripped_cherry_wood",
+      "color": "#b98d89"
+    },
+    {
       "name": "minecraft:stripped_bamboo_block",
       "color": "#b29f49"
     },
     {
       "name": "minecraft:stripped_pale_oak_wood",
       "color": "#ebe3e2"
+    },
+    {
+      "name": "minecraft:stripped_poplar_wood",
+      "color": "#988b81"
     },
     {
       "name": "minecraft:oak_leaves",
@@ -1259,6 +1379,27 @@
     {
       "name": "minecraft:pale_oak_leaves",
       "color": "#757a73",
+      "transparent": true,
+      "rendercube": true,
+      "biomeFoliage": false
+    },
+    {
+      "name": "minecraft:red_poplar_leaves",
+      "color": "#9a2c27",
+      "transparent": true,
+      "rendercube": true,
+      "biomeFoliage": false
+    },
+    {
+      "name": "minecraft:orange_poplar_leaves",
+      "color": "#bc5618",
+      "transparent": true,
+      "rendercube": true,
+      "biomeFoliage": false
+    },
+    {
+      "name": "minecraft:yellow_poplar_leaves",
+      "color": "#d78628",
       "transparent": true,
       "rendercube": true,
       "biomeFoliage": false
@@ -1564,64 +1705,480 @@
       "color": "#eaeced"
     },
     {
-      "name": "minecraft:orange_wool",
-      "color": "#f17614"
+      "name": "minecraft:white_wool_slab",
+      "color": "#f5f7f8",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
     },
     {
-      "name": "minecraft:magenta_wool",
-      "color": "#be45b4"
-    },
-    {
-      "name": "minecraft:light_blue_wool",
-      "color": "#3aafd9"
-    },
-    {
-      "name": "minecraft:yellow_wool",
-      "color": "#f9c628"
-    },
-    {
-      "name": "minecraft:lime_wool",
-      "color": "#70b91a"
-    },
-    {
-      "name": "minecraft:pink_wool",
-      "color": "#ee8dac"
-    },
-    {
-      "name": "minecraft:gray_wool",
-      "color": "#3f4448"
+      "name": "minecraft:white_wool_stairs",
+      "color": "#dee0e1",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:light_gray_wool",
       "color": "#8e8e87"
     },
     {
-      "name": "minecraft:cyan_wool",
-      "color": "#158a91"
+      "name": "minecraft:light_gray_wool_slab",
+      "color": "#95958d",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
     },
     {
-      "name": "minecraft:purple_wool",
-      "color": "#7a2aad"
+      "name": "minecraft:light_gray_wool_stairs",
+      "color": "#868680",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
     },
     {
-      "name": "minecraft:blue_wool",
-      "color": "#35399d"
+      "name": "minecraft:gray_wool",
+      "color": "#3f4448"
+    },
+    {
+      "name": "minecraft:gray_wool_slab",
+      "color": "#42474b",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:gray_wool_stairs",
+      "color": "#3b4044",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:black_wool",
+      "color": "#15151a"
+    },
+    {
+      "name": "minecraft:black_wool_slab",
+      "color": "#16161b",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:black_wool_stairs",
+      "color": "#131318",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:brown_wool",
       "color": "#724829"
     },
     {
-      "name": "minecraft:green_wool",
-      "color": "#556e1c"
+      "name": "minecraft:brown_wool_slab",
+      "color": "#774b2b",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:brown_wool_stairs",
+      "color": "#6c4426",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:red_wool",
       "color": "#a12723"
     },
     {
-      "name": "minecraft:black_wool",
-      "color": "#15151a"
+      "name": "minecraft:red_wool_slab",
+      "color": "#a92824",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:red_wool_stairs",
+      "color": "#982521",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:orange_wool",
+      "color": "#f17614"
+    },
+    {
+      "name": "minecraft:orange_wool_slab",
+      "color": "#fd7b15",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:orange_wool_stairs",
+      "color": "#e47013",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:yellow_wool",
+      "color": "#f9c628"
+    },
+    {
+      "name": "minecraft:yellow_wool_slab",
+      "color": "#ffcf2a",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:yellow_wool_stairs",
+      "color": "#ecbc26",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:lime_wool",
+      "color": "#70b91a"
+    },
+    {
+      "name": "minecraft:lime_wool_slab",
+      "color": "#75c21b",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:lime_wool_stairs",
+      "color": "#6aaf18",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:green_wool",
+      "color": "#556e1c"
+    },
+    {
+      "name": "minecraft:green_wool_slab",
+      "color": "#59731d",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:green_wool_stairs",
+      "color": "#50681a",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:cyan_wool",
+      "color": "#158a91"
+    },
+    {
+      "name": "minecraft:cyan_wool_slab",
+      "color": "#169098",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:cyan_wool_stairs",
+      "color": "#138389",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:light_blue_wool",
+      "color": "#3aafd9"
+    },
+    {
+      "name": "minecraft:light_blue_wool_slab",
+      "color": "#3cb7e3",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:light_blue_wool_stairs",
+      "color": "#37a6ce",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:blue_wool",
+      "color": "#35399d"
+    },
+    {
+      "name": "minecraft:blue_wool_slab",
+      "color": "#373ba4",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:blue_wool_stairs",
+      "color": "#323695",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:purple_wool",
+      "color": "#7a2aad"
+    },
+    {
+      "name": "minecraft:purple_wool_slab",
+      "color": "#802cb5",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:purple_wool_stairs",
+      "color": "#7327a4",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:magenta_wool",
+      "color": "#be45b4"
+    },
+    {
+      "name": "minecraft:magenta_wool_slab",
+      "color": "#c748bd",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:magenta_wool_stairs",
+      "color": "#b441ab",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:pink_wool",
+      "color": "#ee8dac"
+    },
+    {
+      "name": "minecraft:pink_wool_slab",
+      "color": "#f994b4",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:pink_wool_stairs",
+      "color": "#e285a3",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:moving_piston",
@@ -1731,6 +2288,23 @@
       "alpha": 0.7,
       "transparent": true,
       "spawninside": true
+    },
+    {
+      "name": "minecraft:shelf_mushroom",
+      "color": "#b47847",
+      "alpha": 0.7,
+      "transparent": true,
+      "spawninside": true,
+      "variants": [
+        {
+          "blockstate": "growth:0",
+          "color": "#b06f40"
+        },
+        {
+          "blockstate": "growth:1",
+          "color": "#b47847"
+        }
+      ]
     },
     {
       "name": "minecraft:gold_block",
@@ -1855,6 +2429,13 @@
     {
       "name": "minecraft:pale_oak_shelf",
       "color": "#e4d9d8",
+      "alpha": 0.5,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
+      "name": "minecraft:poplar_shelf",
+      "color": "#94877e",
       "alpha": 0.5,
       "transparent": true,
       "spawninside": true
@@ -3388,6 +3969,26 @@
       "transparent": true
     },
     {
+      "name": "minecraft:potted_bamoo_sapling",
+      "color": "#5c5924",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:potted_cherry_sapling",
+      "color": "#a4768f",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:potted_pole_oak_sapling",
+      "color": "#6e6a64",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:potted_poplar_sapling",
+      "color": "#8f4f26",
+      "transparent": true
+    },
+    {
       "name": "minecraft:potted_fern",
       "color": "#315e05",
       "transparent": true
@@ -3448,18 +4049,8 @@
       "transparent": true
     },
     {
-      "name": "minecraft:potted_cherry_sapling",
-      "color": "#a4768f",
-      "transparent": true
-    },
-    {
       "name": "minecraft:potted_torchflower",
       "color": "#e87272",
-      "transparent": true
-    },
-    {
-      "name": "minecraft:potted_pale_oak_sapling",
-      "color": "#6e6a64",
       "transparent": true
     },
     {
@@ -7793,6 +8384,13 @@
     {
       "name": "minecraft:tall_dry_grass",
       "color": "#c5ac7b",
+      "alpha": 0.7,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
+      "name": "minecraft:red_shrub",
+      "color": "#7a2316",
       "alpha": 0.7,
       "transparent": true,
       "spawninside": true
