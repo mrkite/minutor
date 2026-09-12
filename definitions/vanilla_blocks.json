@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "26.3.1",
+  "version": "26.3.2",
   "data": [
     {
       "name": "minecraft:air",
@@ -1591,6 +1591,11 @@
     {
       "name": "minecraft:black_bed",
       "color": "#1d1b1b",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:straw_bed",
+      "color": "#9b811a",
       "transparent": true
     },
     {
