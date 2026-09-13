@@ -2281,6 +2281,13 @@
       "spawninside": true
     },
     {
+      "name": "minecraft:golden_dandelion",
+      "color": "#a06625",
+      "alpha": 0.7,
+      "transparent": true,
+      "spawninside": true
+    },
+    {
       "name": "minecraft:brown_mushroom",
       "color": "#cbab79",
       "alpha": 0.7,
@@ -3936,6 +3943,11 @@
     {
       "name": "minecraft:potted_lily_of_the_valley",
       "color": "#ffffff",
+      "transparent": true
+    },
+    {
+      "name": "minecraft:potted_golden_dandelion",
+      "color": "#a06625",
       "transparent": true
     },
     {
