@@ -1,7 +1,7 @@
 {
   "name": "Vanilla",
   "type": "flatblock",
-  "version": "26.3.2",
+  "version": "26.3.7",
   "data": [
     {
       "name": "minecraft:air",
@@ -3996,7 +3996,7 @@
       "transparent": true
     },
     {
-      "name": "minecraft:potted_pole_oak_sapling",
+      "name": "minecraft:potted_pale_oak_sapling",
       "color": "#6e6a64",
       "transparent": true
     },
@@ -5751,64 +5751,483 @@
       "color": "#cfd5d6"
     },
     {
+      "name": "minecraft:white_concrete_slab",
+      "color": "#d9dfe0",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:white_concrete_stairs",
+      "color": "#c4cacb",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
       "name": "minecraft:orange_concrete",
       "color": "#e06101"
+    },
+    {
+      "name": "minecraft:orange_concrete_slab",
+      "color": "#eb6501",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:orange_concrete_stairs",
+      "color": "#d45c00",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:magenta_concrete",
       "color": "#a9309f"
     },
     {
+      "name": "minecraft:magenta_concrete_slab",
+      "color": "#b132a6",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:magenta_concrete_stairs",
+      "color": "#a02d97",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
       "name": "minecraft:light_blue_concrete",
       "color": "#2489c7"
     },
+    {
+      "name": "minecraft:light_blue_concrete_slab",
+      "color": "#258fd0",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:light_blue_concrete_stairs",
+      "color": "#2282bd",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
+    },
+
     {
       "name": "minecraft:yellow_concrete",
       "color": "#f1af15"
     },
     {
+      "name": "minecraft:yellow_concrete_slab",
+      "color": "#fdb716",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:yellow_concrete_stairs",
+      "color": "#e4a613",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
+    },
+
+    {
       "name": "minecraft:lime_concrete",
       "color": "#5ea918"
+    },
+    {
+      "name": "minecraft:lime_concrete_slab",
+      "color": "#62b11a",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:lime_concrete_stairs",
+      "color": "#59a017",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:pink_concrete",
       "color": "#d6658f"
     },
     {
+      "name": "minecraft:pink_concrete_slab",
+      "color": "#e06a96",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:pink_concrete_stairs",
+      "color": "#cb5f87",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
+    },
+
+    {
       "name": "minecraft:gray_concrete",
       "color": "#373a3e"
+    },
+    {
+      "name": "minecraft:gray_concrete_slab",
+      "color": "#393c41",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:gray_concrete_stairs",
+      "color": "#34373a",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:light_gray_concrete",
       "color": "#7d7d73"
     },
     {
+      "name": "minecraft:light_gray_concrete_slab",
+      "color": "#838378",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:light_gray_concrete_stairs",
+      "color": "#76766d",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
       "name": "minecraft:cyan_concrete",
       "color": "#157788"
+    },
+    {
+      "name": "minecraft:cyan_concrete_slab",
+      "color": "#167c8e",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:cyan_concrete_stairs",
+      "color": "#137181",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:purple_concrete",
       "color": "#64209c"
     },
     {
+      "name": "minecraft:purple_concrete_slab",
+      "color": "#6921a3",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:purple_concrete_stairs",
+      "color": "#5f1e94",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
       "name": "minecraft:blue_concrete",
       "color": "#2d2f8f"
+    },
+    {
+      "name": "minecraft:blue_concrete_slab",
+      "color": "#2f3196",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:blue_concrete_stairs",
+      "color": "#2a2c87",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:brown_concrete",
       "color": "#603c20"
     },
     {
+      "name": "minecraft:brown_concrete_slab",
+      "color": "#643f21",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:brown_concrete_stairs",
+      "color": "#5b391e",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
       "name": "minecraft:green_concrete",
       "color": "#495b24"
+    },
+    {
+      "name": "minecraft:green_concrete_slab",
+      "color": "#4c5f25",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:green_concrete_stairs",
+      "color": "#455622",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:red_concrete",
       "color": "#8e2121"
     },
     {
+      "name": "minecraft:red_concrete_slab",
+      "color": "#952222",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:red_concrete_stairs",
+      "color": "#861f1f",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
       "name": "minecraft:black_concrete",
       "color": "#080a0f"
+    },
+    {
+      "name": "minecraft:black_concrete_slab",
+      "color": "#080a0f",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:black_concrete_stairs",
+      "color": "#07090e",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
     },
     {
       "name": "minecraft:white_concrete_powder",
