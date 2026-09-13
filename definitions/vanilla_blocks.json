@@ -8493,6 +8493,46 @@
       "transparent": true
     },
     {
+      "name": "minecraft:polished_cinnabar",
+      "color": "#993a37"
+    },
+    {
+      "name": "minecraft:polished_cinnabar_slab",
+      "color": "#a03c39",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:polished_cinnabar_stairs",
+      "color": "#913734",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:polished_cinnabar_wall",
+      "color": "#993a37",
+      "alpha": 0.7,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:chiseled_cinnabar",
+      "color": "#933737"
+    },
+    {
       "name": "minecraft:potent_sulfur",
       "color": "#d3d161"
     },
@@ -8568,6 +8608,46 @@
       "color": "#bba85b",
       "alpha": 0.7,
       "transparent": true
+    },
+    {
+      "name": "minecraft:polished_sulfur",
+      "color": "#bcaa5b"
+    },
+    {
+      "name": "minecraft:polished_sulfur_slab",
+      "color": "#c5b25f",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "type:top",
+          "spawnontop": true
+        },
+        {
+          "blockstate": "type:double",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:polished_sulfur_stairs",
+      "color": "#b2a156",
+      "transparent": true,
+      "variants": [
+        {
+          "blockstate": "half:top",
+          "spawnontop": true
+        }
+      ]
+    },
+    {
+      "name": "minecraft:polished_sulfur_wall",
+      "color": "#bcaa5b",
+      "alpha": 0.7,
+      "transparent": true
+    },
+    {
+      "name": "minecraft:chiseled_sulfur",
+      "color": "#bbaa5b"
     },
     {
       "name": "minecraft:sulfur_spike",
